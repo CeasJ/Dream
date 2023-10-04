@@ -9,5 +9,6 @@ import java.util.Optional;
 public interface AccountService {
     Optional<Account> findByUsername(String username);
     AccountDTO registerAccount(AccountDTO accountDTO);
+    public boolean isUsernameExists(String username);
 }
 

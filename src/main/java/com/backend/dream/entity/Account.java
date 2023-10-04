@@ -2,6 +2,10 @@ package com.backend.dream.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,17 +27,22 @@ public class Account{
     @Column(unique = true)
     private String username;
 
+
     private String email;
+
 
     private String password;
 
     private String avatar;
 
+
     private String firstname;
+
 
     private String lastname;
 
     private String fullname;
+
 
     private String phone;
 

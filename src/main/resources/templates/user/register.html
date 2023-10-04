@@ -11,17 +11,23 @@
 <div class="container mt-5">
 	<h2>Register</h2>
 	<form th:action="@{/register}" th:object="${accountDTO}" method="post">
+		<div th:if="${error}" class="alert alert-danger">
+			<p th:text="${error}"></p>
+		</div>
 		<div class="mb-3">
 			<label for="username" class="form-label">Username</label>
 			<input type="text" class="form-control" id="username" th:field="*{username}" required>
+			<span th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="text-danger"></span>
 		</div>
 		<div class="mb-3">
 			<label for="email" class="form-label">Email</label>
 			<input type="email" class="form-control" id="email" th:field="*{email}" required>
+			<span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger"></span>
 		</div>
 		<div class="mb-3">
 			<label for="password" class="form-label">Password</label>
 			<input type="password" class="form-control" id="password" th:field="*{password}" required>
+			<span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="text-danger"></span>
 		</div>
 		<div class="mb-3">
 			<label for="confirmPassword" class="form-label">Confirm Password</label>
@@ -30,14 +36,17 @@
 		<div class="mb-3">
 			<label for="phone" class="form-label">Phone</label>
 			<input type="text" class="form-control" id="phone" th:field="*{phone}" required>
+			<span th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="text-danger"></span>
 		</div>
 		<div class="mb-3">
 			<label for="firstname" class="form-label">First Name</label>
 			<input type="text" class="form-control" id="firstname" th:field="*{firstname}" required>
+			<span th:if="${#fields.hasErrors('firstname')}" th:errors="*{firstname}" class="text-danger"></span>
 		</div>
 		<div class="mb-3">
 			<label for="lastname" class="form-label">Last Name</label>
 			<input type="text" class="form-control" id="lastname" th:field="*{lastname}" required>
+			<span th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}" class="text-danger"></span>
 		</div>
 
 		<button type="submit" class="btn btn-primary">Register</button>

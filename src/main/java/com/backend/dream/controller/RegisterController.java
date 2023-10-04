@@ -23,7 +23,19 @@ public class RegisterController {
     }
 
     @PostMapping("/register")
-    public String registerAccount(AccountDTO accountDTO, Model model) {
+    public String registerAccount(@Valid AccountDTO accountDTO, BindingResult bindingResult, Model model) {
+        String username = accountDTO.getUsername();
+
+        // Kiểm tra xem username đã tồn tại
+        if (accountService.isUsernameExists(username)) {
+            model.addAttribute("error", "Username valid");
+            return "/user/register";
+        }
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("message", "Please review registration information");
+            model.addAttribute("accountDTO", accountDTO);
+            return "/user/register";
+        }
         // Xử lý đăng ký tài khoản ở đây, sử dụng AccountService.
         accountService.registerAccount(accountDTO);
         // Thực hiện chuyển hướng hoặc hiển thị thông báo thành công.
