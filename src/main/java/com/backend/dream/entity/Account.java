@@ -28,7 +28,7 @@ public class Account{
     private String password;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "account")
+    @OneToMany(mappedBy = "account",fetch = FetchType.EAGER)
     private List<Authority> authority;
 
     @JsonIgnore
