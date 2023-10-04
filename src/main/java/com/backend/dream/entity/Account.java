@@ -27,6 +27,16 @@ public class Account{
 
     private String password;
 
+    private String avatar;
+
+    private String firstname;
+
+    private String lastname;
+
+    private String fullname;
+
+    private String phone;
+
     @JsonIgnore
     @OneToMany(mappedBy = "account")
     private List<Authority> authority;
@@ -38,10 +48,6 @@ public class Account{
     @JsonIgnore
     @OneToMany(mappedBy = "account")
     private  List<Order> order;
-
-    @OneToOne(mappedBy = "account")
-    @PrimaryKeyJoinColumn
-    private Profile profile;
 
     @JsonIgnore
     @OneToMany(mappedBy = "account")

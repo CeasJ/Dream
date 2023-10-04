@@ -5,8 +5,14 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ProfileDTO {
+public class AccountDTO {
     private Long id;
+
+    private String username;
+
+    private String email;
+
+    private String password;
 
     private String avatar;
 
@@ -18,5 +24,4 @@ public class ProfileDTO {
 
     private String phone;
 
-    private Long id_account;
 }
