@@ -18,10 +18,12 @@ public class UserDetail implements UserDetails {
     public UserDetail(Account account) {
         username = account.getUsername();
         password = account.getPassword();
-        String role = account.getAuthority().stream().map(er->er.getRole().getName()).toString();
-        authorities = Arrays.stream(role.split(","))
+        String[] role = account.getAuthority().stream().map(er->er.getRole().getName()).collect(Collectors.toList()).toArray(new String[0]);
+        System.out.println(role);
+        authorities = Arrays.stream(role)
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
+        System.out.println(authorities);
     }
 
     @Override
