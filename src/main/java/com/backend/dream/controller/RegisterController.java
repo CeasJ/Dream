@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class RegisterController {
@@ -23,22 +24,30 @@ public class RegisterController {
     }
 
     @PostMapping("/register")
-    public String registerAccount(@Valid AccountDTO accountDTO, BindingResult bindingResult, Model model) {
+    public String registerAccount(@RequestParam("password") String password,@RequestParam("confirmPassword") String confirmPassword,
+                                  @Valid AccountDTO accountDTO, BindingResult bindingResult,Model model) {
         String username = accountDTO.getUsername();
-
+        String email = accountDTO.getEmail();
         // Kiểm tra xem username đã tồn tại
         if (accountService.isUsernameExists(username)) {
             model.addAttribute("error", "Username valid");
             return "/user/register";
         }
+//        if (accountService.isEmailExists(email)) {
+//            model.addAttribute("error", "Email valid");
+//            return "/user/register";
+//        }
         if (bindingResult.hasErrors()) {
             model.addAttribute("message", "Please review registration information");
             model.addAttribute("accountDTO", accountDTO);
             return "/user/register";
         }
-        // Xử lý đăng ký tài khoản ở đây, sử dụng AccountService.
-        accountService.registerAccount(accountDTO);
-        // Thực hiện chuyển hướng hoặc hiển thị thông báo thành công.
-        return "redirect:/user/login"; // Chuyển hướng sau khi đăng ký thành công.
+        if (password.equals(confirmPassword)) {
+            accountService.registerAccount(accountDTO);
+            return "redirect:/user/login";
+        } else {
+            model.addAttribute("error", "Wrong Password");
+            return "/user/register";
+        }
     }
 }

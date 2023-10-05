@@ -10,5 +10,8 @@ public interface AccountService {
     Optional<Account> findByUsername(String username);
     AccountDTO registerAccount(AccountDTO accountDTO);
     public boolean isUsernameExists(String username);
+
+    public boolean isEmailExists(String email);
+
 }
 

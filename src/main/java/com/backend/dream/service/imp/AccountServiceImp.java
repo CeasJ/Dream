@@ -41,5 +41,10 @@ public class AccountServiceImp implements AccountService {
         return accountRepository.existsByUsername(username);
     }
 
+    @Override
+    public boolean isEmailExists(String email) {
+        return accountRepository.existsByEmail(email);
+    }
+
 
 }
