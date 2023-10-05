@@ -34,22 +34,22 @@ public class SecurityConfig {
         return http.csrf(csrf->csrf.disable())
                 .authorizeHttpRequests(auth->auth
                         .requestMatchers("/home").permitAll()
-                        .requestMatchers("/product").authenticated()
-                        .requestMatchers("/admin").hasAuthority("ADMIN")
-                        .requestMatchers("/staff").hasAuthority("STAFF")
+                        .requestMatchers("/products/index").authenticated()
+                        .requestMatchers("/admin/index").hasAuthority("ADMIN")
+                        .requestMatchers("/staff/index").hasAuthority("STAFF")
                         .anyRequest().permitAll()
                 )
                 .formLogin(login->login
                         .loginPage("/form")
                         .loginProcessingUrl("/login")
-                        .defaultSuccessUrl("/product")
-                        .failureUrl("/login/error")
+                        .defaultSuccessUrl("/products/index")
+                        .failureUrl("/auth/error")
                 )
                 .logout(logout->logout
                         .logoutUrl("/auth/logout")
-                        .logoutSuccessUrl("/home")
+                        .logoutSuccessUrl("/form")
                 )
-                .rememberMe(remember->remember.tokenValiditySeconds(86400))
+//                .rememberMe(remember->remember.tokenValiditySeconds(86400))
                 .build();
     }
     @Bean

@@ -47,7 +47,7 @@ public class Account{
     private String phone;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "account")
+    @OneToMany(mappedBy = "account",fetch = FetchType.EAGER)
     private List<Authority> authority;
 
     @JsonIgnore
