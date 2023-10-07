@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách sản phẩm</title>
+</head>
+<body>
+<div class="container product-sel" th:controller="productController">
+    <div class="row mt-4">
+        <div class="col-md-3" th:each="product : ${displayedProducts}">
+            <div class="card-product-sale mb-4 border-0">
+                <img th:src="${product.image}" class="card-img-top" th:alt="${product.name}">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${product.name}"></h5>
+                    <div class="prices text-center">
+                        <p class="card-text">
+                            <span th:text="${product.discountedPrice}"></span> đ
+                        </p>
+                    </div>
+                    <div class="text-center">
+                        <button class="btn btn-success" th:onclick="'addToCart(' + ${product.id} + ')'">Đặt hàng</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Thanh phân trang -->
+    <div class="row mt-4 mb-4">
+        <div class="col-md-12 text-center">
+            <ul class="pagination-custom justify-content-center">
+                <li class="page-item-custom" th:class="${currentPage == 1} ? 'disabled'">
+                    <a class="page-link-custom" href="#" th:onclick="prevPage()">
+                        <span style="font-size: 20px;">&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item-custom" th:each="page : ${pages}" th:class="${currentPage == page} ? 'active'">
+                    <a class="page-link-custom" href="#" th:onclick="setPage(${page})" th:text="${page}"></a>
+                </li>
+                <li class="page-item-custom" th:class="${currentPage == totalPages} ? 'disabled'">
+                    <a class="page-link-custom" href="#" th:onclick="nextPage()">
+                        <span style="font-size: 20px;">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+</html>

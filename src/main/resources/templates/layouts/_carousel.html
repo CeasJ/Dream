@@ -1,0 +1,37 @@
+<!-- Carousel -->
+<div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img th:src="${carouselImages[0].url}" class="d-block w-100" th:alt="${carouselImages[0].alt}">
+            <div class="overlay"></div>
+        </div>
+        <div class="carousel-item">
+            <img th:src="${carouselImages[1].url}" class="d-block w-100" th:alt="${carouselImages[1].alt}">
+            <div class="overlay"></div>
+        </div>
+        <div class="carousel-item">
+            <img th:src="${carouselImages[2].url}" class="d-block w-100" th:alt="${carouselImages[2].alt}">
+            <div class="overlay"></div>
+        </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+<!-- End Carousel -->
+
+<!-- Banner Content -->
+<div class="banner-content text-center">
+    <h1 style="font-size: 70px;" class="banner-title mb-3" th:text="${bannerTitle}">Welcome to Dream</h1>
+    <p class="banner-description" th:text="${bannerDescription}">Tại Dream, chúng tôi không chỉ là đơn giản một quán cà phê. Chúng tôi là tâm huyết và niềm đam mê trong việc tạo ra những tách cà phê và trà đích thực.</p>
+    <div class="banner-buttons justify-content-between mb-2">
+        <a href="coffee.html"><button class="btn btn-primary custom-btn">Cà phê</button></a>
+        <a href="tea.html"><button class="btn btn-primary custom-btn">Trà</button></a>
+    </div>
+</div>
+<!-- End Banner Content -->
