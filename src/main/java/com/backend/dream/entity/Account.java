@@ -2,6 +2,10 @@ package com.backend.dream.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +19,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table
-public class Account{
+public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -38,7 +42,7 @@ public class Account{
     private String phone;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "account",fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "account", fetch = FetchType.EAGER)
     private List<Authority> authority;
 
     @JsonIgnore
@@ -47,15 +51,14 @@ public class Account{
 
     @JsonIgnore
     @OneToMany(mappedBy = "account")
-    private  List<Order> order;
+    private List<Order> order;
 
     @JsonIgnore
     @OneToMany(mappedBy = "account")
     private List<Token> token;
 
     @JsonIgnore
-    @OneToMany(mappedBy= "account")
+    @OneToMany(mappedBy = "account")
     private List<FeedBack> feedback;
-
 
 }

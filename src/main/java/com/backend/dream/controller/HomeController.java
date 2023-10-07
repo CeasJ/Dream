@@ -1,32 +1,22 @@
 package com.backend.dream.controller;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class HomeController {
-    @GetMapping("/index")
-    public String getIndex() {
-        return "index";
+    @RequestMapping("/home")
+    public String index() {
+        return "/user/home/index";
     }
-    @GetMapping("/cart")
-    public String getCart(){
-        return "cart";
+
+    @RequestMapping("/about")
+    public String about() {
+        return "/user/home/about";
     }
-    @GetMapping("/coffee")
-    public String getCoffeeShop(){
-        return "coffee";
-    }
-    @GetMapping("/tea")
-    public String getTeaShop(){
-        return "tea";
-    }
-    @GetMapping("/dessert")
-    public String getDessertShop(){
-        return "dessert";
-    }
-    @GetMapping("/sale")
-    public String getSaleShop(){
-        return "product-sale";
+
+    @RequestMapping("/product")
+    public String product() {
+        return "/user/product/product";
     }
 }
