@@ -27,27 +27,27 @@ public class SecurityConfig {
     }
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer(){
-        return (web) -> web.ignoring().requestMatchers("/ignore1","ignore2");
+        return (web) -> web.ignoring().requestMatchers("/static","/templates","/**");
     }
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         return http.csrf(csrf->csrf.disable())
                 .authorizeHttpRequests(auth->auth
-                        .requestMatchers("/home").permitAll()
-                        .requestMatchers("/products/index").authenticated()
+                        .requestMatchers("/profile").authenticated()
+                        .requestMatchers("/order").authenticated()
                         .requestMatchers("/admin/index").hasAuthority("ADMIN")
                         .requestMatchers("/staff/index").hasAuthority("STAFF")
                         .anyRequest().permitAll()
                 )
                 .formLogin(login->login
-                        .loginPage("/form")
+                        .loginPage("/login/form")
                         .loginProcessingUrl("/login")
-                        .defaultSuccessUrl("/products/index")
-                        .failureUrl("/auth/error")
+                        .defaultSuccessUrl("/home")
+                        .failureUrl("/login/error")
                 )
                 .logout(logout->logout
-                        .logoutUrl("/auth/logout")
-                        .logoutSuccessUrl("/form")
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login/form")
                 )
 //                .rememberMe(remember->remember.tokenValiditySeconds(86400))
                 .build();
