@@ -1,9 +1,8 @@
 package com.backend.dream.service.imp;
 
 import com.backend.dream.entity.Account;
-import com.backend.dream.entity.Token;
 import com.backend.dream.repository.TokenRepository;
-import com.backend.dream.service.VerificationTokenService;
+import com.backend.dream.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Service;
@@ -11,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @EnableScheduling
-public class VerificationTokenServiceImpl implements VerificationTokenService {
+public class TokenServiceImp implements TokenService {
 
 	@Autowired
 	TokenRepository tokenRepository;
@@ -33,7 +32,7 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
 	}
 
 	@Override
-	public Token findByToken(String token) {
+	public com.backend.dream.entity.Token findByToken(String token) {
 		return tokenRepository.findByToken(token);
 	}
 
