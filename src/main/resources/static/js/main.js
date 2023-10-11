@@ -96,3 +96,83 @@
     
 })(jQuery);
 
+
+// Get combobox value arcording to the chosen option
+var urlParams = new URLSearchParams(window.location.search);
+var sortOption = urlParams.get("sortOption");
+
+if (sortOption !== null) {
+    var selectElement = document.getElementById("sortByPrice");
+    if (selectElement) {
+        selectElement.value = sortOption;
+    }
+}
+
+// Get click search button event
+document.addEventListener("DOMContentLoaded", function () {
+    var searchButton = document.getElementById("searchButton");
+    var productNameSearch = document.getElementById("productNameSearch");
+
+    if (searchButton && productNameSearch) {
+        searchButton.addEventListener("click", function () {
+            var searchValue = productNameSearch.value;
+            window.location.href = "/search?productName=" + searchValue;
+        });
+    }
+});
+
+// Category combobox listener event
+
+    var urlParams = new URLSearchParams(window.location.search);
+    var categoryId = urlParams.get("categoryId");
+
+    var productGroupSelect = document.getElementById("productGroup");
+
+    if (categoryId) {
+        productGroupSelect.value = categoryId;
+    }
+
+    productGroupSelect.addEventListener("change", function() {
+        var selectedCategoryId = this.value;
+
+
+        localStorage.setItem("selectedCategoryId", selectedCategoryId);
+
+
+        window.location.href = "/store?categoryId=" + selectedCategoryId;
+    });
+
+//sort by price function
+function updateCategoryIdAndSubmit() {
+
+        var selectedSortOption = document.getElementById("sortByPrice").value;
+
+
+        var selectedCategoryId = document.getElementById("productGroup").value;
+
+
+        var newUrl = "/store?categoryId=" + selectedCategoryId;
+
+
+        if (selectedSortOption !== 'none') {
+            newUrl += "&sortOption=" + selectedSortOption;
+        }
+
+
+        window.location.href = newUrl;
+    }
+
+//function goToPage(page) {
+//    const sortOption = /* Lấy giá trị sortOption hiện tại */;
+//    const categoryId = /* Lấy giá trị categoryId hiện tại */;
+//
+//    // Kiểm tra giới hạn trang
+//    if (page < 0) {
+//        page = 0;
+//    } else if (page >= totalPages) {
+//        page = totalPages - 1;
+//    }
+//
+//    const url = `/list?sortOption=${sortOption}&categoryId=${categoryId}&page=${page}`;
+//    window.location.href = url;
+//}

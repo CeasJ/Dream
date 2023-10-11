@@ -14,4 +14,14 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
 
     @Query("SELECT p FROM Product p where category.id=?1")
     List<Product> findByCategoryID(Long categoryId);
+
+    // For Sort products function
+    @Query("SELECT p FROM Product p WHERE p.category.id = ?1 ORDER BY p.price ASC")
+    List<Product> findByCategoryOrderByPriceAsc(Long categoryId);
+
+    @Query("SELECT p FROM Product p WHERE p.category.id = ?1 ORDER BY p.price DESC")
+    List<Product> findByCategoryOrderByPriceDesc(Long categoryId);
+
+    List<Product> findByNameContainingIgnoreCase(String productName);
+
 }

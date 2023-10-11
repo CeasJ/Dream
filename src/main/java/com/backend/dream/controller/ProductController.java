@@ -7,6 +7,7 @@ import com.backend.dream.repository.ProductRepository;
 import com.backend.dream.service.CategoryService;
 import com.backend.dream.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -16,12 +17,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
 public class ProductController {
+    @Value("${default.categoryId}")
+    private Long defaultCategoryId;
     private final ProductService productService;
 
     @Autowired
@@ -44,11 +48,6 @@ public class ProductController {
                 productMapper.productDTOToProduct(productDTO)), HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/products/all", method = RequestMethod.GET)
-    public ResponseEntity<List<ProductDTO>> findAll() {
-        return new ResponseEntity<>(productMapper.productsToProductDTOs(productRepository.findAll()), HttpStatus.OK);
-    }
-
     @RequestMapping(value = "/products/{id}", method = RequestMethod.GET)
     public ResponseEntity<ProductDTO> findById(@PathVariable(value = "id") Long id) {
         return new ResponseEntity<>(productMapper.productToProductDTO(productRepository.findById(id).get()), HttpStatus.OK);
@@ -61,26 +60,50 @@ public class ProductController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("/all")
+    @GetMapping("/product")
     public String listProducts(
             Model model,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "8") int pageSize) {
+            @RequestParam(defaultValue = "3") int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
         Page<ProductDTO> productPage = productService.findAll(pageable);
-        List<ProductDTO> productDTOs = productPage.getContent(); // Lấy danh sách sản phẩm từ trang hiện tại
+        List<ProductDTO> productDTOs = productPage.getContent();
         model.addAttribute("products", productDTOs);
-        model.addAttribute("currentPage", page);
+        model.addAttribute("cur rentPage", page);
         model.addAttribute("totalPages", productPage.getTotalPages());
-        return "products";
+        return "user/product/store";
     }
 
+    @GetMapping("/store")
+    public String showListProducts(@RequestParam(required = false) String sortOption,
+                                   @RequestParam(name = "categoryId", required = false)
+                                   Long categoryId, Model model) {
+        List<ProductDTO> sortedProducts;
+
+        if(categoryId == null){
+            categoryId = defaultCategoryId;
+        }
+
+        if ("asc".equals(sortOption)) {
+            // Ascending order
+            sortedProducts = productService.sortByPriceAsc(categoryId);
+        } else if ("desc".equals(sortOption)) {
+            // Descending order
+            sortedProducts = productService.sortByPriceDesc(categoryId);
+        } else {
+            // Default
+            sortedProducts = productService.findByCategory(categoryId);
+        }
+
+        model.addAttribute("products", sortedProducts);
+        return "user/product/products-list";
+    }
+
+    @GetMapping("/search")
+    public String searchByName(@RequestParam String productName, Model model) {
+        List<ProductDTO> products = productService.findByName(productName);
+        model.addAttribute("products", products);
+        return "user/product/products-list";
+    }
 
 }
-
-
-
-
-
-
-

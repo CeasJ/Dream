@@ -9,45 +9,61 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImp implements ProductService {
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
 
+    private final Logger logger = LoggerFactory.getLogger(ProductService.class);
+
     @Autowired
     public ProductServiceImp(ProductRepository productRepository, ProductMapper productMapper) {
         this.productRepository = productRepository;
-        this.productMapper  = productMapper;
+        this.productMapper = productMapper;
+    }
+
+    @Override
+    public List<ProductDTO> findAll() {
+        List<Product> products = productRepository.findAll();
+        return products.stream()
+                .map(productMapper::productToProductDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public ProductDTO findById(Long id) {
+        Product product = productRepository.findById(id).orElse(null);
+        return product != null ? productMapper.productToProductDTO(product) : null;
+    }
+
+    @Override
+    public List<ProductDTO> findByName(String productName) {
+        List<Product> products = productRepository.findByNameContainingIgnoreCase(productName);
+        return products.stream()
+                .map(productMapper::productToProductDTO)
+                .collect(Collectors.toList());
     }
 
 
     @Override
-    public List<Product> findAll() {
-        return productRepository.findAll();
+    public ProductDTO create(ProductDTO productDTO) {
+        Product product = productMapper.productDTOToProduct(productDTO);
+        Product createdProduct = productRepository.save(product);
+        return productMapper.productToProductDTO(createdProduct);
     }
 
     @Override
-    public Product findById(Long id) {
-        return productRepository.findById(id).get();
-    }
-
-    @Override
-    public List<Product> findbyName(String name) {
-        return productRepository.findByName(name);
-    }
-
-    @Override
-    public Product create(Product product) {
-        return productRepository.save(product);
-    }
-
-    @Override
-    public Product update(Product product) {
-        return productRepository.save(product);
+    public ProductDTO update(ProductDTO productDTO) {
+        Product product = productMapper.productDTOToProduct(productDTO);
+        Product updatedProduct = productRepository.save(product);
+        return productMapper.productToProductDTO(updatedProduct);
     }
 
     @Override
@@ -56,14 +72,43 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
-    public List<Product> findByCategory(Long categoryId) {
-        return productRepository.findByCategoryID(categoryId);
+    public List<ProductDTO> findByCategory(Long categoryId) {
+        List<Product> products = productRepository.findByCategoryID(categoryId);
+        return products.stream()
+                .map(productMapper::productToProductDTO)
+                .collect(Collectors.toList());
     }
 
-    // Pagination
     @Override
     public Page<ProductDTO> findAll(Pageable pageable) {
         Page<Product> productPage = productRepository.findAll(pageable);
         return productPage.map(productMapper::productToProductDTO);
     }
+
+    @Override
+    public List<ProductDTO> sortByPriceAsc(Long categoryId) {
+        try {
+            List<Product> products = productRepository.findByCategoryOrderByPriceAsc(categoryId);
+            return products.stream()
+                    .map(productMapper::productToProductDTO)
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            logger.error("Error sorting products by price ascending: " + e.getMessage(), e);
+            throw e; // Rethrow the exception to propagate it.
+        }
+    }
+
+    @Override
+    public List<ProductDTO> sortByPriceDesc(Long categoryId) {
+        try {
+            List<Product> products = productRepository.findByCategoryOrderByPriceDesc(categoryId);
+            return products.stream()
+                    .map(productMapper::productToProductDTO)
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            logger.error("Error sorting products by price descending: " + e.getMessage(), e);
+            throw e;
+        }
+    }
+
 }
