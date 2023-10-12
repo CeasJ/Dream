@@ -19,7 +19,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table
-public class Account{
+public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,27 +27,22 @@ public class Account{
     @Column(unique = true)
     private String username;
 
-
     private String email;
-
 
     private String password;
 
     private String avatar;
 
+    private String lastname;
 
     private String firstname;
 
-
-    private String lastname;
-
     private String fullname;
-
 
     private String phone;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "account",fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "account", fetch = FetchType.EAGER)
     private List<Authority> authority;
 
     @JsonIgnore
@@ -56,15 +51,14 @@ public class Account{
 
     @JsonIgnore
     @OneToMany(mappedBy = "account")
-    private  List<Order> order;
+    private List<Order> order;
 
     @JsonIgnore
     @OneToMany(mappedBy = "account")
     private List<Token> token;
 
     @JsonIgnore
-    @OneToMany(mappedBy= "account")
+    @OneToMany(mappedBy = "account")
     private List<FeedBack> feedback;
-
 
 }
