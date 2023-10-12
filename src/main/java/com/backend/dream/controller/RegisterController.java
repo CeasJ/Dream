@@ -28,7 +28,6 @@ public class RegisterController {
                                   @Valid AccountDTO accountDTO, BindingResult bindingResult,Model model) {
         String username = accountDTO.getUsername();
         String email = accountDTO.getEmail();
-        // Kiểm tra xem username đã tồn tại
         if (accountService.isUsernameExists(username)) {
             model.addAttribute("error", "Username valid");
             return "/user/register";

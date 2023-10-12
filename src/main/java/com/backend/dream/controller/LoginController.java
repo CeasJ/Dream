@@ -3,51 +3,49 @@ package com.backend.dream.controller;
 import com.backend.dream.entity.Account;
 import com.backend.dream.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Optional;
+
 
 @Controller
 public class LoginController {
     @Autowired
     private AccountService accountService;
-
-    @GetMapping("/form")
-    public String formLogin(){
-        return "loginForm";
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    @GetMapping("/login/form")
+    public String getLoginForm(){
+        return "/user/security/login";
     }
-    @RequestMapping("/demo")
-    public String testUI(){
-        return "test";
+    @PostMapping("/login")
+    public String loginProcess(Model model, @RequestParam("username") String username, @RequestParam("password") String password){
+        Optional<Account> account = accountService.findByUsername(username);
+        if (account.isEmpty()) return "redirect:/login/error";
+        if (account.isPresent() && passwordEncoder.matches(account.get().getPassword(),password) && username == account.get().getUsername()) return "redirect:/home";
+        return "redirect:/login/error";
     }
-    @RequestMapping("/admin/index")
-    public String adminIndex(){
-        return "admin";
+    @GetMapping("/login/success")
+    public String successLogin(){
+        return "redirect:/home";
     }
-    @RequestMapping("/staff/index")
-    public String staffIndex(){
-        return "staff";
+    @GetMapping("/login/error")
+    public String errorLogin(Model model){
+        model.addAttribute("message","Username or password incorect");
+        return "/user/security/login";
     }
-    @RequestMapping("/products/index")
-    public String products(){
-        return "products";
+    @GetMapping("/login/unauthorized")
+    public String unauthorizedLogin(Model model){
+        model.addAttribute("message","You dont have role ");
+        return "/user/security/login";
     }
-    @RequestMapping("/login")
-    public String login(@RequestParam("username") String username, @RequestParam("password") String password){
-        Optional<Account> account =  accountService.findByUsername(username);
-        if (account.isPresent()){
-            return "redirect:/products/index";
-        } else {
-            return "redirect:/auth/error";
-        }
-    }
-    @RequestMapping("/auth/error")
-    public String error(Model model){
-        model.addAttribute("message","Username and password incorrect");
-        return "loginForm";
+    @GetMapping("/login/logout")
+    public String logout (){
+        return "redirect:/home";
     }
 }
