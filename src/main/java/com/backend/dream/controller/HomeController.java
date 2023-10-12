@@ -13,8 +13,7 @@ public class HomeController {
     public String about(){
         return "/user/home/about";
     }
-    @RequestMapping("/product")
-    public String product(){
-        return "/user/product/product";
-    }
+
+    @RequestMapping("/products")
+    public String product() { return "user/product/products-list"; }
 }

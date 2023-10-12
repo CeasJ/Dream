@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
+
 <head>
     <meta charset="utf-8">
     <title>Tea House - Tea Shop Website Template</title>
@@ -67,10 +68,23 @@
                 <p class="fs-5 fw-medium fst-italic text-primary">Online Store</p>
                 <h1 class="display-6">Want to stay healthy? Choose tea taste</h1>
             </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="text-muted">Sắp xếp theo giá:</p>
+                </div>
+                <div class="col-md-6">
+                    <select class="form-control">
+                        <option value="0">Mặc định</option>
+                        <option value="asc">Từ thấp đến cao</option>
+                        <option value="desc">Từ cao đến thấp</option>
+                    </select>
+                </div>
+            </div>
             <div class="row g-4">
-                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s" th:each="product:${list}">
+
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s"  th:each="product : ${products}">
                     <div class="store-item position-relative text-center">
-                        <img class="img-fluid" src="img/store-product-1.jpg" alt="">
+                        <img class="img-fluid" th:src="@{'/img/' + ${product.image}}" alt="">
                         <div class="p-4">
                             <div class="text-center mb-3">
                                 <small class="fa fa-star text-primary"></small>
@@ -79,51 +93,9 @@
                                 <small class="fa fa-star text-primary"></small>
                                 <small class="fa fa-star text-primary"></small>
                             </div>
-                            <h4 class="mb-3" th:text="${product.name}"></h4>
-                            <p th:text="${product.describe}"></p>
-                            <h4 class="text-primary" th:text="${#numbers.formatDecimal(product.price,2,'COMMA',0,'POINT')}">VND</h4>
-                        </div>
-                        <div class="store-overlay">
-                            <button  class="btn btn-primary rounded-pill py-2 px-4 m-2">More Detail <i class="fa fa-arrow-right ms-2"></i></button>
-                            <button th:attr="ng-click=@{|cart.add(${product.id})|}" class="btn btn-dark rounded-pill py-2 px-4 m-2">Add to Cart <i class="fa fa-cart-plus ms-2"></i></button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
-                    <div class="store-item position-relative text-center">
-                        <img class="img-fluid" src="img/store-product-2.jpg" alt="">
-                        <div class="p-4">
-                            <div class="text-center mb-3">
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                            </div>
-                            <h4 class="mb-3">Green tea tulsi</h4>
-                            <p>Aliqu diam amet diam et eos. Clita erat ipsum lorem erat ipsum lorem sit sed</p>
-                            <h4 class="text-primary">$19.00</h4>
-                        </div>
-                        <div class="store-overlay">
-                            <a href="" class="btn btn-primary rounded-pill py-2 px-4 m-2">More Detail <i class="fa fa-arrow-right ms-2"></i></a>
-                            <a href="" class="btn btn-dark rounded-pill py-2 px-4 m-2">Add to Cart <i class="fa fa-cart-plus ms-2"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
-                    <div class="store-item position-relative text-center">
-                        <img class="img-fluid" src="img/store-product-3.jpg" alt="">
-                        <div class="p-4">
-                            <div class="text-center mb-3">
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                            </div>
-                            <h4 class="mb-3">Instant tea premix</h4>
-                            <p>Aliqu diam amet diam et eos. Clita erat ipsum lorem erat ipsum lorem sit sed</p>
-                            <h4 class="text-primary">$19.00</h4>
+                            <h4 class="mb-3" th:text="${product.name}">Nature close tea</h4>
+                            <p th:text="${product.describe}" ></p>
+                            <h4 class="text-primary" th:text="'$' + ${product.price}"></h4>
                         </div>
                         <div class="store-overlay">
                             <a href="" class="btn btn-primary rounded-pill py-2 px-4 m-2">More Detail <i class="fa fa-arrow-right ms-2"></i></a>
