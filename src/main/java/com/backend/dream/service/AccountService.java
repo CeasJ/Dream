@@ -13,5 +13,6 @@ public interface AccountService {
 
     public boolean isEmailExists(String email);
 
+    Account create (Account account);
 }
 

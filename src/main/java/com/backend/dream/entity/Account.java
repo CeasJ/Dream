@@ -14,7 +14,6 @@ import lombok.Setter;
 import java.util.List;
 
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -31,15 +30,6 @@ public class Account {
 
     private String password;
 
-    private String avatar;
-
-    private String lastname;
-
-    private String firstname;
-
-    private String fullname;
-
-    private String phone;
 
     @JsonIgnore
     @OneToMany(mappedBy = "account", fetch = FetchType.EAGER)
@@ -61,4 +51,8 @@ public class Account {
     @OneToMany(mappedBy = "account")
     private List<FeedBack> feedback;
 
+    public Account(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 }

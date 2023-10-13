@@ -6,6 +6,7 @@ import com.backend.dream.mapper.AccountMapper;
 import com.backend.dream.repository.AccountRepository;
 import com.backend.dream.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -17,11 +18,8 @@ public class AccountServiceImp implements AccountService {
     AccountMapper accountMapper;
     @Autowired
     private AccountRepository accountRepository;
-
-//    @Bean
-//    public PasswordEncoder passwordEncoder(){
-//        return new BCryptPasswordEncoder();
-//    }
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @Override
     public Optional<Account> findByUsername(String username) {
         return accountRepository.findByUsername(username);
@@ -30,11 +28,12 @@ public class AccountServiceImp implements AccountService {
     @Override
     public AccountDTO registerAccount(AccountDTO accountDTO) {
         Account account = accountMapper.accountDTOToAccount(accountDTO);
-        account.setFullname(accountDTO.getFirstname() + " " + accountDTO.getLastname());
+//        account.setFullname(accountDTO.getFirstname() + " " + accountDTO.getLastname());
 //        account.setPassword(passwordEncoder().encode(accountDTO.getPassword()));
         Account saveAccount = accountRepository.save(account);
         return accountMapper.accountToAccountDTO(saveAccount);
     }
+
 
     @Override
     public boolean isUsernameExists(String username) {
@@ -44,6 +43,12 @@ public class AccountServiceImp implements AccountService {
     @Override
     public boolean isEmailExists(String email) {
         return accountRepository.existsByEmail(email);
+    }
+
+    @Override
+    public Account create(Account account) {
+        account.setPassword(passwordEncoder.encode(account.getPassword()));
+        return accountRepository.save(account);
     }
 
 

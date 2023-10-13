@@ -28,10 +28,6 @@ public class HomeController {
         return "/user/home/about";
     }
 
-    @GetMapping("/product")
-    public String product() {
-        return "/user/product/product";
-    }
 
     @GetMapping("/cart")
     public String cart() {
