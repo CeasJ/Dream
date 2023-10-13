@@ -14,7 +14,7 @@ public class HomeController {
 
     @RequestMapping("/home")
     public String index(Model model) {
-        if (request.getRemoteUser() != null && (request.isUserInRole("ADMIN")|| request.isUserInRole("STAFF"))) {
+        if (request.getRemoteUser() != null && (request.isUserInRole("ADMIN") || request.isUserInRole("STAFF"))) {
             model.addAttribute("isAuthenticated", true);
             model.addAttribute("isAdminOrStaff", true);
         }
@@ -22,6 +22,8 @@ public class HomeController {
     }
 
     @RequestMapping("/about")
+    public String about() {
+
     public String about() {
         return "/user/home/about";
     }

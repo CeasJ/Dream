@@ -11,7 +11,6 @@ import java.io.Serializable;
 import java.util.List;
 
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -36,11 +35,10 @@ public class Account implements Serializable {
 
     private String fullname;
 
-
     private String phone;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "account",fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "account", fetch = FetchType.EAGER)
     private List<Authority> authority;
 
     @JsonIgnore
@@ -49,15 +47,14 @@ public class Account implements Serializable {
 
     @JsonIgnore
     @OneToMany(mappedBy = "account")
-    private  List<Order> order;
+    private List<Order> order;
 
     @JsonIgnore
     @OneToMany(mappedBy = "account")
     private List<Token> token;
 
     @JsonIgnore
-    @OneToMany(mappedBy= "account")
+    @OneToMany(mappedBy = "account")
     private List<FeedBack> feedback;
-
 
 }

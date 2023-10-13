@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 @NoArgsConstructor
@@ -28,6 +29,10 @@ public class Product implements Serializable {
     private String image;
 
     private String describe;
+
+    @Column(name = "createdate")
+    private Date createDate = new Date();
+
 
     private Boolean active;
 
