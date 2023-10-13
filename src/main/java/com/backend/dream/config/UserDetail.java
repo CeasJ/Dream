@@ -20,7 +20,7 @@ public class UserDetail implements UserDetails {
         password = account.getPassword();
         String[] role = account.getAuthority().stream().map(er->er.getRole().getName()).collect(Collectors.toList()).toArray(new String[0]);
         authorities = Arrays.stream(role)
-                .map(SimpleGrantedAuthority::new)
+                .map(r -> new SimpleGrantedAuthority("ROLE_" + r))
                 .collect(Collectors.toList());
     }
 
