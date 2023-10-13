@@ -43,13 +43,19 @@ public class ProductServiceImp implements ProductService {
         return product != null ? productMapper.productToProductDTO(product) : null;
     }
 
+//    @Override
+//    public Page<ProductDTO> findByName(String productName, Pageable pageable) {
+//        return productRepository.findByNameContainingIgnoreCase(productName, pageable)
+//                .map(productMapper::productToProductDTO);
+//    }
+
+
     @Override
-    public List<ProductDTO> findByName(String productName) {
-        List<Product> products = productRepository.findByNameContainingIgnoreCase(productName);
-        return products.stream()
-                .map(productMapper::productToProductDTO)
-                .collect(Collectors.toList());
+    public Page<ProductDTO> findByNamePaged(String name, Pageable pageable) {
+        Page<Product> productPage = productRepository.findByNameContainingIgnoreCase(name, pageable);
+        return productPage.map(productMapper::productToProductDTO);
     }
+
 
 
     @Override
@@ -71,13 +77,7 @@ public class ProductServiceImp implements ProductService {
         productRepository.deleteById(id);
     }
 
-    @Override
-    public List<ProductDTO> findByCategory(Long categoryId) {
-        List<Product> products = productRepository.findByCategoryID(categoryId);
-        return products.stream()
-                .map(productMapper::productToProductDTO)
-                .collect(Collectors.toList());
-    }
+
 
     @Override
     public Page<ProductDTO> findAll(Pageable pageable) {
@@ -85,30 +85,24 @@ public class ProductServiceImp implements ProductService {
         return productPage.map(productMapper::productToProductDTO);
     }
 
+
     @Override
-    public List<ProductDTO> sortByPriceAsc(Long categoryId) {
-        try {
-            List<Product> products = productRepository.findByCategoryOrderByPriceAsc(categoryId);
-            return products.stream()
-                    .map(productMapper::productToProductDTO)
-                    .collect(Collectors.toList());
-        } catch (Exception e) {
-            logger.error("Error sorting products by price ascending: " + e.getMessage(), e);
-            throw e; // Rethrow the exception to propagate it.
-        }
+    public Page<ProductDTO> findByCategory(Long categoryId, Pageable pageable) {
+        Page<Product> productPage = productRepository.findByCategoryID(categoryId, pageable);
+        return productPage.map(productMapper::productToProductDTO);
+    }
+
+
+    @Override
+    public Page<ProductDTO> sortByPriceAsc(Long categoryId, Pageable pageable) {
+        Page<Product> productPage = productRepository.findByCategoryOrderByPriceAsc(categoryId, pageable);
+        return productPage.map(productMapper::productToProductDTO);
     }
 
     @Override
-    public List<ProductDTO> sortByPriceDesc(Long categoryId) {
-        try {
-            List<Product> products = productRepository.findByCategoryOrderByPriceDesc(categoryId);
-            return products.stream()
-                    .map(productMapper::productToProductDTO)
-                    .collect(Collectors.toList());
-        } catch (Exception e) {
-            logger.error("Error sorting products by price descending: " + e.getMessage(), e);
-            throw e;
-        }
+    public Page<ProductDTO> sortByPriceDesc(Long categoryId, Pageable pageable) {
+        Page<Product> productPage = productRepository.findByCategoryOrderByPriceDesc(categoryId, pageable);
+        return productPage.map(productMapper::productToProductDTO);
     }
 
 }

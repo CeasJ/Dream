@@ -1,4 +1,5 @@
 package com.backend.dream.controller;
+
 import com.backend.dream.dto.CategoryDTO;
 import com.backend.dream.dto.ProductDTO;
 import com.backend.dream.entity.Product;
@@ -50,7 +51,8 @@ public class ProductController {
 
     @RequestMapping(value = "/products/{id}", method = RequestMethod.GET)
     public ResponseEntity<ProductDTO> findById(@PathVariable(value = "id") Long id) {
-        return new ResponseEntity<>(productMapper.productToProductDTO(productRepository.findById(id).get()), HttpStatus.OK);
+        return new ResponseEntity<>(productMapper.productToProductDTO(productRepository.findById(id).get()),
+                HttpStatus.OK);
     }
 
     @RequestMapping(value = "/products/{id}", method = RequestMethod.DELETE)
@@ -75,34 +77,53 @@ public class ProductController {
     }
 
     @GetMapping("/store")
-    public String showListProducts(@RequestParam(required = false) String sortOption,
-                                   @RequestParam(name = "categoryId", required = false)
-                                   Long categoryId, Model model) {
-        List<ProductDTO> sortedProducts;
+    public String showListProducts(
+            @RequestParam(required = false) String sortOption,
+            @RequestParam(name = "categoryId", required = false) String categoryIdString,
+            @RequestParam(defaultValue = "0") int page,
+            Model model) {
+        int pageSize = 6; // Kích thước trang
+        Pageable pageable = PageRequest.of(page, pageSize); // Tạo Pageable
 
-        if(categoryId == null){
-            categoryId = defaultCategoryId;
+        Page<ProductDTO> productPage;
+        Long categoryIdValue;
+        if (categoryIdString != null && !categoryIdString.isEmpty()) {
+            categoryIdValue = Long.parseLong(categoryIdString);
+        } else {
+            categoryIdValue = defaultCategoryId;
         }
 
         if ("asc".equals(sortOption)) {
-            // Ascending order
-            sortedProducts = productService.sortByPriceAsc(categoryId);
+            // Sắp xếp theo giá tăng dần
+            productPage = productService.sortByPriceAsc(categoryIdValue, pageable);
         } else if ("desc".equals(sortOption)) {
-            // Descending order
-            sortedProducts = productService.sortByPriceDesc(categoryId);
+            // Sắp xếp theo giá giảm dần
+            productPage = productService.sortByPriceDesc(categoryIdValue, pageable);
         } else {
-            // Default
-            sortedProducts = productService.findByCategory(categoryId);
+            // Mặc định
+            productPage = productService.findByCategory(categoryIdValue, pageable);
         }
 
-        model.addAttribute("products", sortedProducts);
+        model.addAttribute("products", productPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("categoryId", categoryIdValue);
+        model.addAttribute("totalPages", productPage.getTotalPages());
         return "user/product/products-list";
     }
 
     @GetMapping("/search")
-    public String searchByName(@RequestParam String productName, Model model) {
-        List<ProductDTO> products = productService.findByName(productName);
-        model.addAttribute("products", products);
+    public String searchByName(
+            @RequestParam String productName,
+            @RequestParam(defaultValue = "0") int page,
+            Model model) {
+        int pageSize = 6;
+        Pageable pageable = PageRequest.of(page, pageSize);
+
+        Page<ProductDTO> productPage = productService.findByNamePaged(productName, pageable);
+        model.addAttribute("products", productPage.getContent());
+        model.addAttribute("currentPage", productPage.getNumber());
+        model.addAttribute("totalPages", productPage.getTotalPages());
+
         return "user/product/products-list";
     }
 

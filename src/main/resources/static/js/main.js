@@ -116,7 +116,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (searchButton && productNameSearch) {
         searchButton.addEventListener("click", function () {
             var searchValue = productNameSearch.value;
-            window.location.href = "/search?productName=" + searchValue;
+            window.location.href = "/search?productName=" + searchValue + "&page=0";
         });
     }
 });
@@ -139,7 +139,8 @@ document.addEventListener("DOMContentLoaded", function () {
         localStorage.setItem("selectedCategoryId", selectedCategoryId);
 
 
-        window.location.href = "/store?categoryId=" + selectedCategoryId;
+        window.location.href = "/store?categoryId=" + selectedCategoryId + "&page=0";
+
     });
 
 //sort by price function
@@ -162,17 +163,3 @@ function updateCategoryIdAndSubmit() {
         window.location.href = newUrl;
     }
 
-//function goToPage(page) {
-//    const sortOption = /* Lấy giá trị sortOption hiện tại */;
-//    const categoryId = /* Lấy giá trị categoryId hiện tại */;
-//
-//    // Kiểm tra giới hạn trang
-//    if (page < 0) {
-//        page = 0;
-//    } else if (page >= totalPages) {
-//        page = totalPages - 1;
-//    }
-//
-//    const url = `/list?sortOption=${sortOption}&categoryId=${categoryId}&page=${page}`;
-//    window.location.href = url;
-//}

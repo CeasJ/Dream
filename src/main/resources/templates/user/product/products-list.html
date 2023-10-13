@@ -134,13 +134,18 @@
 
 
             <div class="col-md-4 sort">
-                <div class="input-group" style="margin-top: 1px; padding: 0 10px;">
-                    <input type="text" class="form-control ip-sort" id="productNameSearch" placeholder="Tìm kiếm...">
-                    <div class="input-group-append">
-                        <button class="btn btn-dark" type="button" id="searchButton"><i class="bi bi-search"></i></button>
+                <form th:action="@{/search}" method="get">
+                    <div class="input-group" style="margin-top: 1px; padding: 0 10px;">
+                        <input type="text" class="form-control ip-sort" name="productName" placeholder="Tìm kiếm...">
+                        <div class="input-group-append">
+                            <button class="btn btn-dark" type="submit" id="searchButton">
+                                <i class="bi bi-search"></i>
+                            </button>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
+
         </div>
         <div class="row g-4">
             <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s"  th:each="product : ${products}">
@@ -167,8 +172,14 @@
                 </div>
             </div>
         </div>
+        <div class="pagination">
+            <ul>
+                <li th:each="pageNumber : ${#numbers.sequence(0, totalPages-1)}">
+                    <a th:href="@{/store(page=${pageNumber}, categoryId=${categoryId}, sortOption=${sortOption}, productName=${productName})}" th:text="${pageNumber+1}"></a>
+                </li>
 
-
+            </ul>
+        </div>
 
     </div>
 </div>
