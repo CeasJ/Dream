@@ -4,36 +4,34 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class HomeController {
+
     @Autowired
     private HttpServletRequest request;
 
-    @GetMapping("/home")
+    @RequestMapping("/home")
     public String index(Model model) {
-        if (request.getRemoteUser() != null) {
+        if (request.getRemoteUser() != null && (request.isUserInRole("ADMIN")|| request.isUserInRole("STAFF"))) {
             model.addAttribute("isAuthenticated", true);
-            if (request.isUserInRole("ADMIN") || request.isUserInRole("STAFF")) {
-                model.addAttribute("isAdminOrStaff", true);
-            }
+            model.addAttribute("isAdminOrStaff", true);
         }
         return "/user/home/index";
     }
 
-    @GetMapping("/about")
+    @RequestMapping("/about")
     public String about() {
         return "/user/home/about";
     }
 
-    @GetMapping("/product")
+    @RequestMapping("/product")
     public String product() {
         return "/user/product/product";
     }
 
-    @GetMapping("/cart")
+    @RequestMapping("/cart")
     public String cart() {
         return "/user/cart/cart";
     }

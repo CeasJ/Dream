@@ -96,3 +96,70 @@
     
 })(jQuery);
 
+
+// Get combobox value arcording to the chosen option
+var urlParams = new URLSearchParams(window.location.search);
+var sortOption = urlParams.get("sortOption");
+
+if (sortOption !== null) {
+    var selectElement = document.getElementById("sortByPrice");
+    if (selectElement) {
+        selectElement.value = sortOption;
+    }
+}
+
+// Get click search button event
+document.addEventListener("DOMContentLoaded", function () {
+    var searchButton = document.getElementById("searchButton");
+    var productNameSearch = document.getElementById("productNameSearch");
+
+    if (searchButton && productNameSearch) {
+        searchButton.addEventListener("click", function () {
+            var searchValue = productNameSearch.value;
+            window.location.href = "/search?productName=" + searchValue + "&page=0";
+        });
+    }
+});
+
+// Category combobox listener event
+
+    var urlParams = new URLSearchParams(window.location.search);
+    var categoryId = urlParams.get("categoryId");
+
+    var productGroupSelect = document.getElementById("productGroup");
+
+    if (categoryId) {
+        productGroupSelect.value = categoryId;
+    }
+
+    productGroupSelect.addEventListener("change", function() {
+        var selectedCategoryId = this.value;
+
+
+        localStorage.setItem("selectedCategoryId", selectedCategoryId);
+
+
+        window.location.href = "/store?categoryId=" + selectedCategoryId + "&page=0";
+
+    });
+
+//sort by price function
+function updateCategoryIdAndSubmit() {
+
+        var selectedSortOption = document.getElementById("sortByPrice").value;
+
+
+        var selectedCategoryId = document.getElementById("productGroup").value;
+
+
+        var newUrl = "/store?categoryId=" + selectedCategoryId;
+
+
+        if (selectedSortOption !== 'none') {
+            newUrl += "&sortOption=" + selectedSortOption;
+        }
+
+
+        window.location.href = newUrl;
+    }
+

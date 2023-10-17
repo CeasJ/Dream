@@ -30,7 +30,9 @@ public class Product implements Serializable {
 
     private String describe;
 
-    Date createDate = new Date();
+    @Column(name = "createdate")
+    private Date createDate = new Date();
+
 
     private Boolean active;
 

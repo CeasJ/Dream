@@ -2,11 +2,6 @@ package com.backend.dream.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,7 +9,6 @@ import lombok.Setter;
 import java.util.List;
 
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -31,16 +25,13 @@ public class Account {
 
     private String password;
 
-    private String avatar;
+    private String firstname;
 
     private String lastname;
-
-    private String firstname;
 
     private String fullname;
 
     private String phone;
-
     @JsonIgnore
     @OneToMany(mappedBy = "account", fetch = FetchType.EAGER)
     private List<Authority> authority;
