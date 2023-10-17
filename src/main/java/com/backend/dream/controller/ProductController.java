@@ -74,7 +74,7 @@ public class ProductController {
         return "user/product/store";
     }
 
-    @GetMapping("/store")
+    @GetMapping("/shop")
     public String showListProducts(
             @RequestParam(required = false) String sortOption,
             @RequestParam(name = "categoryId", required = false) String categoryIdString,

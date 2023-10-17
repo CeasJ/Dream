@@ -20,7 +20,6 @@ public class ProductDTO {
 
     private String describe;
 
-    Date createDate = new Date();
 
     private Boolean active;
 

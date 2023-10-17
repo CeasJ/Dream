@@ -20,7 +20,7 @@ public class RegisterController {
 
     @GetMapping("/register")
     public String showRegistrationForm(AccountDTO accountDTO) {
-        return "/user/register"; // Trả về giao diện người dùng Thymeleaf để hiển thị biểu mẫu đăng ký.
+        return "/user/security/register";
     }
 
     @PostMapping("/register")
@@ -29,24 +29,24 @@ public class RegisterController {
         String username = accountDTO.getUsername();
         String email = accountDTO.getEmail();
         if (accountService.isUsernameExists(username)) {
-            model.addAttribute("error", "Username valid");
-            return "/user/register";
+            model.addAttribute("message", "Username valid");
+            return "/user/security/register";
         }
 //        if (accountService.isEmailExists(email)) {
-//            model.addAttribute("error", "Email valid");
-//            return "/user/register";
+//            model.addAttribute("message", "Email valid");
+//            return "/user/security/register";
 //        }
         if (bindingResult.hasErrors()) {
             model.addAttribute("message", "Please review registration information");
             model.addAttribute("accountDTO", accountDTO);
-            return "/user/register";
+            return "/user/security/register";
         }
         if (password.equals(confirmPassword)) {
             accountService.registerAccount(accountDTO);
-            return "redirect:/user/login";
+            return "redirect:/user/security/login";
         } else {
             model.addAttribute("error", "Wrong Password");
-            return "/user/register";
+            return "/user/security/register";
         }
     }
 }

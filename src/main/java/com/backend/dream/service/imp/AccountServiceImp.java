@@ -51,5 +51,15 @@ public class AccountServiceImp implements AccountService {
         return accountRepository.save(account);
     }
 
+    @Override
+    public Account findByUsernameAndEmail(String username, String email) {
+        return accountRepository.findByUsernameAndEmail(username, email);
+    }
+
+    @Override
+    public void update(Account account) {
+        accountRepository.save(account);
+    }
+
 
 }

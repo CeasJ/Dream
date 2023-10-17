@@ -14,5 +14,9 @@ public interface AccountService {
     public boolean isEmailExists(String email);
 
     Account create (Account account);
+
+    Account findByUsernameAndEmail(String username, String email);
+
+    void update(Account account);
 }
 
