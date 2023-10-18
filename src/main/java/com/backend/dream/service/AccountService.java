@@ -17,6 +17,7 @@ public interface AccountService {
 
     Account findByUsernameAndEmail(String username, String email);
 
-    void update(Account account);
+    Account updatePassword(Account account, String password);
+
 }
 
