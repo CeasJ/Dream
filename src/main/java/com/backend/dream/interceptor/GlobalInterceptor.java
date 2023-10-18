@@ -2,6 +2,8 @@ package com.backend.dream.interceptor;
 
 import com.backend.dream.service.AccountService;
 import com.backend.dream.service.CategoryService;
+import com.backend.dream.service.ProductService;
+import com.backend.dream.service.ProductSizeService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +19,8 @@ public class GlobalInterceptor implements HandlerInterceptor {
     private AccountService accountService;
 
     @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
+            ModelAndView modelAndView) throws Exception {
         request.setAttribute("categories", categoryService.findAll());
         String remoteUser = request.getRemoteUser();
         Long id_account = accountService.findIDByUsername(remoteUser);
@@ -26,10 +29,10 @@ public class GlobalInterceptor implements HandlerInterceptor {
                 modelAndView.addObject("isAuthenticated", true);
                 modelAndView.addObject("isAdminOrStaff", true);
                 modelAndView.addObject("username", remoteUser);
-                modelAndView.addObject("id_account",id_account);
+                modelAndView.addObject("id_account", id_account);
             } else if (remoteUser != null) {
                 modelAndView.addObject("username", remoteUser);
-                modelAndView.addObject("id_account",id_account);
+                modelAndView.addObject("id_account", id_account);
                 modelAndView.addObject("isAuthenticated", true);
             } else {
                 modelAndView.addObject("isAuthenticated", false);

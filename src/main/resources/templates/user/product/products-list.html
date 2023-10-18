@@ -39,6 +39,7 @@
 <body ng-app="cart_app" ng-controller="ctrl">
 <!-- Navbar Start -->
 <div th:replace="~{/user/component/header.html}"></div>
+<div th:replace="~{/user/component/header.html}"></div>
 <!-- Navbar End -->
 
 <main>
@@ -67,12 +68,12 @@
         </div>
         <div class="row mt-2 mb-3">
             <div class="col-md-4">
-                <!-- Nhóm sản phẩm + comboBox -->
                 <div class="d-flex align-items-center" style="margin-top: 3px;">
                     <label for="productGroup" style="margin-right: 15px; font-weight: 600;">Theo nhóm</label>
                     <select class="form-select cb-sort" id="productGroup" name="categoryId" style="width: 270px; height: 36px;">
                         <option th:each="category : ${categories}" th:value="${category.id}"
                                 th:text="${category.name}"></option>
+                        <option value="hot">Sản phẩm hot</option>
                     </select>
 
                 </div>
@@ -132,26 +133,36 @@
                         <h4 class="text-primary" th:text="${product.formattedPrice}">VNĐ</h4>
                     </div>
                     <div class="store-overlay">
-                        <a href="" class="btn btn-primary rounded-pill py-2 px-4 m-2">More Detail <i class="fa fa-arrow-right ms-2"></i></a>
+                        <a th:href="@{/product/{name}(name=${product.name})}" class="btn btn-primary rounded-pill py-2 px-4 m-2">More Detail <i class="fa fa-arrow-right ms-2"></i></a>
                         <button th:attr="ng-click=@{|cart.add(${product.id})|}" class="btn btn-dark rounded-pill py-2 px-4 m-2">Add to Cart <i class="fa fa-cart-plus ms-2"></i></button>
                     </div>
                 </div>
             </div>
         </div>
         <div class="pagination">
-            <ul>
-                <li th:each="pageNumber : ${#numbers.sequence(0, totalPages-1)}">
-                    <a th:href="@{/store(page=${pageNumber}, categoryId=${categoryId}, sortOption=${sortOption}, productName=${productName})}" th:text="${pageNumber+1}"></a>
+            <ul class="d-flex flex-row">
+                <li th:each="pageNumber : ${#numbers.sequence(0, totalPages-1)}"
+                    th:class="${pageNumber == currentPage ? 'active' : ''}">
+                    <a th:attr="data-page=${pageNumber}" href="#" th:text="${pageNumber+1}"></a>
                 </li>
-
             </ul>
         </div>
+
+
 
     </div>
 </div>
 <!-- Products End -->
 
-</main>
+<!-- Footer Start -->
+<div th:replace="~{/user/component/footer.html}"></div>
+<!-- Footer End -->
+
+
+<!-- Copyright Start -->
+<div th:replace="~{/user/component/copyright.html}"></div>
+<!-- Copyright End -->
+
 
 <!-- Back to Top -->
 <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>

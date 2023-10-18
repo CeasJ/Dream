@@ -93,13 +93,19 @@
         dots: true,
         nav: false,
     });
-
+    
 })(jQuery);
 
 
-// Get combobox value arcording to the chosen option
+// Get sort by price combobox value according to the chosen option
 var urlParams = new URLSearchParams(window.location.search);
 var sortOption = urlParams.get("sortOption");
+var isSearchPage = window.location.pathname === "/search"; // Check if this is the search page
+
+if(isSearchPage){
+    var selectElement = document.getElementById("sortByPrice");
+    selectElement.value = "none";
+}
 
 if (sortOption !== null) {
     var selectElement = document.getElementById("sortByPrice");
@@ -108,59 +114,133 @@ if (sortOption !== null) {
     }
 }
 
-// Get click search button event
+
+
 document.addEventListener("DOMContentLoaded", function () {
-    var searchButton = document.getElementById("searchButton");
-    var productNameSearch = document.getElementById("productNameSearch");
-
-    if (searchButton && productNameSearch) {
-        searchButton.addEventListener("click", function () {
-            var searchValue = productNameSearch.value;
-            window.location.href = "/search?productName=" + searchValue + "&page=0";
-        });
-    }
-});
-
-// Category combobox listener event
-
-    var urlParams = new URLSearchParams(window.location.search);
-    var categoryId = urlParams.get("categoryId");
-
     var productGroupSelect = document.getElementById("productGroup");
+    var sortByPriceSelect = document.getElementById("sortByPrice");
+    var productNameSearch = document.getElementsByName("productName");
+    // Handle change events for the category and sort option dropdowns
+    productGroupSelect.addEventListener("change", updateURLAndReload);
+    sortByPriceSelect.addEventListener("change", updateURLAndReload);
 
-    if (categoryId) {
-        productGroupSelect.value = categoryId;
-    }
+    // Handle search button click event
+    var searchButton = document.getElementById("searchButton");
 
-    productGroupSelect.addEventListener("change", function() {
-        var selectedCategoryId = this.value;
+        searchButton.addEventListener("click", function () {
+            updateURLAndReload();
+        });
 
+    // Get the current URL and parse the query parameters
+    var urlParams = new URLSearchParams(window.location.search);
+    var currentPage = urlParams.get("page");
 
-        localStorage.setItem("selectedCategoryId", selectedCategoryId);
+    // Find all pagination links
+    var paginationLinks = document.querySelectorAll(".pagination a");
 
+    // Add a click event listener to each pagination link
+    paginationLinks.forEach(function (link) {
+        link.addEventListener("click", function (event) {
+            event.preventDefault();
 
-        window.location.href = "/store?categoryId=" + selectedCategoryId + "&page=0";
+            // Get the target page from the pagination link
+            var targetPage = link.getAttribute("data-page");
 
+            // Update the 'page' parameter in the URL
+            urlParams.set("page", targetPage);
+
+            // Replace the current URL with the updated URL
+            window.location.href = window.location.pathname + "?" + urlParams.toString();
+        });
     });
 
-//sort by price function
-function updateCategoryIdAndSubmit() {
-
-        var selectedSortOption = document.getElementById("sortByPrice").value;
-
-
-        var selectedCategoryId = document.getElementById("productGroup").value;
-
-
-        var newUrl = "/store?categoryId=" + selectedCategoryId;
-
-
-        if (selectedSortOption !== 'none') {
-            newUrl += "&sortOption=" + selectedSortOption;
+    // Set the active class to the current page
+    paginationLinks.forEach(function (link) {
+        var linkPage = link.getAttribute("data-page");
+        if (linkPage === currentPage) {
+            link.classList.add("active");
         }
+    });
+});
 
+
+
+
+
+
+// Category combobox listener event
+var urlParams = new URLSearchParams(window.location.search);
+var categoryId = urlParams.get("categoryId");
+var productGroupSelect = document.getElementById("productGroup");
+if(isSearchPage){
+    productGroupSelect.value = "0";
+}
+
+if (categoryId) {
+    productGroupSelect.value = categoryId;
+}
+
+productGroupSelect.addEventListener("change", function() {
+    var selectedCategoryId = this.value;
+    localStorage.setItem("selectedCategoryId", selectedCategoryId);
+    updateURLAndReload();
+});
+
+// Sort by price function
+function updateURLAndReload() {
+    var selectedCategoryId = document.getElementById("productGroup").value;
+    var selectedSortOption = document.getElementById("sortByPrice").value;
+    var searchValue = localStorage.getItem("searchValue");
+
+    var isSearchPage = window.location.pathname === "/search";
+
+
+    localStorage.setItem("selectedCategoryId", selectedCategoryId);
+    localStorage.setItem("sortOption", selectedSortOption);
+
+    var newUrl = "/store?categoryId=" + selectedCategoryId;
+
+    if (selectedSortOption !== 'none') {
+        newUrl += "&sortOption=" + selectedSortOption;
+    }
+
+    if (searchValue) {
+        newUrl += "&productName=" + searchValue;
+    }
 
         window.location.href = newUrl;
  }
 
+document.addEventListener("DOMContentLoaded", function () {
+        // Get the current URL and parse the query parameters
+        var urlParams = new URLSearchParams(window.location.search);
+        var currentPage = urlParams.get("page");
+
+        // Find all pagination links
+        var paginationLinks = document.querySelectorAll(".pagination a");
+
+        // Add a click event listener to each pagination link
+        paginationLinks.forEach(function (link) {
+            link.addEventListener("click", function (event) {
+                event.preventDefault();
+
+                // Get the target page from the pagination link
+                var targetPage = link.getAttribute("data-page");
+
+                // Update the 'page' parameter in the URL
+                urlParams.set("page", targetPage);
+
+                // Replace the current URL with the updated URL
+                window.location.href = window.location.pathname + "?" + urlParams.toString();
+            });
+        });
+
+        // Set the active class to the current page
+        paginationLinks.forEach(function (link) {
+            var linkPage = link.getAttribute("data-page");
+            if (linkPage === currentPage) {
+                link.classList.add("active");
+            }
+        });
+    });
 

@@ -1,14 +1,15 @@
 package com.backend.dream.controller;
 
-import com.backend.dream.dto.CategoryDTO;
+import com.backend.dream.dto.DiscountDTO;
 import com.backend.dream.dto.ProductDTO;
+import com.backend.dream.dto.SizeDTO;
 import com.backend.dream.entity.Product;
 import com.backend.dream.mapper.ProductMapper;
 import com.backend.dream.repository.ProductRepository;
 import com.backend.dream.service.CategoryService;
 import com.backend.dream.service.ProductService;
+import com.backend.dream.service.ProductSizeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,16 +19,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Comparator;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Controller
 public class ProductController {
-    @Value("${default.categoryId}")
-    private Long defaultCategoryId;
+
+    private Long defaultCategoryId = 1L;
     private final ProductService productService;
+    private final ProductSizeService productSizeService;
 
     @Autowired
     private ProductMapper productMapper;
@@ -39,8 +40,9 @@ public class ProductController {
     CategoryService categoryService;
 
     @Autowired
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, ProductSizeService productSizeService) {
         this.productService = productService;
+        this.productSizeService = productSizeService;
     }
 
     @RequestMapping(value = "/products", method = RequestMethod.POST)
@@ -104,6 +106,20 @@ public class ProductController {
             productPage = productService.findByCategory(categoryIdValue, pageable);
         }
 
+        // List<DiscountDTO> discounts = yourDiscountServiceMethod(); // Thay thế bằng
+        // phương thức lấy danh sách giảm giá
+        // for (ProductDTO productDTO : productPage.getContent()) {
+        // // Tìm giảm giá cho sản phẩm
+        // for (DiscountDTO discount : discounts) {
+        // if (discount.getId_product().equals(productDTO.getId())) {
+        // double discountedPrice = productDTO.getOriginalPrice() * (1 -
+        // (discount.getPercent() / 100));
+        // productDTO.setDiscountedPrice(discountedPrice);
+        // break;
+        // }
+        // }
+        // }
+
         model.addAttribute("products", productPage.getContent());
         model.addAttribute("currentPage", page);
         model.addAttribute("categoryId", categoryIdValue);
@@ -121,10 +137,27 @@ public class ProductController {
 
         Page<ProductDTO> productPage = productService.findByNamePaged(productName, pageable);
         model.addAttribute("products", productPage.getContent());
-        model.addAttribute("currentPage", productPage.getNumber());
+        model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", productPage.getTotalPages());
+        model.addAttribute("searchValue", productName); // Add this line to pass search value to the view
 
         return "user/product/products-list";
+    }
+
+    @RequestMapping(value = "/product/{name}", method = RequestMethod.GET)
+    public String productDetail(@PathVariable(value = "name") String name, Model model) {
+        try {
+            String decoded = URLDecoder.decode(name, "UTF-8");
+            ProductDTO product = productService.findByNamePaged(decoded, PageRequest.of(0, 1)).getContent().get(0);
+            List<SizeDTO> availableSizes = productSizeService.getSizesByProductId(product.getId());
+            model.addAttribute("product", product);
+            model.addAttribute("availableSizes", availableSizes);
+
+            System.out.println(availableSizes);
+            return "user/product/detail";
+        } catch (UnsupportedEncodingException e) {
+            return "error";
+        }
     }
 
 }
