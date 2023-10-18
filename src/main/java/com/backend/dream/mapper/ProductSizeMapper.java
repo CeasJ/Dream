@@ -10,8 +10,9 @@ import org.mapstruct.factory.Mappers;
 public interface ProductSizeMapper {
     ProductSizeMapper INSTANCE = Mappers.getMapper(ProductSizeMapper.class);
 
-    @Mapping(source = "size.id",target = "id_size")
+    @Mapping(source = "size.id", target = "id_size")
     ProductSizeDTO productSizeToProductSizeDTO(ProductSize productSize);
-    @Mapping(source = "id_size",target = "id")
+
+    @Mapping(source = "id_size", target = "id_product")
     ProductSizeDTO productSizeDTOToProductSize(ProductSizeDTO productSizeDTO);
 }

@@ -17,7 +17,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table
-public class Order implements Serializable {
+public class Orders implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,6 +25,7 @@ public class Order implements Serializable {
     private String address;
 
     @Temporal(TemporalType.DATE)
+    @Column(name = "createdate")
     private Date createDate = new Date();
 
     private String note;
@@ -38,7 +39,7 @@ public class Order implements Serializable {
     private OrderStatus status;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "order")
-    private List<OrderDetail> detail;
+    @OneToMany(mappedBy = "orders")
+    private List<OrderDetails> detail;
 
 }

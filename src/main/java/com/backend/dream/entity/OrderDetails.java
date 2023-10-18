@@ -10,17 +10,19 @@ import java.io.Serializable;
 @Getter
 @Setter
 @Entity
-@Table
-public class OrderDetail implements Serializable {
+@Table(name = "orderdetails")
+public class OrderDetails implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private int quantity;
 
+    private double price;
+
     @ManyToOne
     @JoinColumn(name = "idorder")
-    private Order order;
+    private Orders orders;
 
     @ManyToOne
     @JoinColumn(name = "idproduct")

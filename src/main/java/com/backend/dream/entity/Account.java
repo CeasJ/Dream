@@ -2,15 +2,11 @@ package com.backend.dream.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.List;
 
 @NoArgsConstructor
@@ -18,7 +14,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table
-public class Account {
+public class Account implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,6 +26,15 @@ public class Account {
 
     private String password;
 
+    private String avatar;
+
+    private String firstname;
+
+    private String lastname;
+
+    private String fullname;
+
+    private String phone;
 
     @JsonIgnore
     @OneToMany(mappedBy = "account", fetch = FetchType.EAGER)
@@ -41,7 +46,7 @@ public class Account {
 
     @JsonIgnore
     @OneToMany(mappedBy = "account")
-    private List<Order> order;
+    private List<Orders> orders;
 
     @JsonIgnore
     @OneToMany(mappedBy = "account")

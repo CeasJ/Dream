@@ -681,3 +681,51 @@
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
 }
+
+/* Shorting products description */
+.product-description {
+    max-height: 3.6em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+/* Pagination navigation formating */
+.pagination {
+  display: flex;
+  justify-content: center;
+}
+
+.pagination ul li {
+  list-style: none;
+  margin: 15px;
+  border-radius: 50%;
+  font-size: 16px;
+  background-color: #E5E8EB;
+  text-align: center;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.pagination ul li a {
+  text-decoration: none;
+  color: #000;
+  display: block;
+  width: 100%;
+  height: 100%;
+  margin-top: 15px;
+}
+
+.pagination ul li.active {
+  background-color: #6BE062;
+  color: white;
+}
+
+.pagination ul li:hover {
+  background-color: #6BE062;
+  color: white;
+}

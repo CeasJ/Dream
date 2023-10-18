@@ -11,17 +11,19 @@ public interface ProductService {
 
     ProductDTO findById(Long id);
 
-//    Page<ProductDTO> findByName(String productName, Pageable pageable);
+    // Page<ProductDTO> findByName(String productName, Pageable pageable);
 
     Page<ProductDTO> findByNamePaged(String name, Pageable pageable);
+
     ProductDTO create(ProductDTO productDTO);
 
     ProductDTO update(ProductDTO productDTO);
 
     Page<ProductDTO> findByCategory(Long categoryId, Pageable pageable);
-    Page<ProductDTO> sortByPriceAsc(Long categoryId, Pageable pageable);
-    Page<ProductDTO> sortByPriceDesc(Long categoryId, Pageable pageable);
 
+    Page<ProductDTO> sortByPriceAsc(Long categoryId, Pageable pageable);
+
+    Page<ProductDTO> sortByPriceDesc(Long categoryId, Pageable pageable);
 
     void delete(Long id);
 

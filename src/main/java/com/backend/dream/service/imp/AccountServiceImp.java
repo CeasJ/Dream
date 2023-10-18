@@ -9,31 +9,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
 public class AccountServiceImp implements AccountService {
-
-    @Autowired
-    AccountMapper accountMapper;
     @Autowired
     private AccountRepository accountRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private AccountMapper accountMapper;
+
     @Override
     public Optional<Account> findByUsername(String username) {
         return accountRepository.findByUsername(username);
     }
-
     @Override
     public AccountDTO registerAccount(AccountDTO accountDTO) {
         Account account = accountMapper.accountDTOToAccount(accountDTO);
-//        account.setFullname(accountDTO.getFirstname() + " " + accountDTO.getLastname());
-//        account.setPassword(passwordEncoder().encode(accountDTO.getPassword()));
+        account.setFullname(accountDTO.getFirstname() + " " + accountDTO.getLastname());
+        account.setPassword(passwordEncoder.encode(accountDTO.getPassword()));
         Account saveAccount = accountRepository.save(account);
         return accountMapper.accountToAccountDTO(saveAccount);
     }
-
 
     @Override
     public boolean isUsernameExists(String username) {
@@ -50,6 +49,20 @@ public class AccountServiceImp implements AccountService {
         account.setPassword(passwordEncoder.encode(account.getPassword()));
         return accountRepository.save(account);
     }
+    public Long findIDByUsername(String username) throws NoSuchElementException {
+        return accountRepository.findIdByUsername(username);
+    }
 
+    @Override
+    public Account findByUsernameAndEmail(String username, String email) {
+        return accountRepository.findByUsernameAndEmail(username, email);
+    }
+
+    @Override
+    public Account updatePassword(Account account, String password) {
+        account.setPassword(passwordEncoder.encode(password));
+        accountRepository.save(account);
+        return account;
+    }
 
 }

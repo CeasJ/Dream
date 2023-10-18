@@ -12,8 +12,8 @@ public interface TokenMapper {
 
     @Mapping(source = "account.id", target = "id_account")
     TokenDTO tokenToTokenDTO(Token token);
+
     @Mapping(source = "id_account", target = "account.id")
     Token tokenDTOToToken(TokenDTO tokenDTO);
-
-
 }
+
