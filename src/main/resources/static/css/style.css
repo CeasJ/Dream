@@ -693,7 +693,7 @@
   margin: 15px;
   border-radius: 50%;
   font-size: 16px;
-  background-color: #E5E8EB;
+  background-color: #B8B8B8;
   text-align: center;
   width: 50px;
   height: 50px;
@@ -703,7 +703,7 @@
 
 .pagination ul li a {
   text-decoration: none;
-  color: #000;
+  color: white;
   display: block;
   width: 100%;
   height: 100%;
@@ -711,11 +711,11 @@
 }
 
 .pagination ul li.active {
-  background-color: #6BE062;
+  background-color: var(--primary);
   color: white;
 }
 
 .pagination ul li:hover {
-  background-color: #6BE062;
+  background-color: var(--primary);
   color: white;
 }

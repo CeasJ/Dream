@@ -68,13 +68,13 @@
             <h1 class="display-6">Want to stay healthy? Choose tea taste</h1>
         </div>
         <div class="row mt-2 mb-3">
-            <div class="col-md-4">
+            <div class="col-md-4 sort">
                 <div class="d-flex align-items-center" style="margin-top: 3px;">
                     <label for="productGroup" style="margin-right: 15px; font-weight: 600;">Theo nhóm</label>
                     <select class="form-select cb-sort" id="productGroup" name="categoryId" style="width: 270px; height: 36px;">
                         <option th:each="category : ${categories}" th:value="${category.id}"
                                 th:text="${category.name}"></option>
-                        <option value="hot">Sản phẩm hot</option>
+<!--                        <option value="hot">Sản phẩm hot</option>-->
                     </select>
 
                 </div>

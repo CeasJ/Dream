@@ -80,7 +80,7 @@ public class ProductController {
         return "user/product/store";
     }
 
-    @GetMapping("/shop")
+    @GetMapping("/store")
     public String showListProducts(
             @RequestParam(required = false) String sortOption,
             @RequestParam(name = "categoryId", required = false) String categoryIdString,
@@ -117,7 +117,7 @@ public class ProductController {
     }
 
     
-//        List<DiscountDTO> discounts = yourDiscountServiceMethod(); // Thay thế bằng phương thức lấy danh sách giảm giá
+//        List<DiscountDTO> discounts = yourDiscountServiceMethod();
 //        for (ProductDTO productDTO : productPage.getContent()) {
 //            // Tìm giảm giá cho sản phẩm
 //            for (DiscountDTO discount : discounts) {
