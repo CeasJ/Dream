@@ -12,6 +12,6 @@ public interface ProductSizeMapper {
 
     @Mapping(source = "size.id",target = "id_size")
     ProductSizeDTO productSizeToProductSizeDTO(ProductSize productSize);
-    @Mapping(source = "id_size",target = "id")
+    @Mapping(source = "id_size",target = "id_product")
     ProductSizeDTO productSizeDTOToProductSize(ProductSizeDTO productSizeDTO);
 }
