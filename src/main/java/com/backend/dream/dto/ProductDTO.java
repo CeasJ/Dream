@@ -22,6 +22,7 @@ public class ProductDTO {
 
     private String describe;
 
+
     private Boolean active;
 
     private String category;

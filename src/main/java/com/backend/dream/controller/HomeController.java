@@ -3,8 +3,6 @@ package com.backend.dream.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -14,7 +12,7 @@ public class HomeController {
     private HttpServletRequest request;
 
     @RequestMapping("/home")
-    public String index(Model model) {
+    public String index() {
         return "/user/home/index";
     }
 
@@ -23,7 +21,7 @@ public class HomeController {
         return "/user/home/about";
     }
 
-    @RequestMapping("/product")
+    @GetMapping("/product")
     public String product() {
         return "/user/product/product";
     }
@@ -31,5 +29,10 @@ public class HomeController {
     @RequestMapping("/cart")
     public String cart() {
         return "/user/cart/cart";
+    }
+
+    @RequestMapping("/profile")
+    public String profile() {
+        return "/user/home/profile";
     }
 }

@@ -15,15 +15,52 @@ public class AccountServiceImp implements AccountService {
     @Autowired
     private AccountRepository accountRepository;
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;>>>>>>>>>
+    Temporary merge branch 2
+
     @Override
     public Optional<Account> findByUsername(String username) {
         return accountRepository.findByUsername(username);
     }
+
     @Override
+    public AccountDTO registerAccount(AccountDTO accountDTO) {
+        Account account = accountMapper.accountDTOToAccount(accountDTO);
+        account.setFullname(accountDTO.getFirstname() + " " + accountDTO.getLastname());
+        account.setPassword(passwordEncoder.encode(accountDTO.getPassword()));
+        Account saveAccount = accountRepository.save(account);
+        return accountMapper.accountToAccountDTO(saveAccount);
+    }
+
+    @Override
+    public boolean isUsernameExists(String username) {
+        return accountRepository.existsByUsername(username);
+    }
+
+    @Override
+    public boolean isEmailExists(String email) {
+        return accountRepository.existsByEmail(email);
+    }
+
+    @Override
+    public Account create(Account account) {
+        account.setPassword(passwordEncoder.encode(account.getPassword()));
+        return accountRepository.save(account);
+
     public Long findIDByUsername(String username) throws NoSuchElementException {
         return accountRepository.findIdByUsername(username);
     }
 
+    @Override
+    public Account findByUsernameAndEmail(String username, String email) {
+        return accountRepository.findByUsernameAndEmail(username, email);
+    }
+
+    @Override
+    public Account updatePassword(Account account, String password) {
+        account.setPassword(passwordEncoder.encode(password));
+        accountRepository.save(account);
+        return account;
+    }
 
 }

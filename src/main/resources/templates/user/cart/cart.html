@@ -4,6 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Tea House - Cart</title>
+  <title>Tea House - Cart</title>
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <meta content="" name="keywords">
   <meta content="" name="description">
@@ -213,18 +214,29 @@
             </button>
           </a>
         </div>
-
       </div>
     </div>
   </div>
   <!--Cart End  -->
 
   <!-- Back to Top -->
-  <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top">
-    <i class="bi bi-arrow-up"></i>
-  </a>
+      <!-- Footer Start -->
+    <div th:replace="~{/user/component/footer.html}"></div>
+    <!-- Footer End -->
 
-</main>
+    <!-- Copyright Start -->
+    <div th:replace="~{/user/component/copyright.html}"></div>
+    <!-- Copyright End -->
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top">
+    
+      <i class="bi bi-arrow-up"></i>
+  
+    </a>
+
+
+  </main>
 
 
 
