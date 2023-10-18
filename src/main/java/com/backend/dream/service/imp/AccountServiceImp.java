@@ -28,8 +28,8 @@ public class AccountServiceImp implements AccountService {
     @Override
     public AccountDTO registerAccount(AccountDTO accountDTO) {
         Account account = accountMapper.accountDTOToAccount(accountDTO);
-//        account.setFullname(accountDTO.getFirstname() + " " + accountDTO.getLastname());
-//        account.setPassword(passwordEncoder().encode(accountDTO.getPassword()));
+        account.setFullname(accountDTO.getFirstname() + " " + accountDTO.getLastname());
+        account.setPassword(passwordEncoder.encode(accountDTO.getPassword()));
         Account saveAccount = accountRepository.save(account);
         return accountMapper.accountToAccountDTO(saveAccount);
     }
@@ -57,9 +57,12 @@ public class AccountServiceImp implements AccountService {
     }
 
     @Override
-    public void update(Account account) {
+    public Account updatePassword(Account account,String password) {
+        account.setPassword(passwordEncoder.encode(password));
         accountRepository.save(account);
+        return account;
     }
+
 
 
 }

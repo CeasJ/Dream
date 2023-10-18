@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmailService {
     @Autowired
-    private MailSender javaMailSender;
+    private MailSender mailSender;
 
     @Autowired
     TokenService tokenService;
@@ -17,13 +17,12 @@ public class EmailService {
     public void sendWelcomeEmail(String to, String fullname) {
         SimpleMailMessage msg = new SimpleMailMessage();
         msg.setTo(to);
-        msg.setSubject("Welcome to TimeZone");
+        msg.setSubject("Welcome to Dream Coffee and Tea");
         msg.setText("Welcome " + fullname + " to TimeZone");
-        msg.setText("Welcome " + fullname + " to TimeZone");
-        javaMailSender.send(msg);
+        mailSender.send(msg);
     }
 
-    public void sendEmail(String to, String token, String fullname) {
+    public void sendEmailTokenPass(String to, String token, String fullname) {
         SimpleMailMessage msg = new SimpleMailMessage();
         msg.setTo(to);
         msg.setSubject("Reset Password");
@@ -33,7 +32,7 @@ public class EmailService {
                 + "If you did not request a password reset, please ignore this email.\n\n"
                 + "Regards,\n"
                 + "TimeZone");
-        javaMailSender.send(msg);
+        mailSender.send(msg);
 
     }
 

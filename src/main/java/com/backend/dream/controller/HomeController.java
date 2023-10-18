@@ -35,4 +35,9 @@ public class HomeController {
     public String cart() {
         return "/user/cart/cart";
     }
+
+    @RequestMapping("/profile")
+    public String profile() {
+        return "/user/home/profile";
+    }
 }

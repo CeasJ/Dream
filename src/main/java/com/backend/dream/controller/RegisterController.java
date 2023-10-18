@@ -2,6 +2,7 @@ package com.backend.dream.controller;
 
 import com.backend.dream.dto.AccountDTO;
 import com.backend.dream.service.AccountService;
+import com.backend.dream.service.EmailService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,9 @@ public class RegisterController {
 
     @Autowired
     private AccountService accountService;
+
+    @Autowired
+    private EmailService emailService;
 
     @GetMapping("/register")
     public String showRegistrationForm(AccountDTO accountDTO) {
@@ -43,7 +47,8 @@ public class RegisterController {
         }
         if (password.equals(confirmPassword)) {
             accountService.registerAccount(accountDTO);
-            return "redirect:/user/security/login";
+            emailService.sendWelcomeEmail(email,accountDTO.getFullname());
+            return "redirect:/login/form";
         } else {
             model.addAttribute("error", "Wrong Password");
             return "/user/security/register";

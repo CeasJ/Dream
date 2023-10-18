@@ -11,9 +11,12 @@ import com.backend.dream.service.EmailService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -49,8 +52,7 @@ public class ForgotPasswordController {
         TokenDTO token = tokenService.createTokenForUser(account);
         String tokenValue = token.getToken();
         session.setAttribute("tokenValue", tokenValue);
-        System.out.println(tokenValue);
-        emailService.sendEmail(email, String.valueOf(tokenValue),account.getFullname());
+        emailService.sendEmailTokenPass(email, String.valueOf(tokenValue),account.getFullname());
         model.addAttribute("message", "An email with a reset link has been sent to your email address");
         return "/user/security/verifi";
     }
@@ -78,28 +80,27 @@ public class ForgotPasswordController {
         }
     }
     @GetMapping("/confirmPass")
-    public String confirmPassForm() {
+    public String confirmPassForm(Model model) {
         return "/user/security/confirmPass";
     }
 
+
     @PostMapping("/confirmPass")
-    public String processResetPassword(@RequestParam("password") String password, @RequestParam("confirmPassword") String confirmPassword, Model model, HttpSession session) {
+    public String processResetPassword(@RequestParam("password") String password, @RequestParam("confirmPassword") String confirmPassword,
+                                       @Valid AccountDTO accountDTO, BindingResult bindingResult, Model model, HttpSession session) {
         String tokenValue = (String) session.getAttribute("tokenValue");
         Token token = tokenService.findByToken(tokenValue);
         Account account = token.getAccount();
-        if(password.isEmpty() || confirmPassword.isEmpty()) {
-            model.addAttribute("message", "Password is empty");
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("message", "Please review registration information");
             return "/user/security/confirmPass";
         }
         if (!password.equals(confirmPassword)) {
             model.addAttribute("message", "Passwords do not match");
             return "/user/security/confirmPass";
         }
-        // Đặt mật khẩu mới cho tài khoản
-        account.setPassword(password);
-
-        // Lưu tài khoản đã được cập nhật
-        accountService.update(account);
+        accountService.updatePassword(account,password);
 
         delete();
 
