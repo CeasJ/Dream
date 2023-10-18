@@ -28,7 +28,6 @@ import java.util.Set;
 public class ForgotPasswordController {
     @Autowired
     AccountService accountService;
-
     @Autowired
     TokenService tokenService;
     @Autowired
@@ -87,15 +86,12 @@ public class ForgotPasswordController {
 
     @PostMapping("/confirmPass")
     public String processResetPassword(@RequestParam("password") String password, @RequestParam("confirmPassword") String confirmPassword,
-                                       @Valid AccountDTO accountDTO, BindingResult bindingResult, Model model, HttpSession session) {
+                                       Model model, HttpSession session) {
         String tokenValue = (String) session.getAttribute("tokenValue");
         Token token = tokenService.findByToken(tokenValue);
         Account account = token.getAccount();
 
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("message", "Please review registration information");
-            return "/user/security/confirmPass";
-        }
+
         if (!password.equals(confirmPassword)) {
             model.addAttribute("message", "Passwords do not match");
             return "/user/security/confirmPass";

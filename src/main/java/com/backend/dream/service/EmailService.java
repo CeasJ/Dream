@@ -12,7 +12,7 @@ public class EmailService {
     private MailSender mailSender;
 
     @Autowired
-    TokenService tokenService;
+    private TokenService tokenService;
 
     public void sendWelcomeEmail(String to, String fullname) {
         SimpleMailMessage msg = new SimpleMailMessage();
