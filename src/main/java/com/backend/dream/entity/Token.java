@@ -22,11 +22,11 @@ public class Token implements Serializable {
 
     private String token;
 
-    @Column(name = "token_type")
+    @Column(name = "tokentype")
     private String tokenType;
 
     private boolean active;
-    @Column(name = "Expired_Date")
+    @Column(name = "expireddate")
     private LocalDateTime expiredDate;
 
     @ManyToOne

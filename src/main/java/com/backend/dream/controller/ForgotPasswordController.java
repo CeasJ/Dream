@@ -81,14 +81,6 @@ public class ForgotPasswordController {
     }
     @GetMapping("/confirmPass")
     public String confirmPassForm(Model model) {
-        // Tạo một đối tượng AccountDTO trống và đưa vào mô hình
-        AccountDTO accountDTO = new AccountDTO();
-        model.addAttribute("accountDTO", accountDTO);
-
-        // Tạo một đối tượng BindingResult và đưa vào mô hình
-        BindingResult bindingResult = new BeanPropertyBindingResult(accountDTO, "accountDTO");
-        model.addAttribute(BindingResult.MODEL_KEY_PREFIX + "accountDTO", bindingResult);
-
         return "/user/security/confirmPass";
     }
 
