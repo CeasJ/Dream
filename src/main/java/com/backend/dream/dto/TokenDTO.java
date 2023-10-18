@@ -3,6 +3,7 @@ package com.backend.dream.dto;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
@@ -16,7 +17,7 @@ public class TokenDTO {
 
     private boolean active;
 
-    private Date expiredDate;
+    private LocalDateTime expiredDate;
 
     private Long id_account;
 }

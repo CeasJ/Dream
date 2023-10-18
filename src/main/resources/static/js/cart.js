@@ -1,100 +1,93 @@
-const app = angular.module('cart',[]);
+(function ($) {
+    "use strict";
 
-app.controller('ctrl',function($scope,$http){
-//    begin getCart
-    function getCart(username){
-        const cartKey = `cart_${username}`;
-        const json = localStorage.getItem(cartKey);
-        return json ? JSON.parse(json) : {
-            username : username,
-            items:[]
-        };
-    }
-//    end getCart
-
-//     begin saveCart
-    function saveCart(username,cart){
-        let cartKey = `cart_${username}`;
-        let json = JSON.stringify(cart);
-        localStorage.setItem(cartKey, json);
-    }
-//     end saveCart
-
-//    begin totalPrice
-    function totalPrice(){
-        let totalPrice = 0;
-        angular.forEach($scope.cart.items,function(item){
-           totalPrice += item.qty * item.price;
-        });
-        return totalPrice;
-    }
-
-//    end totalPrice
-
-
-//       begin scope cart
-    $scope.cart = {
-        username = "",
-
-        items =[],
-
-        add(id){
-            if(!this.items){
-                this.items = [];
+    // Spinner
+    var spinner = function () {
+        setTimeout(function () {
+            if ($('#spinner').length > 0) {
+                $('#spinner').removeClass('show');
             }
-          let item = this.items.find(item=>item.id==id);
-          if(item){
-            item.qty++;
-            saveCart(this.username,this);
-          } else {
-            $http.get(`/rest/product/${id}`).then(resp=>{
-                let newItem = resp.data;
-                newItem.qty = 1 ;
-                this.items.push(newItem);
-                saveCart(this.username,this);
-            })
-          }
-        },
-
-        remove(id) = {
-            let index = this.items.findIndex(item => item.id === id);
-            this.items.splice(index, 1);
-            saveCart(this.username, this);
-        },
-
-        clear(){
-            this.items = [];
-            saveCart(this.username,this);
-        },
-
-        getCount(){
-            return this.items.map(item => item.qty).reduce((total, qty) => count += qty,0);
-        },
-
-        getAmount(){
-            return totalPrice();
-        },
-
-        saveToLocalStore(){
-            let itemToSave = this.items.map(item=>{
-               const {$$hashKey,...cleanItem} = item;
-               return cleanItem;
-            });
-            saveCart(this.username,itemToSave);
-        },
-
-        loadFromLocalStore(){
-            let cart = getCart(this.username);
-            this.items = cart.items;
-        },
-
-        totalPrice:totalPrice
+        }, 1);
     };
-//       end scope cart
-    let totalPrice = $("totalPrice").text.trim();
-    let username = $("#username").text().trim();
-    $scope.cart.username = username;
-    $scope.cart.loadFromLocalStore();
+    spinner();
+
+    // Back to top button
+    $(window).scroll(function () {
+        if ($(this).scrollTop() > 300) {
+            $('.back-to-top').fadeIn('slow');
+        } else {
+            $('.back-to-top').fadeOut('slow');
+        }
+    });
+
+    // Scroll to top when back-to-top button is clicked
+    $('.back-to-top').click(function () {
+        $('html, body').animate({ scrollTop: 0 }, 1500, 'easeInOutExpo');
+        return false;
+    });
 
 
-})
+    // Show .cart-0 if cartCount is less than or equal to 0, otherwise show .cart-1
+    var cartCount = parseInt($('#cartCount').text());
+
+    if (cartCount <= 0) {
+        $('.cart-0').show();
+        $('.cart-1').hide();
+    } else {
+        $('.cart-0').hide();
+        $('.cart-1').show();
+    }
+
+    $('#step-1').addClass('active-stext');
+    // Show infor-cart and hide cart-0, cart-1 on Buy button click
+    $('#buyButton').click(function () {
+        $('.infor-cart').show();
+        $('.cart-0, .cart-1, .form-buy').hide();
+
+        // Add active class to number-2 and apply animation
+        $('#number-2').addClass('active');
+        $('#line-1').addClass('active-line');
+        $('#step-2').addClass('active-stext');
+
+
+        // Change color of number-2 to match .step-button.active
+        $('#number-2').css({
+            'background-color': 'var(--primary)', // Màu xanh lá của bạn
+            'color': 'white'
+        });
+    });
+
+    $('#backButton').click(function () {
+        $('.cart-0, .cart-1, .form-buy').show();
+        $('.infor-cart').hide();
+
+        // Remove active class from number-2 and remove animation
+        $('#number-2').removeClass('active');
+        $('#line-1').removeClass('active-line');
+        $('#step-2').removeClass('active-stext');
+        // Reset color of number-2 to default state
+        $('#number-2').css({
+            'background-color': 'lightgray', // Màu mặc định của number-2
+        });
+
+
+        if (cartCount <= 0) {
+            $('.cart-0').show();
+            $('.cart-1').hide();
+        } else {
+            $('.cart-0').hide();
+            $('.cart-1').show();
+        }
+
+    });
+
+    $('#completeButton').click(function () {
+        $('.cart-3').show();
+        $('.cart-0, .cart-1, .form-buy, .infor-cart').hide();
+        $('#number-3').addClass('active');
+        $('#line-2').addClass('active-line');
+        $('#step-3').addClass('active-stext');
+    });
+
+})(jQuery);
+

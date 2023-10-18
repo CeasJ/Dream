@@ -1,9 +1,9 @@
 /********** Template CSS **********/
 :root {
-    --primary: #88B44E;
-    --secondary: #FB9F38;
-    --light: #F5F8F2;
-    --dark: #252C30;
+    --primary: #88b44e;
+    --secondary: #fb9f38;
+    --light: #f5f8f2;
+    --dark: #252c30;
 }
 
 .back-to-top {
@@ -26,25 +26,27 @@
     font-weight: 900;
 }
 
-
 /*** Spinner ***/
 #spinner {
     opacity: 0;
     visibility: hidden;
-    transition: opacity .5s ease-out, visibility 0s linear .5s;
+    transition:
+        opacity 0.5s ease-out,
+        visibility 0s linear 0.5s;
     z-index: 99999;
 }
 
 #spinner.show {
-    transition: opacity .5s ease-out, visibility 0s linear 0s;
+    transition:
+        opacity 0.5s ease-out,
+        visibility 0s linear 0s;
     visibility: visible;
     opacity: 1;
 }
 
-
 /*** Button ***/
 .btn {
-    transition: .5s;
+    transition: 0.5s;
     font-weight: 500;
 }
 
@@ -83,11 +85,10 @@
     font-weight: normal;
 }
 
-
 /*** Navbar ***/
 .sticky-top {
     top: -150px;
-    transition: .5s;
+    transition: 0.5s;
 }
 
 .navbar .navbar-brand {
@@ -122,20 +123,186 @@
     margin-left: 8px;
 }
 
+.cart-count {
+    position: absolute;
+    top: 10px; /* Điều chỉnh vị trí đứng của cart-count so với bag */
+    right: -8px; /* Điều chỉnh vị trí ngang của cart-count so với bag */
+    background-color: #ff0000; /* Màu nền của cart-count */
+    color: var(--light); /* Màu chữ của cart-count */
+    font-weight: 600;
+    border-radius: 50%; /* Kết hợp hình dạng hình tròn */
+    padding: 3px 6px; /* Khoảng cách bên trong cart-count */
+    font-size: 12px;
+}
+
+.icons i:hover {
+    color: var(--primary); /* Đổi màu khi hover */
+    transform: scale(1.7); /* Phóng to biểu tượng khi hover */
+    transition: all 0.2s ease; /* Tạo hiệu ứng mượt mà */
+}
+
+/* Cart */
+.cart {
+    margin: 40px auto;
+}
+.cart-0 {
+    background-color: white;
+    height: 400px;
+    border-radius: 5px;
+    text-align: center;
+    margin: 0px auto;
+}
+.cart-1 {
+    background-color: white;
+    height: auto;
+    border-radius: 5px;
+    text-align: center;
+    margin: 0px auto;
+    padding: 12px 0px;
+}
+.cart-3 {
+    background-color: white;
+    height: 400px;
+    border-radius: 5px;
+    text-align: center;
+    margin: 0px auto;
+}
+.process-step {
+    height: auto;
+    background-color: white;
+    padding: 10px 10px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.steps {
+    display: flex;
+    align-items: center;
+    position: relative;
+    font-weight: 500;
+}
+
+.step-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: lightgray;
+    text-align: center;
+    line-height: 30px;
+    cursor: pointer;
+    margin-right: 10px; /* Khoảng cách giữa step-button và step-text */
+    transition: background-color 0.3s ease;
+}
+.step-button.active {
+    background-color: var(--primary);
+    color: white;
+}
+
+.line.active-line {
+    background-color: var(--primary); /* Màu của dòng line */
+    width: 35%; /* Chiều rộng của dòng line */
+    margin-top: 15px;
+    height: 1px;
+}
+
+.step-number {
+    font-size: 16px;
+}
+.step-text {
+    font-size: 15px;
+    margin: 0;
+}
+.step-text.active-stext {
+    font-size: 15px;
+    margin: 0;
+    color: var(--primary);
+    font-weight: 800;
+}
+
+.line {
+    background-color: gray; /* Màu của dòng line */
+    width: 35%; /* Chiều rộng của dòng line */
+    margin-top: 15px;
+    height: 1px;
+}
+.img-cart {
+    width: 150px;
+    height: 150px;
+    margin: 30px auto;
+}
+.img-product {
+    width: 90px;
+    height: 90px;
+}
+.btn-buy {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.title-prc {
+    font-size: 15px;
+    position: relative; /* Đặt position thành relative để các phần tử con có thể sử dụng position: absolute; dựa trên chúng */
+    padding: 15px 5px;
+}
+
+.price {
+    color: red; /* Màu chữ của giá tiền */
+    font-weight: 600; /* Độ đậm của chữ giá tiền */
+    font-size: 22px;
+}
+
+.quantity-input {
+    height: 30px; /* Điều chỉnh chiều cao của ô input số */
+    font-size: 14px; /* Điều chỉnh kích thước chữ của ô input số */
+    text-align: center;
+}
+.form-infor {
+    margin-top: 20px;
+    background-color: white;
+    border-radius: 5px;
+    padding: 10px 20px;
+}
+.form-infor .label {
+    font-weight: 600;
+}
+/* Để làm cho form nhỏ hơn, chỉnh kích thước font và padding */
+.infor-cart form {
+    font-size: 14px;
+    padding: 15px;
+}
+
+.btn-infor {
+    width: 110px;
+    margin-left: 10px;
+    height: 45px;
+    font-size: 15px;
+    padding: 10px;
+}
+
+.sort {
+    border: 1px solid gainsboro;
+    padding: 10px 20px;
+}
+
 @media (max-width: 991.98px) {
     .navbar .navbar-brand {
         width: 126px;
         height: 100px;
     }
 
-    .navbar .navbar-nav .nav-link  {
+    .navbar .navbar-nav .nav-link {
         margin-right: 0;
         padding: 10px 0;
     }
 
     .navbar .navbar-nav {
         margin-top: 75px;
-        border-top: 1px solid #EEEEEE;
+        border-top: 1px solid #eeeeee;
     }
 }
 
@@ -147,17 +314,16 @@
         top: 150%;
         opacity: 0;
         visibility: hidden;
-        transition: .5s;
+        transition: 0.5s;
     }
 
     .navbar .nav-item:hover .dropdown-menu {
         top: 100%;
         visibility: visible;
-        transition: .5s;
+        transition: 0.5s;
         opacity: 1;
     }
 }
-
 
 /*** Header ***/
 .carousel-caption {
@@ -167,7 +333,7 @@
     bottom: 0;
     display: flex;
     align-items: center;
-    background: rgba(136, 180, 78, .7);
+    background: rgba(136, 180, 78, 0.7);
     z-index: 1;
 }
 
@@ -190,7 +356,7 @@
         position: relative;
         min-height: 450px;
     }
-    
+
     #header-carousel .carousel-item img {
         position: absolute;
         width: 100%;
@@ -200,11 +366,13 @@
 }
 
 .page-header {
-    background: linear-gradient(rgba(136, 180, 78, .7), rgba(136, 180, 78, .7)), url(../img/carousel-1.jpg) center center no-repeat;
+    background:
+        linear-gradient(rgba(136, 180, 78, 0.7), rgba(136, 180, 78, 0.7)),
+        url(../img/carousel-1.jpg) center center no-repeat;
     background-size: cover;
 }
 
-.page-header .breadcrumb-item+.breadcrumb-item::before {
+.page-header .breadcrumb-item + .breadcrumb-item::before {
     color: var(--light);
 }
 
@@ -213,7 +381,6 @@
     font-size: 18px;
     color: var(--light);
 }
-
 
 /*** Section Title ***/
 .section-title {
@@ -240,7 +407,7 @@
     bottom: -13px;
     left: calc(25% - 13px);
     background: var(--dark);
-    border: 10px solid #FFFFFF;
+    border: 10px solid #ffffff;
     border-radius: 28px;
 }
 
@@ -252,10 +419,11 @@
     left: calc(50% - 13px);
 }
 
-
 /*** Products ***/
 .product {
-    background: linear-gradient(rgba(136, 180, 78, .1), rgba(136, 180, 78, .1)), url(../img/product-bg.png) left bottom no-repeat;
+    background:
+        linear-gradient(rgba(136, 180, 78, 0.1), rgba(136, 180, 78, 0.1)),
+        url(../img/product-bg.png) left bottom no-repeat;
     background-size: auto;
 }
 
@@ -273,24 +441,25 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #FFFFFF;
+    color: #ffffff;
     background: var(--primary);
     border-radius: 55px;
-    box-shadow: 0 0 45px rgba(0, 0, 0, .15);
+    box-shadow: 0 0 45px rgba(0, 0, 0, 0.15);
     font-size: 25px;
-    transition: .5s;
+    transition: 0.5s;
 }
 
 .product-carousel .owl-nav .owl-prev:hover,
 .product-carousel .owl-nav .owl-next:hover {
-    background: #FFFFFF;
+    background: #ffffff;
     color: var(--primary);
 }
 
-
 /*** About ***/
 .video {
-    background: linear-gradient(rgba(136, 180, 78, .85), rgba(136, 180, 78, .85)), url(../img/video-bg.jpg) center center no-repeat;
+    background:
+        linear-gradient(rgba(136, 180, 78, 0.85), rgba(136, 180, 78, 0.85)),
+        url(../img/video-bg.jpg) center center no-repeat;
     background-size: cover;
 }
 
@@ -304,7 +473,7 @@
     border: none;
     outline: none !important;
     padding: 28px 30px 30px 38px;
-    background: #FFFFFF;
+    background: #ffffff;
 }
 
 .btn-play:before {
@@ -317,7 +486,7 @@
     display: block;
     width: 120px;
     height: 120px;
-    background: #FFFFFF;
+    background: #ffffff;
     border-radius: 100%;
     animation: pulse-border 1500ms ease-out infinite;
 }
@@ -332,7 +501,7 @@
     display: block;
     width: 120px;
     height: 120px;
-    background: #FFFFFF;
+    background: #ffffff;
     border-radius: 100%;
     transition: all 200ms;
 }
@@ -381,11 +550,10 @@
     z-index: 999;
     font-size: 30px;
     font-weight: normal;
-    color: #FFFFFF;
+    color: #ffffff;
     background: #000000;
     opacity: 1;
 }
-
 
 /*** Store ***/
 .store-item .store-overlay {
@@ -398,15 +566,14 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: rgba(138, 180, 78, .3);
+    background: rgba(138, 180, 78, 0.3);
     opacity: 0;
-    transition: .5s;
+    transition: 0.5s;
 }
 
 .store-item:hover .store-overlay {
     opacity: 1;
 }
-
 
 /*** Contact ***/
 .contact .btn-square {
@@ -417,10 +584,11 @@
     border-radius: 50px;
 }
 
-
 /*** Testimonial ***/
 .testimonial {
-    background: linear-gradient(rgba(136, 180, 78, .85), rgba(136, 180, 78, .85)), url(../img/testimonial-bg.jpg) center center no-repeat;
+    background:
+        linear-gradient(rgba(136, 180, 78, 0.85), rgba(136, 180, 78, 0.85)),
+        url(../img/testimonial-bg.jpg) center center no-repeat;
     background-size: cover;
 }
 
@@ -428,7 +596,7 @@
     margin: 0 auto;
     max-width: 600px;
     text-align: center;
-    background: #FFFFFF;
+    background: #ffffff;
     border: 30px solid var(--primary);
 }
 
@@ -453,7 +621,7 @@
     height: 15px;
     background: var(--primary);
     border-radius: 15px;
-    transition: .5s;
+    transition: 0.5s;
 }
 
 .testimonial-carousel .owl-dot.active {
@@ -461,10 +629,9 @@
     background: var(--dark);
 }
 
-
 /*** Footer ***/
 .footer {
-    color: #B0B9AE;
+    color: #b0b9ae;
 }
 
 .footer .btn.btn-link {
@@ -472,10 +639,10 @@
     margin-bottom: 5px;
     padding: 0;
     text-align: left;
-    color: #B0B9AE;
+    color: #b0b9ae;
     font-weight: normal;
     text-transform: capitalize;
-    transition: .3s;
+    transition: 0.3s;
 }
 
 .footer .btn.btn-link::before {
@@ -494,7 +661,7 @@
 }
 
 .copyright {
-    color: #B0B9AE;
+    color: #b0b9ae;
 }
 
 .copyright {
@@ -502,5 +669,15 @@
 }
 
 .copyright a:hover {
-    color: #FFFFFF !important;
+    color: #ffffff !important;
+}
+
+/* Shorting products description */
+.product-description {
+    max-height: 3.6em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
 }

@@ -6,12 +6,12 @@
                 <img class="img-fluid" src="img/logo.png" alt="Logo">
             </a>
             <button type="button" class="navbar-toggler ms-auto me-0" data-bs-toggle="collapse"
-                    data-bs-target="#navbarCollapse">
+                data-bs-target="#navbarCollapse">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav ms-auto">
-                    <a th:href="@{|/home|}" class="nav-item nav-link">Home</a>
+                    <a th:href="@{|/home/main|}" class="nav-item nav-link">Home</a>
                     <a th:href="@{|/store|}" class="nav-item nav-link active">Store</a>
 
                     <!--When customer has role admin or staff-->
@@ -36,21 +36,26 @@
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                         <div class="dropdown-menu bg-light rounded-0 m-0">
                             <a href="../../../../../../../../wiki/tea-shop-website-template/tea-shop-website-template/feature.html"
-                               class="dropdown-item">Features</a>
+                                class="dropdown-item">Features</a>
                             <a href="../../../../../../../../wiki/tea-shop-website-template/tea-shop-website-template/blog.html"
-                               class="dropdown-item">Blog Article</a>
+                                class="dropdown-item">Blog Article</a>
                             <a href="../../../../../../../../wiki/tea-shop-website-template/tea-shop-website-template/testimonial.html"
-                               class="dropdown-item">Testimonial</a>
+                                class="dropdown-item">Testimonial</a>
                             <a href="../../../../../../../../wiki/tea-shop-website-template/tea-shop-website-template/404.html"
-                               class="dropdown-item">404 Page</a>
+                                class="dropdown-item">404 Page</a>
                         </div>
                     </div>
                     <a href="../../../../../../../../wiki/tea-shop-website-template/tea-shop-website-template/contact.html"
-                       class="nav-item nav-link">Contact</a>
+                        class="nav-item nav-link">
+                        Contact
+                    </a>
                 </div>
-                <div class="border-start ps-4 d-none d-lg-block">
-                    <a th:href="@{|/cart|}" class="btn btn-sm p-0"><i class="fa-regular fa-cart-shopping"></i></a>
+                <div class="border-start ps-4 d-none d-lg-block icons">
                     <button type="button" class="btn btn-sm p-0"><i class="fa fa-search"></i></button>
+                    <a th:href="@{|/cart|}" class="btn btn-sm ps-4">
+                        <i style="font-size: 23px;" class="bi bi-bag-fill"></i>
+                        <span id="cartCount" class="cart-count">1</span>
+                    </a>
                 </div>
             </div>
         </nav>

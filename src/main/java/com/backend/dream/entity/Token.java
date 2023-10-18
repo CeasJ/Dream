@@ -7,14 +7,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @Entity
-@Table
+@Table(name="token")
 public class Token implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,11 +22,12 @@ public class Token implements Serializable {
 
     private String token;
 
+    @Column(name = "tokentype")
     private String tokenType;
 
     private boolean active;
-
-    private Date expiredDate;
+    @Column(name = "expireddate")
+    private LocalDateTime expiredDate;
 
     @ManyToOne
     @JoinColumn(name = "idaccount")
