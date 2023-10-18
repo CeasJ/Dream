@@ -10,6 +10,8 @@ public class OrderDetailDTO {
 
     private int quantity;
 
+    private double price;
+
     private Long id_order;
 
     private Long id_product;

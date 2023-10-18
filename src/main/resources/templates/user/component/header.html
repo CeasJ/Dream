@@ -12,11 +12,11 @@
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav ms-auto">
                     <a th:href="@{|/home|}" class="nav-item nav-link">Home</a>
-                    <a th:href="@{|/store|}" class="nav-item nav-link active">Store</a>
+                    <a th:href="@{|/store|}" class="nav-item nav-link">Store</a>
 
                     <!--When customer has role admin or staff-->
                     <th:block th:if="${isAdminOrStaff}">
-                        <a th:href="@{|/admin/index|}" class="nav-item nav-link active">Admin</a>
+                        <a th:href="@{|/admin/index|}" class="nav-item nav-link">Admin</a>
                     </th:block>
 
                     <!--When customer not login-->
@@ -27,7 +27,9 @@
 
                     <!--When customer login-->
                     <th:block th:if="${isAuthenticated}">
-                        <a th:href="@{|/order|}" class="nav-item nav-link">Order</a>
+                        <a id="username" class="nav-item nav-link" hidden>[[${username}]]</a>
+                        <a id="id_account" class="nav-item nav-link" hidden>[[${id_account}]]</a>
+                        <a th:href="@{|/orders|}" class="nav-item nav-link">Order</a>
                         <a th:href="@{|/logout|}" class="nav-item nav-link">Logout</a>
                         <a th:href="@{|/profile|}" class="nav-item nav-link">Profile</a>
                     </th:block>

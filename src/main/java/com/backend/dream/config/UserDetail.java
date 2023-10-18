@@ -21,7 +21,7 @@ public class UserDetail implements UserDetails {
         String[] role = account.getAuthority().stream().map(er -> er.getRole().getName()).collect(Collectors.toList())
                 .toArray(new String[0]);
         authorities = Arrays.stream(role)
-                .map(r -> new SimpleGrantedAuthority("ROLE_" + r))
+                .map(r -> new SimpleGrantedAuthority("ROLE_" + r.toUpperCase()))
                 .collect(Collectors.toList());
     }
 

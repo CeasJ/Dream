@@ -2,7 +2,6 @@ package com.backend.dream.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -47,7 +46,7 @@ public class Account implements Serializable {
 
     @JsonIgnore
     @OneToMany(mappedBy = "account")
-    private List<Order> order;
+    private List<Orders> orders;
 
     @JsonIgnore
     @OneToMany(mappedBy = "account")
@@ -57,4 +56,8 @@ public class Account implements Serializable {
     @OneToMany(mappedBy = "account")
     private List<FeedBack> feedback;
 
+    public Account(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 }

@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 public class ProductServiceImp implements ProductService {
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
-
     private final Logger logger = LoggerFactory.getLogger(ProductService.class);
 
     @Autowired

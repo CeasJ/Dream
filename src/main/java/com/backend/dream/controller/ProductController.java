@@ -71,7 +71,7 @@ public class ProductController {
         Page<ProductDTO> productPage = productService.findAll(pageable);
         List<ProductDTO> productDTOs = productPage.getContent();
         model.addAttribute("products", productDTOs);
-        model.addAttribute("cur rentPage", page);
+        model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", productPage.getTotalPages());
         return "user/product/store";
     }

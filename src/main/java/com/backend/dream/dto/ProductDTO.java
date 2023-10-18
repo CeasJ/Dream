@@ -26,7 +26,6 @@ public class ProductDTO {
 
     private Date createDate = new Date();
     public String getFormattedPrice() {
-        // Định dạng giá trị và thêm dấu ₫
         DecimalFormat df = new DecimalFormat("#,###₫");
         return df.format(price);
     }

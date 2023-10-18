@@ -29,7 +29,7 @@ public class SecurityConfig {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("/static", "/templates");
+        return (web) -> web.ignoring().requestMatchers("/abc");
     }
 
     @Bean
