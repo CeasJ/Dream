@@ -8,9 +8,9 @@ import com.backend.dream.mapper.OrderMapper;
 import com.backend.dream.repository.OrderDetailRepository;
 import com.backend.dream.repository.OrderRepository;
 import com.backend.dream.service.OrderService;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.type.TypeReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,8 +42,8 @@ public class OrderServiceImp implements OrderService {
         TypeReference<List<OrderDetailDTO>> type = new TypeReference<List<OrderDetailDTO>>() {
         };
 
-        List<OrderDetailDTO> details = mapper.convertValue(orderData.get("orderDetails"),type)
-                .stream().peek(d->d.setId_order(orders.getId())).collect(Collectors.toList());
+        List<OrderDetailDTO> details = mapper.convertValue(orderData.get("orderDetails"), type)
+                .stream().peek(d -> d.setId_order(orders.getId())).collect(Collectors.toList());
 
         orderDetailRepository.saveAll(orderDetailMapper.listOrderDetaiDTOlToListOrderDetail(details));
 

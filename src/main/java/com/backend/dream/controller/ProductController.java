@@ -1,7 +1,12 @@
 package com.backend.dream.controller;
 
+import com.backend.dream.dto.DiscountDTO;
 import com.backend.dream.dto.ProductDTO;
 import com.backend.dream.dto.SizeDTO;
+import com.backend.dream.entity.Product;
+import com.backend.dream.mapper.ProductMapper;
+import com.backend.dream.repository.ProductRepository;
+import com.backend.dream.service.CategoryService;
 import com.backend.dream.entity.Product;
 import com.backend.dream.mapper.ProductMapper;
 import com.backend.dream.repository.ProductRepository;
@@ -14,13 +19,22 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 public class ProductController {

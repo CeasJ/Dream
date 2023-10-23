@@ -1,5 +1,6 @@
 package com.backend.dream.repository;
 
+import com.backend.dream.dto.AccountDTO;
 import com.backend.dream.entity.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

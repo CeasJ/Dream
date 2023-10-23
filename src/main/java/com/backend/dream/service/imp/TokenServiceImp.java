@@ -1,5 +1,8 @@
 package com.backend.dream.service.imp;
 
+import java.time.LocalDateTime;
+import java.util.Random;
+
 import com.backend.dream.dto.TokenDTO;
 import com.backend.dream.entity.Account;
 import com.backend.dream.entity.Token;
@@ -10,10 +13,6 @@ import com.backend.dream.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.util.Random;
-
 
 @Service
 @EnableScheduling
@@ -26,6 +25,7 @@ public class TokenServiceImp implements TokenService {
 	TokenMapper tokenMapper;
 	@Autowired
 	AccountMapper accountMapper;
+
 	@Override
 	public TokenDTO createTokenForUser(Account account) {
 		Random random = new Random();
@@ -43,9 +43,8 @@ public class TokenServiceImp implements TokenService {
 		return tokenMapper.tokenToTokenDTO(token);
 	}
 
-
 	@Override
-	public Token findByToken(String token) {
+	public com.backend.dream.entity.Token findByToken(String token) {
 		return tokenRepository.findByToken(token);
 	}
 

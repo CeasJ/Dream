@@ -1,7 +1,9 @@
 package com.backend.dream.service.imp;
 
+import com.backend.dream.dto.ProductSizeDTO;
 import com.backend.dream.dto.SizeDTO;
 import com.backend.dream.entity.ProductSize;
+import com.backend.dream.mapper.ProductSizeMapper;
 import com.backend.dream.mapper.SizeMapper;
 import com.backend.dream.repository.ProductSizeRepository;
 import com.backend.dream.repository.SizeRepository;
@@ -32,7 +34,5 @@ public class ProductSizeServiceImp implements ProductSizeService {
 
         return sizeDTOs;
     }
-
-
 
 }
