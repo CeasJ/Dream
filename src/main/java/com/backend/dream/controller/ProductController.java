@@ -114,31 +114,32 @@ public class ProductController {
         } else if ("desc".equals(sortOption)) {
             // Sắp xếp theo giá giảm dần
             productPage = productService.sortByPriceDesc(categoryIdValue, pageable);
+        } else if ("sale".equals(sortOption)) {
+            productPage = productService.findSaleProducts(pageable);
         } else {
             // Mặc định
             productPage = productService.findByCategory(categoryIdValue, pageable);
         }
 
-        // List<DiscountDTO> discounts = yourDiscountServiceMethod(); // Thay thế bằng
-        // phương thức lấy danh sách giảm giá
-        // for (ProductDTO productDTO : productPage.getContent()) {
-        // // Tìm giảm giá cho sản phẩm
-        // for (DiscountDTO discount : discounts) {
-        // if (discount.getId_product().equals(productDTO.getId())) {
-        // double discountedPrice = productDTO.getOriginalPrice() * (1 -
-        // (discount.getPercent() / 100));
-        // productDTO.setDiscountedPrice(discountedPrice);
-        // break;
-        // }
-        // }
-        // }
+        List<ProductDTO> products = productPage.getContent();
+        for (ProductDTO product : products) {
+            double discountedPrice = productService.getDiscountedPrice(product.getId());
+            if (discountedPrice < product.getPrice()) {
+                product.setIsDiscounted(true);
+                product.setDiscountedPrice(discountedPrice);
+            } else {
+                product.setIsDiscounted(false);
+            }
+        }
 
-        model.addAttribute("products", productPage.getContent());
+        model.addAttribute("products", products);
         model.addAttribute("currentPage", page);
         model.addAttribute("categoryId", categoryIdValue);
         model.addAttribute("totalPages", productPage.getTotalPages());
         return "user/product/products-list";
     }
+
+
 
     @GetMapping("/search")
     public String searchByName(
@@ -158,19 +159,29 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/product/{name}", method = RequestMethod.GET)
-    public String productDetail(@PathVariable(value = "name") String name, Model model) {
+    public String productDetail(@PathVariable(value = "name") String name, @PathVariable(value = "sizeId") Long sizeId, Model model) {
         try {
             String decoded = URLDecoder.decode(name, "UTF-8");
             ProductDTO product = productService.findByNamePaged(decoded, PageRequest.of(0, 1)).getContent().get(0);
             List<SizeDTO> availableSizes = productSizeService.getSizesByProductId(product.getId());
+
+            double discountedPrice = productService.getDiscountedPrice(product.getId());
+
+//            double priceForSize = productService.getPriceForSize(product.getId(), sizeId);
+            if (discountedPrice < product.getPrice()) {
+                product.setIsDiscounted(true);
+                product.setDiscountedPrice(discountedPrice);
+            } else {
+                product.setIsDiscounted(false);
+            }
+
             model.addAttribute("product", product);
             model.addAttribute("availableSizes", availableSizes);
-
-            System.out.println(availableSizes);
             return "user/product/detail";
         } catch (UnsupportedEncodingException e) {
             return "error";
         }
     }
+
 
 }

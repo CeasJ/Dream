@@ -29,4 +29,13 @@ public interface ProductService {
 
     Page<ProductDTO> findAll(Pageable pageable);
 
+    Page<ProductDTO> findSaleProducts(Pageable pageable);
+
+    //  Display discounted price and original price in product detail and product list
+    double getDiscountedPrice(Long productId);
+
+    double getOriginalProductPrice(Long productId);
+
+//    double getPriceForSize(Long productId, Long sizeId);
+
 }

@@ -33,8 +33,19 @@ public class ProductDTO {
         return df.format(price);
     }
 
+    private Double discountedPrice = null;
+
+    public String getFormattedDiscountedPrice() {
+        DecimalFormat df = new DecimalFormat("#,###₫");
+        return df.format(discountedPrice);
+    }
+
+    private Boolean isDiscounted;
+
+
     private List<SizeDTO> availableSizes;
 
     private Size selectedSize;
+
 
 }

@@ -1,10 +1,14 @@
 package com.backend.dream.service.imp;
 
+import com.backend.dream.dto.DiscountDTO;
 import com.backend.dream.dto.ProductDTO;
+import com.backend.dream.dto.ProductSizeDTO;
 import com.backend.dream.entity.Product;
 import com.backend.dream.mapper.ProductMapper;
 import com.backend.dream.repository.ProductRepository;
+import com.backend.dream.service.DiscountService;
 import com.backend.dream.service.ProductService;
+import com.backend.dream.service.ProductSizeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,7 +21,9 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,6 +32,13 @@ public class ProductServiceImp implements ProductService {
     private final ProductMapper productMapper;
 
     private final Logger logger = LoggerFactory.getLogger(ProductService.class);
+
+    @Autowired
+    private DiscountService discountService;
+
+    @Autowired
+    private ProductSizeService productSizeService;
+
 
     @Autowired
     public ProductServiceImp(ProductRepository productRepository, ProductMapper productMapper) {
@@ -47,12 +60,6 @@ public class ProductServiceImp implements ProductService {
         return product != null ? productMapper.productToProductDTO(product) : null;
     }
 
-    // @Override
-    // public Page<ProductDTO> findByName(String productName, Pageable pageable) {
-    // return productRepository.findByNameContainingIgnoreCase(productName,
-    // pageable)
-    // .map(productMapper::productToProductDTO);
-    // }
 
     @Override
     public Page<ProductDTO> findByNamePaged(String name, Pageable pageable) {
@@ -102,4 +109,50 @@ public class ProductServiceImp implements ProductService {
         Page<Product> productPage = productRepository.findByCategoryOrderByPriceDesc(categoryId, pageable);
         return productPage.map(productMapper::productToProductDTO);
     }
+
+    @Override
+    public Page<ProductDTO> findSaleProducts(Pageable pageable) {
+        Page<Product> products = productRepository.findSaleProducts(pageable);
+        return products.map(productMapper::productToProductDTO);
+    }
+
+    @Override
+    public double getDiscountedPrice(Long productId) {
+        DiscountDTO discount = discountService.getDiscountByProductId(productId);
+        double originalPrice = getOriginalProductPrice(productId);
+
+        if (discount != null) {
+            double discountPercent = discount.getPercent();
+            double discountedPrice = originalPrice - (originalPrice * discountPercent);
+            return discountedPrice;
+        } else {
+            return originalPrice;
+        }
+    }
+
+
+    @Override
+    public double getOriginalProductPrice(Long productId) {
+        Optional<Product> product = productRepository.findById(productId);
+        if (product.isPresent()) {
+            return product.get().getPrice();
+        }
+        return 0.0; // Handle the case where the product isn't found
+    }
+
+
+//    @Override
+//    public double getPriceForSize(Long productId, Long sizeId) {
+//        List<ProductSizeDTO> productSizes = productSizeService.getProductSizesByProductId(productId);
+//        for (ProductSizeDTO productSize : productSizes) {
+//            if (productSize.getId_size().equals(sizeId)) {
+//                return productSize.getPriceProduct_Size();
+//            }
+//        }
+//        return 0.0;
+//    }
+
+
+
+
 }

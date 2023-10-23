@@ -36,7 +36,7 @@
     <link href="/css/detail.css" rel="stylesheet">
 </head>
 
-<body>
+<body ng-app="cart_app" ng-controller="ctrl">
 <!-- Spinner Start -->
 <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
     <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;"></div>
@@ -83,12 +83,20 @@
                     <div class="mt-2 pr-3 content">
                         <p th:text="${product.describe}"></p>
                     </div>
-                    <h3 th:text="${product.formattedPrice}"></h3>
+                    <div th:if="${product.isDiscounted}">
+                        <del class="product-price" th:text="${product.formattedPrice}"></del>
+                        <h3 class=" product-discountedPrice" th:text="${product.formattedDiscountedPrice}"></h3>
+                    </div>
+<!--                    If product is not in sales category-->
+                    <div th:unless="${product.isDiscounted}">
+                        <h3 class="product-price"  th:text="${product.formattedPrice}"></h3>
+                    </div>
+
                     <div class="ratings d-flex flex-row align-items-center">
                         <div class="d-flex flex-row"> <i class='bx bxs-star'></i> <i class='bx bxs-star'></i> <i
                                 class='bx bxs-star'></i> <i class='bx bxs-star'></i> <i class='bx bx-star'></i> </div>
                     </div>
-                    <div class="mt-5" th:if="${availableSizes.size() > 0}"> <!-- Kiểm tra nếu có ít nhất một kích thước -->
+                    <div class="mt-5" th:if="${availableSizes.size() > 0}">
                         <span class="fw-bold">Size</span>
                         <form th:object="${product}" class="rad-group">
                             <div th:each="size : ${availableSizes}">
@@ -96,11 +104,13 @@
                                 <label th:for="${'size-' + size.id}" th:text="${size.name}"></label>
                             </div>
                         </form>
+                        <h3 id="selectedSizePrice">Price: <!-- Giá sản phẩm theo kích thước sẽ được hiển thị ở đây --></h3>
+
                     </div>
 
 
                     <div class="buttons d-flex flex-row mt-5 gap-3">
-                        <button class="btn btn-dark rounded-pill py-2 px-2 m-2">Add to cart<i class="fa fa-cart-plus ms-2"></i></button>
+                        <button th:attr="ng-click=@{|cart.add(${product.id})|}" class="btn btn-dark rounded-pill py-2 px-2 m-2">Add to cart<i class="fa fa-cart-plus ms-2"></i></button>
                     </div>
                 </div>
             </div>
@@ -133,6 +143,9 @@
 
 <!-- Template Javascript -->
 <script src="/js/detail.js"></script>
+
+<!--Template cart-->
+<!--<script src="/js/cart.js"></script>-->
 </body>
 
 </html>

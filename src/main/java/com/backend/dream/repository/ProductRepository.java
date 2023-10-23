@@ -1,13 +1,16 @@
 package com.backend.dream.repository;
 
+import com.backend.dream.dto.ProductDTO;
 import com.backend.dream.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
 
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -27,5 +30,13 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
     Page<Product> findByCategoryOrderByPriceDesc(Long categoryId, Pageable pageable);
 
     Page<Product> findByNameContainingIgnoreCase(String productName, Pageable pageable);
+
+    // Discount products
+    @Query("SELECT p FROM Product p JOIN Discount d ON p.id = d.product.id WHERE d.activeDate <= current_date AND d.expiredDate >= current_date")
+    Page<Product> findSaleProducts(Pageable pageable);
+
+
+
+
 
 }

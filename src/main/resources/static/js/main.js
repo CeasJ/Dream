@@ -104,7 +104,7 @@ var isSearchPage = window.location.pathname === "/search"; // Check if this is t
 
 if(isSearchPage){
     var selectElement = document.getElementById("sortByPrice");
-    selectElement.value = "none";
+    selectElement.value = "0";
 }
 
 if (sortOption !== null) {
@@ -128,6 +128,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var searchButton = document.getElementById("searchButton");
 
         searchButton.addEventListener("click", function () {
+
             updateURLAndReload();
         });
 
@@ -176,6 +177,7 @@ if(isSearchPage){
     productGroupSelect.value = "0";
 }
 
+
 if (categoryId) {
     productGroupSelect.value = categoryId;
 }
@@ -198,19 +200,30 @@ function updateURLAndReload() {
     localStorage.setItem("selectedCategoryId", selectedCategoryId);
     localStorage.setItem("sortOption", selectedSortOption);
 
+
     var newUrl = "/store?categoryId=" + selectedCategoryId;
+    if(selectedSortOption === 'sale') {
+        selectedCategoryId == '0';
+        newUrl = "/store?categoryId=0";
+    }
 
     if (selectedSortOption !== 'none') {
         newUrl += "&sortOption=" + selectedSortOption;
+
     }
+
+
 
     if (searchValue) {
         newUrl += "&productName=" + searchValue;
+
     }
 
-        window.location.href = newUrl;
+    window.location.href = newUrl;
  }
 
+
+// Pagination features
 document.addEventListener("DOMContentLoaded", function () {
         // Get the current URL and parse the query parameters
         var urlParams = new URLSearchParams(window.location.search);
@@ -243,4 +256,3 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     });
-
