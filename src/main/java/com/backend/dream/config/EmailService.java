@@ -1,5 +1,6 @@
-package com.backend.dream.service;
+package com.backend.dream.config;
 
+import com.backend.dream.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.mail.MailSender;

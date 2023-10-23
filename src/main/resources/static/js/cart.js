@@ -196,13 +196,13 @@ app.controller("ctrl", function ($scope, $http) {
           username: username,
           items: [],
         };
-  }
+  };
 
   function saveCart(username, cart) {
     let cartKey = `cart_${username}`;
     let json = JSON.stringify(cart);
     localStorage.setItem(cartKey, json);
-  }
+  };
 
   function totalPrice() {
     let totalPrice = 0;
@@ -210,7 +210,7 @@ app.controller("ctrl", function ($scope, $http) {
       totalPrice += item.price * item.qty;
     });
     return totalPrice;
-  }
+  };
 
   $scope.cart = {
     username: "",
@@ -310,25 +310,20 @@ app.controller("ctrl", function ($scope, $http) {
 
   $scope.handlePaymentMethodChange = function () {
     console.log($scope.selectedPaymentMethod);
-
     if ($scope.selectedPaymentMethod === "cash") {
         $scope.order.purchaseOrder();
-        console.log("cash");
         $scope.completeButtonClicked();
     } else if ($scope.selectedPaymentMethod === "vnpay") {
-        window.location.href = `/pay`;
-        console.log("pay");
-        $scope.completeButtonClicked();
+        location.href = "/pay";
     } else if ($scope.selectedPaymentMethod === "paypal") {
-        window.location.href = `/paypal`;
-        console.log("paypal");
+        location.href = `/paypal`;
         $scope.completeButtonClicked();
     }
 };
 
 let isSuccess = true;
 
-  $scope.completeButtonClicked = function () {
+$scope.completeButtonClicked = function () {
     if (isSuccess) {
         $(".cart-3").show();
         $(".cart-0, .cart-1, .form-buy, .infor-cart").hide();

@@ -1,6 +1,6 @@
 package com.backend.dream.controller;
 
-import com.backend.dream.service.imp.VNPayService;
+import com.backend.dream.config.VNPayService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,14 +14,13 @@ public class VNPayController {
     @Autowired
     private VNPayService vnPayService;
 
-
     @GetMapping("/pay")
-    public String home(){
-        return "/user/checkout/vnpay-index";
+    public String indexVNPay(){
+        return "/user/checkout/index";
     }
 
     @PostMapping("/submitOrder")
-    public String submidOrder(@RequestParam("amount") int orderTotal,
+    public String submitOrder(@RequestParam("amount") int orderTotal,
                               @RequestParam("orderInfo") String orderInfo,
                               HttpServletRequest request){
         String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
@@ -30,7 +29,7 @@ public class VNPayController {
     }
 
     @GetMapping("/vnpay-payment")
-    public String payment(HttpServletRequest request, Model model){
+    public String pay(HttpServletRequest request, Model model){
         int paymentStatus =vnPayService.orderReturn(request);
 
         String orderInfo = request.getParameter("vnp_OrderInfo");
@@ -43,7 +42,7 @@ public class VNPayController {
         model.addAttribute("paymentTime", paymentTime);
         model.addAttribute("transactionId", transactionId);
 
-        return paymentStatus == 1 ? "/user/checkout/vnpay-success" : "/user/checkout/vnpay-fail";
+        return paymentStatus == 1 ? "/user/checkout/ordersuccess" : "/user/checkout/orderfail";
     }
 
 }
