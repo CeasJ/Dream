@@ -35,7 +35,7 @@ public class Discount implements Serializable {
     private Date expiredDate;
 
     @ManyToOne
-    @JoinColumn(name = "iddiscount")
+    @JoinColumn(name = "idproduct")
     private Product product;
 
 }

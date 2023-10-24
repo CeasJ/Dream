@@ -1,9 +1,9 @@
 <!-- Navbar Start -->
-<div class="container-fluid bg-white sticky-top" xmlns:th="http://www.thymeleaf.org">
+<div class="container-fluid bg-white sticky-top" xmlns:th="http://www.thymeleaf.org" >
     <div class="container">
         <nav class="navbar navbar-expand-lg bg-white navbar-light py-2 py-lg-0">
             <a href="#" class="navbar-brand">
-                <img class="img-fluid" src="img/logo.png" alt="Logo">
+                <img class="img-fluid" src="/img/logo.png" alt="Logo">
             </a>
             <button type="button" class="navbar-toggler ms-auto me-0" data-bs-toggle="collapse"
                 data-bs-target="#navbarCollapse">
@@ -27,7 +27,9 @@
 
                     <!--When customer login-->
                     <th:block th:if="${isAuthenticated}">
-                        <a th:href="@{|/order|}" class="nav-item nav-link">Order</a>
+                        <a id="username" class="nav-item nav-link" hidden>[[${username}]]</a>
+                        <a id="id_account" class="nav-item nav-link" hidden>[[${id_account}]]</a>
+                        <a th:href="@{|/orders|}" class="nav-item nav-link">Order</a>
                         <a th:href="@{|/logout|}" class="nav-item nav-link">Logout</a>
                         <a th:href="@{|/profile|}" class="nav-item nav-link">Profile</a>
                     </th:block>
@@ -50,11 +52,19 @@
                         Contact
                     </a>
                 </div>
+<<<<<<< HEAD
                 <div class="border-start ps-4 d-none d-lg-block icons">
                     <button type="button" class="btn btn-sm p-0"><i class="fa fa-search"></i></button>
                     <a th:href="@{|/cart|}" class="btn btn-sm ps-4">
                         <i style="font-size: 24px;" class="bi bi-bag-fill"></i>
                         <span id="cartCount" class="cart-count">1</span>
+=======
+                <div class="border-start ps-4 d-none d-lg-block">
+                    <button style="font-size: 23px;" type="button" class="btn btn-sm p-0"><i class="fa fa-search"></i></button>
+                    <a th:href="@{|/cart|}" class="btn btn-sm p-0">
+                        <i style="font-size: 23px;" class="bi bi-bag-fill"></i>
+                        <span id="cartCount" class="cart-count">{{cart.count}}</span>
+>>>>>>> 3574f4ccba5368eca8b276fa39210056d5d5358d
                     </a>
                 </div>
             </div>

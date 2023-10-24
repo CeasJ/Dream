@@ -1,5 +1,7 @@
 package com.backend.dream.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,6 +9,7 @@ import java.util.Date;
 
 @Getter
 @Setter
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class OrderDTO {
     private Long id;
 
@@ -16,6 +19,8 @@ public class OrderDTO {
 
     private Date createDate;
 
-    // update later
-    private String status;
+    private Long status;
+
+    private int id_account;
+
 }

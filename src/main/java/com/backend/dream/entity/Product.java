@@ -30,13 +30,16 @@ public class Product implements Serializable {
 
     private String describe;
 
-    Date createDate = new Date();
+    @Column(name = "createdate")
+    @Temporal(TemporalType.DATE)
+    private Date createDate = new Date();
+
 
     private Boolean active;
 
     @JsonIgnore
     @OneToMany(mappedBy = "product")
-    private List<OrderDetail> detail;
+    private List<OrderDetails> detail;
 
     @JsonIgnore
     @OneToMany(mappedBy= "product")
