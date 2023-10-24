@@ -6,23 +6,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.TemplateEngine;
 
 @Service
 public class EmailService {
     @Autowired
     private MailSender mailSender;
-
     @Autowired
     private TokenService tokenService;
-
+    @Autowired
+    private TemplateEngine templateEngine;
     public void sendWelcomeEmail(String to, String fullname) {
         SimpleMailMessage msg = new SimpleMailMessage();
         msg.setTo(to);
         msg.setSubject("Welcome to Dream Coffee and Tea");
-        msg.setText("Welcome " + fullname + " to TimeZone");
+        msg.setText("Welcome " + fullname + " to Dream Coffee & Tea");
         mailSender.send(msg);
     }
-
     public void sendEmailTokenPass(String to, String token, String fullname) {
         SimpleMailMessage msg = new SimpleMailMessage();
         msg.setTo(to);
@@ -32,9 +32,10 @@ public class EmailService {
                 + "Your authentication code is: " + token + "\n\n"
                 + "If you did not request a password reset, please ignore this email.\n\n"
                 + "Regards,\n"
-                + "TimeZone");
+                + "Dream Coffee & Tea");
         mailSender.send(msg);
-
     }
+
+  
 
 }

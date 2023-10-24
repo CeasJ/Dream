@@ -174,10 +174,11 @@ app.controller("ctrl", function ($scope, $http,$timeout) {
 
   $scope.printResult = function () {
     if ( $scope.selectedProvince && $scope.selectedDistrict && $scope.selectedWard) {
-      $scope.order.address = $scope.getSelectedProvinces($scope.selectedProvince) + "," +
-        $scope.getSelectedDistricts($scope.selectedDistrict) + "," +
+      $scope.order.address = 
+        $scope.number + "," +
         $scope.getSelectedWards($scope.selectedWard) + "," +
-        $scope.number;
+        $scope.getSelectedDistricts($scope.selectedDistrict) + "," +
+        $scope.getSelectedProvinces($scope.selectedProvince);
     }
   };
 
