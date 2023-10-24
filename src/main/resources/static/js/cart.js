@@ -99,7 +99,7 @@
 //Cart Control Begin
 const app = angular.module("cart_app", []);
 
-app.controller("ctrl", function ($scope, $http) {
+app.controller("ctrl", function ($scope, $http,$timeout) {
   $scope.provinces = [];
   $scope.districts = [];
   $scope.wards = [];
@@ -173,17 +173,11 @@ app.controller("ctrl", function ($scope, $http) {
   };
 
   $scope.printResult = function () {
-    if (
-      $scope.selectedProvince &&
-      $scope.selectedDistrict &&
-      $scope.selectedWard
-    ) {
-      $scope.order.address =
-        $scope.getSelectedProvinces($scope.selectedProvince) +
-        "," +
-        $scope.getSelectedDistricts($scope.selectedDistrict) +
-        "," +
-        $scope.getSelectedWards($scope.selectedWard);
+    if ( $scope.selectedProvince && $scope.selectedDistrict && $scope.selectedWard) {
+      $scope.order.address = $scope.getSelectedProvinces($scope.selectedProvince) + "," +
+        $scope.getSelectedDistricts($scope.selectedDistrict) + "," +
+        $scope.getSelectedWards($scope.selectedWard) + "," +
+        $scope.number;
     }
   };
 
@@ -246,9 +240,11 @@ app.controller("ctrl", function ($scope, $http) {
       saveCart(this.username, this);
     },
     get count() {
-      return this.items
-        .map((item) => item.qty)
-        .reduce((total, qty) => (total += qty), 0);
+      if(this.items && this.items.length > 0){
+        return this.items.map((item) => item.qty).reduce((total, qty) =>(total+=qty),0);
+      } else {
+        return 0;
+      }
     },
     get amount() {
       return totalPrice();
@@ -263,6 +259,9 @@ app.controller("ctrl", function ($scope, $http) {
     loadFromLocalStorage() {
       let cart = getCart(this.username);
       this.items = cart.items;
+      $timeout(function () {
+        $scope.$apply();
+      });
     },
 
     totalPrice: totalPrice,
@@ -314,9 +313,9 @@ app.controller("ctrl", function ($scope, $http) {
         $scope.order.purchaseOrder();
         $scope.completeButtonClicked();
     } else if ($scope.selectedPaymentMethod === "vnpay") {
-        location.href = "/pay";
+        location.href = "/vnpay";
     } else if ($scope.selectedPaymentMethod === "paypal") {
-        location.href = `/paypal`;
+        location.href = "/paypal";
         $scope.completeButtonClicked();
     }
 };

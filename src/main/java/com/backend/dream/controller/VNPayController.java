@@ -14,7 +14,7 @@ public class VNPayController {
     @Autowired
     private VNPayService vnPayService;
 
-    @GetMapping("/pay")
+    @GetMapping("/vnpay")
     public String getVNPayTemplate() {
         return "/user/checkout/vnpay";
     }

@@ -10,28 +10,26 @@
   <meta content="" name="description">
 
   <!-- Favicon -->
-  <link href="img/favicon.ico" rel="icon">
+  <link href="/img/favicon.ico" rel="icon">
 
   <!-- Google Web Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-          href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Playfair+Display:wght@700;900&display=swap"
-          rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
 
   <!-- Icon Font Stylesheet -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
   <!-- Libraries Stylesheet -->
-  <link href="lib/animate/animate.min.css" rel="stylesheet">
-  <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+  <link href="/lib/animate/animate.min.css" rel="stylesheet">
+  <link href="/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
 
   <!-- Customized Bootstrap Stylesheet -->
-  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- Template Stylesheet -->
-  <link href="css/style.css" rel="stylesheet">
+  <link href="/css/style.css" rel="stylesheet">
 
   <!-- Angular -->
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
@@ -117,7 +115,7 @@
                 <p>{{product.price | number:0}}</p>
               </div>
               <div class="col-md-1 pt-4">
-                <input type="number" class="form-control quantity-input" value="1" min="1">
+                <input type="number" class="form-control quantity-input" min="1"  ng-model="product.qty" ng-change="cart.saveToLocalStorage()">
               </div>
               <div class="col-md-2 pt-4">
                 <p> {{product.qty * product.price | number:0}} VND</p>
@@ -167,14 +165,18 @@
                 <div class="mb-3">
                   <label for="ward" class="form-label label pb-2">Xã/Phường</label>
                   <select  ng-model="selectedWard" class="form-control"
-                          name="ward" id="ward" ng-change="printResult()">
+                          name="ward" id="ward">
                     <option value="" disabled selected >Chọn Xã/ Phường</option>
                     <option ng-repeat="ward in wards" value="{{ward.code}}">{{ward.name}}</option>
                   </select>
                 </div>
                 <div class="mb-3">
+                  <label for="number" class="form-label label pb-2">Tên đường/ Số nhà</label>
+                  <input type="text" class="form-control" id="number" required ng-model="number" ng-change="printResult()">
+                </div>
+                <div class="mb-3">
                   <label for="result" class="form-label label pb-2">Địa chỉ</label>
-                  <input type="text" class="form-control" id="result" required value="{{order.address}}" ng-model="order.address">
+                  <input type="text" class="form-control" id="result" required value="{{order.address}}" ng-model="order.address" readonly>
                 </div>
                 <div class="mb-3">
                   <label for="note" class="form-label label pb-2">Ghi chú</label>
@@ -184,7 +186,7 @@
                   <label for="paymentMethod" class="form-label label pb-2">
                     Hình thức thanh toán:</label><br>
                   <div class="form-check form-check-inline">
-                    <input type="radio" class="form-check-input" id="paymentMethod" name="paymentMethod" ng-model="selectedPaymentMethod" value="cash"  checked>
+                    <input type="radio" class="form-check-input" id="paymentMethod" name="paymentMethod" ng-model="selectedPaymentMethod" value="cash" checked>
                     <label class="form-check-label" for="paymentMethod" >Tiền mặt</label>
                   </div>
                   <div class="form-check form-check-inline">
@@ -192,7 +194,7 @@
                     <label class="form-check-label pb-2" for="vnpay">VN Pay</label>
                   </div>
                   <div class="form-check form-check-inline">
-                    <input type="radio" class="form-check-input" id="paypal" name="paymentMethod" ng-model="selectedPaymentMethod" value="vnpay" >
+                    <input type="radio" class="form-check-input" id="paypal" name="paymentMethod" ng-model="selectedPaymentMethod" value="paypal" >
                     <label class="form-check-label pb-2" for="paypal">PayPal</label>
                   </div>
                 </div>
@@ -243,13 +245,13 @@
 
 <!-- JavaScript Libraries -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="lib/wow/wow.min.js"></script>
-<script src="lib/easing/easing.min.js"></script>
-<script src="lib/waypoints/waypoints.min.js"></script>
-<script src="lib/owlcarousel/owl.carousel.min.js"></script>
+<script src="/lib/wow/wow.min.js"></script>
+<script src="/lib/easing/easing.min.js"></script>
+<script src="/lib/waypoints/waypoints.min.js"></script>
+<script src="/lib/owlcarousel/owl.carousel.min.js"></script>
 
 <!-- Cart Control -->
-<script src="js/cart.js"></script>
+<script src="/js/cart.js"></script>
 
 </body>
 

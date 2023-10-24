@@ -6,6 +6,10 @@
     --dark: #252c30;
 }
 
+body {
+    font-family: 'Times New Roman', Times, serif;
+}
+
 .back-to-top {
     position: fixed;
     display: none;
