@@ -165,19 +165,19 @@
                     <input type="text" class="form-control" id="mapAddress" required>
                   </div>
                   <div class="text-center">
-                    <button type="button" class="btn btn-secondary btn-infor" id="backButton">Trở lại</button>
-                    <button type="submit" class="btn btn-danger btn-infor" id="completeButton">Hoàn thành</button>
+                    <button type="button" class="btn btn-danger btn-infor" id="backButton">Trở lại</button>
+                    <button type="submit" class="btn btn-success btn-infor" id="completeButton">Hoàn thành</button>
                   </div>
                 </form>
               </div>
             </div>
           </div>
           <div class="container-fluid cart-3 mx-auto" style="display: none;">
-            <img class="img-cart" src="/img/cart-0.png"></img>
-            <h5>Đơn hàng của bạn đã được xử lý</h5>
-            <a th:href="@{|/home|}">
-              <button class="btn btn-danger mt-3" style="padding: 8px 18px;">
-                <h6 style="color: white;">Tiếp tục mua sắm</h6>
+            <img class="img-cart" src="/img/cart-1.png"></img>
+            <h5>Đơn hàng của bạn đang được xử lý</h5>
+            <a th:href="@{|/history|}">
+              <button class="btn btn-success mt-3" style="padding: 10px 15px;">
+                <h6 style="color: white;">Xem lịch sử đơn hàng</h6>
               </button>
             </a>
           </div>

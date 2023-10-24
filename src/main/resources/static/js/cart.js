@@ -11,6 +11,17 @@
     };
     spinner();
 
+    new WOW().init();
+
+    // Sticky Navbar
+    $(window).scroll(function () {
+        if ($(this).scrollTop() > 300) {
+            $('.sticky-top').addClass('shadow-sm').css('top', '0px');
+        } else {
+            $('.sticky-top').removeClass('shadow-sm').css('top', '-150px');
+        }
+    });
+
     // Back to top button
     $(window).scroll(function () {
         if ($(this).scrollTop() > 300) {
@@ -26,13 +37,13 @@
         return false;
     });
 
-
     // Show .cart-0 if cartCount is less than or equal to 0, otherwise show .cart-1
     var cartCount = parseInt($('#cartCount').text());
 
     if (cartCount <= 0) {
         $('.cart-0').show();
         $('.cart-1').hide();
+        $('#cartCount').hide();
     } else {
         $('.cart-0').hide();
         $('.cart-1').show();
@@ -74,6 +85,7 @@
         if (cartCount <= 0) {
             $('.cart-0').show();
             $('.cart-1').hide();
+            $('#cartCount').hide();
         } else {
             $('.cart-0').hide();
             $('.cart-1').show();
@@ -89,5 +101,17 @@
         $('#step-3').addClass('active-stext');
     });
 
+    // Lấy giá trị của cartCount và chuyển đổi thành số nguyên
+    var cartCountValue = parseInt($('#cartCount').text());
+
+    // Kiểm tra nếu giá trị cartCount nhỏ hơn hoặc bằng 0, ẩn phần tử span
+    if (cartCountValue <= 0) {
+        $('#cartCount').hide();
+    } else {
+        $('#cartCount').show();
+    }
+
+
 })(jQuery);
+
 

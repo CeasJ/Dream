@@ -12,11 +12,11 @@
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav ms-auto">
                     <a th:href="@{|/home|}" class="nav-item nav-link">Home</a>
-                    <a th:href="@{|/store|}" class="nav-item nav-link active">Store</a>
+                    <a th:href="@{|/store|}" class="nav-item nav-link">Store</a>
 
                     <!--When customer has role admin or staff-->
                     <th:block th:if="${isAdminOrStaff}">
-                        <a th:href="@{|/admin/index|}" class="nav-item nav-link active">Admin</a>
+                        <a th:href="@{|/admin/index|}" class="nav-item nav-link">Admin</a>
                     </th:block>
 
                     <!--When customer not login-->
@@ -53,7 +53,7 @@
                 <div class="border-start ps-4 d-none d-lg-block icons">
                     <button type="button" class="btn btn-sm p-0"><i class="fa fa-search"></i></button>
                     <a th:href="@{|/cart|}" class="btn btn-sm ps-4">
-                        <i style="font-size: 23px;" class="bi bi-bag-fill"></i>
+                        <i style="font-size: 24px;" class="bi bi-bag-fill"></i>
                         <span id="cartCount" class="cart-count">1</span>
                     </a>
                 </div>
