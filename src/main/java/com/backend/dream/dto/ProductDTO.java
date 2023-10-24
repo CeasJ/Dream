@@ -22,12 +22,12 @@ public class ProductDTO {
 
     private String describe;
 
-
     private Boolean active;
 
     private String category;
 
     private Date createDate = new Date();
+
     public String getFormattedPrice() {
         DecimalFormat df = new DecimalFormat("#,###₫");
         return df.format(price);

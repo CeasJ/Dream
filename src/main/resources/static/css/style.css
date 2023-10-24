@@ -6,6 +6,10 @@
     --red: #ff5b5b;
 }
 
+body {
+    font-family: 'Times New Roman', Times, serif;
+}
+
 .back-to-top {
     position: fixed;
     display: none;

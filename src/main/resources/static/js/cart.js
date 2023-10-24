@@ -198,7 +198,7 @@
 //Cart Control Begin
 const app = angular.module("cart_app", []);
 
-app.controller("ctrl", function ($scope, $http) {
+app.controller("ctrl", function ($scope, $http,$timeout) {
   $scope.provinces = [];
   $scope.districts = [];
   $scope.wards = [];
@@ -272,17 +272,11 @@ app.controller("ctrl", function ($scope, $http) {
   };
 
   $scope.printResult = function () {
-    if (
-      $scope.selectedProvince &&
-      $scope.selectedDistrict &&
-      $scope.selectedWard
-    ) {
-      $scope.order.address =
-        $scope.getSelectedProvinces($scope.selectedProvince) +
-        "," +
-        $scope.getSelectedDistricts($scope.selectedDistrict) +
-        "," +
-        $scope.getSelectedWards($scope.selectedWard);
+    if ( $scope.selectedProvince && $scope.selectedDistrict && $scope.selectedWard) {
+      $scope.order.address = $scope.getSelectedProvinces($scope.selectedProvince) + "," +
+        $scope.getSelectedDistricts($scope.selectedDistrict) + "," +
+        $scope.getSelectedWards($scope.selectedWard) + "," +
+        $scope.number;
     }
   };
 
@@ -295,13 +289,13 @@ app.controller("ctrl", function ($scope, $http) {
           username: username,
           items: [],
         };
-  }
+  };
 
   function saveCart(username, cart) {
     let cartKey = `cart_${username}`;
     let json = JSON.stringify(cart);
     localStorage.setItem(cartKey, json);
-  }
+  };
 
   function totalPrice() {
     let totalPrice = 0;
@@ -309,7 +303,7 @@ app.controller("ctrl", function ($scope, $http) {
       totalPrice += item.price * item.qty;
     });
     return totalPrice;
-  }
+  };
 
   $scope.cart = {
     username: "",
@@ -345,9 +339,11 @@ app.controller("ctrl", function ($scope, $http) {
       saveCart(this.username, this);
     },
     get count() {
-      return this.items
-        .map((item) => item.qty)
-        .reduce((total, qty) => (total += qty), 0);
+      if(this.items && this.items.length > 0){
+        return this.items.map((item) => item.qty).reduce((total, qty) =>(total+=qty),0);
+      } else {
+        return 0;
+      }
     },
     get amount() {
       return totalPrice();
@@ -362,6 +358,9 @@ app.controller("ctrl", function ($scope, $http) {
     loadFromLocalStorage() {
       let cart = getCart(this.username);
       this.items = cart.items;
+      $timeout(function () {
+        $scope.$apply();
+      });
     },
 
     totalPrice: totalPrice,
@@ -409,25 +408,20 @@ app.controller("ctrl", function ($scope, $http) {
 
   $scope.handlePaymentMethodChange = function () {
     console.log($scope.selectedPaymentMethod);
-
     if ($scope.selectedPaymentMethod === "cash") {
         $scope.order.purchaseOrder();
-        console.log("cash");
         $scope.completeButtonClicked();
     } else if ($scope.selectedPaymentMethod === "vnpay") {
-        window.location.href = `/pay`;
-        console.log("pay");
-        $scope.completeButtonClicked();
+        location.href = "/vnpay";
     } else if ($scope.selectedPaymentMethod === "paypal") {
-        window.location.href = `/paypal`;
-        console.log("paypal");
+        location.href = "/paypal";
         $scope.completeButtonClicked();
     }
 };
 
 let isSuccess = true;
 
-  $scope.completeButtonClicked = function () {
+$scope.completeButtonClicked = function () {
     if (isSuccess) {
         $(".cart-3").show();
         $(".cart-0, .cart-1, .form-buy, .infor-cart").hide();

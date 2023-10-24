@@ -42,8 +42,8 @@ public class OrderServiceImp implements OrderService {
         TypeReference<List<OrderDetailDTO>> type = new TypeReference<List<OrderDetailDTO>>() {
         };
 
-        List<OrderDetailDTO> details = mapper.convertValue(orderData.get("orderDetails"),type)
-                .stream().peek(d->d.setId_order(orders.getId())).collect(Collectors.toList());
+        List<OrderDetailDTO> details = mapper.convertValue(orderData.get("orderDetails"), type)
+                .stream().peek(d -> d.setId_order(orders.getId())).collect(Collectors.toList());
 
         orderDetailRepository.saveAll(orderDetailMapper.listOrderDetaiDTOlToListOrderDetail(details));
 
