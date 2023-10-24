@@ -1,5 +1,5 @@
 <!-- Navbar Start -->
-<div class="container-fluid bg-white sticky-top" xmlns:th="http://www.thymeleaf.org" >
+<div class="container-fluid bg-white sticky-top" xmlns:th="http://www.thymeleaf.org">
     <div class="container">
         <nav class="navbar navbar-expand-lg bg-white navbar-light py-2 py-lg-0">
             <a href="#" class="navbar-brand">
@@ -53,10 +53,11 @@
                     </a>
                 </div>
                 <div class="border-start ps-4 d-none d-lg-block">
-                    <button style="font-size: 23px;" type="button" class="btn btn-sm p-0"><i class="fa fa-search"></i></button>
+                    <button style="font-size: 23px;" type="button" class="btn btn-sm p-0"><i
+                            class="fa fa-search"></i></button>
                     <a th:href="@{|/cart|}" class="btn btn-sm p-0">
                         <i style="font-size: 23px;" class="bi bi-bag-fill"></i>
-                        <span id="cartCount" class="cart-count">{{cart.count}}</span>
+                        <span id="cartCount" class="cart-count">0</span>
                     </a>
                 </div>
             </div>

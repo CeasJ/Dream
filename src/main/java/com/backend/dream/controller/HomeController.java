@@ -27,6 +27,11 @@ public class HomeController {
         return "/user/cart/cart";
     }
 
+    @GetMapping("/history")
+    public String history() {
+        return "/user/home/history";
+    }
+
     @RequestMapping("/profile")
     public String profile() {
         return "/user/home/profile";
