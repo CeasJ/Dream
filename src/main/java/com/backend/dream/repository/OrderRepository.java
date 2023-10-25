@@ -11,4 +11,8 @@ import java.util.List;
 public interface OrderRepository extends JpaRepository<Orders,Long> {
     @Query("SELECT o FROM Orders o WHERE o.account.username = ?1")
     List<Orders> listOrdersByUsername(String username);
+
+
+    @Query("SELECT o FROM Orders o WHERE o.status.id = ?1")
+    List<Orders> getListOrder(int id);
 }

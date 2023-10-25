@@ -27,4 +27,9 @@ public class OrderController {
         model.addAttribute("listOrder",list);
         return "/user/order/history";
     }
+
+    @GetMapping("/admin/order")
+    public String getOrderManagement(){
+        return "/admin/order";
+    }
 }
