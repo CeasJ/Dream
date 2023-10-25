@@ -27,7 +27,9 @@ public class ProductDTO {
     private Boolean active;
 
     private String category;
+
     private Long id_category;
+
     private Date createDate = new Date();
 
     public String getFormattedPrice() {
