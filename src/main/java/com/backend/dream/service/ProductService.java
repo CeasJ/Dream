@@ -24,9 +24,7 @@ public interface ProductService {
     Page<ProductDTO> sortByPriceAsc(Long categoryId, Pageable pageable);
 
     Page<ProductDTO> sortByPriceDesc(Long categoryId, Pageable pageable);
-
     void delete(Long id);
-
     Page<ProductDTO> findAll(Pageable pageable);
 
 }
