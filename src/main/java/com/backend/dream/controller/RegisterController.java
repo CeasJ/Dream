@@ -2,14 +2,13 @@ package com.backend.dream.controller;
 
 import com.backend.dream.dto.AccountDTO;
 import com.backend.dream.service.AccountService;
-import com.backend.dream.service.EmailService;
+import com.backend.dream.config.EmailService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
