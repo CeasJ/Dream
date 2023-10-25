@@ -315,6 +315,7 @@ app.controller("ctrl", function ($scope, $http,$timeout) {
         $scope.completeButtonClicked();
     } else if ($scope.selectedPaymentMethod === "vnpay") {
         location.href = "/vnpay";
+        $scope.order.purchaseOrder();
     } else if ($scope.selectedPaymentMethod === "paypal") {
         location.href = "/paypal";
         $scope.completeButtonClicked();

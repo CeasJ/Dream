@@ -17,7 +17,7 @@ public class OrderController {
     @Autowired
     private HttpServletRequest request;
 
-    @GetMapping("/history")
+    @GetMapping("/orders")
     public String history(Model model) {
         String username = request.getRemoteUser();
         List<OrderDTO> list = orderService.listOrderByUsername(username);
