@@ -23,4 +23,8 @@ public class OrderDTO {
     private int id_account;
 
     private String fullname;
+
+    private int quantity;
+
+    private Double price;
 }
