@@ -49,4 +49,10 @@ public class OrderServiceImp implements OrderService {
 
         return orders;
     }
+
+    @Override
+    public List<OrderDTO> listOrderByUsername(String username) throws NoSuchElementException{
+        List<OrderDTO> listOrders = orderMapper.listOrderToListOrderDTO(orderRepository.listOrdersByUsername(username));
+        return listOrders;
+    }
 }

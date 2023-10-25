@@ -1,6 +1,5 @@
 package com.backend.dream.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,4 +22,5 @@ public class OrderDTO {
 
     private int id_account;
 
+    private String fullname;
 }

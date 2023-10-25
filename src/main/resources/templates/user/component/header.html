@@ -57,7 +57,7 @@
                             class="fa fa-search"></i></button>
                     <a th:href="@{|/cart|}" class="btn btn-sm p-0">
                         <i style="font-size: 23px;" class="bi bi-bag-fill"></i>
-                        <span id="cartCount" class="cart-count">0</span>
+                        <span id="cartCount" class="cart-count">{{cart.count}}</span>
                     </a>
                 </div>
             </div>
