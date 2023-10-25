@@ -7,8 +7,7 @@ import lombok.Setter;
 @Setter
 public class ProductSizeDTO {
     private Long id;
-
     private Long id_product;
-
     private Long id_size;
+    private String name_size;
 }
