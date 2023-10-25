@@ -9,4 +9,3 @@ public interface ProductSizeService {
 
     List<ProductSizeDTO> findAll();
 }
-
