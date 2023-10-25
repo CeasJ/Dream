@@ -1,28 +1,22 @@
 package com.backend.dream.controller;
 
-import com.backend.dream.dto.AccountDTO;
 import com.backend.dream.dto.TokenDTO;
 import com.backend.dream.entity.Account;
 import com.backend.dream.entity.Token;
 import com.backend.dream.repository.TokenRepository;
 import com.backend.dream.service.AccountService;
 import com.backend.dream.service.TokenService;
-import com.backend.dream.service.EmailService;
+import com.backend.dream.config.EmailService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BeanPropertyBindingResult;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
-import java.util.Set;
 
 @Controller
 public class ForgotPasswordController {
@@ -52,7 +46,7 @@ public class ForgotPasswordController {
         String tokenValue = token.getToken();
         session.setAttribute("tokenValue", tokenValue);
         emailService.sendEmailTokenPass(email, String.valueOf(tokenValue),account.getFullname());
-        model.addAttribute("message", "An email with a reset link has been sent to your email address");
+        model.addAttribute("message", "An email with OTP has been sent to your email address");
         return "/user/security/verifi";
     }
     @GetMapping("/verifi")
@@ -107,7 +101,7 @@ public class ForgotPasswordController {
 
     @Transactional
     public void delete() {
-        LocalDateTime now = LocalDateTime.now().plusMinutes(1);
+        LocalDateTime now = LocalDateTime.now().plusMinutes(5);
         tokenRepository.deleteByExpiredDateBefore(now);
     }
 }

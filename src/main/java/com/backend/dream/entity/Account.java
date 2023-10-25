@@ -36,6 +36,7 @@ public class Account implements Serializable {
 
     private String phone;
 
+    private String address;
     @JsonIgnore
     @OneToMany(mappedBy = "account", fetch = FetchType.EAGER)
     private List<Authority> authority;
