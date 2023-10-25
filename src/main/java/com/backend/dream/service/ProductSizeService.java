@@ -7,7 +7,6 @@ import java.util.List;
 public interface ProductSizeService {
     List<SizeDTO> getSizesByProductId(Long productId);
 
-//    List<ProductSizeDTO> getProductSizesByProductId(Long productId);
 
 }
 

@@ -14,7 +14,8 @@
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Playfair+Display:wght@700;900&display=swap"
+          rel="stylesheet">
 
     <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
@@ -38,7 +39,8 @@
 
 <body ng-app="cart_app" ng-controller="ctrl">
 <!-- Spinner Start -->
-<div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+<div id="spinner"
+     class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
     <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;"></div>
 </div>
 <!-- Spinner End -->
@@ -71,8 +73,7 @@
         <div class="row g-0">
             <div class="col-md-6 border-end">
                 <div class="d-flex flex-column justify-content-center">
-                    <div class="main_image"> <img th:src="@{'/img/' + ${product.image}}" id="main_product_image"
-                                                  width="350"> </div>
+                    <div class="main_image"><img th:src="@{'/img/' + ${product.image}}" id="main_product_image" width="350"></div>
                 </div>
             </div>
             <div class="col-md-6">
@@ -87,15 +88,16 @@
                         <del class="product-price" th:text="${product.formattedPrice}"></del>
                         <h3 class=" product-discountedPrice" th:text="${product.formattedDiscountedPrice}"></h3>
                     </div>
-<!--                    If product is not in sales category-->
+                    <!--                    If product is not in sales category-->
                     <div th:unless="${product.isDiscounted}">
-                        <h3 class="product-price"  th:text="${product.formattedPrice}"></h3>
+                        <h3 class="product-price" th:text="${product.formattedPrice}"></h3>
                     </div>
 
                     <div class="ratings d-flex flex-row align-items-center">
-                        <div class="d-flex flex-row"> <i class='bx bxs-star'></i> <i class='bx bxs-star'></i> <i
-                                class='bx bxs-star'></i> <i class='bx bxs-star'></i> <i class='bx bx-star'></i> </div>
+                        <div class="d-flex flex-row"><i class='bx bxs-star'></i> <i class='bx bxs-star'></i> <i
+                                class='bx bxs-star'></i> <i class='bx bxs-star'></i> <i class='bx bx-star'></i></div>
                     </div>
+
                     <div class="mt-5" th:if="${availableSizes.size() > 0}">
                         <span class="fw-bold">Size</span>
                         <form th:object="${product}" class="rad-group">
@@ -104,13 +106,13 @@
                                 <label th:for="${'size-' + size.id}" th:text="${size.name}"></label>
                             </div>
                         </form>
-                        <h3 id="selectedSizePrice">Price: <!-- Giá sản phẩm theo kích thước sẽ được hiển thị ở đây --></h3>
-
                     </div>
 
 
                     <div class="buttons d-flex flex-row mt-5 gap-3">
-                        <button th:attr="ng-click=@{|cart.add(${product.id})|}" class="btn btn-dark rounded-pill py-2 px-2 m-2">Add to cart<i class="fa fa-cart-plus ms-2"></i></button>
+                        <button th:attr="ng-click=@{|cart.add(${product.id})|}"
+                                class="btn btn-dark rounded-pill py-2 px-2 m-2">Add to cart<i
+                                class="fa fa-cart-plus ms-2"></i></button>
                     </div>
                 </div>
             </div>

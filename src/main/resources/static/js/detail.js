@@ -96,6 +96,22 @@
 
 })(jQuery);
 
+
+
+// Change the price according to the chosen price of the product
+
+
+// Select first child of size radio buttons
+document.addEventListener("DOMContentLoaded", function () {
+    var sizeRadioButtons = document.querySelectorAll('input[type=radio][name=selectedSize]');
+
+    if (sizeRadioButtons.length > 0) {
+        sizeRadioButtons[0].checked = true;
+    }
+});
+
+
+
 // Change price according to the chosen size
 //document.addEventListener("DOMContentLoaded", function () {
 //    var sizeRadioButtons = document.querySelectorAll('input[type=radio][name=selectedSize]');
@@ -149,29 +165,3 @@
 //    }
 //});
 //
-
-
-
-// Select first child of size radio buttons
-document.addEventListener("DOMContentLoaded", function () {
-        var sizeRadioButtons = document.querySelectorAll('input[type=radio][name=selectedSize]');
-
-        if (sizeRadioButtons.length > 0) {
-            sizeRadioButtons[0].checked = true;
-        }
-    });
-
-
-$(document).ready(function() {
-    // Lắng nghe sự kiện khi kích thước được chọn
-    $('input[type="radio"]').change(function() {
-        var sizeId = $(this).val();
-        var productId = /* Lấy productId từ một nguồn nào đó */;
-
-        // Gọi API hoặc sử dụng Thymeleaf để lấy giá sản phẩm dựa trên size và productId
-        var price = /* Lấy giá sản phẩm từ server */;
-
-        // Cập nhật giá sản phẩm trên trang web
-        $('#selectedSizePrice').text('Price: ' + price);
-    });
-});

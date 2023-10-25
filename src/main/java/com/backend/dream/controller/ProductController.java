@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.text.DecimalFormat;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -159,15 +160,23 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/product/{name}", method = RequestMethod.GET)
-    public String productDetail(@PathVariable(value = "name") String name, @PathVariable(value = "sizeId") Long sizeId, Model model) {
+    public String productDetail(@PathVariable(value = "name") String name,
+                                @RequestParam(value = "sizeId", required = false) Long sizeId,
+                                Model model) {
         try {
             String decoded = URLDecoder.decode(name, "UTF-8");
             ProductDTO product = productService.findByNamePaged(decoded, PageRequest.of(0, 1)).getContent().get(0);
             List<SizeDTO> availableSizes = productSizeService.getSizesByProductId(product.getId());
 
+            // Set the price based on the selected size
+            if (sizeId != null) {
+                double productPriceBySize = productService.getProductPriceBySize(product.getId(), sizeId);
+                product.setSelectedSizeId(sizeId);
+                product.setPrice(productPriceBySize); // Đảm bảo rằng bạn đã có phương thức formatPrice để định dạng giá
+            }
+
             double discountedPrice = productService.getDiscountedPrice(product.getId());
 
-//            double priceForSize = productService.getPriceForSize(product.getId(), sizeId);
             if (discountedPrice < product.getPrice()) {
                 product.setIsDiscounted(true);
                 product.setDiscountedPrice(discountedPrice);
@@ -182,6 +191,8 @@ public class ProductController {
             return "error";
         }
     }
+
+
 
 
 }

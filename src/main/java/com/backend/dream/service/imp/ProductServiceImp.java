@@ -2,7 +2,6 @@ package com.backend.dream.service.imp;
 
 import com.backend.dream.dto.DiscountDTO;
 import com.backend.dream.dto.ProductDTO;
-import com.backend.dream.dto.ProductSizeDTO;
 import com.backend.dream.entity.Product;
 import com.backend.dream.mapper.ProductMapper;
 import com.backend.dream.repository.ProductRepository;
@@ -12,16 +11,10 @@ import com.backend.dream.service.ProductSizeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -141,18 +134,9 @@ public class ProductServiceImp implements ProductService {
     }
 
 
-//    @Override
-//    public double getPriceForSize(Long productId, Long sizeId) {
-//        List<ProductSizeDTO> productSizes = productSizeService.getProductSizesByProductId(productId);
-//        for (ProductSizeDTO productSize : productSizes) {
-//            if (productSize.getId_size().equals(sizeId)) {
-//                return productSize.getPriceProduct_Size();
-//            }
-//        }
-//        return 0.0;
-//    }
+    @Override
+    public double getProductPriceBySize(Long productId, Long sizeId) {
+        return productRepository.findProductPriceBySize(productId, sizeId);
 
-
-
-
+    }
 }

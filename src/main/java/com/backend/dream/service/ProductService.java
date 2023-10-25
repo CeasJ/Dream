@@ -36,6 +36,6 @@ public interface ProductService {
 
     double getOriginalProductPrice(Long productId);
 
-//    double getPriceForSize(Long productId, Long sizeId);
+    double getProductPriceBySize(Long productId, Long sizeId);
 
 }

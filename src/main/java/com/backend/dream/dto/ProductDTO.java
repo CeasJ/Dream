@@ -35,10 +35,6 @@ public class ProductDTO {
 
     private Double discountedPrice = null;
 
-    public String getFormattedDiscountedPrice() {
-        DecimalFormat df = new DecimalFormat("#,###₫");
-        return df.format(discountedPrice);
-    }
 
     private Boolean isDiscounted;
 
@@ -47,5 +43,9 @@ public class ProductDTO {
 
     private Size selectedSize;
 
+    // For save the chosen id size
+    private Long selectedSizeId;
+
+    private String formattedPriceBySize;
 
 }
