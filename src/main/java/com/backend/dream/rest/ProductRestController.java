@@ -24,6 +24,7 @@ public class ProductRestController {
     }
     @PostMapping("")
     public ProductDTO create(@RequestBody ProductDTO productDTO) {
+
         return productService.create(productDTO);
     }
     @DeleteMapping("{id}")

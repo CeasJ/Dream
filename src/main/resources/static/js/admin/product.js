@@ -34,10 +34,10 @@ app.controller('product_ctrl', function($scope, $http) {
 		}
 	}
 
-$scope.edit = function(item) {
-    $scope.form = angular.copy(item);
+    $scope.edit = function(item) {
+        $scope.form = angular.copy(item);
 
-}
+    }
         $scope.create = function() {
             let item = angular.copy($scope.form);
             $http.post(`/rest/products`, item).then(resp => {

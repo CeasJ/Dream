@@ -532,7 +532,8 @@
                                                     <label for="category">Category</label>
                                                     <select ng-model="form.category" class="form-control"
                                                             name="category" id="category">
-                                                        <option ng-repeat="c in cates" value="{{c.id}}" >{{c.name}}</option>
+                                                        <option value="" selected disabled>Select a category</option> <!-- Thêm option mặc định -->
+                                                        <option ng-repeat="c in cates" value="{{c.id}}">{{c.name}}</option> <!-- Thêm giá trị và giá trị hiển thị -->
                                                     </select>
                                                 </div>
                                             </div>
