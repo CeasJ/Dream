@@ -91,139 +91,18 @@
         <p class="step-text" id="step-3">Thanh toán</p>
       </div>
     </div>
-<<<<<<< HEAD
-    <!-- Page Header End -->
-
-    <!--Cart Start  -->
-    <div class="container cart">
-      <div class="process-step">
-        <div class="steps">
-          <div class="step-button active" id="number-1">
-            <div class="step-number">1</div>
-          </div>
-          <p class="step-text" id="step-1">Đơn hàng</p>
-        </div>
-        <div class="line" id="line-1"></div>
-        <div class="steps">
-          <div class="step-button" id="number-2">
-            <div class="step-number">2</div>
-          </div>
-          <p class="step-text" id="step-2">Đặt hàng</p>
-        </div>
-        <div class="line" id="line-2"></div>
-        <div class="steps">
-          <div class="step-button" id="number-3">
-            <div class="step-number">3</div>
-          </div>
-          <p class="step-text" id="step-3">Thanh toán</p>
-        </div>
-      </div>
-      <div class="main-cart">
-        <div class="row">
-          <div class="col-md-9">
-            <div class="container-fluid cart-0">
-              <img class="img-cart" src="/img/cart-0.png"></img>
-              <h5>Không có sản phẩm trong giỏ hàng</h5>
-              <a th:href="@{|/home|}">
-                <button class="btn btn-danger mt-3" style="padding: 8px 18px;">
-                  <h6 style="color: white;">Tiếp tục mua sắm</h6>
-                </button>
-              </a>
-            </div>
-            <div class="container-fluid cart-1">
-              <div class="row product-row">
-                <div class="col-md-2">
-                  <img src="/img/product2.webp" class="img-fluid img-product">
-                </div>
-                <div class="col-md-3 pt-4">
-                  <h6> product.name </h6>
-                </div>
-                <div class="col-md-2 pt-4">
-                  <p>100.000 đ</p>
-                </div>
-                <div class="col-md-1 pt-4">
-                  <input type="number" class="form-control quantity-input" value="1" min="1">
-                </div>
-                <div class="col-md-2 pt-4">
-                  <p> Tổng: 100.000 đ</p>
-                </div>
-                <div class="col-md-2 pt-4">
-                  <i style="font-size: 18px;" class="bi bi-trash text-danger fw-bold"></i>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3 form-buy">
-            <div class="container-fluid"
-              style="background-color: white; height: auto; border-radius: 5px; padding: 20px 10px; position: relative;">
-              <p class="title-prc">Tổng số lượng <span style="float: right; font-weight: bold;">12</span></p>
-              </p>
-              <p class="title-prc">Tiền vận chuyển <span style="float: right; font-weight: bold;">12.00</span>
-              </p>
-              <hr>
-              <p class="title-prc">Tổng tiền <span class="price" style="float: right;">$150.00</span></p>
-              <hr>
-              <div class="text-center"><button class="btn btn-danger btn-buy" id="buyButton">Mua hàng (0)</button></div>
-            </div>
-          </div>
-          <div class="container-fluid infor-cart mx-auto" style="display: none;">
-            <div class="row justify-content-center">
-              <div class="col-md-6">
-                <form class="form-infor" style="padding: 20px 20px; font-size: 16px;">
-                  <div class="mb-3">
-                    <label for="recipientName" class="form-label label pb-2">Tên người nhận</label>
-                    <input type="text" class="form-control" id="recipientName" required>
-                  </div>
-                  <div class="mb-3">
-                    <label for="phoneNumber" class="form-label label pb-2">Số điện thoại</label>
-                    <input type="tel" class="form-control" id="phoneNumber" required>
-                  </div>
-                  <div class="mb-3">
-                    <label for="paymentMethod" class="form-label label pb-2">
-                      Hình thức thanh toán:</label><br>
-                    <div class="form-check form-check-inline">
-                      <input type="radio" class="form-check-input" id="paymentOnDelivery" name="paymentMethod" checked>
-                      <label class="form-check-label" for="paymentOnDelivery">Thanh toán khi
-                        nhận hàng</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <input type="radio" class="form-check-input" id="paymentViaATM" name="paymentMethod">
-                      <label class="form-check-label pb-2" for="paymentViaATM">Trả tiền qua
-                        ATM</label>
-                    </div>
-                  </div>
-                  <div class="mb-3">
-                    <label for="mapAddress" class="form-label label pb-2">Địa chỉ</label>
-                    <input type="text" class="form-control" id="mapAddress" required>
-                  </div>
-                  <div class="text-center">
-                    <button type="button" class="btn btn-danger btn-infor" id="backButton">Trở lại</button>
-                    <button type="submit" class="btn btn-success btn-infor" id="completeButton">Hoàn thành</button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-          <div class="container-fluid cart-3 mx-auto" style="display: none;">
-            <img class="img-cart" src="/img/cart-1.png"></img>
-            <h5>Đơn hàng của bạn đang được xử lý</h5>
-            <a th:href="@{|/history|}">
-              <button class="btn btn-success mt-3" style="padding: 10px 15px;">
-                <h6 style="color: white;">Xem lịch sử đơn hàng</h6>
-=======
     <div class="main-cart">
       <div class="row">
         <div class="col-md-9">
-          <div class="container-fluid cart-0">
-            <img class="img-cart" src="/img/cart-0.png"></img>
-            <h5>Không có sản phẩm trong giỏ hàng</h5>
-            <a th:href="@{|/store|}">
-              <button class="btn btn-danger mt-3" style="padding: 8px 18px;">
-                <h6 style="color: white;">Tiếp tục mua sắm</h6>
->>>>>>> 3574f4ccba5368eca8b276fa39210056d5d5358d
-              </button>
-            </a>
-          </div>
+<!--          <div class="container-fluid cart-0">-->
+<!--            <img class="img-cart" src="/img/cart-0.png"></img>-->
+<!--            <h5>Không có sản phẩm trong giỏ hàng</h5>-->
+<!--            <a th:href="@{|/store|}">-->
+<!--              <button class="btn btn-danger mt-3" style="padding: 8px 18px;">-->
+<!--                <h6 style="color: white;">Tiếp tục mua sắm</h6>-->
+<!--              </button>-->
+<!--            </a>-->
+<!--          </div>-->
           <div class="container-fluid cart-1">
             <div class="row product-row" ng-repeat="product in cart.items">
               <div class="col-md-2">
@@ -252,7 +131,7 @@
         <div class="col-md-3 form-buy">
           <div class="container-fluid"
                style="background-color: white; height: auto; border-radius: 5px; padding: 20px 10px; position: relative;">
-            <p class="title-prc">Tổng số lượng <span style="float: right; font-weight: bold;">{{cart.count}}</span></p>
+            <p class="title-prc" >Tổng số lượng <span style="float: right; font-weight: bold;">{{cart.count}}</span></p>
             </p>
             <p class="title-prc">Tiền vận chuyển <span style="float: right; font-weight: bold;">12.00</span>
             </p>

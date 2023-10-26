@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>Order Admin</title>
+    <!-- Angular -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+</head>
+<body ng-app="order_app" ng-controller="order_ctrl">
+<h3>Order </h3>
+<table name="order-status1">
+    <thead>
+        <th>no</th>
+        <th>ID</th>
+        <th>CreateDate</th>
+        <th>Fullname</th>
+        <th>Address</th>
+        <th>Status</th>
+        <th></th>
+        <th></th>
+    </thead>
+    <tbody ng-repeat="order in listOrders">
+        <td>{{$index + 1}}</td>
+        <td>{{order.id}}</td>
+        <td>{{order.createDate}}</td>
+        <td>{{order.fullname}}</td>
+        <td>{{order.address}}</td>
+        <td>{{order.status}}</td>
+        <td>
+            <button ng-click="updateOrder.confirmOrder(order.id)">Confirm</button>
+        </td>
+        <td>
+            <button ng-click="updateOrder.cancelOrder(order.id)">Cancel</button>
+        </td>
+    </tbody>
+</table>
+<h3>Order Confirm</h3>
+<table name="order-status2">
+    <thead>
+    <th>No</th>
+    <th>ID</th>
+    <th>CreateDate</th>
+    <th>Fullname</th>
+    <th>Address</th>
+    <th>Status</th>
+    <th></th>
+    <th></th>
+    </thead>
+    <tbody ng-repeat="order in listOrdersConfirmed">
+    <td>{{$index + 1 }}</td>
+    <td>{{order.id}}</td>
+    <td>{{order.createDate}}</td>
+    <td>{{order.fullname}}</td>
+    <td>{{order.address}}</td>
+    <td>{{order.status}}</td>
+    <td>
+        <button ng-click="updateOrder.shippingOrder(order.id)">Ship</button>
+    </td>
+    <td>
+        <button ng-click="updateOrder.cancelOrder(order.id)">Cancel</button>
+    </td>
+    </tbody>
+</table>
+<h3>Order Ship</h3>
+<table name="order-status3">
+    <thead>
+    <th>No</th>
+    <th>ID</th>
+    <th>CreateDate</th>
+    <th>Fullname</th>
+    <th>Address</th>
+    <th>Status</th>
+    <th></th>
+    <th></th>
+    </thead>
+    <tbody ng-repeat="order in listOrderIsShipping">
+    <td>{{$index +1}}</td>
+    <td>{{order.id}}</td>
+    <td>{{order.createDate}}</td>
+    <td>{{order.fullname}}</td>
+    <td>{{order.address}}</td>
+    <td>{{order.status}}</td>
+    <td>
+        <button ng-click="updateOrder.successOrder(order.id)">Success</button>
+    </td>
+    <td>
+        <button ng-click="updateOrder.cancelOrder(order.id)">Cancel</button>
+    </td>
+    </tbody>
+</table>
+<h3>Order Success</h3>
+<table name="order-status4">
+    <thead>
+    <th>No</th>
+    <th>ID</th>
+    <th>CreateDate</th>
+    <th>Fullname</th>
+    <th>Address</th>
+    <th>Status</th>
+    <th></th>
+    <th></th>
+    </thead>
+    <tbody ng-repeat="order in listOrdersSuccessful">
+    <td>{{$index + 1}}</td>
+    <td>{{order.id}}</td>
+    <td>{{order.createDate}}</td>
+    <td>{{order.fullname}}</td>
+    <td>{{order.address}}</td>
+    <td>{{order.status}}</td>
+    </tbody>
+</table>
+<h3>Order cancel</h3>
+<table name="order-status5">
+    <thead>
+    <th>NO.</th>
+    <th>ID</th>
+    <th>CreateDate</th>
+    <th>Fullname</th>
+    <th>Address</th>
+    <th>Status</th>
+    <th></th>
+    <th></th>
+    </thead>
+    <tbody ng-repeat="order in listOrdersCancelled">
+    <td>{{$index + 1 }}</td>
+    <td>{{order.id}}</td>
+    <td>{{order.createDate}}</td>
+    <td>{{order.fullname}}</td>
+    <td>{{order.address}}</td>
+    <td>{{order.status}}</td>
+    <td>
+        <button ng-click="updateOrder.resetOrder(order.id)">Reset</button>
+    </td>
+    </tbody>
+</table>
+
+<!-- Order Control -->
+    <script src="/js/order.js"></script>
+</body>
+</html>

@@ -68,6 +68,7 @@
             <table class="table table-hs text-center table-hover table-responsive">
                 <thead class="table-dark">
                     <tr>
+                        <th class="table-header">No.</th>
                         <th class="table-header">Mã đơn hàng</th>
                         <th class="table-header">Tên người đặt</th>
                         <th class="table-header">Thời gian</th>
@@ -77,42 +78,34 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>#1234</td>
-                        <td>Người đặt 1</td>
-                        <td>2023-10-24 10:30 AM</td>
-                        <td>500.000 đ</td>
-                        <td><span class="order-status status-success">Thành công</span></td>
+                    <tr th:each="order,state : ${listOrder}">
+                        <td th:text="${state.index + 1}"></td>
+                        <td th:text="${order.id}"></td>
+                        <td th:text="${order.fullname}"></td>
+                        <td th:text="${order.createDate}"></td>
+                        <td>50000</td>
+                        <th:block th:if="${order.status == 1}">
+                        <td><span class="order-status status-info">Đã đặt hàng</span></td>
+                        </th:block>
+                        <th:block th:if="${order.status == 2}">
+                        <td><span class="order-status status-blue">Đã xác nhận</span></td>
+                        </th:block>
+                        <th:block th:if="${order.status == 3}">
+                        <td><span class="order-status status-warning">Đang giao</span></td>
+                        </th:block>
+                        <th:block th:if="${order.status == 4}">
+                        <td><span class="order-status status-success">Đã giao hàng</span></td>
+                        </th:block>
+                        <th:block th:if="${order.status == 5}">
+                        <td><span class="order-status status-failed">Đã hủy</span></td>
+                        </th:block>
                         <td>
                             <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#orderModal">
                                 <i class="fas fa-eye"></i>
                             </button>
                         </td>
                     </tr>
-                    <tr>
-                        <td>#1235</td>
-                        <td>Người đặt 1</td>
-                        <td>2023-10-24 11:15 AM</td>
-                        <td>300.000 đ</td>
-                        <td><span class="order-status status-failed">Thất bại</span></td>
-                        <td>
-                            <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#orderModal">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>#1236</td>
-                        <td>Người đặt 1</td>
-                        <td>2023-10-24 12:15 AM</td>
-                        <td>600.000 đ</td>
-                        <td><span class="order-status status-success">Thành công</span></td>
-                        <td>
-                            <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#orderModal">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                        </td>
-                    </tr>
+
                     <!-- Thêm các dòng dữ liệu khác tại đây -->
                 </tbody>
             </table>

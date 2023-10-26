@@ -4,6 +4,8 @@
     --light: #f5f8f2;
     --dark: #252c30;
     --red: #ff5b5b;
+    --yellow:#f8ab28;
+    --blue: #0d6efd; 
 }
 
 body {
@@ -307,6 +309,20 @@ body {
 .status-success {
     color: var(--primary);
     border: 1px solid var(--primary);
+}
+
+.status-warning {
+    color: var(--yellow);
+    border: 1px solid var(--yellow);
+}
+
+.status-info {
+    color: var(--dark);
+    border: 1px solid var(--dark);
+}
+.status-blue {
+    color: var(--blue);
+    border: 1px solid var(--blue);
 }
 
 .status-failed {
