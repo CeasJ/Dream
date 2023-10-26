@@ -19,7 +19,7 @@ public class EmailService {
         SimpleMailMessage msg = new SimpleMailMessage();
         msg.setTo(to);
         msg.setSubject("Welcome to Dream Coffee and Tea");
-        msg.setText("Welcome " + fullname + " to TimeZone");
+        msg.setText("Welcome " + fullname + " to Dream");
         mailSender.send(msg);
     }
 
@@ -32,7 +32,7 @@ public class EmailService {
                 + "Your authentication code is: " + token + "\n\n"
                 + "If you did not request a password reset, please ignore this email.\n\n"
                 + "Regards,\n"
-                + "TimeZone");
+                + "Dream");
         mailSender.send(msg);
 
     }

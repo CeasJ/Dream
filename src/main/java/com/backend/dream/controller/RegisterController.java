@@ -3,6 +3,7 @@ package com.backend.dream.controller;
 import com.backend.dream.config.EmailService;
 import com.backend.dream.dto.AccountDTO;
 import com.backend.dream.service.AccountService;
+import com.backend.dream.config.EmailService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
