@@ -1,6 +1,7 @@
 package com.backend.dream.dto;
 
 import com.backend.dream.entity.Size;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,6 +12,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ProductDTO {
     private Long id;
 
@@ -25,6 +27,8 @@ public class ProductDTO {
     private Boolean active;
 
     private String category;
+
+    private Long id_category;
 
     private Date createDate = new Date();
 
