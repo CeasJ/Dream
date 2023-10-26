@@ -35,7 +35,7 @@
         }
     });
     $('.back-to-top').click(function () {
-        $('html, body').animate({scrollTop: 0}, 1500, 'easeInOutExpo');
+        $('html, body').animate({ scrollTop: 0 }, 1500, 'easeInOutExpo');
         return false;
     });
 
@@ -63,22 +63,22 @@
         center: true,
         dots: false,
         nav: true,
-        navText : [
+        navText: [
             '<i class="bi bi-chevron-left"></i>',
             '<i class="bi bi-chevron-right"></i>'
         ],
         responsive: {
-			0:{
-                items:1
+            0: {
+                items: 1
             },
-            576:{
-                items:1
+            576: {
+                items: 1
             },
-            768:{
-                items:2
+            768: {
+                items: 2
             },
-            992:{
-                items:3
+            992: {
+                items: 3
             }
         }
     });
@@ -93,7 +93,18 @@
         dots: true,
         nav: false,
     });
-    
+
+    // Lấy giá trị của cartCount và chuyển đổi thành số nguyên
+    var cartCountValue = parseInt($('#cartCount').text());
+
+    // Kiểm tra nếu giá trị cartCount nhỏ hơn hoặc bằng 0, ẩn phần tử span
+    if (cartCountValue <= 0) {
+        $('#cartCount').hide();
+    } else {
+        $('#cartCount').show();
+    }
+
+
 })(jQuery);
 
 
