@@ -11,26 +11,6 @@
   };
   spinner();
 
-<<<<<<< HEAD
-    new WOW().init();
-
-    // Sticky Navbar
-    $(window).scroll(function () {
-        if ($(this).scrollTop() > 300) {
-            $('.sticky-top').addClass('shadow-sm').css('top', '0px');
-        } else {
-            $('.sticky-top').removeClass('shadow-sm').css('top', '-150px');
-        }
-    });
-
-    // Back to top button
-    $(window).scroll(function () {
-        if ($(this).scrollTop() > 300) {
-            $('.back-to-top').fadeIn('slow');
-        } else {
-            $('.back-to-top').fadeOut('slow');
-        }
-=======
   // Back to top button
   $(window).scroll(function () {
     if ($(this).scrollTop() > 300) {
@@ -47,15 +27,15 @@
   });
 
   // Show .cart-0 if cartCount is less than or equal to 0, otherwise show .cart-1
-  var cartCount = parseInt($("#cartCount").text());
+  // var cartCount = parseInt($("#cartCount").text());
 
-  if (cartCount <= 0) {
-    $(".cart-0").show();
-    $(".cart-1").hide();
-  } else {
-    $(".cart-0").hide();
-    $(".cart-1").show();
-  }
+  // if (cartCount <= 0) {
+  //   $(".cart-0").show();
+  //   $(".cart-1").hide();
+  // } else {
+  //   $(".cart-0").hide();
+  //   $(".cart-1").show();
+  // }
 
   $("#step-1").addClass("active-stext");
   // Show infor-cart and hide cart-0, cart-1 on Buy button click
@@ -72,7 +52,6 @@
     $("#number-2").css({
       "background-color": "var(--primary)", // Màu xanh lá của bạn
       color: "white",
->>>>>>> 3574f4ccba5368eca8b276fa39210056d5d5358d
     });
   });
 
@@ -89,78 +68,15 @@
       "background-color": "lightgray", // Màu mặc định của number-2
     });
 
-<<<<<<< HEAD
-    // Show .cart-0 if cartCount is less than or equal to 0, otherwise show .cart-1
-    var cartCount = parseInt($('#cartCount').text());
-
-    if (cartCount <= 0) {
-        $('.cart-0').show();
-        $('.cart-1').hide();
-        $('#cartCount').hide();
-=======
     if (cartCount <= 0) {
       $(".cart-0").show();
       $(".cart-1").hide();
->>>>>>> 3574f4ccba5368eca8b276fa39210056d5d5358d
     } else {
       $(".cart-0").hide();
       $(".cart-1").show();
     }
   });
 
-<<<<<<< HEAD
-    $('#step-1').addClass('active-stext');
-    // Show infor-cart and hide cart-0, cart-1 on Buy button click
-    $('#buyButton').click(function () {
-        $('.infor-cart').show();
-        $('.cart-0, .cart-1, .form-buy').hide();
-
-        // Add active class to number-2 and apply animation
-        $('#number-2').addClass('active');
-        $('#line-1').addClass('active-line');
-        $('#step-2').addClass('active-stext');
-
-
-        // Change color of number-2 to match .step-button.active
-        $('#number-2').css({
-            'background-color': 'var(--primary)', // Màu xanh lá của bạn
-            'color': 'white'
-        });
-    });
-
-    $('#backButton').click(function () {
-        $('.cart-0, .cart-1, .form-buy').show();
-        $('.infor-cart').hide();
-
-        // Remove active class from number-2 and remove animation
-        $('#number-2').removeClass('active');
-        $('#line-1').removeClass('active-line');
-        $('#step-2').removeClass('active-stext');
-        // Reset color of number-2 to default state
-        $('#number-2').css({
-            'background-color': 'lightgray', // Màu mặc định của number-2
-        });
-
-
-        if (cartCount <= 0) {
-            $('.cart-0').show();
-            $('.cart-1').hide();
-            $('#cartCount').hide();
-        } else {
-            $('.cart-0').hide();
-            $('.cart-1').show();
-        }
-
-    });
-
-    $('#completeButton').click(function () {
-        $('.cart-3').show();
-        $('.cart-0, .cart-1, .form-buy, .infor-cart').hide();
-        $('#number-3').addClass('active');
-        $('#line-2').addClass('active-line');
-        $('#step-3').addClass('active-stext');
-    });
-=======
   
   // let isSuccess = true;
   
@@ -177,24 +93,9 @@
      
   //   }
   // });
->>>>>>> 3574f4ccba5368eca8b276fa39210056d5d5358d
-
-    // Lấy giá trị của cartCount và chuyển đổi thành số nguyên
-    var cartCountValue = parseInt($('#cartCount').text());
-
-    // Kiểm tra nếu giá trị cartCount nhỏ hơn hoặc bằng 0, ẩn phần tử span
-    if (cartCountValue <= 0) {
-        $('#cartCount').hide();
-    } else {
-        $('#cartCount').show();
-    }
-
 
 })(jQuery);
 
-<<<<<<< HEAD
-
-=======
 //Cart Control Begin
 const app = angular.module("cart_app", []);
 
@@ -273,10 +174,11 @@ app.controller("ctrl", function ($scope, $http,$timeout) {
 
   $scope.printResult = function () {
     if ( $scope.selectedProvince && $scope.selectedDistrict && $scope.selectedWard) {
-      $scope.order.address = $scope.getSelectedProvinces($scope.selectedProvince) + "," +
-        $scope.getSelectedDistricts($scope.selectedDistrict) + "," +
+      $scope.order.address = 
+        $scope.number + "," +
         $scope.getSelectedWards($scope.selectedWard) + "," +
-        $scope.number;
+        $scope.getSelectedDistricts($scope.selectedDistrict) + "," +
+        $scope.getSelectedProvinces($scope.selectedProvince);
     }
   };
 
@@ -435,4 +337,3 @@ $scope.completeButtonClicked = function () {
   //Order End
 });
 //Cart Control End
->>>>>>> 3574f4ccba5368eca8b276fa39210056d5d5358d
