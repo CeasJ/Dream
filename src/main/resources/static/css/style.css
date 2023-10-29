@@ -4,12 +4,12 @@
     --light: #f5f8f2;
     --dark: #252c30;
     --red: #ff5b5b;
-    --yellow:#f8ab28;
-    --blue: #0d6efd; 
+    --yellow: #f8ab28;
+    --blue: #0d6efd;
 }
 
 body {
-    font-family: 'Times New Roman', Times, serif;
+    font-family: "Times New Roman", Times, serif;
 }
 
 .back-to-top {
@@ -129,16 +129,130 @@ body {
     margin-left: 8px;
 }
 
+.user-icon {
+    display: flex;
+    align-items: center;
+    margin-right: 20px; /* Điều chỉnh khoảng cách giữa icon và các phần khác trong header */
+    position: relative;
+}
+
+.user-icon-circle {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%; /* Để tạo hình tròn */
+    overflow: hidden;
+    margin-right: 10px; /* Điều chỉnh khoảng cách giữa icon và tên người dùng */
+}
+
+.user-icon-circle img {
+    width: 100%;
+    height: auto;
+}
+
+.user-name {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333; /* Màu chữ của tên người dùng */
+}
+
+.user-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.user-icon:hover .user-name {
+    color: var(--primary);
+}
+
+.user-icon:hover .user-dropdown {
+    display: block;
+}
+
+.user-dropdown ul {
+    width: 180px; /* Điều chỉnh độ rộng của dropdown menu theo mong muốn */
+    padding: 0; /* Xóa padding mặc định của danh sách ul */
+    list-style: none; /* Loại bỏ dấu chấm ở đầu tiên của mỗi mục trong danh sách */
+    margin-bottom: 0px;
+}
+
+.user-dropdown li {
+    margin: 0;
+    padding: 10px 15px; /* Điều chỉnh khoảng cách giữa chữ và mép của mỗi mục */
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.user-dropdown li:hover {
+    background-color: #e5e5e5; /* Màu nền khi di chuột qua mục trong dropdown */
+    color: var(--primary);
+}
+
+.user-dropdown a {
+    color: black;
+}
+
+.notification-icon {
+    margin-left: 15px; /* Điều chỉnh khoảng cách giữa Icon Chuông Thông Báo và /cart */
+    position: relative;
+    cursor: pointer;
+}
+
+.notification-dropdown {
+    position: absolute;
+    top: 155%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #ffffff;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    display: none;
+    width: 400px;
+}
+.notification-dropdown .notification-title {
+    font-size: 17px;
+    padding-left: 8px;
+    padding-top: 8px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 0px;
+    color: gray;
+}
+.notification-icon:hover .notification-dropdown {
+    display: block;
+}
+
+.notification-dropdown .notification-content {
+    margin-top: 0px;
+    display: flex;
+    align-items: center;
+    padding: 0px 8px;
+}
+
+.notification-dropdown img.notification-image {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+}
+
+.notification-dropdown .notification-text {
+    vertical-align: middle;
+    padding-left: 10px;
+}
+
 .cart-count {
     position: absolute;
-    top: 10px; /* Điều chỉnh vị trí đứng của cart-count so với bag */
+    top: 9px; /* Điều chỉnh vị trí đứng của cart-count so với bag */
     right: -8px; /* Điều chỉnh vị trí ngang của cart-count so với bag */
     background-color: #ff0000; /* Màu nền của cart-count */
     color: var(--light); /* Màu chữ của cart-count */
     font-weight: 600;
     border-radius: 50%; /* Kết hợp hình dạng hình tròn */
-    padding: 3px 8px; /* Khoảng cách bên trong cart-count */
-    font-size: 12px;
+    padding: 2px 8px; /* Khoảng cách bên trong cart-count */
 }
 
 .icons i:hover {
@@ -499,7 +613,7 @@ body {
 .page-header {
     background:
         linear-gradient(rgba(136, 180, 78, 0.7), rgba(136, 180, 78, 0.7)),
-        url(../img/carousel-1.jpg) center center no-repeat;
+        url(../img/gallery/carousel-1.jpg) center center no-repeat;
     background-size: cover;
 }
 
@@ -554,7 +668,7 @@ body {
 .product {
     background:
         linear-gradient(rgba(136, 180, 78, 0.1), rgba(136, 180, 78, 0.1)),
-        url(../img/product-bg.png) left bottom no-repeat;
+        url(../img/gallery/product-bg.png) left bottom no-repeat;
     background-size: auto;
 }
 
@@ -590,7 +704,7 @@ body {
 .video {
     background:
         linear-gradient(rgba(136, 180, 78, 0.85), rgba(136, 180, 78, 0.85)),
-        url(../img/video-bg.jpg) center center no-repeat;
+        url(../img/gallery/video-bg.jpg) center center no-repeat;
     background-size: cover;
 }
 
@@ -719,7 +833,7 @@ body {
 .testimonial {
     background:
         linear-gradient(rgba(136, 180, 78, 0.85), rgba(136, 180, 78, 0.85)),
-        url(../img/testimonial-bg.jpg) center center no-repeat;
+        url(../img/gallery/testimonial-bg.jpg) center center no-repeat;
     background-size: cover;
 }
 
@@ -758,6 +872,51 @@ body {
 .testimonial-carousel .owl-dot.active {
     width: 30px;
     background: var(--dark);
+}
+
+.profile {
+    margin: 20px auto;
+    background-color: white;
+    border-radius: 5px;
+    height: auto;
+    padding: 10px;
+}
+
+.profile-header {
+    text-align: center;
+}
+
+.horizontal-line {
+    border-top: 1px solid #ccc;
+    margin: 20px 0;
+}
+
+.profile-details {
+    display: flex;
+    justify-content: space-between;
+    padding-left: 40px;
+}
+
+.profile-details .left-column {
+    width: 50%;
+    border-right: 1px solid #ccc;
+}
+
+.profile-details .right-column {
+    width: 45%;
+    text-align: center;
+}
+
+.profile-image {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 30px;
 }
 
 /*** Footer ***/
@@ -825,38 +984,40 @@ body {
 
 /* Pagination navigation formating */
 .pagination {
-  display: flex;
-  justify-content: center;
+    display: flex;
+    justify-content: center;
 }
 
 .pagination ul li {
-  list-style: none;
-  margin: 15px;
-  border-radius: 50%;
-  font-size: 16px;
-  background-color: #E5E8EB;
-  text-align: center;
-  width: 50px;
-  height: 50px;
-  cursor: pointer;
-  transition: background-color 0.3s, color 0.3s;
+    list-style: none;
+    margin: 15px;
+    border-radius: 50%;
+    font-size: 16px;
+    background-color: #e5e8eb;
+    text-align: center;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    transition:
+        background-color 0.3s,
+        color 0.3s;
 }
 
 .pagination ul li a {
-  text-decoration: none;
-  color: #000;
-  display: block;
-  width: 100%;
-  height: 100%;
-  margin-top: 15px;
+    text-decoration: none;
+    color: #000;
+    display: block;
+    width: 100%;
+    height: 100%;
+    margin-top: 15px;
 }
 
 .pagination ul li.active {
-  background-color: #6BE062;
-  color: white;
+    background-color: #6be062;
+    color: white;
 }
 
 .pagination ul li:hover {
-  background-color: #6BE062;
-  color: white;
+    background-color: #6be062;
+    color: white;
 }

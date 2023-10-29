@@ -8,12 +8,7 @@ import com.backend.dream.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,7 +38,7 @@ public class ProductServiceImp implements ProductService {
 
     @Override
     public ProductDTO findById(Long id) {
-        Product product = productRepository.findById(id).orElse(null);
+        Product product = productRepository.getReferenceById(id);
         return product != null ? productMapper.productToProductDTO(product) : null;
     }
 
@@ -61,10 +56,9 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
-    public ProductDTO create(ProductDTO productDTO) {
+    public Product create(ProductDTO productDTO) {
         Product product = productMapper.productDTOToProduct(productDTO);
-        Product createdProduct = productRepository.save(product);
-        return productMapper.productToProductDTO(createdProduct);
+        return productRepository.save(product);
     }
 
     @Override

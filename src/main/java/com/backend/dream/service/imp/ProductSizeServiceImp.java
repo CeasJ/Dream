@@ -18,6 +18,8 @@ import java.util.stream.Collectors;
 public class ProductSizeServiceImp implements ProductSizeService {
     private final ProductSizeRepository productSizeRepository;
     private final SizeRepository sizeRepository;
+    @Autowired
+    private ProductSizeMapper productSizeMapper;
 
     @Autowired
     public ProductSizeServiceImp(ProductSizeRepository productSizeRepository, SizeRepository sizeRepository) {
@@ -33,6 +35,14 @@ public class ProductSizeServiceImp implements ProductSizeService {
                 .collect(Collectors.toList());
 
         return sizeDTOs;
+    }
+
+    @Override
+    public List<ProductSizeDTO> findAll() {
+        List<ProductSize> productSizes = productSizeRepository.findAll();
+        return productSizes.stream()
+                .map(productSizeMapper::productSizeToProductSizeDTO)
+                .collect(Collectors.toList());
     }
 
 }

@@ -3,6 +3,7 @@ package com.backend.dream.service;
 import com.backend.dream.dto.AccountDTO;
 import com.backend.dream.entity.Account;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -22,4 +23,5 @@ public interface AccountService {
     Account updatePassword(Account account, String password);
 
     Long findIDByUsername(String username) throws NoSuchElementException;
+
 }

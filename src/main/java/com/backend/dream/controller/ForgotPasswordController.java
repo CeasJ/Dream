@@ -1,6 +1,6 @@
 package com.backend.dream.controller;
 
-import com.backend.dream.config.EmailService;
+import com.backend.dream.dto.AccountDTO;
 import com.backend.dream.dto.TokenDTO;
 import com.backend.dream.entity.Account;
 import com.backend.dream.entity.Token;
