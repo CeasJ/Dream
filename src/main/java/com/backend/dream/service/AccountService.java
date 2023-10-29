@@ -11,11 +11,11 @@ public interface AccountService {
 
     AccountDTO registerAccount(AccountDTO accountDTO);
 
+    AccountDTO updateAccount(AccountDTO accountDTO);
     public boolean isUsernameExists(String username);
 
     public boolean isEmailExists(String email);
 
-    Account create(Account account);
 
     Account findByUsernameAndEmail(String username, String email);
 

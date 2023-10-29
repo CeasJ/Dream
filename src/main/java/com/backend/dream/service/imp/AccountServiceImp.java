@@ -2,6 +2,7 @@ package com.backend.dream.service.imp;
 
 import com.backend.dream.dto.AccountDTO;
 import com.backend.dream.entity.Account;
+import com.backend.dream.entity.Product;
 import com.backend.dream.mapper.AccountMapper;
 import com.backend.dream.repository.AccountRepository;
 import com.backend.dream.service.AccountService;
@@ -45,10 +46,23 @@ public class AccountServiceImp implements AccountService {
     }
 
     @Override
-    public Account create(Account account) {
-        account.setPassword(passwordEncoder.encode(account.getPassword()));
-        return accountRepository.save(account);
+    public AccountDTO updateAccount(AccountDTO accountDTO) {
+        Optional<Account> existingAccountOptional = accountRepository.findByUsername(accountDTO.getUsername());
+
+        if (existingAccountOptional.isPresent()) {
+            // Cập nhật thông tin hồ sơ từ DTO
+            Account existingAccount = existingAccountOptional.get();
+            existingAccount.setFirstname(accountDTO.getFirstname());
+            existingAccount.setLastname(accountDTO.getLastname());
+            existingAccount.setFullname(accountDTO.getFirstname() + " " + accountDTO.getLastname());
+            // Cập nhật tài khoản
+            Account updatedAccount = accountRepository.save(existingAccount);
+            return accountMapper.accountToAccountDTO(updatedAccount);
+        } else {
+            throw new NoSuchElementException("Không tìm thấy tài khoản với username: " + accountDTO.getUsername());
+        }
     }
+
     public Long findIDByUsername(String username) throws NoSuchElementException {
         return accountRepository.findIdByUsername(username);
     }
