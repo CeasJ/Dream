@@ -35,6 +35,4 @@ public class ProductSizeServiceImp implements ProductSizeService {
         return sizeDTOs;
     }
 
-
-
 }

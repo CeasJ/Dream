@@ -22,11 +22,11 @@ public class HomeController {
         return "/user/home/about";
     }
 
-
     @RequestMapping("/cart")
     public String cart() {
         return "/user/cart/cart";
     }
+
 
     @RequestMapping("/profile")
     public String profile() {

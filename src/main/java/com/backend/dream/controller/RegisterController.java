@@ -1,5 +1,6 @@
 package com.backend.dream.controller;
 
+import com.backend.dream.config.EmailService;
 import com.backend.dream.dto.AccountDTO;
 import com.backend.dream.service.AccountService;
 import com.backend.dream.config.EmailService;
@@ -27,18 +28,19 @@ public class RegisterController {
     }
 
     @PostMapping("/register")
-    public String registerAccount(@RequestParam("password") String password,@RequestParam("confirmPassword") String confirmPassword,
-                                  @Valid AccountDTO accountDTO, BindingResult bindingResult,Model model) {
+    public String registerAccount(@RequestParam("password") String password,
+            @RequestParam("confirmPassword") String confirmPassword,
+            @Valid AccountDTO accountDTO, BindingResult bindingResult, Model model) {
         String username = accountDTO.getUsername();
         String email = accountDTO.getEmail();
         if (accountService.isUsernameExists(username)) {
             model.addAttribute("message", "Username valid");
             return "/user/security/register";
         }
-//        if (accountService.isEmailExists(email)) {
-//            model.addAttribute("message", "Email valid");
-//            return "/user/security/register";
-//        }
+        // if (accountService.isEmailExists(email)) {
+        // model.addAttribute("message", "Email valid");
+        // return "/user/security/register";
+        // }
         if (bindingResult.hasErrors()) {
             model.addAttribute("message", "Please review registration information");
             model.addAttribute("accountDTO", accountDTO);
@@ -46,7 +48,7 @@ public class RegisterController {
         }
         if (password.equals(confirmPassword)) {
             accountService.registerAccount(accountDTO);
-            emailService.sendWelcomeEmail(email,accountDTO.getFullname());
+            emailService.sendWelcomeEmail(email, accountDTO.getFullname());
             return "redirect:/login/form";
         } else {
             model.addAttribute("error", "Wrong Password");

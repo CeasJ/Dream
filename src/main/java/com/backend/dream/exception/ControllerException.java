@@ -12,11 +12,12 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 @ControllerAdvice
 public class ControllerException {
     @ExceptionHandler(NoHandlerFoundException.class)
-    public ResponseEntity<?> noHandlerFoundException(){
+    public ResponseEntity<?> noHandlerFoundException() {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cant find url");
     }
+
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    public ResponseEntity<?> httpRequestMethodNotSupportedException(){
+    public ResponseEntity<?> httpRequestMethodNotSupportedException() {
         return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body("METHOD NOT SUPPORT");
     }
 }

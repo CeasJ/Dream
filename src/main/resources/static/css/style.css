@@ -1,9 +1,15 @@
 /********** Template CSS **********/
 :root {
     --primary: #88b44e;
-    --secondary: #fb9f38;
     --light: #f5f8f2;
     --dark: #252c30;
+    --red: #ff5b5b;
+    --yellow:#f8ab28;
+    --blue: #0d6efd; 
+}
+
+body {
+    font-family: 'Times New Roman', Times, serif;
 }
 
 .back-to-top {
@@ -55,8 +61,8 @@
     color: var(--light);
 }
 
-.btn-secondary,
-.btn-outline-secondary:hover {
+.btn-2,
+.btn-outline-2:hover {
     color: var(--dark);
 }
 
@@ -131,7 +137,7 @@
     color: var(--light); /* Màu chữ của cart-count */
     font-weight: 600;
     border-radius: 50%; /* Kết hợp hình dạng hình tròn */
-    padding: 3px 6px; /* Khoảng cách bên trong cart-count */
+    padding: 3px 8px; /* Khoảng cách bên trong cart-count */
     font-size: 12px;
 }
 
@@ -195,7 +201,7 @@
     text-align: center;
     line-height: 30px;
     cursor: pointer;
-    margin-right: 10px; /* Khoảng cách giữa step-button và step-text */
+    margin: 0 5px; /* Khoảng cách giữa step-button và step-text */
     transition: background-color 0.3s ease;
 }
 .step-button.active {
@@ -215,11 +221,11 @@
 }
 .step-text {
     font-size: 15px;
-    margin: 0;
+    margin: 0 auto;
 }
 .step-text.active-stext {
     font-size: 15px;
-    margin: 0;
+    margin: 0 auto;
     color: var(--primary);
     font-weight: 800;
 }
@@ -227,8 +233,8 @@
 .line {
     background-color: gray; /* Màu của dòng line */
     width: 35%; /* Chiều rộng của dòng line */
-    margin-top: 15px;
     height: 1px;
+    margin-top: 15px;
 }
 .img-cart {
     width: 150px;
@@ -287,6 +293,131 @@
 .sort {
     border: 1px solid gainsboro;
     padding: 10px 20px;
+}
+
+.order-status {
+    font-weight: bold;
+    border-radius: 5px;
+    display: inline-block;
+    padding: 5px 10px;
+    font-size: 14px;
+    width: 110px; /* Đặt chiều rộng cố định cho cả hai trạng thái */
+    text-align: center; /* Căn giữa nội dung trong phần tử */
+    vertical-align: middle;
+}
+
+.status-success {
+    color: var(--primary);
+    border: 1px solid var(--primary);
+}
+
+.status-warning {
+    color: var(--yellow);
+    border: 1px solid var(--yellow);
+}
+
+.status-info {
+    color: var(--dark);
+    border: 1px solid var(--dark);
+}
+.status-blue {
+    color: var(--blue);
+    border: 1px solid var(--blue);
+}
+
+.status-failed {
+    color: var(--red);
+    border: 1px solid var(--red);
+}
+
+.table-hs tbody tr td {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+/* CSS của modal */
+.modal-dialog {
+    width: 50vw; /* Chiều rộng bằng 50% của viewport width */
+    max-width: none; /* Bỏ giới hạn chiều rộng tối đa */
+    height: 100vh; /* Chiều cao bằng 100% của viewport height */
+    margin: 0; /* Bỏ margin */
+    margin-left: auto; /* Đặt margin-left thành auto để modal nằm bên phải */
+}
+
+.modal-content {
+    height: 100%; /* Chiều cao 100% của modal */
+}
+
+.modal-body {
+    overflow-y: auto; /* Cho phép cuộn nếu nội dung quá dài */
+}
+
+.hs-hd {
+    border: 1px solid gainsboro;
+    margin: 10px 0;
+    padding: 0;
+}
+
+.title-hs {
+    border-bottom: 1px solid gainsboro;
+    padding: 10px;
+    margin: 0;
+}
+
+.col-md-6 {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 20px;
+}
+
+.border-right {
+    border-right: 1px solid gainsboro;
+    padding-left: 25px;
+}
+
+.info-pair {
+    padding: 10px 0;
+}
+
+.info-pair h6 {
+    display: inline;
+    white-space: nowrap;
+    margin-right: 5px; /* Khoảng cách giữa h6 và p */
+}
+
+.info-pair p {
+    display: inline;
+}
+
+.table-details th,
+.table-details td {
+    text-align: center; /* Căn giữa nội dung ngang trong các ô của bảng */
+    vertical-align: middle; /* Căn giữa nội dung dọc trong các ô của bảng */
+    padding: 10px 10px;
+}
+
+.img-details {
+    height: 90px;
+    width: 90px;
+}
+/* CSS để di chuyển nút close sang góc bên trái */
+.modal-header .btn-close {
+    position: absolute;
+    left: 15px;
+    top: 30px;
+}
+.modal-header {
+    text-align: center;
+    border: none;
+}
+.modal-title {
+    margin: 0 auto;
+}
+
+.status-info h5,
+.status-info p {
+    display: inline;
+    margin-right: 10px; /* Để tạo khoảng cách giữa các phần tử h5 và p */
 }
 
 @media (max-width: 991.98px) {
