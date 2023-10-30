@@ -8,9 +8,12 @@ import com.backend.dream.entity.ProductSize;
 import java.util.List;
 
 public interface ProductSizeService {
-    public List<SizeDTO> getSizesByProductId(Long productId);
+    List<SizeDTO> getSizesByProductId(Long productId);
 
     List<ProductSizeDTO> findAll();
+
     ProductSize create(ProductSizeDTO productSizeDTO);
+
     void delete(Long id);
+
 }

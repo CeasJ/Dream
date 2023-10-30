@@ -33,12 +33,30 @@ public class ProductDTO {
     private Date createDate = new Date();
 
     public String getFormattedPrice() {
-        DecimalFormat df = new DecimalFormat("#,###₫");
+        DecimalFormat df = new DecimalFormat("#,### ₫");
         return df.format(price);
     }
+
+    private Double discountedPrice = null;
+
+
+    // Display the discounted price in product list page
+    public String getFormattedDiscountedPrice() {
+        DecimalFormat df = new DecimalFormat("#,### ₫");
+        return df.format(discountedPrice);
+    }
+
+
+    private Boolean isDiscounted;
+
 
     private List<SizeDTO> availableSizes;
 
     private Size selectedSize;
+
+    // For save the chosen id size
+    private Long selectedSizeId;
+
+    private String formattedPriceBySize;
 
 }

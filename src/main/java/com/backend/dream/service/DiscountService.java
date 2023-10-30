@@ -5,5 +5,8 @@ import com.backend.dream.dto.DiscountDTO;
 public interface DiscountService {
     DiscountDTO createDiscount(DiscountDTO discount);
     DiscountDTO getDiscountByProductId(Long idProduct);
+
+    Double getDiscountPercentByProductId(Long idProduct);
+
     void deleteDiscount(Long discountId);
 }

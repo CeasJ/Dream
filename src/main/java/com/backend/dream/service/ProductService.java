@@ -28,4 +28,16 @@ public interface ProductService {
     void delete(Long id);
     Page<ProductDTO> findAll(Pageable pageable);
 
+    Page<ProductDTO> findSaleProducts(Pageable pageable);
+
+//    double calculatePrice(Long productId, Long sizeId);
+    //  Display discounted price and original price in product detail and product list
+    double getDiscountedPrice(Long productId);
+
+    double getOriginalProductPrice(Long productId);
+
+    double getProductPriceBySize(Long productId, Long sizeId);
+
+    public double getDiscountPercentByProductId(Long productId);
+
 }
