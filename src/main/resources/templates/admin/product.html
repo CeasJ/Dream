@@ -425,7 +425,9 @@
                                                 <tbody>
                                                 <tr ng-repeat="item in items">
                                                     <td>{{item.id}}</td>
-                                                    <td>{{item.image}}</td>
+                                                    <td>
+                                                        <img class="img-fluid" ng-src="{{'/img/gallery/' + item.image}}" style="max-width: 200px; max-height: 300px;">
+                                                    </td>
                                                     <td>{{item.name}}</td>
                                                     <td>{{item.price}}</td>
                                                     <td>{{item.describe}}</td>
@@ -471,7 +473,7 @@
                                          style="display: flex; justify-content: center; align-items: center;">
                                         <img class="img-fluid" id="imagePreview"
                                              ng-src="{{'/img/gallery/'+ form.image}}"
-                                             style="max-width: 200px; max-height: 300px;">
+                                             style="max-width: 500px; max-height: 400px;">
                                     </div>
                                     <div class="col-md-6">
                                         <div class="row">

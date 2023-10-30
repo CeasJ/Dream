@@ -65,5 +65,18 @@ public class AccountServiceImp implements AccountService {
         accountRepository.save(account);
         return account;
     }
+    @Override
+    public List<Account> getStaff() {
+        return accountRepository.getStaff();
+    }
 
+    @Override
+    public List<Account> findALL() {
+        return accountRepository.findAll();
+    }
+
+    @Override
+    public Account findById(String username) {
+        return accountRepository.findById(Long.valueOf(username)).get();
+    }
 }
