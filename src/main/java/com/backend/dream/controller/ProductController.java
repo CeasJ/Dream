@@ -7,19 +7,10 @@ import com.backend.dream.entity.Product;
 import com.backend.dream.mapper.ProductMapper;
 import com.backend.dream.repository.ProductRepository;
 import com.backend.dream.service.CategoryService;
-import com.backend.dream.entity.Product;
-import com.backend.dream.mapper.ProductMapper;
-import com.backend.dream.repository.ProductRepository;
-import com.backend.dream.service.CategoryService;
+import com.backend.dream.service.DiscountService;
 import com.backend.dream.service.ProductService;
 import com.backend.dream.service.ProductSizeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -31,11 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.text.DecimalFormat;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Controller
 public class ProductController {
@@ -52,6 +39,9 @@ public class ProductController {
 
     @Autowired
     CategoryService categoryService;
+
+    @Autowired
+    DiscountService discountService;
 
     @Autowired
     public ProductController(ProductService productService, ProductSizeService productSizeService) {
@@ -172,7 +162,7 @@ public class ProductController {
             if (sizeId != null) {
                 double productPriceBySize = productService.getProductPriceBySize(product.getId(), sizeId);
                 product.setSelectedSizeId(sizeId);
-                product.setPrice(productPriceBySize); // Đảm bảo rằng bạn đã có phương thức formatPrice để định dạng giá
+                product.setPrice(productPriceBySize);
             }
 
             double discountedPrice = productService.getDiscountedPrice(product.getId());
@@ -184,12 +174,36 @@ public class ProductController {
                 product.setIsDiscounted(false);
             }
 
+            // Get the discount percent
+            DiscountDTO discount = discountService.getDiscountByProductId(product.getId());
+            Double discountPercent = (discount != null) ? discount.getPercent() : 0.0;
+
+            model.addAttribute("discountPercent", discountPercent);
             model.addAttribute("product", product);
             model.addAttribute("availableSizes", availableSizes);
             return "user/product/detail";
         } catch (UnsupportedEncodingException e) {
             return "error";
         }
+    }
+
+    @GetMapping("/getProductPriceBySize")
+    public ResponseEntity<Double> getProductPriceBySize(
+            @RequestParam("productId") Long productId,
+            @RequestParam("sizeId") Long sizeId) {
+        try {
+            double productPrice = productService.getProductPriceBySize(productId, sizeId);
+            return ResponseEntity.ok(productPrice);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(-1.0);
+        }
+    }
+
+    @GetMapping("/getDiscountPercentByProductId")
+    public ResponseEntity<Double> getDiscountPercentByProductId(@RequestParam("productId") Long productId) {
+        // Gọi phương thức từ service để lấy discountPercent dựa trên productId
+        double discountPercent = productService.getDiscountPercentByProductId(productId);
+        return ResponseEntity.ok(discountPercent);
     }
 
 

@@ -40,4 +40,18 @@ public class DiscountServiceImp implements DiscountService {
         return optionalDiscount.map(discountMapper::discountToDiscountDTO).orElse(null);
     }
 
+
+    @Override
+    public Double getDiscountPercentByProductId(Long idProduct) {
+        DiscountDTO discountDTO = getDiscountByProductId(idProduct);
+        if (discountDTO != null) {
+            return discountDTO.getPercent();
+        }
+        return 0.0;
+    }
+
+
+
+
+
 }

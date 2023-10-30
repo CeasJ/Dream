@@ -98,9 +98,6 @@
 
 
 
-// Change the price according to the chosen price of the product
-
-
 // Select first child of size radio buttons
 document.addEventListener("DOMContentLoaded", function () {
     var sizeRadioButtons = document.querySelectorAll('input[type=radio][name=selectedSize]');
@@ -110,58 +107,74 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
+// Size choosing event
+var sizeRadioButtons = document.querySelectorAll('input[type=radio][name=selectedSize]');
+sizeRadioButtons.forEach((radio) => {
+    radio.addEventListener('change', function () {
+        var productId = this.dataset.productId;
+        var sizeId = this.value;
+        getProductPrice(productId, sizeId);
+    });
+});
 
+// In case of a product without a discount
+function getProductPrice(productId, sizeId) {
+    // Fetch product price based on productId and sizeId
+    fetch(`/getProductPriceBySize?productId=${productId}&sizeId=${sizeId}`)
+        .then(response => response.json())
+        .then(data => {
+            var priceElement = document.getElementById(`product-price${productId}`);
+            var discountedPriceElement = document.getElementById(`product-discountedPrice${productId}`);
 
-// Change price according to the chosen size
-//document.addEventListener("DOMContentLoaded", function () {
-//    var sizeRadioButtons = document.querySelectorAll('input[type=radio][name=selectedSize]');
-//    var priceElement = document.querySelector('.product-price');
-//    var priceDiscountedElement = document.querySelector('.product-discountedPrice');
-//    var discountedPriceText = priceDiscountedElement.textContent.replace(',', ''); // Loại bỏ dấu phẩy
-//    var originalPrice = parseFloat(priceElement.getAttribute('data-original-price'));
-//
-//    sizeRadioButtons.forEach(function (radio) {
-//        radio.addEventListener('change', function () {
-//            updatePrice();
-//        });
-//    });
-//
-//    function updatePrice() {
-//        var selectedSize = document.querySelector('input[type=radio][name=selectedSize]:checked');
-//        var isDiscounted = '${product.isDiscounted}'; // Lấy giá trị isDiscounted từ Thymeleaf
-//
-//        if (selectedSize) {
-//            var sizeValue = selectedSize.getAttribute('data-size-value');
-//            var newSizePrice = originalPrice;
-//
-//            if (sizeValue === 'M') {
-//                newSizePrice += 5000;
-//            } else if (sizeValue === 'L') {
-//                newSizePrice += 10000;
-//            }
-//
-//            // Cập nhật giá theo kích thước cho priceElement
-//            priceElement.textContent = formatPrice(newSizePrice);
-//            console.log(priceElement.textContent);
-//            console.log(newSizePrice);
-//            if (isDiscounted) {
-//                // Nếu sản phẩm được giảm giá, cập nhật giá giảm giá
-//                if (priceDiscountedElement) {
-//                    // Giá giảm giá phải cộng thêm số tiền,
-//                    var discountedPrice = (newSizePrice - parseFloat(discountedPriceText));
-//                    console.log(originalPrice);
-//                    console.log(parseFloat(discountedPriceText));
-//                    console.log(newSizePrice);
-//                    console.log(discountedPrice);
-//
-//                    priceDiscountedElement.textContent = formatPrice(discountedPrice);
-//                }
-//            }
-//        }
-//    }
-//
-//    function formatPrice(price) {
-//        return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
-//    }
-//});
-//
+            if (data >= 0) {
+                // Get discountPercent from service
+                getDiscountPercent(productId, data, priceElement, discountedPriceElement);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
+
+// Price format function
+function formatPrice(price) {
+    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
+}
+
+function getDiscountPercent(productId, sizePrice, priceElement, discountedPriceElement) {
+    // Fetch discountPercent from service
+    fetch(`/getDiscountPercentByProductId?productId=${productId}`)
+        .then(response => response.json())
+        .then(data => {
+            var discountPercent = parseFloat(data);
+
+            if (!isNaN(discountPercent) && discountPercent > 0) {
+                // Calculate discounted price
+                var discountedPrice = calculateDiscountedPrice(sizePrice, discountPercent);
+
+                // Display original price in del
+//                priceElement.textContent = formatPrice(sizePrice);
+
+                // Display the discounted price in h3
+                if (discountedPriceElement) {
+                    discountedPriceElement.textContent = formatPrice(sizePrice);
+                }
+            } else {
+                // If no discount, display the original price in h3
+                priceElement.textContent = formatPrice(sizePrice);
+
+                // Clear the discounted price if no discount
+                if (discountedPriceElement) {
+                    discountedPriceElement.textContent = '';
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
+
+function calculateDiscountedPrice(originalPrice, discountPercent) {
+    console.log(originalPrice);
+    return originalPrice - (originalPrice * discountPercent); // Calculate the discounted price based on the discount percentage
+}

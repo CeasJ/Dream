@@ -3,8 +3,10 @@ package com.backend.dream.service.imp;
 import com.backend.dream.dto.DiscountDTO;
 import com.backend.dream.dto.ProductDTO;
 import com.backend.dream.entity.Product;
+import com.backend.dream.entity.ProductSize;
 import com.backend.dream.mapper.ProductMapper;
 import com.backend.dream.repository.ProductRepository;
+import com.backend.dream.repository.ProductSizeRepository;
 import com.backend.dream.service.DiscountService;
 import com.backend.dream.service.ProductService;
 import com.backend.dream.service.ProductSizeService;
@@ -24,6 +26,9 @@ public class ProductServiceImp implements ProductService {
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
 
+    private final ProductSizeRepository productSizeRepository;
+
+
     private final Logger logger = LoggerFactory.getLogger(ProductService.class);
 
     @Autowired
@@ -34,9 +39,11 @@ public class ProductServiceImp implements ProductService {
 
 
     @Autowired
-    public ProductServiceImp(ProductRepository productRepository, ProductMapper productMapper) {
+    public ProductServiceImp(ProductRepository productRepository, ProductMapper productMapper, ProductSizeRepository productSizeRepository  ) {
         this.productRepository = productRepository;
         this.productMapper = productMapper;
+        this.productSizeRepository = productSizeRepository;
+
     }
 
     @Override
@@ -130,13 +137,41 @@ public class ProductServiceImp implements ProductService {
         if (product.isPresent()) {
             return product.get().getPrice();
         }
-        return 0.0; // Handle the case where the product isn't found
+        return 0.0;
     }
-
 
     @Override
     public double getProductPriceBySize(Long productId, Long sizeId) {
-        return productRepository.findProductPriceBySize(productId, sizeId);
+        double originalPrice = getOriginalProductPrice(productId);
 
+        // Fetch the size-specific price from the repository
+        Optional<ProductSize> productSize = productSizeRepository.findByProductIdAndSizeId(productId, sizeId);
+
+        if (productSize.isPresent()) {
+            double sizeSpecificPrice = productSize.get().getPriceProduct_Size();
+            DiscountDTO discount = discountService.getDiscountByProductId(productId);
+
+            if (discount != null) {
+                double discountPercent = discount.getPercent();
+                double discountedPrice = sizeSpecificPrice - (sizeSpecificPrice * discountPercent);
+                return discountedPrice;
+            } else {
+                return sizeSpecificPrice;
+            }
+        } else {
+            // Handle the case where the size-specific price is not found
+            // You can return a default value or throw an exception as needed
+            return originalPrice; // Return the original price if the size-specific price is not found
+        }
     }
+
+    public double getDiscountPercentByProductId(Long productId) {
+        DiscountDTO discountDTO = discountService.getDiscountByProductId(productId);
+        if (discountDTO != null) {
+            return discountDTO.getPercent();
+        }
+        return 0.0;
+    }
+
+
 }
