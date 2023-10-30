@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -64,5 +65,18 @@ public class AccountServiceImp implements AccountService {
         accountRepository.save(account);
         return account;
     }
+    @Override
+    public List<Account> getStaff() {
+        return accountRepository.getStaff();
+    }
 
+    @Override
+    public List<Account> findALL() {
+        return accountRepository.findAll();
+    }
+
+    @Override
+    public Account findById(String username) {
+        return accountRepository.findById(Long.valueOf(username)).get();
+    }
 }

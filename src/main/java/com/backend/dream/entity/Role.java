@@ -20,9 +20,7 @@ public class Role implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String name;
-
     @JsonIgnore
     @OneToMany(mappedBy = "role")
     List<Authority> authority;

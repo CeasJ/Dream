@@ -37,7 +37,7 @@ public class TokenServiceImp implements TokenService {
 		token.setTokenType("Password");
 		token.setAccount(account);
 
-		LocalDateTime expiry_date = LocalDateTime.now().plusSeconds(60);
+		LocalDateTime expiry_date = LocalDateTime.now().plusMinutes(5);
 		token.setExpiredDate(expiry_date);
 		tokenRepository.save(token);
 		return tokenMapper.tokenToTokenDTO(token);
