@@ -29,6 +29,8 @@ public class OrderDetailDTO {
 
     private String order_address;
 
+    private Long order_status;
+
     private String product_image;
 
     private String product_name;

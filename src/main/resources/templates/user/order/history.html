@@ -196,7 +196,7 @@
                                     <table class="table table-bordered table-details">
                                         <thead class="table-dark">
                                             <tr>
-                                                <th>Mã sản phẩm</th>
+                                                <th>No.</th>
                                                 <th>Hình ảnh</th>
                                                 <th>Tên sản phẩm</th>
                                                 <th>Số lượng</th>
@@ -206,17 +206,17 @@
                                         </thead>
                                         <tbody>
                                             <tr ng-repeat="orderDetail in listOrder">
-                                                <td>{{orderDetail.id_product}}</td>
-                                                <td><img ng-src="{{'/img/' + orderDetail.product_image}}" class="img-fluid img-details"></td>
+                                                <td>{{$index + 1}}</td>
+                                                <td><img ng-src="{{'/img/gallery/' + orderDetail.product_image}}" class="img-fluid img-details"></td>
                                                 <td>{{orderDetail.product_name}}</td>
                                                 <td>{{orderDetail.quantity}}</td>
                                                 <td>{{orderDetail.price}} </td>
-                                                <td>{{orderDetail.quantity * orderDetail.price}} </td>
+                                                <td>{{orderDetail.quantity * orderDetail.price}} đ</td>
                                             </tr>
                                             <tr>
                                                 <td colspan="5" class="text-end"><strong>Tạm
                                                         tính:</strong></td>
-                                                <td>{{getSubTotal()}}</td>
+                                                <td>{{getSubTotal() | number : 2}} đ</td>
                                             </tr>
                                             <tr>
                                                 <td colspan="5" class="text-end"><strong>Chi phí vận
@@ -227,7 +227,7 @@
                                             <tr>
                                                 <td colspan="5" class="text-end"><strong>Tổng thanh
                                                         toán:</strong></td>
-                                                <th class="text-success">{{getTotal()}}</th>
+                                                <th class="text-success">{{getTotal() | number : 2}}</th>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -235,10 +235,35 @@
                             </div>
                         </div>
                         <div class="row mt-4">
-                            <div class="status-info">
+
+                            <div ng-if="listOrder[0].order_status === 1 " class="status-info">
+                                <h5>Tình trạng đơn hàng:</h5>
+                                <p class="text-infor" style="font-size: 18px; font-weight: 500;">
+                                    Đơn hàng đã được đặt.</p>
+                            </div>
+
+                            <div ng-if="listOrder[0].order_status === 2" class="status-blue">
+                                <h5>Tình trạng đơn hàng:</h5>
+                                <p class="text-primary" style="font-size: 18px; font-weight: 500;">
+                                    Đơn hàng đã được xác nhận.</p>
+                            </div>
+
+                            <div ng-if="listOrder[0].order_status === 3" class="status-warning">
+                                <h5>Tình trạng đơn hàng:</h5>
+                                <p class="text-warning" style="font-size: 18px; font-weight: 500;">
+                                    Đơn hàng đang được giao.</p>
+                            </div>
+
+                            <div ng-if="listOrder[0].order_status === 4" class="status-success">
                                 <h5>Tình trạng đơn hàng:</h5>
                                 <p class="text-success" style="font-size: 18px; font-weight: 500;">
                                     Đơn hàng đã được giao thành công.</p>
+                            </div>
+
+                            <div ng-if="listOrder[0].order_status === 5" class="status-failed">
+                                <h5>Tình trạng đơn hàng:</h5>
+                                <p class="text-danger" style="font-size: 18px; font-weight: 500;">
+                                    Đơn hàng đã bị hủy.</p>
                             </div>
                         </div>
                     </div>

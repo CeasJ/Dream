@@ -10,7 +10,7 @@
   <meta content="" name="description">
   <!-- Favicon -->
 
-  <link href="img/logo.png" rel="icon">
+  <link href="/img/gallery/logo.png" rel="icon">
 
   <!-- Google Web Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -94,19 +94,19 @@
     <div class="main-cart">
       <div class="row">
         <div class="col-md-9">
-<!--          <div class="container-fluid cart-0">-->
-<!--            <img class="img-cart" src="/img/cart-0.png"></img>-->
-<!--            <h5>Không có sản phẩm trong giỏ hàng</h5>-->
-<!--            <a th:href="@{|/store|}">-->
-<!--              <button class="btn btn-danger mt-3" style="padding: 8px 18px;">-->
-<!--                <h6 style="color: white;">Tiếp tục mua sắm</h6>-->
-<!--              </button>-->
-<!--            </a>-->
-<!--          </div>-->
+          <div class="container-fluid cart-0">
+            <img class="img-cart" src="/img/gallery/cart-0.png"></img>
+            <h5>Không có sản phẩm trong giỏ hàng</h5>
+            <a th:href="@{|/store|}">
+              <button class="btn btn-danger mt-3" style="padding: 8px 18px;">
+                <h6 style="color: white;">Tiếp tục mua sắm</h6>
+              </button>
+            </a>
+          </div>
           <div class="container-fluid cart-1">
             <div class="row product-row" ng-repeat="product in cart.items">
               <div class="col-md-2">
-                <img ng-src="{{'/img/' + product.image}}" class="img-fluid img-product">
+                <img ng-src="{{'/img/gallery/' + product.image}}" class="img-fluid img-product">
               </div>
               <div class="col-md-3 pt-4">
                 <h6> {{product.name}} </h6>
@@ -208,7 +208,7 @@
           </div>
         </div>
         <div class="container-fluid cart-3 mx-auto" style="display: none;">
-          <img class="img-cart" src="/img/cart-0.png">
+          <img class="img-cart" src="/img/gallery/cart-0.png">
           <h5>Đơn hàng của bạn đã được xử lý</h5>
           <a th:href="@{|/store|}">
             <button class="btn btn-danger mt-3" style="padding: 8px 18px;">

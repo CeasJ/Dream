@@ -27,15 +27,15 @@
   });
 
   // Show .cart-0 if cartCount is less than or equal to 0, otherwise show .cart-1
-  // var cartCount = parseInt($("#cartCount").text());
+   var cartCount = parseInt($("#cartCount").text());
 
-  // if (cartCount <= 0) {
-  //   $(".cart-0").show();
-  //   $(".cart-1").hide();
-  // } else {
-  //   $(".cart-0").hide();
-  //   $(".cart-1").show();
-  // }
+   if (cartCount <= 0) {
+     $(".cart-0").show();
+     $(".cart-1").hide();
+   } else {
+     $(".cart-0").hide();
+     $(".cart-1").show();
+   }
 
   $("#step-1").addClass("active-stext");
   // Show infor-cart and hide cart-0, cart-1 on Buy button click

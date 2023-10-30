@@ -18,7 +18,7 @@ public class ProductRestController {
     @Autowired
     private ProductService productService;
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ProductDTO getOne(@PathVariable("id") Long id) {
         return productService.findById(id);
     }
