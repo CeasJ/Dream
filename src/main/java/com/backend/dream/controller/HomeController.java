@@ -31,4 +31,14 @@ public class HomeController {
     public String profile() {
         return "/user/infor/profile";
     }
+
+    @RequestMapping("/changePassword")
+    public String changePassword() {
+        return "/user/infor/changePassword";
+    }
+
+    @RequestMapping("/voucher")
+    public String voucher() {
+        return "/user/voucher/voucher";
+    }
 }
