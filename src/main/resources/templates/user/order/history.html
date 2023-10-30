@@ -91,19 +91,19 @@
                         <td th:text="${order.createDate}"></td>
                         <td th:text="${order.formattedPrice}"></td>
                         <th:block th:if="${order.status == 1}">
-                        <td><span class="order-status status-info">Đã đặt hàng</span></td>
+                            <td><span class="order-status status-info">Đã đặt hàng</span></td>
                         </th:block>
                         <th:block th:if="${order.status == 2}">
-                        <td><span class="order-status status-blue">Đã xác nhận</span></td>
+                            <td><span class="order-status status-blue">Đã xác nhận</span></td>
                         </th:block>
                         <th:block th:if="${order.status == 3}">
-                        <td><span class="order-status status-warning">Đang giao</span></td>
+                            <td><span class="order-status status-warning">Đang giao</span></td>
                         </th:block>
                         <th:block th:if="${order.status == 4}">
-                        <td><span class="order-status status-success">Đã giao hàng</span></td>
+                            <td><span class="order-status status-success">Đã giao hàng</span></td>
                         </th:block>
                         <th:block th:if="${order.status == 5}">
-                        <td><span class="order-status status-failed">Đã hủy</span></td>
+                            <td><span class="order-status status-failed">Đã hủy</span></td>
                         </th:block>
                         <td>
                             <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#orderModal" th:attr="ng-click=@{|selectOrder(${order.id})|}">

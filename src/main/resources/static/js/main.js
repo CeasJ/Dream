@@ -113,7 +113,7 @@ var urlParams = new URLSearchParams(window.location.search);
 var sortOption = urlParams.get("sortOption");
 var isSearchPage = window.location.pathname === "/search"; // Check if this is the search page
 
-if(isSearchPage){
+if (isSearchPage) {
     var selectElement = document.getElementById("sortByPrice");
     selectElement.value = "0";
 }
@@ -184,7 +184,7 @@ document.addEventListener("DOMContentLoaded", function () {
 var urlParams = new URLSearchParams(window.location.search);
 var categoryId = urlParams.get("categoryId");
 var productGroupSelect = document.getElementById("productGroup");
-if(isSearchPage){
+if (isSearchPage) {
     productGroupSelect.value = "0";
 }
 
@@ -193,7 +193,7 @@ if (categoryId) {
     productGroupSelect.value = categoryId;
 }
 
-productGroupSelect.addEventListener("change", function() {
+productGroupSelect.addEventListener("change", function () {
     var selectedCategoryId = this.value;
     localStorage.setItem("selectedCategoryId", selectedCategoryId);
     updateURLAndReload();
@@ -236,34 +236,35 @@ function updateURLAndReload() {
 
 // Pagination features
 document.addEventListener("DOMContentLoaded", function () {
-        // Get the current URL and parse the query parameters
-        var urlParams = new URLSearchParams(window.location.search);
-        var currentPage = urlParams.get("page");
+    // Get the current URL and parse the query parameters
+    var urlParams = new URLSearchParams(window.location.search);
+    var currentPage = urlParams.get("page");
 
-        // Find all pagination links
-        var paginationLinks = document.querySelectorAll(".pagination a");
+    // Find all pagination links
+    var paginationLinks = document.querySelectorAll(".pagination a");
 
-        // Add a click event listener to each pagination link
-        paginationLinks.forEach(function (link) {
-            link.addEventListener("click", function (event) {
-                event.preventDefault();
+    // Add a click event listener to each pagination link
+    paginationLinks.forEach(function (link) {
+        link.addEventListener("click", function (event) {
+            event.preventDefault();
 
-                // Get the target page from the pagination link
-                var targetPage = link.getAttribute("data-page");
+            // Get the target page from the pagination link
+            var targetPage = link.getAttribute("data-page");
 
-                // Update the 'page' parameter in the URL
-                urlParams.set("page", targetPage);
+            // Update the 'page' parameter in the URL
+            urlParams.set("page", targetPage);
 
-                // Replace the current URL with the updated URL
-                window.location.href = window.location.pathname + "?" + urlParams.toString();
-            });
-        });
-
-        // Set the active class to the current page
-        paginationLinks.forEach(function (link) {
-            var linkPage = link.getAttribute("data-page");
-            if (linkPage === currentPage) {
-                link.classList.add("active");
-            }
+            // Replace the current URL with the updated URL
+            window.location.href = window.location.pathname + "?" + urlParams.toString();
         });
     });
+
+    // Set the active class to the current page
+    paginationLinks.forEach(function (link) {
+        var linkPage = link.getAttribute("data-page");
+        if (linkPage === currentPage) {
+            link.classList.add("active");
+        }
+    });
+});
+
