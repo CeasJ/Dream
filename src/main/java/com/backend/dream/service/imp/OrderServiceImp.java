@@ -2,6 +2,7 @@ package com.backend.dream.service.imp;
 
 import com.backend.dream.dto.OrderDTO;
 import com.backend.dream.dto.OrderDetailDTO;
+import com.backend.dream.entity.OrderDetails;
 import com.backend.dream.entity.Orders;
 import com.backend.dream.entity.Product;
 import com.backend.dream.mapper.OrderDetailMapper;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;

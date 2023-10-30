@@ -1,10 +1,15 @@
 package com.backend.dream.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Date;
+
+
 @Getter
 @Setter
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class OrderDetailDTO {
     private Long id;
 
@@ -15,4 +20,17 @@ public class OrderDetailDTO {
     private Long id_order;
 
     private Long id_product;
+
+    private String account_fullname;
+
+    private String account_phone;
+
+    private Date order_createDate;
+
+    private String order_address;
+
+    private String product_image;
+
+    private String product_name;
+
 }

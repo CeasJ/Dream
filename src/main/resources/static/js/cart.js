@@ -78,21 +78,7 @@
   });
 
   
-  // let isSuccess = true;
-  
-  // $("#completeButton").click(function () {
-  //     if(isSuccess) {
-  //       $("#completeButton").click(function () {
-  //         $(".cart-3").show();
-  //         $(".cart-0, .cart-1, .form-buy, .infor-cart").hide();
-  //         $("#number-3").addClass("active");
-  //         $("#line-2").addClass("active-line");
-  //         $("#step-3").addClass("active-stext");
-  //       });
-  //   } else {
-     
-  //   }
-  // });
+ 
 
 })(jQuery);
 
@@ -107,6 +93,34 @@ app.controller("ctrl", function ($scope, $http,$timeout) {
   $scope.selectedDistrict = "";
   $scope.selectedWard = "";
   $scope.result = "";
+  $scope.orderDetails = {};
+  $scope.listOrder = [];
+
+  $scope.selectOrder = function(orderID){
+    this.selectedOrderId = orderID;
+    $http.get("/detail/" + this.selectedOrderId).then(response => {
+      if (response.data) {
+        $scope.listOrder = response.data;
+        console.log(this.listOrder);
+      } 
+   }).catch(error => {
+    console.log(error);
+   });
+  };
+  
+  $scope.getSubTotal = function(){
+    let subTotal = 0;
+    angular.forEach($scope.listOrder,function(orderDetail){
+      subTotal+= orderDetail.quantity * orderDetail.price;
+    });
+    return subTotal;
+  };
+
+  $scope.getTotal = function(){
+    let subTotal = $scope.getSubTotal();
+    let shippingCost = 20000;
+    return subTotal + shippingCost;
+  };
 
   $http
     .get("https://provinces.open-api.vn/api/?depth=1")
@@ -314,7 +328,8 @@ app.controller("ctrl", function ($scope, $http,$timeout) {
         $scope.order.purchaseOrder();
         $scope.completeButtonClicked();
     } else if ($scope.selectedPaymentMethod === "vnpay") {
-        location.href = "/vnpay";
+      $scope.order.purchaseOrder();  
+      location.href = "/vnpay";
     } else if ($scope.selectedPaymentMethod === "paypal") {
         location.href = "/paypal";
         $scope.completeButtonClicked();
