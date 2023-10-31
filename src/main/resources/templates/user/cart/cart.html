@@ -55,7 +55,6 @@
   <div th:replace="~{/user/component/header.html}"></div>
   <!-- Navbar End -->
   <main>
-
     <!-- Page Header Start -->
     <div class="container-fluid page-header py-5 wow fadeIn" data-wow-delay="0.1s">
       <div class="container text-center py-5">
@@ -69,7 +68,6 @@
       </div>
     </div>
     <!-- Page Header End -->
-
     <!--Cart Start  -->
     <div class="container cart">
       <div class="process-step">
@@ -135,17 +133,26 @@
           <div class="col-md-3 form-buy">
             <div class="container-fluid"
               style="background-color: white; height: auto; border-radius: 5px; padding: 20px 10px; position: relative;">
-              <p class="title-prc">Tổng số lượng <span style="float: right; font-weight: bold;">{{cart.count}}</span>
+              <p class="title-prc">Tổng số lượng <span style="float: right; font-weight: bold; font-size: 16px;">
+                  {{cart.count}}</span>
               </p>
               </p>
-              <p class="title-prc">Tiền vận chuyển <span style="float: right; font-weight: bold;">12.00</span>
+              <p class="title-prc">Tiền vận chuyển <span
+                  style="float: right; font-weight: bold; font-size: 16px;">30,000 VNĐ</span>
               </p>
+              <p class="title-prc">Áp dụng Voucher
+                <span class="text-danger" style="float: right; font-weight: bold; font-size: 16px;">- 12,000 VNĐ</span>
+              </p>
+              <div class="input-group mb-4 mt-3">
+                <input type="text" class="form-control" id="discountCode" placeholder="Nhập mã giảm giá">
+                <button class="btn btn-secondary text-white" id="applyDiscountBtn">Áp dụng</button>
+              </div>
               <hr>
               <p class="title-prc">Tổng tiền <span class="price" style="float: right;">{{cart.amount | number : 0}}
                   VND</span></p>
               <hr>
               <div class="text-center"><button class="btn btn-danger btn-buy" id="buyButton"
-                  ng-disabled="cart.count === 0">Mua hàng {{cart.count}}</button></div>
+                  ng-disabled="cart.count === 0">Mua hàng: {{cart.count}}</button></div>
             </div>
           </div>
           <div class="container-fluid infor-cart mx-auto" style="display: none;">
@@ -232,6 +239,19 @@
       </div>
     </div>
     <!--Cart End  -->
+
+    <!-- Thanh toast hiển thị thông báo -->
+    <div class="toast position-fixed bottom-0 start-0" id="successToast" role="alert" aria-live="assertive"
+      aria-atomic="true">
+      <div class="toast-header">
+        <strong class="me-auto fw-bold text-dark">Dream Team</strong>
+        <small class="text-muted">just now</small>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Đóng"></button>
+      </div>
+      <div class="toast-body text-success text-center fw-bold" style="font-size: 17px;">
+        Áp dụng mã thành công
+      </div>
+    </div>
 
     <!-- Back to Top -->
     <!-- Footer Start -->

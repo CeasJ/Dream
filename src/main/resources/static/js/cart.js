@@ -83,7 +83,6 @@
     }
   });
 
-
   // let isSuccess = true;
 
   // $("#completeButton").click(function () {
@@ -99,6 +98,13 @@
 
   //   }
   // });
+
+  $(document).ready(function () {
+    $("#applyDiscountBtn").click(function () {
+      var toast = new bootstrap.Toast(document.getElementById('successToast'));
+      toast.show();
+    });
+  });
 
 })(jQuery);
 
