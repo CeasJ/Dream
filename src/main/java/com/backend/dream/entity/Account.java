@@ -26,6 +26,7 @@ public class Account implements Serializable {
 
     private String password;
 
+    @Column(unique = false)
     private String avatar;
 
     private String firstname;
@@ -60,4 +61,5 @@ public class Account implements Serializable {
         this.username = username;
         this.password = password;
     }
+
 }

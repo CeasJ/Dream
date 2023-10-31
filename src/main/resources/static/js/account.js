@@ -1,21 +1,28 @@
-const app = angular.module('app', []);
+const app = angular.module("profile", []);
+app.controller("profile_ctrl", function ($scope, $http) {
+  $scope.account = {};
 
-app.controller('ctrl', function($scope, $http) {
-	let username = $("#username").text().trim();
-    $scope.account = {};  // Khởi tạo biến account
+  let idString = $("#id_account").text().trim();
+  let id_account = parseInt(idString);
+  $scope.initialize = function () {
+    console.log(id_account);
+    $http.get(`/rest/profile/${id_account}`).then(resp => {
+      $scope.account = resp.data;
+      console.log($scope.account)
+    });
+  }
 
-    $scope.updateAccount = function() {
-        // Tạo một bản sao của dữ liệu tài khoản để tránh thay đổi gốc
-        let updatedAccount = angular.copy($scope.account);
+  $scope.initialize();
 
-        $http.put(`/api/profile/${updatedAccount.username}`, updatedAccount)
-            .then(function(response) {
-                // Xử lý thành công
-                $scope.account = angular.copy(updatedAccount);  // Cập nhật biến $scope.account
-                alert("Cập nhật thành công");
-            })
-            .catch(function(error) {
-                alert("Cập nhật thất bại");
-            });
+  $scope.updateAccount = function () {
+    let account = angular.copy($scope.account);
+    if (account.id) {
+      $http.put(`/rest/profile/${id_account}`, account).then(resp => {
+        $scope.account = angular.copy(account);
+        alert("Update success");
+      }).catch(err => {
+      });
     }
+  }
+
 });

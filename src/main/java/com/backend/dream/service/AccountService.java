@@ -24,4 +24,5 @@ public interface AccountService {
 
     Long findIDByUsername(String username) throws NoSuchElementException;
 
+    AccountDTO findById(Long id);
 }

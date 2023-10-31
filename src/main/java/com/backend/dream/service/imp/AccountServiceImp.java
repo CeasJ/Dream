@@ -48,25 +48,23 @@ public class AccountServiceImp implements AccountService {
 
     @Override
     public AccountDTO updateAccount(AccountDTO accountDTO) {
-        Optional<Account> existingAccountOptional = accountRepository.findByUsername(accountDTO.getUsername());
-
-        if (existingAccountOptional.isPresent()) {
-            // Cập nhật thông tin hồ sơ từ DTO
-            Account existingAccount = existingAccountOptional.get();
-            existingAccount.setFirstname(accountDTO.getFirstname());
-            existingAccount.setLastname(accountDTO.getLastname());
-            existingAccount.setFullname(accountDTO.getFirstname() + " " + accountDTO.getLastname());
-            // Cập nhật tài khoản
-            Account updatedAccount = accountRepository.save(existingAccount);
-            return accountMapper.accountToAccountDTO(updatedAccount);
-        } else {
-            throw new NoSuchElementException("Không tìm thấy tài khoản với username: " + accountDTO.getUsername());
-        }
+        Account account = accountMapper.accountDTOToAccount(accountDTO);
+        account.setFullname(accountDTO.getFirstname() + " " + accountDTO.getLastname());
+        Account updatedAccount = accountRepository.save(account);
+        return accountMapper.accountToAccountDTO(updatedAccount);
     }
+
 
     public Long findIDByUsername(String username) throws NoSuchElementException {
         return accountRepository.findIdByUsername(username);
     }
+
+    @Override
+    public AccountDTO findById(Long id) {
+        Optional<Account> accountOptional = accountRepository.findById(id);
+        return accountOptional.isPresent() ? accountMapper.accountToAccountDTO(accountOptional.get()) : null;
+    }
+
 
     @Override
     public Account findByUsernameAndEmail(String username, String email) {
