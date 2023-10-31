@@ -7,6 +7,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @CrossOrigin("*")
@@ -23,23 +25,33 @@ public class OrderRestController {
 
     @GetMapping()
     public List<OrderDTO> getListOrder() throws ClassNotFoundException {
-        return orderService.getListOrder();
+        List<OrderDTO> getListOrder = orderService.getListOrder();
+        Collections.sort(getListOrder, Comparator.comparing(OrderDTO::getCreateDate));
+        return getListOrder;
     }
     @GetMapping("/confirm")
     public List<OrderDTO> getListOrderConfirm() throws ClassNotFoundException {
-        return orderService.getListOrderConfirm();
+        List<OrderDTO> getListOrderConfirm = orderService.getListOrderConfirm();
+        Collections.sort(getListOrderConfirm, Comparator.comparing(OrderDTO::getCreateDate));
+        return getListOrderConfirm;
     }
     @GetMapping("/ship")
     public List<OrderDTO> getListOrderIsShipping() throws ClassNotFoundException {
-        return orderService.getListOrderIsShipping();
+        List<OrderDTO> getListOrderIsShipping = orderService.getListOrderIsShipping();
+        Collections.sort(getListOrderIsShipping, Comparator.comparing(OrderDTO::getCreateDate));
+        return getListOrderIsShipping;
     }
     @GetMapping("/success")
     public List<OrderDTO> getListOrderSuccess() throws ClassNotFoundException {
-        return orderService.getListOrderSuccess();
+        List<OrderDTO> getListOrderSuccess = orderService.getListOrderSuccess();
+        Collections.sort(getListOrderSuccess, Comparator.comparing(OrderDTO::getCreateDate));
+        return getListOrderSuccess;
     }
     @GetMapping("/cancel")
     public List<OrderDTO> getListOrderCancel() throws ClassNotFoundException {
-        return orderService.getListOrderCancel();
+        List<OrderDTO> getListOrderCancel = orderService.getListOrderCancel();
+        Collections.sort(getListOrderCancel, Comparator.comparing(OrderDTO::getCreateDate));
+        return getListOrderCancel;
     }
     @PutMapping("/{id}")
     public OrderDTO changeToConfirmStatus(@PathVariable("id") Long id,@RequestBody OrderDTO orderDTO) throws ClassNotFoundException {
