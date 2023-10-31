@@ -14,10 +14,7 @@
                     <a th:href="@{|/home|}" class="nav-item nav-link">Home</a>
                     <a th:href="@{|/store|}" class="nav-item nav-link">Store</a>
 
-                    <!--When customer has role admin or staff-->
-                    <th:block th:if="${isAdminOrStaff}">
-                        <a th:href="@{|/admin/index|}" class="nav-item nav-link">Admin</a>
-                    </th:block>
+
 
                     <!--When customer not login-->
                     <th:block th:unless="${isAuthenticated}">
@@ -31,35 +28,23 @@
                         <a id="id_account" class="nav-item nav-link" hidden>[[${id_account}]]</a>
                         <a th:href="@{|/orders|}" class="nav-item nav-link">Order</a>
                         <a th:href="@{|/logout|}" class="nav-item nav-link">Logout</a>
-                        <a th:href="@{|/profile|}" class="nav-item nav-link">Profile</a>
-                    </th:block>
 
-<!--                    <div class="nav-item dropdown">-->
-<!--                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>-->
-<!--                        <div class="dropdown-menu bg-light rounded-0 m-0">-->
-<!--                            <a href="../../../../../../../../wiki/tea-shop-website-template/tea-shop-website-template/feature.html"-->
-<!--                                class="dropdown-item">Features</a>-->
-<!--                            <a href="../../../../../../../../wiki/tea-shop-website-template/tea-shop-website-template/blog.html"-->
-<!--                                class="dropdown-item">Blog Article</a>-->
-<!--                            <a href="../../../../../../../../wiki/tea-shop-website-template/tea-shop-website-template/testimonial.html"-->
-<!--                                class="dropdown-item">Testimonial</a>-->
-<!--                            <a href="../../../../../../../../wiki/tea-shop-website-template/tea-shop-website-template/404.html"-->
-<!--                                class="dropdown-item">404 Page</a>-->
-<!--                        </div>-->
-<!--                    </div>-->
-                    <a href="../../../../../../../../wiki/tea-shop-website-template/tea-shop-website-template/contact.html"
-                        class="nav-item nav-link">
-                        Contact
-                    </a>
+
                     <!-- Icon Account và Tên người dùng -->
                     <div class="user-icon">
                         <div class="user-icon-circle">
                             <img src="/img/gallery/testimonial-2.jpg" class="img-fluid">
                         </div>
-                        <span class="user-name">manhthanh1510</span>
+                        <span class="user-name">[[${fullname}]]</span>
                         <!-- Dropdown Menu -->
                         <div class="user-dropdown">
                             <ul>
+                                <!--When customer has role admin or staff-->
+                                <th:block th:if="${isAdminOrStaff}">
+                                    <a th:href="@{|/admin|}">
+                                        <li>Admin Management</li>
+                                    </a>
+                                </th:block>
                                 <a th:href="@{|/hoso|}">
                                     <li>My Account</li>
                                 </a>
@@ -69,12 +54,14 @@
                                 <a th:href="@{|/changePassword|}">
                                     <li>ChangePassword</li>
                                 </a>
-                                <a href="#">
+                                <a th:href="@{|/logout|}">
                                     <li>Logout</li>
                                 </a>
                             </ul>
                         </div>
                     </div>
+                    </th:block>
+
                 </div>
                 <div class="border-start ps-4 d-none d-lg-block icons">
                     <button style="font-size: 19px;" type="button" class="btn btn-sm p-0">

@@ -336,7 +336,6 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
   $scope.selectedPaymentMethod = "";
 
   $scope.handlePaymentMethodChange = function () {
-    console.log($scope.selectedPaymentMethod);
     if ($scope.selectedPaymentMethod === "cash") {
       $scope.order.purchaseOrder();
       $scope.completeButtonClicked();

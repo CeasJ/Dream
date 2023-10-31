@@ -9,7 +9,6 @@ public class ProductSizeDTO {
     private Long id;
     private Long id_product;
     private Long id_size;
-
     private Double priceProduct_Size;
 
 }

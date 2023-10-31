@@ -55,6 +55,11 @@ public class AccountServiceImp implements AccountService {
     }
 
     @Override
+    public String findFullNameByUsername(String username) throws NoSuchElementException {
+        return accountRepository.findFullNameByUsername(username);
+    }
+
+    @Override
     public Account findByUsernameAndEmail(String username, String email) {
         return accountRepository.findByUsernameAndEmail(username, email);
     }

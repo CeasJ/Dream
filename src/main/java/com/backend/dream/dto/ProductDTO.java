@@ -37,24 +37,23 @@ public class ProductDTO {
         return df.format(price);
     }
 
-    private Double discountedPrice = null;
+    private Double discountedPrice;
 
-
-    // Display the discounted price in product list page
     public String getFormattedDiscountedPrice() {
-        DecimalFormat df = new DecimalFormat("#,### ₫");
-        return df.format(discountedPrice);
+        if (discountedPrice != null) {
+            DecimalFormat df = new DecimalFormat("#,### ₫");
+            return df.format(discountedPrice);
+        } else {
+            return "";
+        }
     }
 
-
     private Boolean isDiscounted;
-
 
     private List<SizeDTO> availableSizes;
 
     private Size selectedSize;
 
-    // For save the chosen id size
     private Long selectedSizeId;
 
     private String formattedPriceBySize;
