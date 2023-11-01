@@ -13,41 +13,19 @@ import java.util.List;
 
 @Controller
 public class ReportController {
-    @Autowired
-    private Report report;
-    private static final int orderStatus = 4;
-    @GetMapping("/report")
-    public String getReport(Model model){
-        getStatistic(model);
+  @Autowired
+  private Report report;
 
-        List<Object[]> totalRevenue = report.getTotalRevenue(orderStatus);
-        model.addAttribute("totalRevenue",totalRevenue);
+  private static final int orderStatus = 4;
 
-        return "/admin/report";
-    }
-
-    @GetMapping("/getByDate")
-    public String getRevenue(Model model, @RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate, @RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate){
-        getStatistic(model);
-
-        List<Object[]> getRevenueByDateAndStatus = report.getTotalRevenueByDateAndStatus(orderStatus,startDate,endDate);
-        model.addAttribute("totalRevenue", getRevenueByDateAndStatus);
-
-        return "/admin/report";
-    }
-
-    private void getStatistic(Model model){
-        Double revenue = report.getRevenue(orderStatus);
-        model.addAttribute("revenue",revenue);
-
-        Double totalOrder = report.getTotalOrder(orderStatus);
-        model.addAttribute("total",totalOrder);
-
-        Integer totalProductHasSold = report.totalProductHasSold(orderStatus);
-        model.addAttribute("totalProductHasSold",totalProductHasSold);
-
-        List<Object[]> coutProductHasSold = report.countProductSold(orderStatus);
-        model.addAttribute("countProductHasSold",coutProductHasSold);
-
-    }
+  @GetMapping("/report")
+  public String getReport(Model model) {
+    // Double revenue = report.getRevenue(orderStatus);
+    // Double totalOrder = report.getTotalOrder(orderStatus);
+    // Integer totalProductHasSold = report.totalProductHasSold(orderStatus);
+    // model.addAttribute("revenue", revenue);
+    // model.addAttribute("total", totalOrder);
+    // model.addAttribute("totalProductHasSold", totalProductHasSold);
+    return "/admin/home/report";
+  }
 }
