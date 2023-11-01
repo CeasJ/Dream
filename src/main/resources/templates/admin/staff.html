@@ -371,92 +371,265 @@
             <div class="container-fluid">
                 <!-- Page Heading -->
                 <h1 class="h3 mb-2 text-gray-800">Tables</h1>
-
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4">
-                            <div class="container-fluid">
-
-                                <div class="card shadow mb-4">
-                                    <div class="card-header py-3">
-                                        <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="table-responsive">
-                                            <table class="table table-bordered" id="dataTable" width="100%"
-                                                   cellspacing="0">
-
-                                                <thead>
-                                                    <tr>
-                                                        <th></th>
-                                                        <th ng-repeat="role in roles" class="text-center">{{role.name}}</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr ng-repeat="acc in admins">
-                                                        <td>{{acc.fullname}}</td>
-                                                        <td ng-repeat="role in roles" class="text-center"><input
-                                                                ng-checked="authority_of(acc,role)"
-                                                                ng-click="authority_changed(acc,role)" type="checkbox">
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
+                    <div class="container-fluid">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-borderless">
+                                        <thead>
+                                        <tr>
+                                            <th style="width: 15%;">Avatar</th>
+                                            <th style="width: 12%;">Username</th>
+                                            <th style="width: 12%">Firstname</th>
+                                            <th style="width: 15%;">Lastname</th>
+                                            <th style="width: 15%;">Fullname</th>
+                                            <th style="width: 12%">Email</th>
+                                            <th style="width: 15%;">Phone</th>
+                                            <th class="actions" style="width: 4%;"></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody class="no-border-x" ng-repeat="acc in admins">
+                                        <td class="align-middle text-sm">
+                                            <div class="ms-1">
+                                                <img class="img-fluid" ng-src="{{'/img/gallery/' + acc.avatar}}"
+                                                     style="max-width: 200px; max-height:150px;">
+                                            </div>
+                                        </td>
+                                        <td class="align-middle text-sm">
+                                            <div>
+                                                <h6 class="text-sm mb-0">{{acc.username}}</h6>
+                                            </div>
+                                        </td>
+                                        <td class="align-middle text-sm">
+                                            <div>
+                                                <h6 class="text-sm mb-0">{{acc.firstname}}</h6>
+                                            </div>
+                                        </td>
+                                        <td class="align-middle text-sm">
+                                            <div>
+                                                <h6 class="text-sm mb-0">{{acc.lastname}}</h6>
+                                            </div>
+                                        </td>
+                                        <td class="align-middle text-sm">
+                                            <div>
+                                                <h6 class="text-sm mb-1">{{acc.fullname}}</h6>
+                                            </div>
+                                        </td>
+                                        <td class="align-middle text-sm">
+                                            <div>
+                                                <h6 class="text-sm mb-0">{{acc.email}}</h6>
+                                            </div>
+                                        </td>
+                                        <td class="align-middle text-sm">
+                                            <div>
+                                                <h6 class="text-sm mb-0">{{acc.phone}}</h6>
+                                            </div>
+                                        </td>
+                                        <td class="align-middle text-sm">
+                                            <button class="btn btn-outline-primary"
+                                                    ng-click="edit(acc)">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </button>
+                                        </td>
+                                    </table>
                                 </div>
                             </div>
                         </div>
-
-                    </div>
-
-            </div>
-                <!-- /.container-fluid -->
-
-            </div>
-            <!-- End of Main Content -->
-
-            <!-- Footer -->
-            <footer class="sticky-footer bg-white">
-                <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2020</span>
                     </div>
                 </div>
-            </footer>
-            <!-- End of Footer -->
+                <div class="card-body table-responsive  text-sm-left ">
+                    <div class="row text-center">
+                        <div class="col-12">
+                            <form name="myStaff" novalidate="novalidate">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div
+                                                class="card card-border-color card-border-color-primary">
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-6 "
+                                                     style="display: flex; justify-content: center; align-items: center;">
+                                                    <img class="img-fluid" id="imagePreview"
+                                                         ng-src="{{'/img/gallery/'+ avatar}}"
+                                                         style="max-width: 500px; max-height: 400px;">
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group row">
+                                                        <label
+                                                                class="col-12 col-sm-3 col-form-label text-sm-left">Username</label>
+                                                        <div class="col-12 col-sm-8 col-lg-9">
+                                                            <input class="form-control" name="username"
+                                                                   ng-model="username"
+                                                                   type="text" placeholder="Username">
+                                                        </div>
+                                                    </div>
 
-        </div>
-        <!-- End of Content Wrapper -->
+                                                    <div class="form-group row">
+                                                        <label
+                                                                class="col-12 col-sm-3 col-form-label text-sm-left">Firstname</label>
+                                                        <div class="col-12 col-sm-8 col-lg-9 text-center">
+                                                            <input type="text" class="form-control" id="firstname"
+                                                                   name="firstname" value=""
+                                                                   ng-minlength="3" required
+                                                                   ng-pattern="/^[\p{L}\d\s]*$/u"
+                                                                   ng-model="firstname" placeholder="Firstname">
+                                                            <div class="errortext"
+                                                                 ng-show="myStaff.firstname.$dirty && myStaff.firstname.$invalid"
+                                                                 style="float: left; margin-right: 40px; color:red">
+                                                                <span ng-show="myStaff.firstname.$error.required">Firstname is required</span>
+                                                                <span ng-show="myStaff.firstname.$error.pattern && !myStaff.firstname.$error.minlength">Firstname cannot contain special characters</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label
+                                                                class="col-12 col-sm-3 col-form-label text-sm-left">Lastname</label>
+                                                        <div class="col-12 col-sm-8 col-lg-9 text-center">
+                                                            <input type="text" class="form-control" id="lastname"
+                                                                   name="lastname" value=""
+                                                                   ng-minlength="3" required
+                                                                   ng-pattern="/^[\p{L}\d\s]*$/u"
+                                                                   ng-model="lastname" placeholder="Lastname">
+                                                            <div class="errortext"
+                                                                 ng-show="myStaff.lastname.$dirty && myStaff.lastname.$invalid"
+                                                                 style="float: left; margin-right: 40px; color:red">
+                                                                <span ng-show="myStaff.lastname.$error.required">Lastname is required</span>
+                                                                <span ng-show="myStaff.lastname.$error.pattern && !myStaff.lastname.$error.minlength">Lastname cannot contain special characters</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label
+                                                                class="col-12 col-sm-3 col-form-label text-sm-left">FullName</label>
+                                                        <div class="col-12 col-sm-8 col-lg-9 text-center">
+                                                            <input type="text" class="form-control" id="fullname"
+                                                                   name="fullname" value="" ng-model="fullname"
+                                                                   placeholder=" {{ firstname || '' }} {{ lastname || '' }} "
+                                                                   readonly>
 
-    </div>
-    <!-- End of Page Wrapper -->
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label
+                                                                class="col-12 col-sm-3 col-form-label text-sm-left">Password</label>
+                                                        <div class="col-12 col-sm-8 col-lg-9 text-center">
+                                                            <input class="form-control" name="password"
+                                                                   ng-model="password" ng-minlength="8"
+                                                                   type="password" placeholder="Password" required
+                                                                   ng-pattern="/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#$%^&*()_+{}\[\]:;<>,.?~]).*$/">
+                                                            <div class="errortext"
+                                                                 ng-show="myStaff.password.$dirty && myStaff.password.$invalid"
+                                                                 style="float: left; margin-right: 40px; color:red">
+                                                                <span ng-show="myStaff.password.$error.required">Password is required</span>
+                                                                <span ng-show="myStaff.password.$error.minlength">Password must be more than 8 characters</span>
+                                                                <span ng-show="myStaff.password.$error.pattern && !myStaff.password.$error.minlength">Password must contain at least one lowercase letter, one uppercase letter, one digit and one special character</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label
+                                                                class="col-12 col-sm-3 col-form-label text-sm-left">Email</label>
+                                                        <div class="col-12 col-sm-8 col-lg-9 text-sm-left">
+                                                            <input class="form-control" ng-model="email"
+                                                                   name="email" type="email" placeholder="Email"
+                                                                   required>
+                                                            <div class="errortext"
+                                                                 ng-show="myStaff.email.$dirty && myStaff.email.$invalid"
+                                                                 style="float: left; margin-right: 40px; color:red">
+                                                                <span ng-show="myStaff.email.$error.required">Email is required.</span>
+                                                                <span ng-show="myStaff.email.$error.email">Invalid email address.</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label
+                                                                class="col-12 col-sm-3 col-form-label text-sm-left">Phone</label>
+                                                        <div class="col-12 col-sm-8 col-lg-9 text-sm-left">
+                                                            <input class="form-control" ng-model="phone"
+                                                                   name="phone" type="text" placeholder="Phone"
+                                                                   required ng-pattern="/^[0-9]*$/"
+                                                                   ng-maxlength="10" ng-minlength="10">
+                                                            <div class="errortext"
+                                                                 ng-show="myStaff.phone.$dirty && myStaff.phone.$invalid"
+                                                                 style="float: left; margin-right: 40px; color:red">
+                                                                <span ng-show="myStaff.phone.$error.required">Phone is required</span>
+                                                                <span ng-show="myStaff.phone.$error.minlength">Phone must at least 10 digit</span>
+                                                                <span ng-show="myStaff.phone.$error.pattern && !myStaff.phone.$error.maxlength">Phone must be a valid phone</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
 
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
-
-    <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
+                                                    <div
+                                                            class="card card-border-color card-border-color-primary">
+                                                    </div>
+                            </form>
+                            <div class="d-grid gap-2 d-md-block text-sm-center">
+                                <button ng-click="saveAccount()" class="btn btn-primary"
+                                        type="button" ng-disabled="myStaff.$invalid ">Create
+                                </button>
+                                <button ng-click="clearForm()" class="btn btn-primary" type="button">
+                                    New
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+<!-- /.container-fluid -->
 
-    <script src="/js/admin/authority.js"></script>
+</div>
+<!-- End of Main Content -->
+
+<!-- Footer -->
+<footer class="sticky-footer bg-white">
+    <div class="container my-auto">
+        <div class="copyright text-center my-auto">
+            <span>Copyright &copy; Your Website 2020</span>
+        </div>
+    </div>
+</footer>
+<!-- End of Footer -->
+
+</div>
+<!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+
+<!-- Logout Modal-->
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-primary" href="login.html">Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/js/admin/authority.js"></script>
 </body>
 
 </html>

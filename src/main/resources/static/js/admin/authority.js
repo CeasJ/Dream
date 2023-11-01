@@ -9,13 +9,12 @@ app.controller("authority-ctrl", function ($scope, $http, $location) {
       $scope.roles = resp.data;
     });
 
-    $http.get(`/rest/account/admin/?admin=true`).then((resp) => {
+
+    $http.get(`/rest/account/admin?admin=true`).then((resp) => {
       $scope.admins = resp.data;
     });
 
-    $http
-      .get(`/rest/authorities?admin=true`)
-      .then((resp) => {
+    $http.get(`/rest/authorities?admin=true`).then((resp) => {
         $scope.authories = resp.data;
       })
       .catch((error) => {
@@ -64,3 +63,15 @@ app.controller("authority-ctrl", function ($scope, $http, $location) {
       .catch((error) => {
       });
   };
+   $scope.edit = function (acc) {
+       $scope.avatar = acc.avatar;
+      $scope.username = acc.username;
+      $scope.fullname = acc.fullname;
+      $scope.password = acc.password;
+      $scope.email = acc.email;
+      $scope.phone = acc.phone;
+      $scope.firstname = acc.firstname;
+      $scope.lastname = acc.lastname;
+     	$(".nav-pills a:eq(1)").tab('show');
+    };
+});

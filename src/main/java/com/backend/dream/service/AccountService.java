@@ -23,5 +23,6 @@ public interface AccountService {
     Account updatePassword(Account account, String password);
 
     Long findIDByUsername(String username) throws NoSuchElementException;
-
+    List<Account> getStaff() throws NoSuchElementException;
+    List<Account> findALL() throws NoSuchElementException;
 }

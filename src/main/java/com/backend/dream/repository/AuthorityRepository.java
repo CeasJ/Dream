@@ -12,6 +12,6 @@ import java.util.List;
 
 @Repository
 public interface AuthorityRepository extends JpaRepository<Authority,Long> {
-
-
+    @Query("SELECT DISTINCT a FROM Authority a WHERE a.account IN ?1")
+    List<Authority> autoritiesOf(List<Account> accounts);
 }

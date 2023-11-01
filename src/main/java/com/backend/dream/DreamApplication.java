@@ -7,19 +7,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class DreamApplication {
-
+public class 	DreamApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(DreamApplication.class, args);
 	}
-
-	// @Bean
-	// CommandLineRunner run(AccountService accountServiceImp){
-	// return args -> {
-	// accountServiceImp.createAccount(new Account("cuong","123"));
-	// accountServiceImp.createAccount(new Account("toan","123"));
-	// accountServiceImp.createAccount(new Account("hung","123"));
-	// };
-	// };
-
 }
