@@ -515,6 +515,15 @@
 
                                                         </div>
                                                     </div>
+                                                    <div class="form-group">
+                                                        <input
+                                                                type="file"
+                                                                class="form-control"
+                                                                name="avatar"
+                                                                accept="image/*"
+                                                                onchange="angular.element(this).scope().imageChanged(this.files)"
+                                                        />
+                                                    </div>
                                                     <div class="form-group row">
                                                         <label
                                                                 class="col-12 col-sm-3 col-form-label text-sm-left">Password</label>
@@ -572,6 +581,9 @@
                             <div class="d-grid gap-2 d-md-block text-sm-center">
                                 <button ng-click="saveAccount()" class="btn btn-primary"
                                         type="button" ng-disabled="myStaff.$invalid ">Create
+                                </button>
+                                <button ng-click="update()" class="btn btn-primary"
+                                        type="button" >Update
                                 </button>
                                 <button ng-click="clearForm()" class="btn btn-primary" type="button">
                                     New
