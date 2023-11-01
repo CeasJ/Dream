@@ -2,13 +2,21 @@ package com.backend.dream.service.imp;
 
 import com.backend.dream.dto.AccountDTO;
 import com.backend.dream.entity.Account;
+import com.backend.dream.entity.Authority;
+import com.backend.dream.entity.Role;
 import com.backend.dream.entity.Product;
 import com.backend.dream.mapper.AccountMapper;
 import com.backend.dream.repository.AccountRepository;
+import com.backend.dream.repository.AuthorityRepository;
 import com.backend.dream.service.AccountService;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -22,6 +30,8 @@ public class AccountServiceImp implements AccountService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private AccountMapper accountMapper;
+    @Autowired
+    private AuthorityRepository authorityRepository;
 
     @Override
     public Optional<Account> findByUsername(String username) {
@@ -97,6 +107,38 @@ public class AccountServiceImp implements AccountService {
     @Override
     public List<Account> findALL() {
         return accountRepository.findAll();
+    }
+
+    @Override
+    public boolean checkUsernameExists(String username) {
+        return accountRepository.findByUsername(username).isPresent();
+    }
+
+    @Override
+    public Account createStaff(JsonNode account) {
+        ObjectMapper mapper = new ObjectMapper();
+        Account newAccount = mapper.convertValue(account, Account.class);
+
+        String password = account.get("password").asText();
+        newAccount.setPassword(passwordEncoder.encode(password));
+
+        Role role = new Role();
+        role.setId(1L);
+
+        Authority authority = new Authority();
+        authority.setRole(role);
+
+        Account savedAccount = accountRepository.save(newAccount);
+
+        authority.setAccount(savedAccount);
+        Authority savedAuthority = authorityRepository.save(authority);
+
+        return savedAccount;
+    }
+
+    @Override
+    public Account updateStaff(JsonNode staffToUpdate) {
+        return accountRepository.udate(staffToUpdate);
     }
 
     @Override
