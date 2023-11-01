@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Random;
 
 @Controller
 public class VNPayController {
@@ -18,7 +19,12 @@ public class VNPayController {
     private VNPayService vnPayService;
 
     @GetMapping("/vnpay")
-    public String getVNPayTemplate() {
+    public String getVNPayTemplate(Model model) {
+        Random random = new Random();
+        int min = 100000;
+        int max = 999999;
+        int number = random.nextInt((max - min) + 1 ) + min;
+        model.addAttribute("orderInfo", number);
         return "/user/checkout/vnpay";
     }
 
@@ -26,6 +32,7 @@ public class VNPayController {
     public String submitOrder(@RequestParam("amount") int orderTotal,
             @RequestParam("orderInfo") String orderInfo,
             HttpServletRequest request) {
+
         String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
         String vnpayUrl = vnPayService.createOrder(orderTotal, orderInfo, baseUrl);
         return "redirect:" + vnpayUrl;

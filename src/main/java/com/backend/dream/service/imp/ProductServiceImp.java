@@ -1,10 +1,15 @@
 package com.backend.dream.service.imp;
 
+import com.backend.dream.dto.DiscountDTO;
 import com.backend.dream.dto.ProductDTO;
 import com.backend.dream.entity.Product;
+import com.backend.dream.entity.ProductSize;
 import com.backend.dream.mapper.ProductMapper;
 import com.backend.dream.repository.ProductRepository;
+import com.backend.dream.repository.ProductSizeRepository;
+import com.backend.dream.service.DiscountService;
 import com.backend.dream.service.ProductService;
+import com.backend.dream.service.ProductSizeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,12 +26,24 @@ public class ProductServiceImp implements ProductService {
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
 
+    private final ProductSizeRepository productSizeRepository;
+
+
     private final Logger logger = LoggerFactory.getLogger(ProductService.class);
 
     @Autowired
-    public ProductServiceImp(ProductRepository productRepository, ProductMapper productMapper) {
+    private DiscountService discountService;
+
+    @Autowired
+    private ProductSizeService productSizeService;
+
+
+    @Autowired
+    public ProductServiceImp(ProductRepository productRepository, ProductMapper productMapper, ProductSizeRepository productSizeRepository  ) {
         this.productRepository = productRepository;
         this.productMapper = productMapper;
+        this.productSizeRepository = productSizeRepository;
+
     }
 
     @Override
@@ -42,12 +60,6 @@ public class ProductServiceImp implements ProductService {
         return product != null ? productMapper.productToProductDTO(product) : null;
     }
 
-    // @Override
-    // public Page<ProductDTO> findByName(String productName, Pageable pageable) {
-    // return productRepository.findByNameContainingIgnoreCase(productName,
-    // pageable)
-    // .map(productMapper::productToProductDTO);
-    // }
 
     @Override
     public Page<ProductDTO> findByNamePaged(String name, Pageable pageable) {
@@ -96,4 +108,69 @@ public class ProductServiceImp implements ProductService {
         Page<Product> productPage = productRepository.findByCategoryOrderByPriceDesc(categoryId, pageable);
         return productPage.map(productMapper::productToProductDTO);
     }
+
+    @Override
+    public Page<ProductDTO> findSaleProducts(Pageable pageable) {
+        Page<Product> products = productRepository.findSaleProducts(pageable);
+        return products.map(productMapper::productToProductDTO);
+    }
+
+    @Override
+    public double getDiscountedPrice(Long productId) {
+        DiscountDTO discount = discountService.getDiscountByProductId(productId);
+        double originalPrice = getOriginalProductPrice(productId);
+
+        if (discount != null) {
+            double discountPercent = discount.getPercent();
+            double discountedPrice = originalPrice - (originalPrice * discountPercent);
+            return discountedPrice;
+        } else {
+            return originalPrice;
+        }
+    }
+
+
+    @Override
+    public double getOriginalProductPrice(Long productId) {
+        Optional<Product> product = productRepository.findById(productId);
+        if (product.isPresent()) {
+            return product.get().getPrice();
+        }
+        return 0.0;
+    }
+
+    @Override
+    public double getProductPriceBySize(Long productId, Long sizeId) {
+        double originalPrice = getOriginalProductPrice(productId);
+
+        // Fetch the size-specific price from the repository
+        Optional<ProductSize> productSize = productSizeRepository.findByProductIdAndSizeId(productId, sizeId);
+
+        if (productSize.isPresent()) {
+            double sizeSpecificPrice = productSize.get().getPriceProduct_Size();
+            DiscountDTO discount = discountService.getDiscountByProductId(productId);
+
+            if (discount != null) {
+                double discountPercent = discount.getPercent();
+                double discountedPrice = sizeSpecificPrice - (sizeSpecificPrice * discountPercent);
+                return discountedPrice;
+            } else {
+                return sizeSpecificPrice;
+            }
+        } else {
+            // Handle the case where the size-specific price is not found
+            // You can return a default value or throw an exception as needed
+            return originalPrice; // Return the original price if the size-specific price is not found
+        }
+    }
+
+    public double getDiscountPercentByProductId(Long productId) {
+        DiscountDTO discountDTO = discountService.getDiscountByProductId(productId);
+        if (discountDTO != null) {
+            return discountDTO.getPercent();
+        }
+        return 0.0;
+    }
+
+
 }

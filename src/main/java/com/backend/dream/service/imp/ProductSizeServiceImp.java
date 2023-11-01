@@ -25,7 +25,7 @@ public class ProductSizeServiceImp implements ProductSizeService {
 
     @Autowired
     public ProductSizeServiceImp(ProductSizeRepository productSizeRepository, SizeRepository sizeRepository,
-                                 ProductSizeMapper productSizeMapper) {
+            ProductSizeMapper productSizeMapper) {
         this.productSizeRepository = productSizeRepository;
         this.sizeRepository = sizeRepository;
         this.productSizeMapper = productSizeMapper;

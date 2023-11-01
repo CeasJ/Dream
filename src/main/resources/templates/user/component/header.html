@@ -14,10 +14,7 @@
                     <a th:href="@{|/home|}" class="nav-item nav-link">Home</a>
                     <a th:href="@{|/store|}" class="nav-item nav-link">Store</a>
 
-                    <!--When customer has role admin or staff-->
-                    <th:block th:if="${isAdminOrStaff}">
-                        <a th:href="@{|/admin/index|}" class="nav-item nav-link">Admin</a>
-                    </th:block>
+
 
                     <!--When customer not login-->
                     <th:block th:unless="${isAuthenticated}">
@@ -31,28 +28,34 @@
                         <a id="id_account" class="nav-item nav-link" hidden>[[${id_account}]]</a>
                         <a th:href="@{|/orders|}" class="nav-item nav-link">Order</a>
                         <div class="user-icon">
-                        <div class="user-icon-circle">
-                            <img src="/img/gallery/testimonial-2.jpg" class="img-fluid">
+                            <div class="user-icon-circle">
+                                <img th:src="@{'/img/gallery/' + ${avatar}}" class="img-fluid">
+                            </div>
+                            <span class="user-name" id="fullname">[[${username}]]</span>
+                            <!-- Dropdown Menu -->
+                            <div class="user-dropdown">
+                                <ul>
+                                    <!--When customer has role admin or staff-->
+                                    <th:block th:if="${isAdminOrStaff}">
+                                        <a th:href="@{|/admin|}">
+                                            <li>Admin Management</li>
+                                        </a>
+                                    </th:block>
+                                    <a th:href="@{|/hoso|}">
+                                        <li>My Account</li>
+                                    </a>
+                                    <a th:href="@{|/voucher|}">
+                                        <li>My Vouchers</li>
+                                    </a>
+                                    <a th:href="@{|/changePassword|}">
+                                        <li>ChangePassword</li>
+                                    </a>
+                                    <a th:href="@{|/logout|}">
+                                        <li>Logout</li>
+                                    </a>
+                                </ul>
+                            </div>
                         </div>
-                        <span class="user-name" id="fullname">[[${username}]]</span>
-                        <!-- Dropdown Menu -->
-                        <div class="user-dropdown">
-                            <ul>
-                                <a th:href="@{|/profile|}">
-                                    <li>My Account</li>
-                                </a>
-                                <a th:href="@{|/voucher|}">
-                                    <li>My Vouchers</li>
-                                </a>
-                                <a th:href="@{|/changePassword|}">
-                                    <li>ChangePassword</li>
-                                </a>
-                                <a th:href="@{|/logout|}">
-                                    <li>Logout</li>
-                                </a>
-                            </ul>
-                        </div>
-                    </div>
                     </th:block>
                     <!-- Icon Account và Tên người dùng -->
 

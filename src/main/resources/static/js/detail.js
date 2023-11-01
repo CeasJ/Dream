@@ -95,3 +95,86 @@
     });
 
 })(jQuery);
+
+
+
+// Select first child of size radio buttons
+document.addEventListener("DOMContentLoaded", function () {
+    var sizeRadioButtons = document.querySelectorAll('input[type=radio][name=selectedSize]');
+
+    if (sizeRadioButtons.length > 0) {
+        sizeRadioButtons[0].checked = true;
+    }
+});
+
+// Size choosing event
+var sizeRadioButtons = document.querySelectorAll('input[type=radio][name=selectedSize]');
+sizeRadioButtons.forEach((radio) => {
+    radio.addEventListener('change', function () {
+        var productId = this.dataset.productId;
+        var sizeId = this.value;
+        getProductPrice(productId, sizeId);
+    });
+});
+
+// In case of a product without a discount
+function getProductPrice(productId, sizeId) {
+    // Fetch product price based on productId and sizeId
+    fetch(`/getProductPriceBySize?productId=${productId}&sizeId=${sizeId}`)
+        .then(response => response.json())
+        .then(data => {
+            var priceElement = document.getElementById(`product-price${productId}`);
+            var discountedPriceElement = document.getElementById(`product-discountedPrice${productId}`);
+
+            if (data >= 0) {
+                // Get discountPercent from service
+                getDiscountPercent(productId, data, priceElement, discountedPriceElement);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
+
+// Price format function
+function formatPrice(price) {
+    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
+}
+
+function getDiscountPercent(productId, sizePrice, priceElement, discountedPriceElement) {
+    // Fetch discountPercent from service
+    fetch(`/getDiscountPercentByProductId?productId=${productId}`)
+        .then(response => response.json())
+        .then(data => {
+            var discountPercent = parseFloat(data);
+
+            if (!isNaN(discountPercent) && discountPercent > 0) {
+                // Calculate discounted price
+                var discountedPrice = calculateDiscountedPrice(sizePrice, discountPercent);
+
+                // Display original price in del
+//                priceElement.textContent = formatPrice(sizePrice);
+
+                // Display the discounted price in h3
+                if (discountedPriceElement) {
+                    discountedPriceElement.textContent = formatPrice(sizePrice);
+                }
+            } else {
+                // If no discount, display the original price in h3
+                priceElement.textContent = formatPrice(sizePrice);
+
+                // Clear the discounted price if no discount
+                if (discountedPriceElement) {
+                    discountedPriceElement.textContent = '';
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
+
+function calculateDiscountedPrice(originalPrice, discountPercent) {
+    console.log(originalPrice);
+    return originalPrice - (originalPrice * discountPercent); // Calculate the discounted price based on the discount percentage
+}

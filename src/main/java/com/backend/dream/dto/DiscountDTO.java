@@ -14,11 +14,9 @@ public class DiscountDTO {
 
     private String number;
 
-    private boolean active;
-
     private Double percent;
 
-    private Date createDate;
+    private Date activeDate;
 
     private Date expiredDate;
 

@@ -13,8 +13,9 @@ public interface ProductMapper {
     ProductMapper INSTANCE = Mappers.getMapper(ProductMapper.class);
 
     @Mapping(source = "category.name", target = "category")
-    @Mapping(source = "category.id",target = "id_category")
+    @Mapping(source = "category.id", target = "id_category")
     ProductDTO productToProductDTO(Product product);
+
     @Mapping(source = "category.name", target = "category")
     List<ProductDTO> productsToProductDTOs(List<Product> product);
     @Mapping(source = "id_category", target = "category.id")
