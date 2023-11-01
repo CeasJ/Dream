@@ -27,40 +27,37 @@
                         <a id="username" class="nav-item nav-link" hidden>[[${username}]]</a>
                         <a id="id_account" class="nav-item nav-link" hidden>[[${id_account}]]</a>
                         <a th:href="@{|/orders|}" class="nav-item nav-link">Order</a>
-                        <a th:href="@{|/logout|}" class="nav-item nav-link">Logout</a>
-
-
-                    <!-- Icon Account và Tên người dùng -->
-                    <div class="user-icon">
-                        <div class="user-icon-circle">
-                            <img th:src="@{'/img/gallery/' + ${avatar}}" class="img-fluid">
-                        </div>
-                        <span class="user-name">[[${fullname}]]</span>
-                        <!-- Dropdown Menu -->
-                        <div class="user-dropdown">
-                            <ul>
-                                <!--When customer has role admin or staff-->
-                                <th:block th:if="${isAdminOrStaff}">
-                                    <a th:href="@{|/admin|}">
-                                        <li>Admin Management</li>
+                        <div class="user-icon">
+                            <div class="user-icon-circle">
+                                <img th:src="@{'/img/avatar/' + ${avatar}}" class="img-fluid">
+                            </div>
+                            <span class="user-name" id="fullname">[[${fullname}]]</span>
+                            <!-- Dropdown Menu -->
+                            <div class="user-dropdown">
+                                <ul>
+                                    <!--When customer has role admin or staff-->
+                                    <th:block th:if="${isAdminOrStaff}">
+                                        <a th:href="@{|/admin|}">
+                                            <li>Admin Management</li>
+                                        </a>
+                                    </th:block>
+                                    <a th:href="@{|/profile|}">
+                                        <li>My Account</li>
                                     </a>
-                                </th:block>
-                                <a th:href="@{|/hoso|}">
-                                    <li>My Account</li>
-                                </a>
-                                <a th:href="@{|/voucher|}">
-                                    <li>My Vouchers</li>
-                                </a>
-                                <a th:href="@{|/changePassword|}">
-                                    <li>ChangePassword</li>
-                                </a>
-                                <a th:href="@{|/logout|}">
-                                    <li>Logout</li>
-                                </a>
-                            </ul>
+                                    <a th:href="@{|/voucher|}">
+                                        <li>My Vouchers</li>
+                                    </a>
+                                    <a th:href="@{|/changePassword|}">
+                                        <li>ChangePassword</li>
+                                    </a>
+                                    <a th:href="@{|/logout|}">
+                                        <li>Logout</li>
+                                    </a>
+                                </ul>
+                            </div>
                         </div>
-                    </div>
                     </th:block>
+                    <!-- Icon Account và Tên người dùng -->
 
                 </div>
                 <div class="border-start ps-4 d-none d-lg-block icons">

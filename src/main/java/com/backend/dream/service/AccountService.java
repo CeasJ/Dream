@@ -12,15 +12,15 @@ public interface AccountService {
 
     AccountDTO registerAccount(AccountDTO accountDTO);
 
+    AccountDTO updateAccount(AccountDTO accountDTO);
     public boolean isUsernameExists(String username);
 
     public boolean isEmailExists(String email);
 
-    Account create(Account account);
 
     Account findByUsernameAndEmail(String username, String email);
 
-    Account updatePassword(Account account, String password);
+    AccountDTO updatePassword(AccountDTO accountDTO, String password);
 
     Long findIDByUsername(String username) throws NoSuchElementException;
 
@@ -31,6 +31,8 @@ public interface AccountService {
     List<Account> findALL();
 
     Account findById(String username);
+
+    AccountDTO findById(Long id);
 
     String getImageByUserName(String remoteUser) throws NoSuchElementException;
 }

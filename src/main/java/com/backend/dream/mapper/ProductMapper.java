@@ -18,7 +18,6 @@ public interface ProductMapper {
 
     @Mapping(source = "category.name", target = "category")
     List<ProductDTO> productsToProductDTOs(List<Product> product);
-
     @Mapping(source = "id_category", target = "category.id")
     Product productDTOToProduct(ProductDTO product);
 }

@@ -28,11 +28,15 @@ public class HomeController {
         return "/user/cart/cart";
     }
 
-    @RequestMapping("/hoso")
+    @RequestMapping("/profile")
     public String profile() {
         return "/user/infor/profile";
     }
 
+    @RequestMapping("/updatePasswordSuccess")
+    public String updatePasswordSuccess() {
+        return "/user/infor/updatePassSuccess";
+    }
     @RequestMapping("/changePassword")
     public String changePassword() {
         return "/user/infor/changePassword";
