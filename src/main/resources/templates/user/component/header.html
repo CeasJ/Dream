@@ -29,9 +29,9 @@
                         <a th:href="@{|/orders|}" class="nav-item nav-link">Order</a>
                         <div class="user-icon">
                             <div class="user-icon-circle">
-                                <img th:src="@{'/img/gallery/' + ${avatar}}" class="img-fluid">
+                                <img th:src="@{'/img/avatar/' + ${avatar}}" class="img-fluid">
                             </div>
-                            <span class="user-name" id="fullname">[[${username}]]</span>
+                            <span class="user-name" id="fullname">[[${fullname}]]</span>
                             <!-- Dropdown Menu -->
                             <div class="user-dropdown">
                                 <ul>
@@ -41,7 +41,7 @@
                                             <li>Admin Management</li>
                                         </a>
                                     </th:block>
-                                    <a th:href="@{|/hoso|}">
+                                    <a th:href="@{|/profile|}">
                                         <li>My Account</li>
                                     </a>
                                     <a th:href="@{|/voucher|}">

@@ -57,11 +57,11 @@ public class AccountRestController {
         return passwordEncoder.matches(password, accountDTO.getPassword());
     }
     @PutMapping("/changePassword/{id}")
-    public ResponseEntity<String> updatePassword(@PathVariable("id") Long id, @RequestBody Map<String, String> requestBody) {
+    public ResponseEntity<AccountDTO> updatePassword(@PathVariable("id") Long id, @RequestBody Map<String, String> requestBody) {
         String newPassword = requestBody.get("password");
         AccountDTO accountDTO = accountService.findById(id);
         accountService.updatePassword(accountDTO, newPassword);
-        return new ResponseEntity<>("Cập nhật mật khẩu thành công.", HttpStatus.OK);
+        return new ResponseEntity<>(accountDTO, HttpStatus.OK);
     }
 
 

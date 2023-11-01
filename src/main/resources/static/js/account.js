@@ -37,13 +37,11 @@ app.controller("profile_ctrl", function ($scope, $http) {
   }
 
   $scope.updatePassword = function () {
-    console.log("updatePassword function called");
     let newPassword = document.getElementById("newPassword").value;
     let confirmNewPassword = document.getElementById("confirmNewPassword").value;
     if (newPassword === confirmNewPassword) {
       $http.put(`/rest/profile/changePassword/${id_account}`, { password: newPassword }).then(resp => {
-        document.getElementById("updatePasswordSuccess").style.display = "block";
-        console.log(newPassword);
+        location.href = "/updatePasswordSuccess";
       }).catch(err => {
         console.log(err);
       })
@@ -51,7 +49,7 @@ app.controller("profile_ctrl", function ($scope, $http) {
       alert("Wrong password ");
     }
   }
-  $scope.selectedImage = null;
+ $scope.selectedImage = null;
 
   $scope.selectImage = function () {
     document.getElementById("image").click();

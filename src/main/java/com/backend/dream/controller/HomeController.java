@@ -32,6 +32,10 @@ public class HomeController {
         return "/user/infor/profile";
     }
 
+    @RequestMapping("/updatePasswordSuccess")
+    public String updatePasswordSuccess() {
+        return "/user/infor/updatePassSuccess";
+    }
     @RequestMapping("/changePassword")
     public String changePassword() {
         return "/user/infor/changePassword";
