@@ -23,6 +23,9 @@ public interface AccountService {
     AccountDTO updatePassword(AccountDTO accountDTO, String password);
 
     Long findIDByUsername(String username) throws NoSuchElementException;
+    List<Account> getStaff();
+    List<Account> findALL();
+    Account findById(String username);
 
     AccountDTO findById(Long id);
 }

@@ -9,13 +9,12 @@ app.controller("authority-ctrl", function ($scope, $http, $location) {
       $scope.roles = resp.data;
     });
 
-    $http.get(`/rest/account/admin/?admin=true`).then((resp) => {
+
+    $http.get(`/rest/account/admin?admin=true`).then((resp) => {
       $scope.admins = resp.data;
     });
 
-    $http
-      .get(`/rest/authorities?admin=true`)
-      .then((resp) => {
+    $http.get(`/rest/authorities?admin=true`).then((resp) => {
         $scope.authories = resp.data;
       })
       .catch((error) => {
@@ -64,3 +63,4 @@ app.controller("authority-ctrl", function ($scope, $http, $location) {
       .catch((error) => {
       });
   };
+});

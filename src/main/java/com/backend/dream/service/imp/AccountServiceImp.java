@@ -79,6 +79,18 @@ public class AccountServiceImp implements AccountService {
         Account updatedAccount = accountRepository.save(account);
         return accountMapper.accountToAccountDTO(updatedAccount);
     }
+    @Override
+    public List<Account> getStaff() {
+        return accountRepository.getStaff();
+    }
 
+    @Override
+    public List<Account> findALL() {
+        return accountRepository.findAll();
+    }
 
+    @Override
+    public Account findById(String username) {
+        return accountRepository.findById(Long.valueOf(username)).get();
+    }
 }

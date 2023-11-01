@@ -25,4 +25,6 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
 
     Account findByUsernameAndEmail(String username, String email);
 
+    @Query("SELECT DISTINCT ar.account FROM Authority ar WHERE ar.role.id IN (1 ,2)")
+    List<Account> getStaff();
 }

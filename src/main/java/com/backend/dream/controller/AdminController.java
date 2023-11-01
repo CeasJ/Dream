@@ -14,8 +14,12 @@ public class AdminController {
             return "/admin/product";
         }
         @RequestMapping("/admin/authority")
-        public String size(){
+        public String authority(){
             return "/admin/authority";
         }
+    @RequestMapping("/admin/size")
+    public String size(){
+        return "/admin/size";
+    }
 
 }
