@@ -20,6 +20,7 @@ app.controller("profile_ctrl", function ($scope, $http) {
       $http.put(`/rest/profile/${id_account}`, account).then(resp => {
         $scope.account = angular.copy(account);
         alert("Update success");
+        location.href = "/profile";
       }).catch(err => {
       });
     }
