@@ -33,7 +33,7 @@
                     <!-- Icon Account và Tên người dùng -->
                     <div class="user-icon">
                         <div class="user-icon-circle">
-                            <img src="/img/gallery/testimonial-2.jpg" class="img-fluid">
+                            <img th:src="@{'/img/gallery/' + ${avatar}}" class="img-fluid">
                         </div>
                         <span class="user-name">[[${fullname}]]</span>
                         <!-- Dropdown Menu -->

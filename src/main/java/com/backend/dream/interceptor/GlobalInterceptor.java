@@ -28,6 +28,7 @@ public class GlobalInterceptor implements HandlerInterceptor {
         String remoteUser = request.getRemoteUser();
         Long id_account = accountService.findIDByUsername(remoteUser);
         String fullname = accountService.findFullNameByUsername(remoteUser);
+        String image = accountService.getImageByUserName(remoteUser);
         if (modelAndView != null) {
             if (remoteUser != null && (request.isUserInRole("ADMIN") || request.isUserInRole("STAFF"))) {
                 modelAndView.addObject("isAuthenticated", true);
@@ -35,10 +36,12 @@ public class GlobalInterceptor implements HandlerInterceptor {
                 modelAndView.addObject("fullname", fullname);
                 modelAndView.addObject("username", remoteUser);
                 modelAndView.addObject("id_account", id_account);
+                modelAndView.addObject("avatar", image);
             } else if (remoteUser != null) {
                 modelAndView.addObject("username", remoteUser);
                 modelAndView.addObject("fullname", fullname);
                 modelAndView.addObject("id_account", id_account);
+                modelAndView.addObject("avatar", image);
                 modelAndView.addObject("isAuthenticated", true);
             } else {
                 modelAndView.addObject("isAuthenticated", false);

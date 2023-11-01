@@ -58,6 +58,10 @@ public class AccountServiceImp implements AccountService {
     public String findFullNameByUsername(String username) throws NoSuchElementException {
         return accountRepository.findFullNameByUsername(username);
     }
+    @Override
+    public String getImageByUserName(String remoteUser) throws NoSuchElementException {
+        return accountRepository.getImageByUsername(remoteUser);
+    }
 
     @Override
     public Account findByUsernameAndEmail(String username, String email) {
@@ -84,4 +88,5 @@ public class AccountServiceImp implements AccountService {
     public Account findById(String username) {
         return accountRepository.findById(Long.valueOf(username)).get();
     }
+
 }
