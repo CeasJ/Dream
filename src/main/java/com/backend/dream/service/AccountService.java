@@ -27,7 +27,7 @@ public interface AccountService {
     List<Account> getStaff() throws NoSuchElementException;
     List<Account> findALL() throws NoSuchElementException;
     Account createStaff(JsonNode account);
-    Account updateStaff(JsonNode staffToUpdate);
     boolean checkUsernameExists(String username);
+    Account updateStaff(Account staffToUpdate);
 
 }

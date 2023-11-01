@@ -63,43 +63,21 @@
           .catch((error) => {
           });
       };
+
+
        $scope.edit = function (acc) {
-           $scope.avatar = acc.avatar;
-          $scope.username = acc.username;
-          $scope.fullname = acc.fullname;
-          $scope.password = acc.password;
-          $scope.email = acc.email;
-          $scope.phone = acc.phone;
-          $scope.firstname = acc.firstname;
-          $scope.lastname = acc.lastname;
-            $(".nav-pills a:eq(1)").tab('show');
+         $scope.form = angular.copy(acc);
         };
+
           $scope.clearForm = function () {
-            $scope.avatar = "";
-            $scope.username = "";
-            $scope.fullname = "";
-            $scope.password = "";
-            $scope.email = "";
-            $scope.phone = "";
-            $scope.firstname = "";
-            $scope.lastname = "";
+               $scope.form = {}
           };
 
           $scope.saveAccount = function () {
-              let account = {
-                avatar: $scope.avatar,
-                username: $scope.username,
-                fullname: $scope.firstname + ' ' +$scope.lastname,
-                password: $scope.password,
-                email: $scope.email,
-                phone: $scope.phone,
-                firstname: $scope.firstname,
-                lastname: $scope.lastname
-              };
+              let account = angular.copy($scope.form);
               let existUsername = $scope.admins.find(function (admin) {
                 return admin.username === account.username;
               });
-
               if (existUsername) {
                 alert("Username is exist");
               } else {
@@ -112,6 +90,11 @@
                   .catch(function (error) {});
               }
             };
+
+  $scope.selectedImage = null;
+    $scope.selectImage = function () {
+      document.getElementById("avatar").click();
+    };
               $scope.imageChanged = function (files) {
                 let data = new FormData();
                 data.append("file", files[0]);
@@ -121,23 +104,15 @@
                     headers: { "Content-Type": undefined },
                   })
                   .then((resp) => {
-                    $scope.avatar = resp.data.name;
+                    $scope.form.avatar = resp.data.name;
                   })
                   .catch((err) => {});
               };
 
                 $scope.update = function () {
-                  let account = {
-                    username: $scope.username,
-                    fullname: $scope.firstname + ' ' + $scope.lastname,
-                    password: $scope.password,
-                    email: $scope.email,
-                    phone: $scope.phone,
-                    firstname: $scope.firstname,
-                    lastname: $scope.lastname
-                  };
+                 let account = angular.copy($scope.form);
                   $http
-                    .put(`/rest/account/update/${account.username}`, account)
+                    .put(`/rest/account/update/${account.id}`, account)
                     .then((resp) => {
                       let index = $scope.admins.findIndex(
                         (a) => a.username === account.username

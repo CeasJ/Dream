@@ -35,7 +35,7 @@ public class AccountRestController {
     }
 
     @PutMapping("/update/{id}")
-    public Account updateStaff(@RequestBody JsonNode staffToUpdate, @PathVariable("id") Long id) {
+    public Account updateStaff(@RequestBody Account staffToUpdate, @PathVariable("id") Long id) {
         return accountService.updateStaff(staffToUpdate);
     }
 
