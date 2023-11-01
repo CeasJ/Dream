@@ -11,6 +11,18 @@
   };
   spinner();
 
+  new WOW().init();
+
+  // Sticky Navbar
+  $(window).scroll(function () {
+    if ($(this).scrollTop() > 300) {
+      $('.sticky-top').addClass('shadow-sm').css('top', '0px');
+    } else {
+      $('.sticky-top').removeClass('shadow-sm').css('top', '-150px');
+    }
+  });
+
+
   // Back to top button
   $(window).scroll(function () {
     if ($(this).scrollTop() > 300) {
@@ -20,22 +32,16 @@
     }
   });
 
-  // Scroll to top when back-to-top button is clicked
-  $(".back-to-top").click(function () {
-    $("html, body").animate({ scrollTop: 0 }, 1500, "easeInOutExpo");
-    return false;
-  });
-
   // Show .cart-0 if cartCount is less than or equal to 0, otherwise show .cart-1
-  // var cartCount = parseInt($("#cartCount").text());
+   var cartCount = parseInt($("#cartCount").text());
 
-  // if (cartCount <= 0) {
-  //   $(".cart-0").show();
-  //   $(".cart-1").hide();
-  // } else {
-  //   $(".cart-0").hide();
-  //   $(".cart-1").show();
-  // }
+   if (cartCount <= 0) {
+     $(".cart-0").show();
+     $(".cart-1").hide();
+   } else {
+     $(".cart-0").hide();
+     $(".cart-1").show();
+   }
 
   $("#step-1").addClass("active-stext");
   // Show infor-cart and hide cart-0, cart-1 on Buy button click
@@ -78,28 +84,21 @@
   });
 
   
-  // let isSuccess = true;
-  
-  // $("#completeButton").click(function () {
-  //     if(isSuccess) {
-  //       $("#completeButton").click(function () {
-  //         $(".cart-3").show();
-  //         $(".cart-0, .cart-1, .form-buy, .infor-cart").hide();
-  //         $("#number-3").addClass("active");
-  //         $("#line-2").addClass("active-line");
-  //         $("#step-3").addClass("active-stext");
-  //       });
-  //   } else {
-     
-  //   }
-  // });
+ 
+
+  $(document).ready(function () {
+    $("#applyDiscountBtn").click(function () {
+      var toast = new bootstrap.Toast(document.getElementById('successToast'));
+      toast.show();
+    });
+  });
 
 })(jQuery);
 
 //Cart Control Begin
 const app = angular.module("cart_app", []);
 
-app.controller("ctrl", function ($scope, $http,$timeout) {
+app.controller("ctrl", function ($scope, $http, $timeout) {
   $scope.provinces = [];
   $scope.districts = [];
   $scope.wards = [];
@@ -107,6 +106,34 @@ app.controller("ctrl", function ($scope, $http,$timeout) {
   $scope.selectedDistrict = "";
   $scope.selectedWard = "";
   $scope.result = "";
+  $scope.orderDetails = {};
+  $scope.listOrder = [];
+
+  $scope.selectOrder = function(orderID){
+    this.selectedOrderId = orderID;
+    $http.get("/detail/" + this.selectedOrderId).then(response => {
+      if (response.data) {
+        $scope.listOrder = response.data;
+        console.log(this.listOrder);
+      } 
+   }).catch(error => {
+    console.log(error);
+   });
+  };
+  
+  $scope.getSubTotal = function(){
+    let subTotal = 0;
+    angular.forEach($scope.listOrder,function(orderDetail){
+      subTotal+= orderDetail.quantity * orderDetail.price;
+    });
+    return subTotal;
+  };
+
+  $scope.getTotal = function(){
+    let subTotal = $scope.getSubTotal();
+    let shippingCost = 20000;
+    return subTotal + shippingCost;
+  };
 
   $http
     .get("https://provinces.open-api.vn/api/?depth=1")
@@ -119,8 +146,8 @@ app.controller("ctrl", function ($scope, $http,$timeout) {
       $http
         .get(
           "https://provinces.open-api.vn/api/p/" +
-            $scope.selectedProvince +
-            "?depth=2"
+          $scope.selectedProvince +
+          "?depth=2"
         )
         .then(function (response) {
           $scope.districts = response.data.districts;
@@ -133,8 +160,8 @@ app.controller("ctrl", function ($scope, $http,$timeout) {
       $http
         .get(
           "https://provinces.open-api.vn/api/d/" +
-            $scope.selectedDistrict +
-            "?depth=2"
+          $scope.selectedDistrict +
+          "?depth=2"
         )
         .then(function (response) {
           $scope.wards = response.data.wards;
@@ -173,8 +200,8 @@ app.controller("ctrl", function ($scope, $http,$timeout) {
   };
 
   $scope.printResult = function () {
-    if ( $scope.selectedProvince && $scope.selectedDistrict && $scope.selectedWard) {
-      $scope.order.address = 
+    if ($scope.selectedProvince && $scope.selectedDistrict && $scope.selectedWard) {
+      $scope.order.address =
         $scope.number + "," +
         $scope.getSelectedWards($scope.selectedWard) + "," +
         $scope.getSelectedDistricts($scope.selectedDistrict) + "," +
@@ -188,9 +215,9 @@ app.controller("ctrl", function ($scope, $http,$timeout) {
     return json
       ? JSON.parse(json)
       : {
-          username: username,
-          items: [],
-        };
+        username: username,
+        items: [],
+      };
   };
 
   function saveCart(username, cart) {
@@ -241,8 +268,8 @@ app.controller("ctrl", function ($scope, $http,$timeout) {
       saveCart(this.username, this);
     },
     get count() {
-      if(this.items && this.items.length > 0){
-        return this.items.map((item) => item.qty).reduce((total, qty) =>(total+=qty),0);
+      if (this.items && this.items.length > 0) {
+        return this.items.map((item) => item.qty).reduce((total, qty) => (total += qty), 0);
       } else {
         return 0;
       }
@@ -278,27 +305,27 @@ app.controller("ctrl", function ($scope, $http,$timeout) {
     createDate: new Date(),
     address: "",
     id_account: parseInt($("#id_account").text()),
-    note:"",
+    note: "",
     status: 1,
 
-    
+
     get orderDetails() {
-        return $scope.cart.items.map((item) => {
-            return {
-                id_product: parseInt(item.id),
-                price: item.price,
-                quantity: item.qty,
-            };
-        });
+      return $scope.cart.items.map((item) => {
+        return {
+          id_product: parseInt(item.id),
+          price: item.price,
+          quantity: item.qty,
+        };
+      });
     },
-    
+
     purchaseOrder() {
-        let order = angular.copy(this);
-        $http
+      let order = angular.copy(this);
+      $http
         .post(`/rest/order`, order)
         .then((resp) => {
-            $scope.cart.clear();
-            // location.href = "/order/detail/" + resp.data.id;
+          $scope.cart.clear();
+          // location.href = "/order/detail/" + resp.data.id;
         })
         .catch((error) => {
         });
@@ -309,31 +336,31 @@ app.controller("ctrl", function ($scope, $http,$timeout) {
   $scope.selectedPaymentMethod = "";
 
   $scope.handlePaymentMethodChange = function () {
-    console.log($scope.selectedPaymentMethod);
     if ($scope.selectedPaymentMethod === "cash") {
-        $scope.order.purchaseOrder();
-        $scope.completeButtonClicked();
+      $scope.order.purchaseOrder();
+      $scope.completeButtonClicked();
     } else if ($scope.selectedPaymentMethod === "vnpay") {
-        location.href = "/vnpay";
+      $scope.order.purchaseOrder();  
+      location.href = "/vnpay";
     } else if ($scope.selectedPaymentMethod === "paypal") {
-        location.href = "/paypal";
-        $scope.completeButtonClicked();
+      location.href = "/paypal";
+      $scope.completeButtonClicked();
     }
-};
+  };
 
-let isSuccess = true;
+  let isSuccess = true;
 
-$scope.completeButtonClicked = function () {
+  $scope.completeButtonClicked = function () {
     if (isSuccess) {
-        $(".cart-3").show();
-        $(".cart-0, .cart-1, .form-buy, .infor-cart").hide();
-        $("#number-3").addClass("active");
-        $("#line-2").addClass("active-line");
-        $("#step-3").addClass("active-stext");
+      $(".cart-3").show();
+      $(".cart-0, .cart-1, .form-buy, .infor-cart").hide();
+      $("#number-3").addClass("active");
+      $("#line-2").addClass("active-line");
+      $("#step-3").addClass("active-stext");
     } else {
-        alert("Hoàn thành thất bại. Vui lòng thử lại.");
+      alert("Hoàn thành thất bại. Vui lòng thử lại.");
     }
-};
+  };
   //Order End
 });
 //Cart Control End

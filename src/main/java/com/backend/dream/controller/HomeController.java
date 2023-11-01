@@ -27,9 +27,18 @@ public class HomeController {
         return "/user/cart/cart";
     }
 
-
-    @RequestMapping("/profile")
+    @RequestMapping("/hoso")
     public String profile() {
-        return "/user/home/profile";
+        return "/user/infor/profile";
+    }
+
+    @RequestMapping("/changePassword")
+    public String changePassword() {
+        return "/user/infor/changePassword";
+    }
+
+    @RequestMapping("/voucher")
+    public String voucher() {
+        return "/user/voucher/voucher";
     }
 }

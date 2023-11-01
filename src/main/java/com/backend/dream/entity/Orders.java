@@ -39,7 +39,7 @@ public class Orders implements Serializable {
     private OrderStatus status;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "orders")
+    @OneToMany(mappedBy = "orders", fetch = FetchType.EAGER)
     private List<OrderDetails> detail;
 
 }

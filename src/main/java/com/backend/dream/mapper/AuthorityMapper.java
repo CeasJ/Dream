@@ -16,4 +16,5 @@ public interface AuthorityMapper {
     @Mapping(source = "id_account", target="account.id")
     @Mapping(source = "id_role", target="role.id")
     Authority authorityDTOToAuthority(AuthorityDTO authorityDTO);
+
 }

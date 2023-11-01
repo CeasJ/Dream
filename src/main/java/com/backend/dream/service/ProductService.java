@@ -1,6 +1,7 @@
 package com.backend.dream.service;
 
 import com.backend.dream.dto.ProductDTO;
+import com.backend.dream.entity.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -15,7 +16,7 @@ public interface ProductService {
 
     Page<ProductDTO> findByNamePaged(String name, Pageable pageable);
 
-    ProductDTO create(ProductDTO productDTO);
+    Product create(ProductDTO productDTO);
 
     ProductDTO update(ProductDTO productDTO);
 
@@ -24,9 +25,19 @@ public interface ProductService {
     Page<ProductDTO> sortByPriceAsc(Long categoryId, Pageable pageable);
 
     Page<ProductDTO> sortByPriceDesc(Long categoryId, Pageable pageable);
-
     void delete(Long id);
-
     Page<ProductDTO> findAll(Pageable pageable);
+
+    Page<ProductDTO> findSaleProducts(Pageable pageable);
+
+//    double calculatePrice(Long productId, Long sizeId);
+    //  Display discounted price and original price in product detail and product list
+    double getDiscountedPrice(Long productId);
+
+    double getOriginalProductPrice(Long productId);
+
+    double getProductPriceBySize(Long productId, Long sizeId);
+
+    public double getDiscountPercentByProductId(Long productId);
 
 }
