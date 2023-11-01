@@ -20,7 +20,7 @@ public interface AccountService {
 
     Account findByUsernameAndEmail(String username, String email);
 
-    Account updatePassword(Account account, String password);
+    AccountDTO updatePassword(AccountDTO accountDTO, String password);
 
     Long findIDByUsername(String username) throws NoSuchElementException;
 

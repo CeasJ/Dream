@@ -8,8 +8,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 import java.util.NoSuchElementException;
 @CrossOrigin("*")
 @RestController
@@ -19,7 +21,8 @@ public class AccountRestController {
     private AccountService accountService;
     @Autowired
     private AccountMapper accountMapper;
-
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @GetMapping("/{id}")
     public ResponseEntity<AccountDTO> getOne(@PathVariable("id") Long id) {
         try {
@@ -47,5 +50,20 @@ public class AccountRestController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+    @PostMapping("/authenticate/{id}")
+    public boolean authenticate(@PathVariable("id") Long id, @RequestBody Map<String, String> body) {
+        String password = body.get("password");
+        AccountDTO accountDTO = accountService.findById(id);
+        return passwordEncoder.matches(password, accountDTO.getPassword());
+    }
+    @PutMapping("/changePassword/{id}")
+    public ResponseEntity<String> updatePassword(@PathVariable("id") Long id, @RequestBody Map<String, String> requestBody) {
+        String newPassword = requestBody.get("password");
+        AccountDTO accountDTO = accountService.findById(id);
+        accountService.updatePassword(accountDTO, newPassword);
+        return new ResponseEntity<>("Cập nhật mật khẩu thành công.", HttpStatus.OK);
+    }
+
+
 }
 

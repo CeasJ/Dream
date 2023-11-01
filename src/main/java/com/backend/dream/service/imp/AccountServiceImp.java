@@ -32,6 +32,7 @@ public class AccountServiceImp implements AccountService {
         Account account = accountMapper.accountDTOToAccount(accountDTO);
         account.setFullname(accountDTO.getFirstname() + " " + accountDTO.getLastname());
         account.setPassword(passwordEncoder.encode(accountDTO.getPassword()));
+        account.setAvatar("testimonial-0.jpg");
         Account saveAccount = accountRepository.save(account);
         return accountMapper.accountToAccountDTO(saveAccount);
     }
@@ -72,10 +73,12 @@ public class AccountServiceImp implements AccountService {
     }
 
     @Override
-    public Account updatePassword(Account account, String password) {
+    public AccountDTO updatePassword(AccountDTO accountDTO, String password) {
+        Account account = accountMapper.accountDTOToAccount(accountDTO);
         account.setPassword(passwordEncoder.encode(password));
-        accountRepository.save(account);
-        return account;
+        Account updatedAccount = accountRepository.save(account);
+        return accountMapper.accountToAccountDTO(updatedAccount);
     }
+
 
 }
