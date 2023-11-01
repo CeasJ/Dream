@@ -27,6 +27,7 @@ public class AccountServiceImp implements AccountService {
     public Optional<Account> findByUsername(String username) {
         return accountRepository.findByUsername(username);
     }
+
     @Override
     public AccountDTO registerAccount(AccountDTO accountDTO) {
         Account account = accountMapper.accountDTOToAccount(accountDTO);
@@ -55,7 +56,6 @@ public class AccountServiceImp implements AccountService {
         return accountMapper.accountToAccountDTO(updatedAccount);
     }
 
-
     public Long findIDByUsername(String username) throws NoSuchElementException {
         return accountRepository.findIdByUsername(username);
     }
@@ -66,11 +66,11 @@ public class AccountServiceImp implements AccountService {
         return accountOptional.isPresent() ? accountMapper.accountToAccountDTO(accountOptional.get()) : null;
     }
 
-
     @Override
     public String findFullNameByUsername(String username) throws NoSuchElementException {
         return accountRepository.findFullNameByUsername(username);
     }
+
     @Override
     public String getImageByUserName(String remoteUser) throws NoSuchElementException {
         return accountRepository.getImageByUsername(remoteUser);
@@ -88,6 +88,7 @@ public class AccountServiceImp implements AccountService {
         Account updatedAccount = accountRepository.save(account);
         return accountMapper.accountToAccountDTO(updatedAccount);
     }
+
     @Override
     public List<Account> getStaff() {
         return accountRepository.getStaff();

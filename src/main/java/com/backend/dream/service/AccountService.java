@@ -13,10 +13,10 @@ public interface AccountService {
     AccountDTO registerAccount(AccountDTO accountDTO);
 
     AccountDTO updateAccount(AccountDTO accountDTO);
+
     public boolean isUsernameExists(String username);
 
     public boolean isEmailExists(String email);
-
 
     Account findByUsernameAndEmail(String username, String email);
 

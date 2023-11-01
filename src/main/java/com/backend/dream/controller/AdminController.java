@@ -25,4 +25,9 @@ public class AdminController {
         return "/admin/size";
     }
 
+    @RequestMapping("/admin/staff")
+    public String staff() {
+        return "/admin/staff";
+    }
+
 }
