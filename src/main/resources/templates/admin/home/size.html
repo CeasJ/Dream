@@ -7,13 +7,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Report - Dream Admin</title>
+    <title>Size - Dream Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
-    <link href="css/admin/admin.css" rel="stylesheet" />
+    <link type="text/css" href="/css/admin/admin.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Angular -->
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.js"></script> -->
 </head>
 
-<body class="sb-nav-fixed">
+<body class="sb-nav-fixed" ng-app="size-app" ng-controller="size-ctrl">
     <div th:replace="~{/admin/component/header.html}"></div>
     <div id="layoutSidenav">
         <div id="layoutSidenav_nav">
@@ -22,44 +25,31 @@
         <div id="layoutSidenav_content">
             <main>
                 <div class="card mb-4" style="border-radius: 0px;">
-                    <div class="card-header">
-                        <h3>Report</h3>
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h3 class="mb-0">Size Products</h3>
                     </div>
                     <div class="card-body">
                         <table id="datatablesSimple">
                             <thead>
                                 <tr>
                                     <th>
-                                        <div class="text-center" style="font-size: 16px;">Metric</div>
+                                        <div class="text-center" style="font-size: 16px;">Tên sản phẩm</div>
                                     </th>
-                                    <th>
-                                        <div class="text-center" style="font-size: 16px;">Value</div>
+                                    <th ng-repeat="size in sizes" class="text-center">
+                                        <div class="text-center" style="font-size: 16px;">{{size.name}}</div>
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="text-center">Revenue</div>
+                                <tr ng-repeat="name in products">
+                                    <td class="text-center">
+                                        <div class="text-center">{{name.name}}</div>
                                     </td>
-                                    <td>
-                                        <div class="text-center" th:text="${revenue}"></div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="text-center">Total Order</div>
-                                    </td>
-                                    <td>
-                                        <div class="text-center" th:text="${total}"></div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="text-center">Total Product Has Sold</div>
-                                    </td>
-                                    <td>
-                                        <div class="text-center" th:text="${totalProductHasSold}"></div>
+                                    <td ng-repeat="size in sizes">
+                                        <div class="text-center">
+                                            <input ng-checked="size_of(name, size)" ng-click="size_changed(name, size)"
+                                                type="checkbox">
+                                        </div>
                                     </td>
                                 </tr>
                             </tbody>
@@ -71,9 +61,10 @@
         </div>
     </div>
 
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous">
     </script>
-    <script src="js/admin/scripts.js"></script>
+    <script src="/js/admin/scripts.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
         crossorigin="anonymous"></script>

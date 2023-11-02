@@ -24,12 +24,12 @@ public class OrderController {
         for (OrderDTO orderDTO : list) {
             System.out.println(orderDTO.getFullname());
         }
-        model.addAttribute("listOrder",list);
+        model.addAttribute("listOrder", list);
         return "/user/order/history";
     }
 
     @GetMapping("/admin/order")
-    public String getOrderManagement(){
-        return "/admin/order";
+    public String getOrderManagement() {
+        return "/admin/home/order";
     }
 }
