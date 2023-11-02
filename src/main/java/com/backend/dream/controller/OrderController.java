@@ -38,6 +38,6 @@ public class OrderController {
 
     @GetMapping("/admin/order")
     public String getOrderManagement() {
-        return "/admin/order";
+        return "/admin/home/order";
     }
 }

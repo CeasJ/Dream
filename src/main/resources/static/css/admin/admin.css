@@ -11582,3 +11582,40 @@ body {
   font-size: 0.75rem;
   border-radius: 0.375rem !important;
 }
+
+.modal-dialog {
+  width: 50vw; /* Chiều rộng bằng 50% của viewport width */
+  max-width: none; /* Bỏ giới hạn chiều rộng tối đa */
+  height: 100vh; /* Chiều cao bằng 100% của viewport height */
+  margin: 0; /* Bỏ margin */
+  margin-left: auto; /* Đặt margin-left thành auto để modal nằm bên phải */
+}
+
+.modal-content {
+  height: 100%; /* Chiều cao 100% của modal */
+}
+
+.modal-body {
+  overflow-y: auto; /* Cho phép cuộn nếu nội dung quá dài */
+}
+
+#imagePreview {
+  max-width: 90%;
+  height: 300px; /* Chiều cao cố định của hình ảnh */
+  object-fit: cover; /* Để hình ảnh không bị bóp méo khi kích thước không phù hợp */
+  border-radius: 50%; /* Để hình ảnh trở thành hình tròn */
+}
+
+#imageProduct {
+  max-width: 80%;
+  height: 220px; /* Chiều cao cố định của hình ảnh */
+  object-fit: cover; /* Để hình ảnh không bị bóp méo khi kích thước không phù hợp */
+}
+
+.upload-button {
+  margin-top: 20px;
+}
+
+.order-status {
+  text-align: center;
+}
