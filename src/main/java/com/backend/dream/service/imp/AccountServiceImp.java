@@ -108,7 +108,7 @@ public class AccountServiceImp implements AccountService {
 
         Authority authority = new Authority();
         authority.setRole(role);
-
+        newAccount.setFullname(newAccount.getFirstname() + " " + newAccount.getLastname());
         Account savedAccount = accountRepository.save(newAccount);
 
         authority.setAccount(savedAccount);
