@@ -10,6 +10,6 @@ import java.util.List;
 
 @Repository
 public interface FeedBackRepository extends JpaRepository<FeedBack,Long> {
-    @Query("SELECT f FROM Feedback f WHERE f.product.id = :productId")
+    @Query("SELECT f FROM FeedBack f WHERE f.product.id = :productId")
     List<FeedBack> findFeedbacksByProductId(@Param("productId") Long productId);
 }

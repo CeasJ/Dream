@@ -6,10 +6,12 @@ import com.backend.dream.mapper.FeedBackMapper;
 import com.backend.dream.repository.FeedBackRepository;
 import com.backend.dream.service.FeedbackService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class FeedbackServiceImp implements FeedbackService {
 
     private final FeedBackRepository feedBackRepository;

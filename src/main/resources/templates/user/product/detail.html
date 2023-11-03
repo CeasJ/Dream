@@ -120,26 +120,10 @@
         </div>
     </div>
 
-    <div th:each="feedback : ${product.feedback}">
-        <div class="user-avatar">
-            <img th:src="@{/img/user-avatar.jpg}" alt="User Avatar" />
-        </div>
-        <div class="user-info">
-            <p th:text="${feedback.account.fullname}"></p>
-        </div>
-        <div class="feedback-content">
-            <p th:text="${feedback.note}"></p>
-        </div>
-        <div class="feedback-rating">
-            <!-- Display rating stars based on the 'rating' property -->
-            <span th:each="star : ${#numbers.sequence(1, feedback.rating)}">
-            <i class="fa fa-star"></i>
-        </span>
-        </div>
-        <div class="feedback-date">
-            <p th:text="${feedback.createDate}"></p>
-        </div>
-    </div>
+
+<!--    Comment section start-->
+
+<!--    Comment section end-->
 
 </div>
 <!-- Main content end -->
