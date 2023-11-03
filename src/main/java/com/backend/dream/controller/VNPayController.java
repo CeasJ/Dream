@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 @Controller
 public class VNPayController {
     @Autowired
@@ -29,17 +32,22 @@ public class VNPayController {
     }
 
     @GetMapping("/vnpay-payment")
-    public String paymentProcess(HttpServletRequest request, Model model) {
+    public String paymentProcess(HttpServletRequest request, Model model) throws Exception{
         int paymentStatus = vnPayService.orderReturn(request);
 
+        SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+        SimpleDateFormat outputDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+
+
         String orderInfo = request.getParameter("vnp_OrderInfo");
-        String paymentTime = request.getParameter("vnp_PayDate");
+        Date paymentTime = inputDateFormat.parse(request.getParameter("vnp_PayDate"));
+        String formattedPaymentTime = outputDateFormat.format(paymentTime);
         String transactionId = request.getParameter("vnp_TransactionNo");
         String totalPrice = request.getParameter("vnp_Amount");
 
         model.addAttribute("orderId", orderInfo);
         model.addAttribute("totalPrice", totalPrice);
-        model.addAttribute("paymentTime", paymentTime);
+        model.addAttribute("paymentTime", formattedPaymentTime);
         model.addAttribute("transactionId", transactionId);
 
         return paymentStatus == 1 ? "/user/checkout/vnpaysuccess" : "/user/checkout/vnpayfail";
