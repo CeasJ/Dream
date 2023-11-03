@@ -37,4 +37,8 @@ public class AdminController {
     public String staff() {
         return "/admin/home/staff";
     }
+    @RequestMapping("/admin/category")
+    public String Cates() {
+        return "/admin/home/category";
+    }
 }
