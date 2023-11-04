@@ -69,7 +69,11 @@ app.controller("product_ctrl", function ($scope, $http) {
   		}).catch(err => {
   		})
   	};
-  
+   $scope.selectedImage = null;
+
+    $scope.selectImage = function () {
+      document.getElementById("image").click();
+    };
   $scope.imageChanged = function (files) {
     let data = new FormData();
     data.append("file", files[0]);

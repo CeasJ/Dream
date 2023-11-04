@@ -63,4 +63,15 @@ app.controller("authority-ctrl", function ($scope, $http, $location) {
       .catch((error) => {
       });
   };
+   $scope.edit = function (acc) {
+       $scope.avatar = acc.avatar;
+      $scope.username = acc.username;
+      $scope.fullname = acc.fullname;
+      $scope.password = acc.password;
+      $scope.email = acc.email;
+      $scope.phone = acc.phone;
+      $scope.firstname = acc.firstname;
+      $scope.lastname = acc.lastname;
+     	$(".nav-pills a:eq(1)").tab('show');
+    };
 });
