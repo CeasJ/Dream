@@ -141,18 +141,15 @@ public class AccountServiceImp implements AccountService {
         return savedAccount;
     }
 
-<<<<<<< HEAD
 //    @Override
 //    public Account updateStaff(JsonNode staffToUpdate) {
 //        return accountRepository.update(staffToUpdate);
 //    }
-=======
     @Override
     public Account updateStaff(JsonNode staffToUpdate) {
 //        return accountRepository.udate(staffToUpdate);
         return null;
     }
->>>>>>> cuong
 
     @Override
     public Account findById(String username) {

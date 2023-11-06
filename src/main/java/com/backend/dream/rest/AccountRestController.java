@@ -55,11 +55,10 @@ public class AccountRestController {
         }
     }
 
-<<<<<<< HEAD
     @PutMapping("/update/{id}")
     public Account updateStaff(@RequestBody Account staffToUpdate, @PathVariable("id") Long id) {
         return accountService.updateStaff(staffToUpdate);
-=======
+    }
     @PostMapping("/authenticate/{id}")
     public boolean authenticate(@PathVariable("id") Long id, @RequestBody Map<String, String> body) {
         String password = body.get("password");
@@ -74,7 +73,6 @@ public class AccountRestController {
         AccountDTO accountDTO = accountService.findById(id);
         accountService.updatePassword(accountDTO, newPassword);
         return new ResponseEntity<>(accountDTO, HttpStatus.OK);
->>>>>>> cuong
     }
 
 }
