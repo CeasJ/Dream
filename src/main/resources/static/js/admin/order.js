@@ -1,5 +1,5 @@
-const app = angular.module('order_app', []);
-app.controller('order_ctrl', function($scope, $http) {
+const app = angular.module("order_app", []);
+app.controller("order_ctrl", function($scope, $http) {
     $scope.listOrders = [];
     $scope.listOrdersConfirmed = [];
     $scope.listOrdersCancelled = [];
@@ -26,7 +26,7 @@ app.controller('order_ctrl', function($scope, $http) {
         $http.get(`/rest/order/ship`).then(resp => {
 			$scope.listOrderIsShipping = resp.data;
 		});
-	}
+	};
 
     $scope.initialize();
 

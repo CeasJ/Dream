@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.sql.Time;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 
@@ -29,6 +31,13 @@ public class Orders implements Serializable {
     private Date createDate = new Date();
 
     private String note;
+
+    @Temporal(TemporalType.TIME)
+    @Column(name = "createtime")
+    private Time createTime = Time.valueOf(LocalTime.now());
+
+    @Column(name = "totalamount")
+    private Double totalAmount;
 
     @ManyToOne
     @JoinColumn(name = "idaccount")
