@@ -4,6 +4,7 @@ import com.backend.dream.dto.AccountDTO;
 import com.backend.dream.dto.TokenDTO;
 import com.backend.dream.entity.Account;
 import com.backend.dream.entity.Token;
+import com.backend.dream.mapper.AccountMapper;
 import com.backend.dream.repository.TokenRepository;
 import com.backend.dream.service.AccountService;
 import com.backend.dream.service.TokenService;
@@ -29,7 +30,8 @@ public class ForgotPasswordController {
     EmailService emailService;
     @Autowired
     private TokenRepository tokenRepository;
-
+    @Autowired
+    AccountMapper accountMapper;
     @GetMapping("/forgot")
     public String showForgotPasswordForm() {
         return "/user/security/forgotPass";
@@ -88,12 +90,12 @@ public class ForgotPasswordController {
         String tokenValue = (String) session.getAttribute("tokenValue");
         Token token = tokenService.findByToken(tokenValue);
         Account account = token.getAccount();
-
+        AccountDTO accountDTO = accountMapper.accountToAccountDTO(account);
         if (!password.equals(confirmPassword)) {
             model.addAttribute("message", "Passwords do not match");
             return "/user/security/confirmPass";
         }
-        accountService.updatePassword(account, password);
+        accountService.updatePassword(accountDTO, password);
 
         delete();
 

@@ -32,9 +32,15 @@
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
+
+    <!-- Angular -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 </head>
 
-<body>
+<body ng-app="cart_app" ng-controller="ctrl">
     <main style="background-color: rgb(243, 244, 246);">
 
         <!-- Spinner Start -->
@@ -71,6 +77,7 @@
                         <th class="table-header">No.</th>
                         <th class="table-header">Mã đơn hàng</th>
                         <th class="table-header">Tên người đặt</th>
+                        <th class="table-header">Ngày đặt</th>
                         <th class="table-header">Thời gian</th>
                         <th class="table-header">Tổng số tiền</th>
                         <th class="table-header">Trạng thái</th>
@@ -83,7 +90,8 @@
                         <td th:text="${order.id}"></td>
                         <td th:text="${order.fullname}"></td>
                         <td th:text="${order.createDate}"></td>
-                        <td>50000</td>
+                        <td th:text="${#dates.format(order.createTime, 'hh:mm a')}"></td>
+                        <td th:text="${order.formattedPrice}"></td>
                         <th:block th:if="${order.status == 1}">
                             <td><span class="order-status status-info">Đã đặt hàng</span></td>
                         </th:block>
@@ -100,7 +108,7 @@
                             <td><span class="order-status status-failed">Đã hủy</span></td>
                         </th:block>
                         <td>
-                            <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#orderModal">
+                            <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#orderModal" th:attr="ng-click=@{|selectOrder(${order.id})|}">
                                 <i class="fas fa-eye"></i>
                             </button>
                         </td>
@@ -128,11 +136,11 @@
                                 <div class="col-md-6 border-right">
                                     <div class="info-pair">
                                         <h6>Mã đơn hàng:</h6>
-                                        <p>#1234</p>
+                                        <p>#{{listOrder[0].id_order}}</p>
                                     </div>
                                     <div class="info-pair">
                                         <h6>Ngày đặt hàng:</h6>
-                                        <p>24/10/2023</p>
+                                        <p>{{listOrder[0].order_createDate}}</p>
                                     </div>
                                     <!-- Thêm thông tin khác nếu cần -->
                                 </div>
@@ -156,15 +164,15 @@
                                 <div class="col-md-6 border-right">
                                     <div class="info-pair">
                                         <h6>Họ và tên:</h6>
-                                        <p>Người đặt 1</p>
+                                        <p>{{listOrder[0].account_fullname}}</p>
                                     </div>
                                     <div class="info-pair">
                                         <h6>Số điện thoại:</h6>
-                                        <p>0123456789</p>
+                                        <p>{{listOrder[0].account_phone}}</p>
                                     </div>
                                     <div class="info-pair">
                                         <h6>Địa chỉ:</h6>
-                                        <p>123 quốc lộ 3, phường Hiệp Bình Phước, quận Thủ Đức, TP. Hồ Chí Minh</p>
+                                        <p>{{listOrder[0].order_address}}</p>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -190,28 +198,27 @@
                                     <table class="table table-bordered table-details">
                                         <thead class="table-dark">
                                             <tr>
+                                                <th>No.</th>
                                                 <th>Hình ảnh</th>
                                                 <th>Tên sản phẩm</th>
-                                                <th>Mã sản phẩm</th>
                                                 <th>Số lượng</th>
                                                 <th>Giá</th>
                                                 <th>Tổng tiền</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td><img src="/img/gallery/product2.webp" class="img-fluid img-details">
-                                                </td>
-                                                <td>Tên sản phẩm 1</td>
-                                                <td>#12345</td>
-                                                <td>2</td>
-                                                <td>240.000 đ</td>
-                                                <td>480.000 đ</td>
+                                            <tr ng-repeat="orderDetail in listOrder">
+                                                <td>{{$index + 1}}</td>
+                                                <td><img ng-src="{{'/img/gallery/' + orderDetail.product_image}}" class="img-fluid img-details"></td>
+                                                <td>{{orderDetail.product_name}}</td>
+                                                <td>{{orderDetail.quantity}}</td>
+                                                <td>{{orderDetail.price | number : 0}} đ</td>
+                                                <td>{{orderDetail.quantity * orderDetail.price | number :0}} đ</td>
                                             </tr>
                                             <tr>
                                                 <td colspan="5" class="text-end"><strong>Tạm
                                                         tính:</strong></td>
-                                                <td>480.000 đ</td>
+                                                <td>{{getSubTotal() | number : 0}} đ</td>
                                             </tr>
                                             <tr>
                                                 <td colspan="5" class="text-end"><strong>Chi phí vận
@@ -222,7 +229,7 @@
                                             <tr>
                                                 <td colspan="5" class="text-end"><strong>Tổng thanh
                                                         toán:</strong></td>
-                                                <th class="text-success">500.000 đ</th>
+                                                <th class="text-success">{{getTotal() | number : 0}} đ</th>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -230,10 +237,35 @@
                             </div>
                         </div>
                         <div class="row mt-4">
-                            <div class="status-info">
+
+                            <div ng-if="listOrder[0].order_status === 1 " class="status-info">
+                                <h5>Tình trạng đơn hàng:</h5>
+                                <p class="text-infor" style="font-size: 18px; font-weight: 500;">
+                                    Đơn hàng đã được đặt.</p>
+                            </div>
+
+                            <div ng-if="listOrder[0].order_status === 2" class="status-blue">
+                                <h5>Tình trạng đơn hàng:</h5>
+                                <p class="text-primary" style="font-size: 18px; font-weight: 500;">
+                                    Đơn hàng đã được xác nhận.</p>
+                            </div>
+
+                            <div ng-if="listOrder[0].order_status === 3" class="status-warning">
+                                <h5>Tình trạng đơn hàng:</h5>
+                                <p class="text-warning" style="font-size: 18px; font-weight: 500;">
+                                    Đơn hàng đang được giao.</p>
+                            </div>
+
+                            <div ng-if="listOrder[0].order_status === 4" class="status-success">
                                 <h5>Tình trạng đơn hàng:</h5>
                                 <p class="text-success" style="font-size: 18px; font-weight: 500;">
                                     Đơn hàng đã được giao thành công.</p>
+                            </div>
+
+                            <div ng-if="listOrder[0].order_status === 5" class="status-failed">
+                                <h5>Tình trạng đơn hàng:</h5>
+                                <p class="text-danger" style="font-size: 18px; font-weight: 500;">
+                                    Đơn hàng đã bị hủy.</p>
                             </div>
                         </div>
                     </div>
@@ -268,7 +300,10 @@
     <script src="lib/owlcarousel/owl.carousel.min.js"></script>
 
     <!-- Template Javascript -->
-    <script src="js/main.js"></script>
+    <script src="/js/main.js"></script>
+
+    <!-- Cart Control -->
+    <script src="/js/cart.js"></script>
 </body>
 
 </html>

@@ -4,19 +4,23 @@ import com.backend.dream.dto.ProductDTO;
 import com.backend.dream.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
 
+
+import java.util.Date;
 import java.util.List;
 
 @Repository
-public interface ProductRepository extends JpaRepository<Product, Long> {
+public interface ProductRepository extends JpaRepository<Product,Long> {
     @Query("SELECT p FROM Product p WHERE p.name LIKE ?1")
     List<Product> findByName(String name);
 
     @Query("SELECT p FROM Product p where category.id=?1")
     Page<Product> findByCategoryID(Long categoryId, Pageable pageable);
+
 
     // For Sort products function
     @Query("SELECT p FROM Product p WHERE p.category.id = ?1 ORDER BY p.price ASC")
@@ -26,5 +30,15 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     Page<Product> findByCategoryOrderByPriceDesc(Long categoryId, Pageable pageable);
 
     Page<Product> findByNameContainingIgnoreCase(String productName, Pageable pageable);
+
+    // Discount products
+    @Query("SELECT p FROM Product p JOIN Discount d ON p.id = d.product.id WHERE d.activeDate <= current_date AND d.expiredDate >= current_date")
+    Page<Product> findSaleProducts(Pageable pageable);
+
+    // Change price of product according to the chosen size
+    @Query("SELECT ps.priceProduct_Size FROM ProductSize ps WHERE ps.product.id = :productId AND ps.size.id = :sizeId")
+    Double findProductPriceBySize(@Param("productId") Long productId, @Param("sizeId") Long sizeId);
+
+
 
 }

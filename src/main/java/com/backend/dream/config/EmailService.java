@@ -10,32 +10,31 @@ import org.thymeleaf.TemplateEngine;
 
 @Service
 public class EmailService {
-    @Autowired
-    private MailSender mailSender;
-    @Autowired
-    private TokenService tokenService;
-    @Autowired
-    private TemplateEngine templateEngine;
-    public void sendWelcomeEmail(String to, String fullname) {
-        SimpleMailMessage msg = new SimpleMailMessage();
-        msg.setTo(to);
-        msg.setSubject("Welcome to Dream Coffee and Tea");
-        msg.setText("Welcome " + fullname + " to Dream Coffee & Tea");
-        mailSender.send(msg);
-    }
-    public void sendEmailTokenPass(String to, String token, String fullname) {
-        SimpleMailMessage msg = new SimpleMailMessage();
-        msg.setTo(to);
-        msg.setSubject("Reset Password");
-        msg.setText("Hi " + fullname + ",\n\n"
-                + "We have received a request to reset the password for your account. \n\n"
-                + "Your authentication code is: " + token + "\n\n"
-                + "If you did not request a password reset, please ignore this email.\n\n"
-                + "Regards,\n"
-                + "Dream Coffee & Tea");
-        mailSender.send(msg);
-    }
+        @Autowired
+        private MailSender mailSender;
 
+        @Autowired
+        private TokenService tokenService;
 
+        public void sendWelcomeEmail(String to, String fullname) {
+                SimpleMailMessage msg = new SimpleMailMessage();
+                msg.setTo(to);
+                msg.setSubject("Welcome to Dream Coffee and Tea");
+                msg.setText("Welcome " + fullname + " to Dream Coffee & Tea");
+                mailSender.send(msg);
+        }
+
+        public void sendEmailTokenPass(String to, String token, String fullname) {
+                SimpleMailMessage msg = new SimpleMailMessage();
+                msg.setTo(to);
+                msg.setSubject("Reset Password");
+                msg.setText("Hi " + fullname + ",\n\n"
+                                + "We have received a request to reset the password for your account. \n\n"
+                                + "Your authentication code is: " + token + "\n\n"
+                                + "If you did not request a password reset, please ignore this email.\n\n"
+                                + "Regards,\n"
+                                + "Dream Coffee & Tea");
+                mailSender.send(msg);
+        }
 
 }

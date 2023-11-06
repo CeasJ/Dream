@@ -26,4 +26,9 @@
         @ManyToOne
         @JoinColumn(name = "idsize")
         private Size size;
+
+        @Column(name = "priceproduct_size")
+        private Double priceProduct_Size;
+
+
     }
