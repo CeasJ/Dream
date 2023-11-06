@@ -86,6 +86,4 @@ app.controller("product_ctrl", function ($scope, $http) {
       })
       .catch((err) => {});
   };
-      };
-
 });

@@ -9,6 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface DiscountRepository extends JpaRepository<Discount,Long> {
-    @Query("SELECT d FROM Discount d WHERE d.product.id = :idProduct")
+    @Query("SELECT d FROM Discount d WHERE d.product.id = :idProduct and current_date >= d.activeDate and current_date <= d.expiredDate")
     Optional<Discount> findByIDProduct(Long idProduct);
 }

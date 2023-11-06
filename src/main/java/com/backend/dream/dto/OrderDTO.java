@@ -4,7 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.sql.Time;
+import java.text.DecimalFormat;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -18,13 +21,23 @@ public class OrderDTO {
 
     private Date createDate;
 
+    private Time createTime;
+
     private Long status;
 
     private int id_account;
 
     private String fullname;
 
-    private int quantity;
+    private List<OrderDetailDTO> orderDetailsDTO;
 
-    private Double price;
+    private Double totalAmount;
+    public String getFormattedPrice() {
+        if(totalAmount != null){
+        DecimalFormat df = new DecimalFormat("#,###₫");
+        return df.format(totalAmount);
+        } else {
+            return "";
+        }
+    }
 }

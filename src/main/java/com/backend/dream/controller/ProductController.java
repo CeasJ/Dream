@@ -7,19 +7,10 @@ import com.backend.dream.entity.Product;
 import com.backend.dream.mapper.ProductMapper;
 import com.backend.dream.repository.ProductRepository;
 import com.backend.dream.service.CategoryService;
-import com.backend.dream.entity.Product;
-import com.backend.dream.mapper.ProductMapper;
-import com.backend.dream.repository.ProductRepository;
-import com.backend.dream.service.CategoryService;
+import com.backend.dream.service.DiscountService;
 import com.backend.dream.service.ProductService;
 import com.backend.dream.service.ProductSizeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -31,10 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Controller
 public class ProductController {
@@ -51,6 +39,9 @@ public class ProductController {
 
     @Autowired
     CategoryService categoryService;
+
+    @Autowired
+    DiscountService discountService;
 
     @Autowired
     public ProductController(ProductService productService, ProductSizeService productSizeService) {
@@ -114,31 +105,32 @@ public class ProductController {
         } else if ("desc".equals(sortOption)) {
             // Sắp xếp theo giá giảm dần
             productPage = productService.sortByPriceDesc(categoryIdValue, pageable);
+        } else if ("sale".equals(sortOption)) {
+            productPage = productService.findSaleProducts(pageable);
         } else {
             // Mặc định
             productPage = productService.findByCategory(categoryIdValue, pageable);
         }
 
-        // List<DiscountDTO> discounts = yourDiscountServiceMethod(); // Thay thế bằng
-        // phương thức lấy danh sách giảm giá
-        // for (ProductDTO productDTO : productPage.getContent()) {
-        // // Tìm giảm giá cho sản phẩm
-        // for (DiscountDTO discount : discounts) {
-        // if (discount.getId_product().equals(productDTO.getId())) {
-        // double discountedPrice = productDTO.getOriginalPrice() * (1 -
-        // (discount.getPercent() / 100));
-        // productDTO.setDiscountedPrice(discountedPrice);
-        // break;
-        // }
-        // }
-        // }
+        List<ProductDTO> products = productPage.getContent();
+        for (ProductDTO product : products) {
+            double discountedPrice = productService.getDiscountedPrice(product.getId());
+            if (discountedPrice < product.getPrice()) {
+                product.setIsDiscounted(true);
+                product.setDiscountedPrice(discountedPrice);
+            } else {
+                product.setIsDiscounted(false);
+            }
+        }
 
-        model.addAttribute("products", productPage.getContent());
+        model.addAttribute("products", products);
         model.addAttribute("currentPage", page);
         model.addAttribute("categoryId", categoryIdValue);
         model.addAttribute("totalPages", productPage.getTotalPages());
         return "user/product/products-list";
     }
+
+
 
     @GetMapping("/search")
     public String searchByName(
@@ -158,19 +150,63 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/product/{name}", method = RequestMethod.GET)
-    public String productDetail(@PathVariable(value = "name") String name, Model model) {
+    public String productDetail(@PathVariable(value = "name") String name,
+                                @RequestParam(value = "sizeId", required = false) Long sizeId,
+                                Model model) {
         try {
             String decoded = URLDecoder.decode(name, "UTF-8");
             ProductDTO product = productService.findByNamePaged(decoded, PageRequest.of(0, 1)).getContent().get(0);
             List<SizeDTO> availableSizes = productSizeService.getSizesByProductId(product.getId());
+
+            // Set the price based on the selected size
+            if (sizeId != null) {
+                double productPriceBySize = productService.getProductPriceBySize(product.getId(), sizeId);
+                product.setSelectedSizeId(sizeId);
+                product.setPrice(productPriceBySize);
+            }
+
+            double discountedPrice = productService.getDiscountedPrice(product.getId());
+
+            if (discountedPrice < product.getPrice()) {
+                product.setIsDiscounted(true);
+                product.setDiscountedPrice(discountedPrice);
+            } else {
+                product.setIsDiscounted(false);
+            }
+
+            // Get the discount percent
+            DiscountDTO discount = discountService.getDiscountByProductId(product.getId());
+            Double discountPercent = (discount != null) ? discount.getPercent() : 0.0;
+
+            model.addAttribute("discountPercent", discountPercent);
             model.addAttribute("product", product);
             model.addAttribute("availableSizes", availableSizes);
-
-            System.out.println(availableSizes);
             return "user/product/detail";
         } catch (UnsupportedEncodingException e) {
             return "error";
         }
     }
+
+    @GetMapping("/getProductPriceBySize")
+    public ResponseEntity<Double> getProductPriceBySize(
+            @RequestParam("productId") Long productId,
+            @RequestParam("sizeId") Long sizeId) {
+        try {
+            double productPrice = productService.getProductPriceBySize(productId, sizeId);
+            return ResponseEntity.ok(productPrice);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(-1.0);
+        }
+    }
+
+    @GetMapping("/getDiscountPercentByProductId")
+    public ResponseEntity<Double> getDiscountPercentByProductId(@RequestParam("productId") Long productId) {
+        // Gọi phương thức từ service để lấy discountPercent dựa trên productId
+        double discountPercent = productService.getDiscountPercentByProductId(productId);
+        return ResponseEntity.ok(discountPercent);
+    }
+
+
+
 
 }

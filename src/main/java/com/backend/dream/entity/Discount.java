@@ -26,12 +26,13 @@ public class Discount implements Serializable {
     @Column(name = "discountnumber")
     private String number;
 
-    private boolean active;
-
+    @Column(name = "discountpercent")
     private Double percent;
 
-    private Date createDate;
+    @Column(name = "activedate")
+    private Date activeDate;
 
+    @Column(name = "expireddate")
     private Date expiredDate;
 
     @ManyToOne

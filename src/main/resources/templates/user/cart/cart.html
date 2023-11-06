@@ -9,9 +9,9 @@
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <meta content="" name="keywords">
   <meta content="" name="description">
-
   <!-- Favicon -->
-  <link href="/img/favicon.ico" rel="icon">
+
+  <link href="/img/gallery/logo.png" rel="icon">
 
   <!-- Google Web Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -217,41 +217,27 @@
                     </div>
                   </div>
 
-                  <div class="text-center">
-                    <button type="button" class="btn btn-secondary btn-infor" id="backButton">Trở lại</button>
-                    <button class="btn btn-danger btn-infor" id="completeButton"
-                      ng-click="handlePaymentMethodChange()">Hoàn thành</button>
-                  </div>
-                </form>
-              </div>
+                <div class="text-center">
+                  <button type="button" class="btn btn-secondary btn-infor" id="backButton">Trở lại</button>
+                  <button class="btn btn-danger btn-infor" id="completeButton" ng-click="handlePaymentMethodChange()">Hoàn thành</button>
+                </div>
+              </form>
             </div>
           </div>
-          <div class="container-fluid cart-3 mx-auto" style="display: none;">
-            <img class="img-cart" src="/img/cart-1.png">
-            <h5>Đơn hàng của bạn đang được xử lý</h5>
-            <a th:href="@{|/history|}">
-              <button class="btn btn-danger mt-3" style="padding: 8px 18px;">
-                <h6 style="color: white;">Xem chi tiết đơn hàng</h6>
-              </button>
-            </a>
-          </div>
+        </div>
+        <div class="container-fluid cart-3 mx-auto" style="display: none;">
+          <img class="img-cart" src="/img/gallery/cart-0.png">
+          <h5>Đơn hàng của bạn đã được xử lý</h5>
+          <a th:href="@{|/store|}">
+            <button class="btn btn-danger mt-3" style="padding: 8px 18px;">
+              <h6 style="color: white;">Tiếp tục mua sắm</h6>
+            </button>
+          </a>
         </div>
       </div>
     </div>
-    <!--Cart End  -->
-
-    <!-- Thanh toast hiển thị thông báo -->
-    <div class="toast position-fixed bottom-0 start-0" id="successToast" role="alert" aria-live="assertive"
-      aria-atomic="true">
-      <div class="toast-header">
-        <strong class="me-auto fw-bold text-dark">Dream Team</strong>
-        <small class="text-muted">just now</small>
-        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Đóng"></button>
-      </div>
-      <div class="toast-body text-success text-center fw-bold" style="font-size: 17px;">
-        Áp dụng mã thành công
-      </div>
-    </div>
+  </div>
+  <!--Cart End  -->
 
     <!-- Back to Top -->
     <!-- Footer Start -->
