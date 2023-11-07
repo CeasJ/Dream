@@ -25,6 +25,9 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     @Query("SELECT a.fullname FROM Account a WHERE a.username = :username")
     String findFullNameByUsername(@Param("username") String username);
 
+    @Query("SELECT a.avatar FROM Account a WHERE a.username = :username")
+    String getImageByUsername(@Param("username") String username);
+
     Account findByUsernameAndEmail(String username, String email);
 
     @Query("SELECT DISTINCT ar.account FROM Authority ar WHERE ar.role.id IN (1 ,2)")

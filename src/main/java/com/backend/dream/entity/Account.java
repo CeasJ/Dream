@@ -18,12 +18,9 @@ public class Account implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Column(unique = true)
     private String username;
-
     private String email;
-
     private String password;
 
     private String avatar;
@@ -36,7 +33,7 @@ public class Account implements Serializable {
 
     private String phone;
 
-//    private String address;
+    private String address;
     @JsonIgnore
     @OneToMany(mappedBy = "account", fetch = FetchType.EAGER)
     private List<Authority> authority;
@@ -61,4 +58,5 @@ public class Account implements Serializable {
         this.username = username;
         this.password = password;
     }
+
 }

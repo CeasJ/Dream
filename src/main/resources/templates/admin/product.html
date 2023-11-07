@@ -24,7 +24,7 @@
     <script
             src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.js"></script>
     <!-- Custom styles for this template -->
-    <link href="/css/admin/sb-admin-2.min.css" rel="stylesheet">
+    <link href="css/admin/sb-admin-2.css" rel="stylesheet">
 
 </head>
 
@@ -529,14 +529,14 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="image">Image</label>
-                                            <input
-                                                    type="file"
-                                                    class="form-control"
-                                                    id="image"
-                                                    name="image"
-                                                    accept="image/*"
-                                                    onchange="angular.element(this).scope().imageChanged(this.files)"
-                                            />
+                                            <br>
+                                            <button type="button" class="btn btn-outline-secondary" style="margin-bottom: 20px;" ng-click="selectImage()">Select Image</button>
+                                            <input type="file"
+                                                   id="image"
+                                                   name="image"
+                                                   onchange="angular.element(this).scope().imageChanged(this.files)"
+                                                   class="btn btn-outline-secondary" style="margin-bottom: 20px;display: none;">
+                                            <p style="font-size: 16px; margin-bottom: 3px; color: grey;">File size: maximum 1 MB</p>
                                         </div>
                                         <div class="form-group">
                                             <label for="describe">Describe</label>
