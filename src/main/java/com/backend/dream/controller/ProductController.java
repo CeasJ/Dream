@@ -1,13 +1,14 @@
 package com.backend.dream.controller;
 
-import com.backend.dream.dto.DiscountDTO;
-import com.backend.dream.dto.ProductDTO;
-import com.backend.dream.dto.SizeDTO;
+import com.backend.dream.dto.*;
+import com.backend.dream.entity.Account;
 import com.backend.dream.entity.Product;
+import com.backend.dream.mapper.AccountMapper;
 import com.backend.dream.mapper.ProductMapper;
+import com.backend.dream.repository.FeedBackRepository;
 import com.backend.dream.repository.ProductRepository;
-import com.backend.dream.service.CategoryService;
 import com.backend.dream.service.DiscountService;
+import com.backend.dream.service.FeedbackService;
 import com.backend.dream.service.ProductService;
 import com.backend.dream.service.ProductSizeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,13 +36,20 @@ public class ProductController {
     private ProductMapper productMapper;
 
     @Autowired
-    private ProductRepository productRepository;
+    private FeedBackRepository feedBackRepository;
 
     @Autowired
-    CategoryService categoryService;
+    private AccountMapper accountMapper;
+
+    @Autowired
+    private ProductRepository productRepository;
+
 
     @Autowired
     DiscountService discountService;
+
+    @Autowired
+    FeedbackService feedbackService;
 
     @Autowired
     public ProductController(ProductService productService, ProductSizeService productSizeService) {
@@ -154,6 +162,7 @@ public class ProductController {
                                 @RequestParam(value = "sizeId", required = false) Long sizeId,
                                 Model model) {
         try {
+
             String decoded = URLDecoder.decode(name, "UTF-8");
             ProductDTO product = productService.findByNamePaged(decoded, PageRequest.of(0, 1)).getContent().get(0);
             List<SizeDTO> availableSizes = productSizeService.getSizesByProductId(product.getId());
@@ -177,10 +186,26 @@ public class ProductController {
             // Get the discount percent
             DiscountDTO discount = discountService.getDiscountByProductId(product.getId());
             Double discountPercent = (discount != null) ? discount.getPercent() : 0.0;
+            //Get comment list
+            List<FeedBackDTO> feedbackList = feedbackService.getFeedbacksForProduct(product.getId());
+            for (FeedBackDTO feedback : feedbackList) {
+                Account account = feedBackRepository.findAccountByFeedBackId(feedback.getId());
+                feedback.setAccountDTO(accountMapper.accountToAccountDTO(account));
+            }
 
+            double averageRating = feedbackService.getAverageRating(product.getId());
+
+            // Get
+
+            // Show the comments
+            model.addAttribute("feedbackList", feedbackList);
             model.addAttribute("discountPercent", discountPercent);
             model.addAttribute("product", product);
             model.addAttribute("availableSizes", availableSizes);
+
+            model.addAttribute("name", name);
+            model.addAttribute("averageRating", averageRating);
+
             return "user/product/detail";
         } catch (UnsupportedEncodingException e) {
             return "error";
@@ -201,7 +226,6 @@ public class ProductController {
 
     @GetMapping("/getDiscountPercentByProductId")
     public ResponseEntity<Double> getDiscountPercentByProductId(@RequestParam("productId") Long productId) {
-        // Gọi phương thức từ service để lấy discountPercent dựa trên productId
         double discountPercent = productService.getDiscountPercentByProductId(productId);
         return ResponseEntity.ok(discountPercent);
     }

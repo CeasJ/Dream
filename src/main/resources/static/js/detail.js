@@ -178,3 +178,7 @@ function calculateDiscountedPrice(originalPrice, discountPercent) {
     console.log(originalPrice);
     return originalPrice - (originalPrice * discountPercent); // Calculate the discounted price based on the discount percentage
 }
+
+
+// Keep the URL after feedback action
+

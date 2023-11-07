@@ -1,13 +1,18 @@
 package com.backend.dream.service.imp;
 
 import com.backend.dream.dto.FeedBackDTO;
+import com.backend.dream.entity.Account;
 import com.backend.dream.entity.FeedBack;
 import com.backend.dream.mapper.FeedBackMapper;
 import com.backend.dream.repository.FeedBackRepository;
+import com.backend.dream.repository.ProductRepository;
+import com.backend.dream.service.AccountService;
 import com.backend.dream.service.FeedbackService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
+import java.sql.Time;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,9 +20,16 @@ import java.util.stream.Collectors;
 public class FeedbackServiceImp implements FeedbackService {
 
     private final FeedBackRepository feedBackRepository;
+
     private final FeedBackMapper feedBackMapper;
 
     @Autowired
+    private ProductRepository productRepository;
+
+    @Autowired
+    private AccountService accountService;
+
+
     public FeedbackServiceImp(FeedBackRepository feedBackRepository, FeedBackMapper feedBackMapper) {
         this.feedBackRepository = feedBackRepository;
         this.feedBackMapper = feedBackMapper;
@@ -31,9 +43,39 @@ public class FeedbackServiceImp implements FeedbackService {
                 .collect(Collectors.toList());
     }
 
+//    @Override
+//    public Account findAccountByFeedBackId(Long feedbackId) {
+//        return feedBackRepository.findAccountByFeedBackId(feedbackId);
+//    }
+
     @Override
-    public void save(FeedBackDTO feedbackDTO) {
-        FeedBack feedback = feedBackMapper.feedBackDTOToFeedBack(feedbackDTO);
+    public void createFeedback(Long productId, Long accountId, String comment, int rating) {
+        FeedBack feedback = new FeedBack();
+        feedback.setProduct(productRepository.findById(productId).orElse(null));
+        feedback.setAccount(accountService.findById(String.valueOf(accountId)));
+
+        feedback.setNote(comment);
+        feedback.setRating(rating);
+
+        // Lấy thời gian hiện tại
+        Date currentDate = new Date(System.currentTimeMillis());
+        Time currentTime = new Time(System.currentTimeMillis());
+        feedback.setCreateDate(currentDate);
+        feedback.setCreateTime(currentTime);
+
         feedBackRepository.save(feedback);
+    }
+
+    @Override
+    public double getAverageRating(Long productId) {
+        List<FeedBack> feedbackList = feedBackRepository.findFeedbacksByProductId(productId);
+
+        if (feedbackList.isEmpty()) {
+            return 0.0;
+        }
+
+        double sum = feedbackList.stream().mapToDouble(FeedBack::getRating).sum();
+        double averageRating = sum / feedbackList.size();
+        return Math.round(averageRating);
     }
 }
