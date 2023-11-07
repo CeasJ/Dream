@@ -15,7 +15,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
 
     <!-- Angular Route-->
-<!--    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.js"></script>-->
+    <!--    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.js"></script>-->
 </head>
 
 <body ng-app="order_app" ng-controller="order_ctrl" class="sb-nav-fixed">
@@ -29,238 +29,571 @@
                 <!-- Bảng cho trạng thái Confirm -->
                 <div class="card" style="border-radius: 0px; margin-bottom: 40px;">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <h3 class="mb-0">Pending</h3>
+                        <h4 class="mb-0"> <i class="fas fa-table me-1"></i> Pending</h4>
                     </div>
                     <div class="card-body">
-                        <table id="datatablesSimple1" class="order-status">
+                        <table id="datatablesSimple1" class="order-status no-sort-end">
                             <thead>
                                 <th>
-                                    <div class="text-center" style="font-size: 16px;">No</div>
+                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">No</div>
                                 </th>
                                 <th>
-                                    <div class="text-center" style="font-size: 16px;">ID</div>
+                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">ID</div>
                                 </th>
                                 <th>
-                                    <div class="text-center" style="font-size: 16px;">CreateDate</div>
+                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">CreateDate</div>
                                 </th>
                                 <th>
-                                    <div class="text-center" style="font-size: 16px;">Fullname</div>
+                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">CreateTime</div>
                                 </th>
                                 <th>
-                                    <div class="text-center" style="font-size: 16px;">Address</div>
+                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">Fullname</div>
                                 </th>
                                 <th>
-                                    <div class="text-center" style="font-size: 16px;">Total Amount</div>
+                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">Address</div>
                                 </th>
                                 <th>
-                                    <div class="text-center" style="font-size: 16px;">Status</div>
+                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">Total Amount
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">Status</div>
                                 </th>
                                 <th></th>
                             </thead>
-                            <tbody ng-repeat="order in listOrders">
-                                <td>{{$index + 1}}</td>
-                                <td>{{order.id}}</td>
-                                <td>{{order.createDate | date: 'dd-MM-yyyy'}}</td>
-                                <td>{{order.fullname}}</td>
-                                <td>{{order.address}}</td>
-                                <td>{{order.totalAmount | number : 0}} đ</td>
-                                <td ng-if="order.status === 1"> Đã đặt hàng</td>
-                                <td>
-                                    <button class="btn btn-primary"
-                                        ng-click="updateOrder.confirmOrder(order.id)">Confirm</button>
-                                    <button class="btn btn-danger"
-                                        ng-click="updateOrder.cancelOrder(order.id)">Cancel</button>
-                                </td>
+                            <tbody>
+                                <tr ng-repeat-start="order in listOrders">
+                                    <td>{{$index + 1}}</td>
+                                    <td>{{order.id}}</td>
+                                    <td>{{order.createDate | date: 'dd-MM-yyyy'}}</td>
+                                    <td>{{order.createTime}}</td>
+                                    <td>{{order.fullname}}</td>
+                                    <td>{{order.address}}</td>
+                                    <td>{{order.totalAmount | number : 0}} đ</td>
+                                    <td ng-if="order.status === 1"> Đã đặt hàng</td>
+                                    <td>
+                                        <button class="btn btn-dark" ng-click="edit(item)" data-bs-toggle="modal"
+                                            data-bs-target="#confirmModal">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </button>
+                                        <button class="btn btn-danger">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr ng-repeat-end></tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
+                <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">
+                                    <i class="bi bi-pencil-square pe-2"></i>
+                                    Order Confirm
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="col-md-9 offset-md-2" style="font-size: 18px;">
+                                    <div class="mb-3">
+                                        <label for="cancelOrderId" class="form-label fw-bold mb-3">Order ID:</label>
+                                        <input type="text" class="form-control" id="cancelOrderId" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="cancelOrderDate" class="form-label fw-bold mb-3">Order
+                                            Date:</label>
+                                        <input type="text" class="form-control" id="cancelOrderDate" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="cancelOrderTime" class="form-label fw-bold mb-3">
+                                            Order Time:</label>
+                                        <input type="text" class="form-control" id="cancelOrderTime" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="cancelOrderName" class="form-label fw-bold mb-3">Full
+                                            Name:</label>
+                                        <input type="text" class="form-control" id="cancelOrderName" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="cancelOrderAdress" class="form-label fw-bold mb-3">
+                                            Order Adress:</label>
+                                        <input type="text" class="form-control" id="cancelOrderAdress" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="cancelOrderAmount" class="form-label fw-bold mb-3">
+                                            Total Amount:</label>
+                                        <input type="text" class="form-control" id="cancelOrderAmount" required>
+                                    </div>
+                                    <div class="mb-3 mt-4">
+                                        <label for="cancelOrderStatus" class="form-label fw-bold mb-3">
+                                            Order Status:</label>
+                                        <span class="fw-bold text-primary ps-1">Đã đặt hàng</span>
+                                    </div>
+                                    <!-- Add more input fields here based on your table columns -->
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button class="btn btn-danger"
+                                    ng-click="updateOrder.cancelOrder(order.id)">Cancel</button>
+                                <button class="btn btn-primary"
+                                    ng-click="updateOrder.confirmOrder(order.id)">Confirm</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Bảng cho trạng thái confirm -->
                 <div class="card" style="border-radius: 0px; margin-bottom: 40px;">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <h3>Order Processing</h3>
+                        <h4><i class="fas fa-table me-1"></i> Order Processing</h4>
                     </div>
                     <div class="card-body">
-                        <table id="datatablesSimple2" class="order-status">
+                        <table id="datatablesSimple2" class="order-status no-sort-end">
                             <thead>
                                 <th>
-                                    <div class="text-center" style="font-size: 16px;">No</div>
+                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">No</div>
                                 </th>
                                 <th>
-                                    <div class="text-center" style="font-size: 16px;">ID</div>
+                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">ID</div>
                                 </th>
                                 <th>
-                                    <div class="text-center" style="font-size: 16px;">CreateDate</div>
+                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">CreateDate</div>
                                 </th>
                                 <th>
-                                    <div class="text-center" style="font-size: 16px;">Fullname</div>
+                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">Fullname</div>
                                 </th>
                                 <th>
-                                    <div class="text-center" style="font-size: 16px;">Address</div>
+                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">Address</div>
                                 </th>
                                 <th>
-                                    <div class="text-center" style="font-size: 16px;">Total Amount</div>
+                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">Total Amount
+                                    </div>
                                 </th>
                                 <th>
-                                    <div class="text-center" style="font-size: 16px;">Status</div>
+                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">Status</div>
                                 </th>
                                 <th></th>
                             </thead>
                             <tbody ng-repeat="order in listOrdersConfirmed">
-                                <td>{{$index + 1 }}</td>
-                                <td>{{order.id}}</td>
-                                <td>{{order.createDate | date: 'dd-MM-yyyy'}}</td>
-                                <td>{{order.fullname}}</td>
-                                <td>{{order.address}}</td>
-                                <td>{{order.totalAmount | number : 0}} đ</td>
-                                <td ng-if="order.status === 2"> Đã xác nhận</td>
-                                <td>
-                                    <button class="btn btn-primary"
-                                        ng-click="updateOrder.shippingOrder(order.id)">Ship</button>
-                                    <button class="btn btn-danger"
-                                        ng-click="updateOrder.cancelOrder(order.id)">Cancel</button>
-                                </td>
+                                <tr ng-repeat-start="order in listOrdersConfirmed">
+                                    <td>{{$index + 1 }}</td>
+                                    <td>{{order.id}}</td>
+                                    <td>{{order.createDate | date: 'dd-MM-yyyy'}}</td>
+                                    <td>{{order.fullname}}</td>
+                                    <td>{{order.address}}</td>
+                                    <td>{{order.totalAmount | number : 0}} đ</td>
+                                    <td ng-if="order.status === 2"> Đã xác nhận</td>
+                                    <td>
+                                        <button class="btn btn-dark" data-bs-toggle="modal"
+                                            data-bs-target="#processingModal">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </button>
+                                        <button class="btn btn-danger">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr ng-repeat-end></tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
+                <div class="modal fade" id="processingModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">
+                                    <i class="bi bi-pencil-square pe-2"></i>
+                                    Order Processing
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="col-md-9 offset-md-2" style="font-size: 18px;">
+                                    <div class="mb-3">
+                                        <label for="cancelOrderId" class="form-label fw-bold mb-3">Order ID:</label>
+                                        <input type="text" class="form-control" id="cancelOrderId" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="cancelOrderDate" class="form-label fw-bold mb-3">Order
+                                            Date:</label>
+                                        <input type="text" class="form-control" id="cancelOrderDate" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="cancelOrderName" class="form-label fw-bold mb-3">Full
+                                            Name:</label>
+                                        <input type="text" class="form-control" id="cancelOrderName" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="cancelOrderAdress" class="form-label fw-bold mb-3">
+                                            Order Adress:</label>
+                                        <input type="text" class="form-control" id="cancelOrderAdress" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="cancelOrderAmount" class="form-label fw-bold mb-3">
+                                            Total Amount:</label>
+                                        <input type="text" class="form-control" id="cancelOrderAmount" required>
+                                    </div>
+                                    <div class="mb-3 mt-4">
+                                        <label for="cancelOrderStatus" class="form-label fw-bold mb-3">
+                                            Order Status:</label>
+                                        <span class="fw-bold text-primary ps-1">Đã xác nhận</span>
+                                    </div>
+                                    <!-- Add more input fields here based on your table columns -->
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button class="btn btn-danger"
+                                    ng-click="updateOrder.cancelOrder(order.id)">Cancel</button>
+                                <button class="btn btn-primary"
+                                    ng-click="updateOrder.shippingOrder(order.id)">Ship</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Bảng cho trạng thái Success -->
                 <div class="card" style="border-radius: 0px; margin-bottom: 40px;">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <h3>Order Shipping</h3>
+                        <h4><i class="fas fa-table me-1"></i> Order Shipping</h4>
                     </div>
                     <div class="card-body">
-                        <table id="datatablesSimple3" class="order-status">
+                        <table id="datatablesSimple3" class="order-status no-sort-end">
                             <thead>
                                 <th>
-                                    <div class="text-center" style="font-size: 16px;">No</div>
+                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">No</div>
                                 </th>
                                 <th>
-                                    <div class="text-center" style="font-size: 16px;">ID</div>
+                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">ID</div>
                                 </th>
                                 <th>
-                                    <div class="text-center" style="font-size: 16px;">CreateDate</div>
+                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">CreateDate</div>
                                 </th>
                                 <th>
-                                    <div class="text-center" style="font-size: 16px;">Fullname</div>
+                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">Fullname</div>
                                 </th>
                                 <th>
-                                    <div class="text-center" style="font-size: 16px;">Address</div>
+                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">Address</div>
                                 </th>
                                 <th>
-                                    <div class="text-center" style="font-size: 16px;">Total Amount</div>
+                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">Total Amount
+                                    </div>
                                 </th>
                                 <th>
-                                    <div class="text-center" style="font-size: 16px;">Status</div>
+                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">Status</div>
                                 </th>
                                 <th></th>
                             </thead>
-                            <tbody ng-repeat="order in listOrderIsShipping">
-                                <td>{{$index +1}}</td>
-                                <td>{{order.id}}</td>
-                                <td>{{order.createDate | date: 'dd-MM-yyyy'}}</td>
-                                <td>{{order.fullname}}</td>
-                                <td>{{order.address}}</td>
-                                <td>{{order.totalAmount | number : 0}} đ</td>
-                                <td ng-if="order.status === 3">Đang giao hàng</td>
-                                <td>
-                                    <button class="btn btn-success"
-                                        ng-click="updateOrder.successOrder(order.id)">Success</button>
-                                    <button class="btn btn-danger"
-                                        ng-click="updateOrder.cancelOrder(order.id)">Cancel</button>
-                                </td>
+                            <tbody>
+                                <tr ng-repeat-start="order in listOrderIsShipping">
+                                    <td>{{$index +1}}</td>
+                                    <td>{{order.id}}</td>
+                                    <td>{{order.createDate | date: 'dd-MM-yyyy'}}</td>
+                                    <td>{{order.fullname}}</td>
+                                    <td>{{order.address}}</td>
+                                    <td>{{order.totalAmount | number : 0}} đ</td>
+                                    <td ng-if="order.status === 3">Đang giao hàng</td>
+                                    <td>
+                                        <button class="btn btn-dark" data-bs-toggle="modal"
+                                            data-bs-target="#shippingModal">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </button>
+                                        <button class="btn btn-danger">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr ng-repeat-end></tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
+                <!-- Modal Shipping -->
+                <div class="modal fade" id="shippingModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">
+                                    <i class="bi bi-pencil-square pe-2"></i>
+                                    Order Shipping
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="col-md-9 offset-md-2" style="font-size: 18px;">
+                                    <div class="mb-3">
+                                        <label for="cancelOrderId" class="form-label fw-bold mb-3">Order ID:</label>
+                                        <input type="text" class="form-control" id="cancelOrderId" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="cancelOrderDate" class="form-label fw-bold mb-3">Order
+                                            Date:</label>
+                                        <input type="text" class="form-control" id="cancelOrderDate" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="cancelOrderName" class="form-label fw-bold mb-3">Full
+                                            Name:</label>
+                                        <input type="text" class="form-control" id="cancelOrderName" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="cancelOrderAdress" class="form-label fw-bold mb-3">
+                                            Order Adress:</label>
+                                        <input type="text" class="form-control" id="cancelOrderAdress" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="cancelOrderAmount" class="form-label fw-bold mb-3">
+                                            Total Amount:</label>
+                                        <input type="text" class="form-control" id="cancelOrderAmount" required>
+                                    </div>
+                                    <div class="mb-3 mt-4">
+                                        <label for="cancelOrderStatus" class="form-label fw-bold mb-3">
+                                            Order Status:</label>
+                                        <span class="fw-bold text-primary ps-1">Đang giao hàng</span>
+                                    </div>
+                                    <!-- Add more input fields here based on your table columns -->
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button class="btn btn-danger"
+                                    ng-click="updateOrder.cancelOrder(order.id)">Cancel</button>
+                                <button class="btn btn-success"
+                                    ng-click="updateOrder.successOrder(order.id)">Success</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
                 <!-- Bảng cho trạng thái success -->
                 <div class="card" style="border-radius: 0px; margin-bottom: 40px;">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <h3>Order Success</h3>
+                        <h4><i class="fas fa-table me-1"></i> Order Success</h4>
                     </div>
                     <div class="card-body">
-                        <table id="datatablesSimple4" class="order-status">
+                        <table id="datatablesSimple4" class="order-status no-sort-end">
                             <thead>
                                 <th>
-                                    <div class="text-center" style="font-size: 16px;">No</div>
+                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">No</div>
                                 </th>
                                 <th>
-                                    <div class="text-center" style="font-size: 16px;">ID</div>
+                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">ID</div>
                                 </th>
                                 <th>
-                                    <div class="text-center" style="font-size: 16px;">CreateDate</div>
+                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">CreateDate</div>
                                 </th>
                                 <th>
-                                    <div class="text-center" style="font-size: 16px;">Fullname</div>
+                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">Fullname</div>
                                 </th>
                                 <th>
-                                    <div class="text-center" style="font-size: 16px;">Address</div>
+                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">Address</div>
                                 </th>
                                 <th>
-                                    <div class="text-center" style="font-size: 16px;">Total Amount</div>
+                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">Total Amount
+                                    </div>
                                 </th>
                                 <th>
-                                    <div class="text-center" style="font-size: 16px;">Status</div>
+                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">Status</div>
                                 </th>
+                                <th></th>
                             </thead>
-                            <tbody ng-repeat="order in listOrdersSuccessful">
-                                <td>{{$index + 1}}</td>
-                                <td>{{order.id}}</td>
-                                <td>{{order.createDate | date: 'dd-MM-yyyy'}}</td>
-                                <td>{{order.fullname}}</td>
-                                <td>{{order.address}}</td>
-                                <td>{{order.totalAmount | number : 0}} đ</td>
-                                <td ng-if="order.status === 4"> Đã giao hàng</td>
+                            <tbody>
+                                <tr ng-repeat-start="order in listOrdersSuccessful">
+                                    <td>{{$index + 1}}</td>
+                                    <td>{{order.id}}</td>
+                                    <td>{{order.createDate | date: 'dd-MM-yyyy'}}</td>
+                                    <td>{{order.fullname}}</td>
+                                    <td>{{order.address}}</td>
+                                    <td>{{order.totalAmount | number : 0}} đ</td>
+                                    <td ng-if="order.status === 4"> Đã giao hàng</td>
+                                    <td>
+                                        <button class="btn btn-dark" data-bs-toggle="modal"
+                                            data-bs-target="#successModal">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </button>
+                                        <button class="btn btn-danger">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr ng-repeat-end></tr>
                             </tbody>
                         </table>
+                    </div>
+                </div>
+                <!-- Modal Success -->
+                <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">
+                                    <i class="bi bi-pencil-square pe-2"></i>
+                                    Order Success
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="col-md-9 offset-md-2" style="font-size: 18px;">
+                                    <div class="mb-3">
+                                        <label for="cancelOrderId" class="form-label fw-bold mb-3">Order ID:</label>
+                                        <input type="text" class="form-control" id="cancelOrderId" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="cancelOrderDate" class="form-label fw-bold mb-3">Order
+                                            Date:</label>
+                                        <input type="text" class="form-control" id="cancelOrderDate" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="cancelOrderName" class="form-label fw-bold mb-3">Full
+                                            Name:</label>
+                                        <input type="text" class="form-control" id="cancelOrderName" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="cancelOrderAdress" class="form-label fw-bold mb-3">
+                                            Order Adress:</label>
+                                        <input type="text" class="form-control" id="cancelOrderAdress" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="cancelOrderAmount" class="form-label fw-bold mb-3">
+                                            Total Amount:</label>
+                                        <input type="text" class="form-control" id="cancelOrderAmount" required>
+                                    </div>
+                                    <div class="mb-3 mt-4">
+                                        <label for="cancelOrderStatus" class="form-label fw-bold mb-3">
+                                            Order Status:</label>
+                                        <span class="fw-bold text-success ps-1">Đã giao hàng</span>
+                                    </div>
+                                    <!-- Add more input fields here based on your table columns -->
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Bảng cho trạng thái cancel -->
                 <div class="card" style="border-radius: 0px; margin-bottom: 30px;">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <h3>Order Cancel</h3>
+                        <h4><i class="fas fa-table me-1"></i> Order Cancel</h4>
                     </div>
                     <div class="card-body">
-                        <table id="datatablesSimple5" class="order-status">
+                        <table id="datatablesSimple5" class="order-status no-sort-end">
                             <thead>
                                 <th>
-                                    <div class="text-center" style="font-size: 16px;">No</div>
+                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">No</div>
                                 </th>
                                 <th>
-                                    <div class="text-center" style="font-size: 16px;">ID</div>
+                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">ID</div>
                                 </th>
                                 <th>
-                                    <div class="text-center" style="font-size: 16px;">CreateDate</div>
+                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">CreateDate</div>
                                 </th>
                                 <th>
-                                    <div class="text-center" style="font-size: 16px;">Fullname</div>
+                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">Fullname</div>
                                 </th>
                                 <th>
-                                    <div class="text-center" style="font-size: 16px;">Address</div>
+                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">Address</div>
                                 </th>
                                 <th>
-                                    <div class="text-center" style="font-size: 16px;">Total Amount</div>
+                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">Total Amount
+                                    </div>
                                 </th>
                                 <th>
-                                    <div class="text-center" style="font-size: 16px;">Status</div>
+                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">Status</div>
                                 </th>
                                 <th></th>
                             </thead>
-                            <tbody ng-repeat="order in listOrdersCancelled">
-                                <td>{{$index + 1 }}</td>
-                                <td>{{order.id}}</td>
-                                <td>{{order.createDate | date: 'dd-MM-yyyy'}}</td>
-                                <td>{{order.fullname}}</td>
-                                <td>{{order.address}}</td>
-                                <td>{{order.totalAmount | number : 0}} đ</td>
-                                <td ng-if="order.status === 5"> Đã hủy</td>
-                                <td>
-                                    <button class="btn btn-warning"
-                                        ng-click="updateOrder.resetOrder(order.id)">Reset</button>
-                                </td>
+                            <tbody>
+                                <tr ng-repeat-start="order in listOrdersCancelled">
+                                    <td>{{$index + 1 }}</td>
+                                    <td>{{order.id}}</td>
+                                    <td>{{order.createDate | date: 'dd-MM-yyyy'}}</td>
+                                    <td>{{order.fullname}}</td>
+                                    <td>{{order.address}}</td>
+                                    <td>{{order.totalAmount | number : 0}} đ</td>
+                                    <td ng-if="order.status === 5"> Đã hủy</td>
+                                    <td>
+                                        <button class="btn btn-dark" data-bs-toggle="modal"
+                                            data-bs-target="#cancelModal">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </button>
+                                        <button class="btn btn-danger">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr ng-repeat-end></tr>
                             </tbody>
                         </table>
+                    </div>
+                </div>
+                <!-- Modal Cancel -->
+                <div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">
+                                    <i class="bi bi-pencil-square pe-2"></i>
+                                    Order Cancel
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="col-md-9 offset-md-2" style="font-size: 18px;">
+                                    <div class="mb-3">
+                                        <label for="cancelOrderId" class="form-label fw-bold mb-3">Order ID:</label>
+                                        <input type="text" class="form-control" id="cancelOrderId" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="cancelOrderDate" class="form-label fw-bold mb-3">Order Date:</label>
+                                        <input type="text" class="form-control" id="cancelOrderDate" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="cancelOrderName" class="form-label fw-bold mb-3">Full Name:</label>
+                                        <input type="text" class="form-control" id="cancelOrderName" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="cancelOrderAdress" class="form-label fw-bold mb-3">
+                                            Order Adress:</label>
+                                        <input type="text" class="form-control" id="cancelOrderAdress" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="cancelOrderAmount" class="form-label fw-bold mb-3">
+                                            Total Amount:</label>
+                                        <input type="text" class="form-control" id="cancelOrderAmount" required>
+                                    </div>
+                                    <div class="mb-3 mt-4">
+                                        <label for="cancelOrderStatus" class="form-label fw-bold mb-3">
+                                            Order Status:</label>
+                                        <span class="fw-bold text-danger ps-1">Đã hủy</span>
+                                    </div>
+                                    <!-- Add more input fields here based on your table columns -->
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button class="btn btn-danger" ng-click="updateOrder.resetOrder(order.id)">
+                                    Reset
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </main>
@@ -271,23 +604,12 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
         crossorigin="anonymous"></script>
 
-    <script src="/js/admin/scripts.js"></script>
-
     <script src="/js/admin/order.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
         crossorigin="anonymous"></script>
-<!--    <script>-->
-<!--        document.addEventListener('DOMContentLoaded', function () {-->
-<!--            new simpleDatatables.DataTable('#datatablesSimple1');-->
-<!--            new simpleDatatables.DataTable('#datatablesSimple2');-->
-<!--            new simpleDatatables.DataTable('#datatablesSimple3');-->
-<!--            new simpleDatatables.DataTable('#datatablesSimple4');-->
-<!--            new simpleDatatables.DataTable('#datatablesSimple5');-->
-<!--        });-->
-<!--    </script>-->
 </body>
 
 </html>

@@ -8,15 +8,11 @@
     <meta content="" name="keywords">
     <meta content="" name="description">
 
-    <!-- Favicon -->
-    <link href="/img/logonobg.png" rel="icon">
-
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Playfair+Display:wght@700;900&display=swap"
-         
         rel="stylesheet">
 
     <!-- Icon Font Stylesheet -->
@@ -33,10 +29,6 @@
     <!-- Template Stylesheet -->
     <link href="/css/style.css" rel="stylesheet">
 
-    <!-- Template detail -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" rel="stylesheet">
-
     <!-- Angular -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 
@@ -44,10 +36,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 </head>
 
-<body  ng-app="cart_app" ng-controller="ctrl">
+<body ng-app="cart_app" ng-controller="ctrl">
     <!-- Spinner Start -->
     <div id="spinner"
-    
         class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
         <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;"></div>
     </div>
@@ -64,69 +55,78 @@
         <div class="container text-center py-5">
             <h1 class="display-2 text-dark mb-4 animated slideInDown">Products</h1>
             <nav aria-label="breadcrumb animated slideInDown">
-                <ol class="breadcrumb justify-content-center mb-0">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item"><a href="#">Pages</a></li>
-                    <li class="breadcrumb-item text-dark" aria-current="page">Products</li>
-                </ol>
+                <ul class="breadcrumb justify-content-center mb-0">
+                    <li class="breadcrumb-item"><a th:href="@{|/home|}">Home</a></li>
+                    <li class="breadcrumb-item"><a th:href="@{|/store|}">Products</a></li>
+                    <li class="breadcrumb-item text-dark" aria-current="page">Details</li>
+                </ul>
             </nav>
         </div>
     </div>
     <!-- Page Header End -->
 
 
-<!-- Main Content -->
-<div class="container mt-5 mb-5">
-    <div class="card">
-        <div class="row g-0">
-            <div class="col-md-6 border-end">
-                <div class="d-flex flex-column justify-content-center">
-                    <div class="main_image"><img th:src="@{'/img/gallery/' + ${product.image}}" id="main_product_image" width="350"></div>
+    <!-- Main Content -->
+    <div class="container mt-5 mb-5">
+        <div class="card">
+            <div class="row g-0">
+                <div class="col-md-6 border-end">
+                    <div class="d-flex flex-column justify-content-center">
+                        <div class="main_image" style="border: none;">
+                            <img th:src="@{'/img/gallery/' + ${product.image}}" id="main_product_image" width="350">
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-6">
-                <div class="p-3 right-side">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h3 th:text="${product.name}"></h3>
-                    </div>
-                    <div class="mt-2 pr-3 content">
-                        <p th:text="${product.describe}"></p>
-                    </div>
+                <div class="col-md-6">
+                    <div class="p-3 right-side">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h3 th:text="${product.name}"></h3>
+                        </div>
+                        <div class="mt-2 pr-3 content">
+                            <p th:text="${product.describe}"></p>
+                        </div>
                         <div th:if="${product.isDiscounted}">
-                            <del th:id="${'product-price' + product.id}" class="product-price" th:text="${product.formattedPrice}"></del>
-                            <h3 th:id="${'product-discountedPrice' + product.id}" class="product-discountedPrice" th:text="${product.formattedDiscountedPrice}"></h3>
+                            <del th:id="${'product-price' + product.id}" class="product-price"
+                                th:text="${product.formattedPrice}"></del>
+                            <h3 th:id="${'product-discountedPrice' + product.id}" class="product-discountedPrice"
+                                th:text="${product.formattedDiscountedPrice}"></h3>
                         </div>
                         <!-- If product is not in sales category -->
                         <div th:unless="${product.isDiscounted}">
-                            <h3 th:id="${'product-price' + product.id}" class="product-price" th:text="${product.formattedPrice}"></h3>
+                            <h3 th:id="${'product-price' + product.id}" class="product-price"
+                                th:text="${product.formattedPrice}"></h3>
                         </div>
 
 
-                    <div class="ratings d-flex flex-row align-items-center">
-                        <div class="d-flex flex-row"><i class='bx bxs-star'></i> <i class='bx bxs-star'></i> <i
-                                class='bx bxs-star'></i> <i class='bx bxs-star'></i> <i class='bx bx-star'></i></div>
-                    </div>
-
-                    <div class="mt-5" th:if="${availableSizes.size() > 0}">
-                        <span class="fw-bold">Size</span>
-                        <form th:object="${product}" class="rad-group">
-                            <div th:each="size : ${availableSizes}">
-                                <input type="radio" th:id="${'size-' + size.id}" th:field="*{selectedSize}" th:value="${size.id}" th:data-product-id="${product.id}" />
-                                <label th:for="${'size-' + size.id}" th:text="${size.name}"></label>
+                        <div class="ratings d-flex flex-row align-items-center">
+                            <div class="d-flex flex-row"><i class='bx bxs-star'></i> <i class='bx bxs-star'></i> <i
+                                    class='bx bxs-star'></i> <i class='bx bxs-star'></i> <i class='bx bx-star'></i>
                             </div>
-                        </form>
-                    </div>
+                        </div>
+
+                        <div class="mt-5" th:if="${availableSizes.size() > 0}">
+                            <span class="fw-bold">Size</span>
+                            <form th:object="${product}" class="rad-group">
+                                <div th:each="size : ${availableSizes}">
+                                    <input type="radio" th:id="${'size-' + size.id}" th:field="*{selectedSize}"
+                                        th:value="${size.id}" th:data-product-id="${product.id}" />
+                                    <label th:for="${'size-' + size.id}" th:text="${size.name}"></label>
+                                </div>
+                            </form>
+                        </div>
 
 
-                    <div class="buttons d-flex flex-row mt-5 gap-3">
-                        <button class="btn btn-dark rounded-pill py-2 px-2 m-2"  th:attr="ng-click=@{|cart.add(${product.id})|}">Add to cart<i class="fa fa-cart-plus ms-2"></i></button>
+                        <div class="buttons d-flex flex-row mt-5 gap-3">
+                            <button class="btn btn-dark rounded-pill py-2 px-2 m-2"
+                                th:attr="ng-click=@{|cart.add(${product.id})|}">Add to cart<i
+                                    class="fa fa-cart-plus ms-2"></i></button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<!-- Main content end -->
+    <!-- Main content end -->
 
     <!-- Footer Start -->
     <div th:replace="~{/user/component/footer.html}"></div>
@@ -143,25 +143,25 @@
             class="bi bi-arrow-up"></i></a>
 
 
-<!-- JavaScript Libraries -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="/lib/wow/wow.min.js"></script>
-<script src="/lib/easing/easing.min.js"></script>
-<script src="/lib/waypoints/waypoints.min.js"></script>
-<script src="/lib/owlcarousel/owl.carousel.min.js"></script>
+    <!-- JavaScript Libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/lib/wow/wow.min.js"></script>
+    <script src="/lib/easing/easing.min.js"></script>
+    <script src="/lib/waypoints/waypoints.min.js"></script>
+    <script src="/lib/owlcarousel/owl.carousel.min.js"></script>
 
-<!-- Angular -->
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <!-- Angular -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 
-<!-- Template Javascript -->
-<script src="/js/detail.js"></script>
+    <!-- Template Javascript -->
+    <script src="/js/detail.js"></script>
 
-<!-- Cart Control -->
-<script src="/js/cart.js"></script>
+    <!-- Cart Control -->
+    <script src="/js/cart.js"></script>
 
-<!-- Main Control -->
-<script src="/js/main.js"></script>
+    <!-- Main Control -->
+    <script src="/js/main.js"></script>
 </body>
 
 </html>

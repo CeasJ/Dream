@@ -50,21 +50,23 @@ app.controller("profile_ctrl", function ($scope, $http) {
       alert("Wrong password ");
     }
   }
- $scope.selectedImage = null;
+  $scope.selectedImage = null;
 
   $scope.selectImage = function () {
     document.getElementById("image").click();
   };
-    $scope.imageChanged = function (files) {
-      let data = new FormData();
-      data.append("file", files[0]);
-      $http
-        .post(`/rest/upload/img/avatar`, data, {
-          headers: { "Content-Type": undefined },
-        })
-        .then((resp) => {
-          $scope.account.avatar = resp.data.name;
-        })
-        .catch((err) => {});
-    };
+  $scope.imageChanged = function (files) {
+    let data = new FormData();
+    data.append("file", files[0]);
+    $http
+      .post(`/rest/upload/img/avatar`, data, {
+        headers: { "Content-Type": undefined },
+      })
+      .then((resp) => {
+        $scope.account.avatar = resp.data.name;
+      })
+      .catch((err) => { });
+  };
 });
+
+

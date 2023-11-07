@@ -70,7 +70,7 @@
         <div class="left-column">
           <div class="form-group row">
             <div class="col-md-3">
-              <label for="username" class="col-form-label" >Username:</label>
+              <label for="username" class="col-form-label">Username:</label>
             </div>
             <div class="col-md-8">
               <input type="text" class="form-control" id="username" ng-model="account.username">
@@ -117,12 +117,10 @@
         <div class="right-column">
           <img ng-src="{{'/img/avatar/' + account.avatar}}" alt="Profile Image" class="profile-image">
           <br>
-          <button type="button" class="btn btn-outline-secondary" style="margin-bottom: 20px;" ng-click="selectImage()">Select Image</button>
-          <input type="file"
-                 id="image"
-                 name="image"
-                 onchange="angular.element(this).scope().imageChanged(this.files)"
-                 class="btn btn-outline-secondary" style="margin-bottom: 20px;display: none;">
+          <button type="button" class="btn btn-outline-secondary" style="margin-bottom: 20px;"
+            ng-click="selectImage()">Select Image</button>
+          <input type="file" id="image" name="image" onchange="angular.element(this).scope().imageChanged(this.files)"
+            class="btn btn-outline-secondary" style="margin-bottom: 20px;display: none;">
           <p style="font-size: 16px; margin-bottom: 3px; color: grey;">File size: maximum 1 MB</p>
           <p style="font-size: 16px; color: grey;">File extension: .JPEG, .PNG</p>
         </div>
