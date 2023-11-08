@@ -21,7 +21,7 @@ public class Product implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Column(unique = true)
     private String name;
 
     private Double price;
@@ -31,6 +31,7 @@ public class Product implements Serializable {
     private String describe;
 
     @Column(name = "createdate")
+    @Temporal(TemporalType.DATE)
     private Date createDate = new Date();
 
 
@@ -38,7 +39,7 @@ public class Product implements Serializable {
 
     @JsonIgnore
     @OneToMany(mappedBy = "product")
-    private List<OrderDetail> detail;
+    private List<OrderDetails> detail;
 
     @JsonIgnore
     @OneToMany(mappedBy= "product")

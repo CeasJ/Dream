@@ -18,46 +18,49 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity
 public class SecurityConfig {
     @Bean
-    public UserDetailsService userDetailsServices(){
+    public UserDetailsService userDetailServices() {
         return new UserDetailService();
     }
+
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
     @Bean
-    public WebSecurityCustomizer webSecurityCustomizer(){
-        return (web) -> web.ignoring().requestMatchers("/static","/templates","/**");
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.ignoring().requestMatchers("/abc");
     }
+
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-        return http.csrf(csrf->csrf.disable())
-                .authorizeHttpRequests(auth->auth
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        return http.csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/profile").authenticated()
+                        .requestMatchers("/cart").authenticated()
                         .requestMatchers("/order").authenticated()
                         .requestMatchers("/admin/index").hasAuthority("ADMIN")
                         .requestMatchers("/staff/index").hasAuthority("STAFF")
-                        .anyRequest().permitAll()
-                )
-                .formLogin(login->login
+                        .anyRequest().permitAll())
+                .formLogin(login -> login
                         .loginPage("/login/form")
                         .loginProcessingUrl("/login")
-                        .defaultSuccessUrl("/home")
-                        .failureUrl("/login/error")
-                )
-                .logout(logout->logout
+                        .defaultSuccessUrl("/home", false)
+                        .failureUrl("/login/error"))
+                .logout(logout -> logout
                         .logoutUrl("/logout")
-                        .logoutSuccessUrl("/login/form")
-                )
-//                .rememberMe(remember->remember.tokenValiditySeconds(86400))
+                        .logoutSuccessUrl("/login/form"))
+                // .rememberMe(remember->remember.tokenValiditySeconds(86400))
                 .build();
     }
+
     @Bean
-    public AuthenticationProvider authenticationProvider(){
+    public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-        authenticationProvider.setUserDetailsService(userDetailsServices());
+        authenticationProvider.setUserDetailsService(userDetailServices());
         authenticationProvider.setPasswordEncoder(passwordEncoder());
         return authenticationProvider;
     }
 
 }
+

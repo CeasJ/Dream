@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.List;
 
 @NoArgsConstructor
@@ -13,17 +14,16 @@ import java.util.List;
 @Setter
 @Entity
 @Table
-public class Account {
+public class Account implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Column(unique = true)
     private String username;
-
     private String email;
-
     private String password;
+
+    private String avatar;
 
     private String firstname;
 
@@ -32,6 +32,8 @@ public class Account {
     private String fullname;
 
     private String phone;
+
+    private String address;
     @JsonIgnore
     @OneToMany(mappedBy = "account", fetch = FetchType.EAGER)
     private List<Authority> authority;
@@ -42,7 +44,7 @@ public class Account {
 
     @JsonIgnore
     @OneToMany(mappedBy = "account")
-    private List<Order> order;
+    private List<Orders> orders;
 
     @JsonIgnore
     @OneToMany(mappedBy = "account")
@@ -51,5 +53,10 @@ public class Account {
     @JsonIgnore
     @OneToMany(mappedBy = "account")
     private List<FeedBack> feedback;
+
+    public Account(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 
 }

@@ -1,4 +1,5 @@
 package com.backend.dream.controller;
+
 import com.backend.dream.dto.DiscountDTO;
 import com.backend.dream.dto.ProductDTO;
 import com.backend.dream.dto.SizeDTO;
@@ -6,6 +7,7 @@ import com.backend.dream.entity.Product;
 import com.backend.dream.mapper.ProductMapper;
 import com.backend.dream.repository.ProductRepository;
 import com.backend.dream.service.CategoryService;
+import com.backend.dream.service.DiscountService;
 import com.backend.dream.service.ProductService;
 import com.backend.dream.service.ProductSizeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,9 +40,8 @@ public class ProductController {
     @Autowired
     CategoryService categoryService;
 
-
-
-
+    @Autowired
+    DiscountService discountService;
 
     @Autowired
     public ProductController(ProductService productService, ProductSizeService productSizeService) {
@@ -56,7 +57,8 @@ public class ProductController {
 
     @RequestMapping(value = "/products/{id}", method = RequestMethod.GET)
     public ResponseEntity<ProductDTO> findById(@PathVariable(value = "id") Long id) {
-        return new ResponseEntity<>(productMapper.productToProductDTO(productRepository.findById(id).get()), HttpStatus.OK);
+        return new ResponseEntity<>(productMapper.productToProductDTO(productRepository.findById(id).get()),
+                HttpStatus.OK);
     }
 
     @RequestMapping(value = "/products/{id}", method = RequestMethod.DELETE)
@@ -75,7 +77,7 @@ public class ProductController {
         Page<ProductDTO> productPage = productService.findAll(pageable);
         List<ProductDTO> productDTOs = productPage.getContent();
         model.addAttribute("products", productDTOs);
-        model.addAttribute("cur rentPage", page);
+        model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", productPage.getTotalPages());
         return "user/product/store";
     }
@@ -85,8 +87,7 @@ public class ProductController {
             @RequestParam(required = false) String sortOption,
             @RequestParam(name = "categoryId", required = false) String categoryIdString,
             @RequestParam(defaultValue = "0") int page,
-            Model model
-    ) {
+            Model model) {
         int pageSize = 6; // Kích thước trang
         Pageable pageable = PageRequest.of(page, pageSize); // Tạo Pageable
 
@@ -104,6 +105,8 @@ public class ProductController {
         } else if ("desc".equals(sortOption)) {
             // Sắp xếp theo giá giảm dần
             productPage = productService.sortByPriceDesc(categoryIdValue, pageable);
+        } else if ("sale".equals(sortOption)) {
+            productPage = productService.findSaleProducts(pageable);
         } else {
             // Mặc định
             productPage = productService.findByCategory(categoryIdValue, pageable);
@@ -129,6 +132,12 @@ public class ProductController {
 //            }
 //        }
 
+        model.addAttribute("products", products);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("categoryId", categoryIdValue);
+        model.addAttribute("totalPages", productPage.getTotalPages());
+        return "user/product/products-list";
+    }
 
 
 
@@ -150,20 +159,63 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/product/{name}", method = RequestMethod.GET)
-    public String productDetail(@PathVariable(value = "name") String name, Model model) {
+    public String productDetail(@PathVariable(value = "name") String name,
+                                @RequestParam(value = "sizeId", required = false) Long sizeId,
+                                Model model) {
         try {
             String decoded = URLDecoder.decode(name, "UTF-8");
             ProductDTO product = productService.findByNamePaged(decoded, PageRequest.of(0, 1)).getContent().get(0);
             List<SizeDTO> availableSizes = productSizeService.getSizesByProductId(product.getId());
+
+            // Set the price based on the selected size
+            if (sizeId != null) {
+                double productPriceBySize = productService.getProductPriceBySize(product.getId(), sizeId);
+                product.setSelectedSizeId(sizeId);
+                product.setPrice(productPriceBySize);
+            }
+
+            double discountedPrice = productService.getDiscountedPrice(product.getId());
+
+            if (discountedPrice < product.getPrice()) {
+                product.setIsDiscounted(true);
+                product.setDiscountedPrice(discountedPrice);
+            } else {
+                product.setIsDiscounted(false);
+            }
+
+            // Get the discount percent
+            DiscountDTO discount = discountService.getDiscountByProductId(product.getId());
+            Double discountPercent = (discount != null) ? discount.getPercent() : 0.0;
+
+            model.addAttribute("discountPercent", discountPercent);
             model.addAttribute("product", product);
             model.addAttribute("availableSizes", availableSizes);
-
-            System.out.println(availableSizes);
             return "user/product/detail";
         } catch (UnsupportedEncodingException e) {
             return "error";
         }
     }
+
+    @GetMapping("/getProductPriceBySize")
+    public ResponseEntity<Double> getProductPriceBySize(
+            @RequestParam("productId") Long productId,
+            @RequestParam("sizeId") Long sizeId) {
+        try {
+            double productPrice = productService.getProductPriceBySize(productId, sizeId);
+            return ResponseEntity.ok(productPrice);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(-1.0);
+        }
+    }
+
+    @GetMapping("/getDiscountPercentByProductId")
+    public ResponseEntity<Double> getDiscountPercentByProductId(@RequestParam("productId") Long productId) {
+        // Gọi phương thức từ service để lấy discountPercent dựa trên productId
+        double discountPercent = productService.getDiscountPercentByProductId(productId);
+        return ResponseEntity.ok(discountPercent);
+    }
+
+
 
 
 }

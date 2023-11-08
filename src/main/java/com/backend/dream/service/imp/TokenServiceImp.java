@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Service;
 
-
 @Service
 @EnableScheduling
 public class TokenServiceImp implements TokenService {
@@ -26,6 +25,7 @@ public class TokenServiceImp implements TokenService {
 	TokenMapper tokenMapper;
 	@Autowired
 	AccountMapper accountMapper;
+
 	@Override
 	public TokenDTO createTokenForUser(Account account) {
 		Random random = new Random();
@@ -37,12 +37,11 @@ public class TokenServiceImp implements TokenService {
 		token.setTokenType("Password");
 		token.setAccount(account);
 
-		LocalDateTime expiry_date = LocalDateTime.now().plusSeconds(60);
+		LocalDateTime expiry_date = LocalDateTime.now().plusMinutes(5);
 		token.setExpiredDate(expiry_date);
 		tokenRepository.save(token);
 		return tokenMapper.tokenToTokenDTO(token);
 	}
-
 
 	@Override
 	public com.backend.dream.entity.Token findByToken(String token) {

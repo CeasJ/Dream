@@ -1,7 +1,9 @@
 package com.backend.dream.service.imp;
 
+import com.backend.dream.dto.ProductDTO;
 import com.backend.dream.dto.ProductSizeDTO;
 import com.backend.dream.dto.SizeDTO;
+import com.backend.dream.entity.Product;
 import com.backend.dream.entity.ProductSize;
 import com.backend.dream.mapper.ProductSizeMapper;
 import com.backend.dream.mapper.SizeMapper;
@@ -18,11 +20,15 @@ import java.util.stream.Collectors;
 public class ProductSizeServiceImp implements ProductSizeService {
     private final ProductSizeRepository productSizeRepository;
     private final SizeRepository sizeRepository;
+    @Autowired
+    private ProductSizeMapper productSizeMapper;
 
     @Autowired
-    public ProductSizeServiceImp(ProductSizeRepository productSizeRepository, SizeRepository sizeRepository) {
+    public ProductSizeServiceImp(ProductSizeRepository productSizeRepository, SizeRepository sizeRepository,
+            ProductSizeMapper productSizeMapper) {
         this.productSizeRepository = productSizeRepository;
         this.sizeRepository = sizeRepository;
+        this.productSizeMapper = productSizeMapper;
     }
 
     @Override
@@ -35,6 +41,22 @@ public class ProductSizeServiceImp implements ProductSizeService {
         return sizeDTOs;
     }
 
+    @Override
+    public List<ProductSizeDTO> findAll() {
+        List<ProductSize> products = productSizeRepository.findAll();
+        return products.stream().map(productSizeMapper::productSizeToProductSizeDTO)
+                .collect(Collectors.toList());
+    }
 
+    @Override
+    public ProductSize create(ProductSizeDTO productSizeDTO) {
+        ProductSize saveproductsize = productSizeMapper.productSizeDTOToProductSize(productSizeDTO);
+        return productSizeRepository.save(saveproductsize);
+    }
+
+    @Override
+    public void delete(Long id) {
+        productSizeRepository.deleteById(id);
+    }
 
 }

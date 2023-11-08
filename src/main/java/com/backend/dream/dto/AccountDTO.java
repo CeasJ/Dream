@@ -1,9 +1,6 @@
 package com.backend.dream.dto;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -31,5 +28,7 @@ public class AccountDTO {
     @Pattern(regexp = "^[0-9]*$", message = "Phone number must only contain digits")
     @Size(min = 9, max = 10, message = "Phone number must be between 9 and 10 digits")
     private String phone;
+
+    private String address;
 
 }
