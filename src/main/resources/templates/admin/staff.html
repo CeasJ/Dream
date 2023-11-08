@@ -453,11 +453,21 @@
                                         </div>
                                         <div class="card-body">
                                             <div class="row">
-                                                <div class="col-md-6 "
-                                                     style="display: flex; justify-content: center; align-items: center;">
+                                                <div class="col-md-6 " style="display: flex; justify-content: center; align-items: center;">
                                                     <img class="img-fluid" id="imagePreview"
-                                                         ng-src="{{'/img/gallery/'+ avatar}}"
+                                                         ng-src="{{'/img/gallery/'+ form.avatar}}"
                                                          style="max-width: 500px; max-height: 400px;">
+                                                    <div class="form-group">
+                                                        <label for="avatar">Image</label>
+                                                        <br>
+                                                        <button type="button" class="btn btn-outline-secondary" style="margin-bottom: 20px;" ng-click="selectImage()">Select Image</button>
+                                                        <input type="file"
+                                                               id="avatar"
+                                                               name="avatar"
+                                                               onchange="angular.element(this).scope().imageChanged(this.files)"
+                                                               class="btn btn-outline-secondary" style="margin-bottom: 20px;display: none;">
+                                                        <p style="font-size: 16px; margin-bottom: 3px; color: grey;">File size: maximum 1 MB</p>
+                                                    </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group row">
@@ -465,7 +475,7 @@
                                                                 class="col-12 col-sm-3 col-form-label text-sm-left">Username</label>
                                                         <div class="col-12 col-sm-8 col-lg-9">
                                                             <input class="form-control" name="username"
-                                                                   ng-model="username"
+                                                                   ng-model="form.username"
                                                                    type="text" placeholder="Username">
                                                         </div>
                                                     </div>
@@ -478,7 +488,7 @@
                                                                    name="firstname" value=""
                                                                    ng-minlength="3" required
                                                                    ng-pattern="/^[\p{L}\d\s]*$/u"
-                                                                   ng-model="firstname" placeholder="Firstname">
+                                                                   ng-model="form.firstname" placeholder="Firstname">
                                                             <div class="errortext"
                                                                  ng-show="myStaff.firstname.$dirty && myStaff.firstname.$invalid"
                                                                  style="float: left; margin-right: 40px; color:red">
@@ -495,7 +505,7 @@
                                                                    name="lastname" value=""
                                                                    ng-minlength="3" required
                                                                    ng-pattern="/^[\p{L}\d\s]*$/u"
-                                                                   ng-model="lastname" placeholder="Lastname">
+                                                                   ng-model="form.lastname" placeholder="Lastname">
                                                             <div class="errortext"
                                                                  ng-show="myStaff.lastname.$dirty && myStaff.lastname.$invalid"
                                                                  style="float: left; margin-right: 40px; color:red">
@@ -520,7 +530,7 @@
                                                                 class="col-12 col-sm-3 col-form-label text-sm-left">Password</label>
                                                         <div class="col-12 col-sm-8 col-lg-9 text-center">
                                                             <input class="form-control" name="password"
-                                                                   ng-model="password" ng-minlength="8"
+                                                                   ng-model="form.password" ng-minlength="8"
                                                                    type="password" placeholder="Password" required
                                                                    ng-pattern="/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#$%^&*()_+{}\[\]:;<>,.?~]).*$/">
                                                             <div class="errortext"
@@ -536,7 +546,7 @@
                                                         <label
                                                                 class="col-12 col-sm-3 col-form-label text-sm-left">Email</label>
                                                         <div class="col-12 col-sm-8 col-lg-9 text-sm-left">
-                                                            <input class="form-control" ng-model="email"
+                                                            <input class="form-control" ng-model="form.email"
                                                                    name="email" type="email" placeholder="Email"
                                                                    required>
                                                             <div class="errortext"
@@ -551,7 +561,7 @@
                                                         <label
                                                                 class="col-12 col-sm-3 col-form-label text-sm-left">Phone</label>
                                                         <div class="col-12 col-sm-8 col-lg-9 text-sm-left">
-                                                            <input class="form-control" ng-model="phone"
+                                                            <input class="form-control" ng-model="form.phone"
                                                                    name="phone" type="text" placeholder="Phone"
                                                                    required ng-pattern="/^[0-9]*$/"
                                                                    ng-maxlength="10" ng-minlength="10">

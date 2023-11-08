@@ -4,7 +4,6 @@ import com.backend.dream.dto.OrderDTO;
 import com.backend.dream.dto.OrderDetailDTO;
 import com.backend.dream.entity.OrderDetails;
 import com.backend.dream.entity.Orders;
-import com.backend.dream.entity.Product;
 import com.backend.dream.mapper.OrderDetailMapper;
 import com.backend.dream.mapper.OrderMapper;
 import com.backend.dream.repository.OrderDetailRepository;
@@ -14,10 +13,14 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -40,10 +43,11 @@ public class OrderServiceImp implements OrderService {
     private OrderDetailMapper orderDetailMapper;
 
     @Override
-    public Orders create(JsonNode orderData) throws NoSuchElementException, NullPointerException {
+    public Orders create(JsonNode orderData) throws NoSuchElementException, NullPointerException, ParseException {
         ObjectMapper mapper = new ObjectMapper();
 
         OrderDTO orderDTO = mapper.convertValue(orderData, OrderDTO.class);
+
 
         Orders orders = orderMapper.orderDTOToOrder(orderDTO);
 
@@ -61,7 +65,7 @@ public class OrderServiceImp implements OrderService {
     }
 
     @Override
-    public List<OrderDTO> listOrderByUsername(String username) throws NoSuchElementException{
+    public List<OrderDTO> listOrderByUsername(String username) throws NoSuchElementException {
         List<OrderDTO> listOrders = orderMapper.listOrderToListOrderDTO(orderRepository.listOrdersByUsername(username));
         return listOrders;
     }
@@ -89,11 +93,13 @@ public class OrderServiceImp implements OrderService {
         List<OrderDTO> listOrder = orderMapper.listOrderToListOrderDTO(orderRepository.getListOrder(statusOrderSuccess));
         return listOrder;
     }
+
     @Override
     public List<OrderDTO> getListOrderCancel() throws ClassNotFoundException {
         List<OrderDTO> listOrder = orderMapper.listOrderToListOrderDTO(orderRepository.getListOrder(statusOrderCancel));
         return listOrder;
     }
+
     @Override
     public OrderDTO updateOrder(OrderDTO orderDTO) throws ClassNotFoundException, NoSuchElementException {
         Orders orders = orderMapper.orderDTOToOrder(orderDTO);

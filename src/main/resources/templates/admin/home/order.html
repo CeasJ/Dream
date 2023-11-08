@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Orders - Dream Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+    <link type="text/css" href="/css/admin/admin.css" rel="stylesheet" />
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Angular -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
+    <!-- Angular Route-->
+<!--    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.js"></script>-->
+</head>
+
+<body ng-app="order_app" ng-controller="order_ctrl" class="sb-nav-fixed">
+    <div th:replace="~{/admin/component/header.html}"></div>
+    <div id="layoutSidenav">
+        <div id="layoutSidenav_nav">
+            <div th:replace="~{/admin/component/sidebar.html}"></div>
+        </div>
+        <div id="layoutSidenav_content">
+            <main>
+                <!-- Bảng cho trạng thái Confirm -->
+                <div class="card" style="border-radius: 0px; margin-bottom: 40px;">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h3 class="mb-0">Pending</h3>
+                    </div>
+                    <div class="card-body">
+                        <table id="datatablesSimple1" class="order-status">
+                            <thead>
+                                <th>
+                                    <div class="text-center" style="font-size: 16px;">No</div>
+                                </th>
+                                <th>
+                                    <div class="text-center" style="font-size: 16px;">ID</div>
+                                </th>
+                                <th>
+                                    <div class="text-center" style="font-size: 16px;">CreateDate</div>
+                                </th>
+                                <th>
+                                    <div class="text-center" style="font-size: 16px;">Fullname</div>
+                                </th>
+                                <th>
+                                    <div class="text-center" style="font-size: 16px;">Address</div>
+                                </th>
+                                <th>
+                                    <div class="text-center" style="font-size: 16px;">Total Amount</div>
+                                </th>
+                                <th>
+                                    <div class="text-center" style="font-size: 16px;">Status</div>
+                                </th>
+                                <th></th>
+                            </thead>
+                            <tbody ng-repeat="order in listOrders">
+                                <td>{{$index + 1}}</td>
+                                <td>{{order.id}}</td>
+                                <td>{{order.createDate | date: 'dd-MM-yyyy'}}</td>
+                                <td>{{order.fullname}}</td>
+                                <td>{{order.address}}</td>
+                                <td>{{order.totalAmount | number : 0}} đ</td>
+                                <td ng-if="order.status === 1"> Đã đặt hàng</td>
+                                <td>
+                                    <button class="btn btn-primary"
+                                        ng-click="updateOrder.confirmOrder(order.id)">Confirm</button>
+                                    <button class="btn btn-danger"
+                                        ng-click="updateOrder.cancelOrder(order.id)">Cancel</button>
+                                </td>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- Bảng cho trạng thái confirm -->
+                <div class="card" style="border-radius: 0px; margin-bottom: 40px;">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h3>Order Processing</h3>
+                    </div>
+                    <div class="card-body">
+                        <table id="datatablesSimple2" class="order-status">
+                            <thead>
+                                <th>
+                                    <div class="text-center" style="font-size: 16px;">No</div>
+                                </th>
+                                <th>
+                                    <div class="text-center" style="font-size: 16px;">ID</div>
+                                </th>
+                                <th>
+                                    <div class="text-center" style="font-size: 16px;">CreateDate</div>
+                                </th>
+                                <th>
+                                    <div class="text-center" style="font-size: 16px;">Fullname</div>
+                                </th>
+                                <th>
+                                    <div class="text-center" style="font-size: 16px;">Address</div>
+                                </th>
+                                <th>
+                                    <div class="text-center" style="font-size: 16px;">Total Amount</div>
+                                </th>
+                                <th>
+                                    <div class="text-center" style="font-size: 16px;">Status</div>
+                                </th>
+                                <th></th>
+                            </thead>
+                            <tbody ng-repeat="order in listOrdersConfirmed">
+                                <td>{{$index + 1 }}</td>
+                                <td>{{order.id}}</td>
+                                <td>{{order.createDate | date: 'dd-MM-yyyy'}}</td>
+                                <td>{{order.fullname}}</td>
+                                <td>{{order.address}}</td>
+                                <td>{{order.totalAmount | number : 0}} đ</td>
+                                <td ng-if="order.status === 2"> Đã xác nhận</td>
+                                <td>
+                                    <button class="btn btn-primary"
+                                        ng-click="updateOrder.shippingOrder(order.id)">Ship</button>
+                                    <button class="btn btn-danger"
+                                        ng-click="updateOrder.cancelOrder(order.id)">Cancel</button>
+                                </td>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- Bảng cho trạng thái Success -->
+                <div class="card" style="border-radius: 0px; margin-bottom: 40px;">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h3>Order Shipping</h3>
+                    </div>
+                    <div class="card-body">
+                        <table id="datatablesSimple3" class="order-status">
+                            <thead>
+                                <th>
+                                    <div class="text-center" style="font-size: 16px;">No</div>
+                                </th>
+                                <th>
+                                    <div class="text-center" style="font-size: 16px;">ID</div>
+                                </th>
+                                <th>
+                                    <div class="text-center" style="font-size: 16px;">CreateDate</div>
+                                </th>
+                                <th>
+                                    <div class="text-center" style="font-size: 16px;">Fullname</div>
+                                </th>
+                                <th>
+                                    <div class="text-center" style="font-size: 16px;">Address</div>
+                                </th>
+                                <th>
+                                    <div class="text-center" style="font-size: 16px;">Total Amount</div>
+                                </th>
+                                <th>
+                                    <div class="text-center" style="font-size: 16px;">Status</div>
+                                </th>
+                                <th></th>
+                            </thead>
+                            <tbody ng-repeat="order in listOrderIsShipping">
+                                <td>{{$index +1}}</td>
+                                <td>{{order.id}}</td>
+                                <td>{{order.createDate | date: 'dd-MM-yyyy'}}</td>
+                                <td>{{order.fullname}}</td>
+                                <td>{{order.address}}</td>
+                                <td>{{order.totalAmount | number : 0}} đ</td>
+                                <td ng-if="order.status === 3">Đang giao hàng</td>
+                                <td>
+                                    <button class="btn btn-success"
+                                        ng-click="updateOrder.successOrder(order.id)">Success</button>
+                                    <button class="btn btn-danger"
+                                        ng-click="updateOrder.cancelOrder(order.id)">Cancel</button>
+                                </td>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- Bảng cho trạng thái success -->
+                <div class="card" style="border-radius: 0px; margin-bottom: 40px;">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h3>Order Success</h3>
+                    </div>
+                    <div class="card-body">
+                        <table id="datatablesSimple4" class="order-status">
+                            <thead>
+                                <th>
+                                    <div class="text-center" style="font-size: 16px;">No</div>
+                                </th>
+                                <th>
+                                    <div class="text-center" style="font-size: 16px;">ID</div>
+                                </th>
+                                <th>
+                                    <div class="text-center" style="font-size: 16px;">CreateDate</div>
+                                </th>
+                                <th>
+                                    <div class="text-center" style="font-size: 16px;">Fullname</div>
+                                </th>
+                                <th>
+                                    <div class="text-center" style="font-size: 16px;">Address</div>
+                                </th>
+                                <th>
+                                    <div class="text-center" style="font-size: 16px;">Total Amount</div>
+                                </th>
+                                <th>
+                                    <div class="text-center" style="font-size: 16px;">Status</div>
+                                </th>
+                            </thead>
+                            <tbody ng-repeat="order in listOrdersSuccessful">
+                                <td>{{$index + 1}}</td>
+                                <td>{{order.id}}</td>
+                                <td>{{order.createDate | date: 'dd-MM-yyyy'}}</td>
+                                <td>{{order.fullname}}</td>
+                                <td>{{order.address}}</td>
+                                <td>{{order.totalAmount | number : 0}} đ</td>
+                                <td ng-if="order.status === 4"> Đã giao hàng</td>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Bảng cho trạng thái cancel -->
+                <div class="card" style="border-radius: 0px; margin-bottom: 30px;">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h3>Order Cancel</h3>
+                    </div>
+                    <div class="card-body">
+                        <table id="datatablesSimple5" class="order-status">
+                            <thead>
+                                <th>
+                                    <div class="text-center" style="font-size: 16px;">No</div>
+                                </th>
+                                <th>
+                                    <div class="text-center" style="font-size: 16px;">ID</div>
+                                </th>
+                                <th>
+                                    <div class="text-center" style="font-size: 16px;">CreateDate</div>
+                                </th>
+                                <th>
+                                    <div class="text-center" style="font-size: 16px;">Fullname</div>
+                                </th>
+                                <th>
+                                    <div class="text-center" style="font-size: 16px;">Address</div>
+                                </th>
+                                <th>
+                                    <div class="text-center" style="font-size: 16px;">Total Amount</div>
+                                </th>
+                                <th>
+                                    <div class="text-center" style="font-size: 16px;">Status</div>
+                                </th>
+                                <th></th>
+                            </thead>
+                            <tbody ng-repeat="order in listOrdersCancelled">
+                                <td>{{$index + 1 }}</td>
+                                <td>{{order.id}}</td>
+                                <td>{{order.createDate | date: 'dd-MM-yyyy'}}</td>
+                                <td>{{order.fullname}}</td>
+                                <td>{{order.address}}</td>
+                                <td>{{order.totalAmount | number : 0}} đ</td>
+                                <td ng-if="order.status === 5"> Đã hủy</td>
+                                <td>
+                                    <button class="btn btn-warning"
+                                        ng-click="updateOrder.resetOrder(order.id)">Reset</button>
+                                </td>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+            <div th:replace="~{/admin/component/footer.html}"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
+
+    <script src="/js/admin/scripts.js"></script>
+
+    <script src="/js/admin/order.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
+        crossorigin="anonymous"></script>
+<!--    <script>-->
+<!--        document.addEventListener('DOMContentLoaded', function () {-->
+<!--            new simpleDatatables.DataTable('#datatablesSimple1');-->
+<!--            new simpleDatatables.DataTable('#datatablesSimple2');-->
+<!--            new simpleDatatables.DataTable('#datatablesSimple3');-->
+<!--            new simpleDatatables.DataTable('#datatablesSimple4');-->
+<!--            new simpleDatatables.DataTable('#datatablesSimple5');-->
+<!--        });-->
+<!--    </script>-->
+</body>
+
+</html>

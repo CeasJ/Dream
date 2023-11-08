@@ -111,7 +111,12 @@ public class AccountServiceImp implements AccountService {
 
     @Override
     public boolean checkUsernameExists(String username) {
-        return accountRepository.findByUsername(username).isPresent();
+        return accountRepository.findByUsername("username").isPresent();
+    }
+
+    @Override
+    public Account updateStaff(Account staffToUpdate) {
+        return accountRepository.save(staffToUpdate);
     }
 
     @Override
@@ -123,28 +128,17 @@ public class AccountServiceImp implements AccountService {
         newAccount.setPassword(passwordEncoder.encode(password));
 
         Role role = new Role();
-        role.setId(1L);
+        role.setId(2L);
 
         Authority authority = new Authority();
         authority.setRole(role);
-
+        newAccount.setFullname(newAccount.getFirstname() + " " + newAccount.getLastname());
         Account savedAccount = accountRepository.save(newAccount);
 
         authority.setAccount(savedAccount);
         Authority savedAuthority = authorityRepository.save(authority);
 
         return savedAccount;
-    }
-
-    @Override
-    public Account updateStaff(JsonNode staffToUpdate) {
-//        return accountRepository.udate(staffToUpdate);
-        return null;
-    }
-
-    @Override
-    public Account findById(String username) {
-        return accountRepository.findById(Long.valueOf(username)).get();
     }
 
     @Override

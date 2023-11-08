@@ -47,6 +47,23 @@ public class CategoryServiceImp implements CategoryService {
         categoryRepository.deleteById(id);
     }
 
+
+//    @Override
+//    public Category createCategory(JsonNode cate) {
+//        ObjectMapper mapper = new ObjectMapper();
+//        Category newCategory = mapper.convertValue(cate, Category.class);
+//        String name = cate.get("name").asText();
+//        newCategory.setName(name);
+//        return newCategory;
+//    }
+
+
+//    @Override
+//    public boolean checknameExists(String namecategory) {
+//        return categoryRepository.findByname("name");
+//    }
+
+
     @Override
     public List<CategoryDTO> findAll() {
         List<Category> categories = categoryRepository.findAll();

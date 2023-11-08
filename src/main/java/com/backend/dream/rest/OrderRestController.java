@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -19,7 +20,7 @@ public class OrderRestController {
     OrderService orderService;
 
     @PostMapping
-    public Orders create(@RequestBody JsonNode orderData){
+    public Orders create(@RequestBody JsonNode orderData) throws ParseException {
         return orderService.create(orderData);
     }
 

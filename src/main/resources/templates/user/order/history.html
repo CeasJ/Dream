@@ -77,6 +77,7 @@
                         <th class="table-header">No.</th>
                         <th class="table-header">Mã đơn hàng</th>
                         <th class="table-header">Tên người đặt</th>
+                        <th class="table-header">Ngày đặt</th>
                         <th class="table-header">Thời gian</th>
                         <th class="table-header">Tổng số tiền</th>
                         <th class="table-header">Trạng thái</th>
@@ -89,6 +90,7 @@
                         <td th:text="${order.id}"></td>
                         <td th:text="${order.fullname}"></td>
                         <td th:text="${order.createDate}"></td>
+                        <td th:text="${#dates.format(order.createTime, 'hh:mm a')}"></td>
                         <td th:text="${order.formattedPrice}"></td>
                         <th:block th:if="${order.status == 1}">
                             <td><span class="order-status status-info">Đã đặt hàng</span></td>
@@ -210,13 +212,13 @@
                                                 <td><img ng-src="{{'/img/gallery/' + orderDetail.product_image}}" class="img-fluid img-details"></td>
                                                 <td>{{orderDetail.product_name}}</td>
                                                 <td>{{orderDetail.quantity}}</td>
-                                                <td>{{orderDetail.price}} </td>
-                                                <td>{{orderDetail.quantity * orderDetail.price}} đ</td>
+                                                <td>{{orderDetail.price | number : 0}} đ</td>
+                                                <td>{{orderDetail.quantity * orderDetail.price | number :0}} đ</td>
                                             </tr>
                                             <tr>
                                                 <td colspan="5" class="text-end"><strong>Tạm
                                                         tính:</strong></td>
-                                                <td>{{getSubTotal() | number : 2}} đ</td>
+                                                <td>{{getSubTotal() | number : 0}} đ</td>
                                             </tr>
                                             <tr>
                                                 <td colspan="5" class="text-end"><strong>Chi phí vận
@@ -227,7 +229,7 @@
                                             <tr>
                                                 <td colspan="5" class="text-end"><strong>Tổng thanh
                                                         toán:</strong></td>
-                                                <th class="text-success">{{getTotal() | number : 2}}</th>
+                                                <th class="text-success">{{getTotal() | number : 0}} đ</th>
                                             </tr>
                                         </tbody>
                                     </table>

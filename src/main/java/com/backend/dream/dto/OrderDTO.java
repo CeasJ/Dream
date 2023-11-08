@@ -21,6 +21,8 @@ public class OrderDTO {
 
     private Date createDate;
 
+    private Time createTime;
+
     private Long status;
 
     private int id_account;
@@ -31,7 +33,11 @@ public class OrderDTO {
 
     private Double totalAmount;
     public String getFormattedPrice() {
+        if(totalAmount != null){
         DecimalFormat df = new DecimalFormat("#,###₫");
         return df.format(totalAmount);
+        } else {
+            return "";
+        }
     }
 }

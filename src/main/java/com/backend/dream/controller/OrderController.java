@@ -25,19 +25,12 @@ public class OrderController {
         String username = request.getRemoteUser();
         List<OrderDTO> list = orderService.listOrderByUsername(username);
         Collections.sort(list, Comparator.comparing(OrderDTO::getCreateDate));
-        for (OrderDTO orderDTO : list) {
-            Double totalAmount = 0.0;
-            for (OrderDetailDTO detailDTO : orderDTO.getOrderDetailsDTO()) {
-                totalAmount += detailDTO.getPrice() * detailDTO.getQuantity();
-            }
-            orderDTO.setTotalAmount(totalAmount);
-        }
         model.addAttribute("listOrder", list);
         return "/user/order/history";
     }
 
     @GetMapping("/admin/order")
     public String getOrderManagement() {
-        return "/admin/order";
+        return "/admin/home/order";
     }
 }

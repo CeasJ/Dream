@@ -9,6 +9,8 @@ import com.backend.dream.repository.FeedBackRepository;
 import com.backend.dream.repository.ProductRepository;
 import com.backend.dream.service.DiscountService;
 import com.backend.dream.service.FeedbackService;
+import com.backend.dream.service.CategoryService;
+import com.backend.dream.service.DiscountService;
 import com.backend.dream.service.ProductService;
 import com.backend.dream.service.ProductSizeService;
 import org.springframework.beans.factory.annotation.Autowired;

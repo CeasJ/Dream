@@ -474,6 +474,17 @@
                                         <img class="img-fluid" id="imagePreview"
                                              ng-src="{{'/img/gallery/'+ form.image}}"
                                              style="max-width: 500px; max-height: 400px;">
+                                        <div class="form-group">
+                                            <label for="image">Image</label>
+                                            <br>
+                                            <button type="button" class="btn btn-outline-secondary" style="margin-bottom: 20px;" ng-click="selectImage()">Select Image</button>
+                                            <input type="file"
+                                                   id="image"
+                                                   name="image"
+                                                   onchange="angular.element(this).scope().imageChanged(this.files)"
+                                                   class="btn btn-outline-secondary" style="margin-bottom: 20px;display: none;">
+                                            <p style="font-size: 16px; margin-bottom: 3px; color: grey;">File size: maximum 1 MB</p>
+                                        </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="row">
