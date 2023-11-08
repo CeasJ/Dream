@@ -108,7 +108,8 @@
                             <td><span class="order-status status-failed">Đã hủy</span></td>
                         </th:block>
                         <td>
-                            <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#orderModal" th:attr="ng-click=@{|selectOrder(${order.id})|}">
+                            <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#orderModal"
+                                th:attr="ng-click=@{|selectOrder(${order.id})|}">
                                 <i class="fas fa-eye"></i>
                             </button>
                         </td>
@@ -209,7 +210,8 @@
                                         <tbody>
                                             <tr ng-repeat="orderDetail in listOrder">
                                                 <td>{{$index + 1}}</td>
-                                                <td><img ng-src="{{'/img/gallery/' + orderDetail.product_image}}" class="img-fluid img-details"></td>
+                                                <td><img ng-src="{{'/img/gallery/' + orderDetail.product_image}}"
+                                                        class="img-fluid img-details"></td>
                                                 <td>{{orderDetail.product_name}}</td>
                                                 <td>{{orderDetail.quantity}}</td>
                                                 <td>{{orderDetail.price | number : 0}} đ</td>
@@ -236,35 +238,35 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mt-4">
+                        <div class="row mt-3">
 
-                            <div ng-if="listOrder[0].order_status === 1 " class="status-info">
+                            <div ng-if="listOrder[0].order_status === 1 " class="status-info" style="border: none;">
                                 <h5>Tình trạng đơn hàng:</h5>
-                                <p class="text-infor" style="font-size: 18px; font-weight: 500;">
+                                <p class="text-infor" style="font-size: 20px; font-weight: 500;">
                                     Đơn hàng đã được đặt.</p>
                             </div>
 
-                            <div ng-if="listOrder[0].order_status === 2" class="status-blue">
+                            <div ng-if="listOrder[0].order_status === 2" class="status-blue" style="border: none;">
                                 <h5>Tình trạng đơn hàng:</h5>
-                                <p class="text-primary" style="font-size: 18px; font-weight: 500;">
+                                <p class="text-primary" style="font-size: 20px; font-weight: 500;">
                                     Đơn hàng đã được xác nhận.</p>
                             </div>
 
-                            <div ng-if="listOrder[0].order_status === 3" class="status-warning">
+                            <div ng-if="listOrder[0].order_status === 3" class="status-warning" style="border: none;">
                                 <h5>Tình trạng đơn hàng:</h5>
-                                <p class="text-warning" style="font-size: 18px; font-weight: 500;">
+                                <p class="text-warning" style="font-size: 20px; font-weight: 500;">
                                     Đơn hàng đang được giao.</p>
                             </div>
 
-                            <div ng-if="listOrder[0].order_status === 4" class="status-success">
+                            <div ng-if="listOrder[0].order_status === 4" class="status-success" style="border: none;">
                                 <h5>Tình trạng đơn hàng:</h5>
-                                <p class="text-success" style="font-size: 18px; font-weight: 500;">
+                                <p class="text-success" style="font-size: 20px; font-weight: 500;">
                                     Đơn hàng đã được giao thành công.</p>
                             </div>
 
-                            <div ng-if="listOrder[0].order_status === 5" class="status-failed">
+                            <div ng-if="listOrder[0].order_status === 5" class="status-failed" style="border: none;">
                                 <h5>Tình trạng đơn hàng:</h5>
-                                <p class="text-danger" style="font-size: 18px; font-weight: 500;">
+                                <p class="text-danger" style="font-size: 20px; font-weight: 500;">
                                     Đơn hàng đã bị hủy.</p>
                             </div>
                         </div>
@@ -298,9 +300,6 @@
     <script src="lib/easing/easing.min.js"></script>
     <script src="lib/waypoints/waypoints.min.js"></script>
     <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-
-    <!-- Template Javascript -->
-    <script src="/js/main.js"></script>
 
     <!-- Cart Control -->
     <script src="/js/cart.js"></script>
