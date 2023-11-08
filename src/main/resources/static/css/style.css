@@ -265,10 +265,19 @@ body {
     padding-left: 10px;
 }
 
+.cart-icon {
+    position: relative;
+    display: inline-block;
+}
+
+.bi-bag-fill {
+    font-size: 24px;
+}
+
 .cart-count {
     position: absolute;
-    top: 9px; /* Điều chỉnh vị trí đứng của cart-count so với bag */
-    right: -8px; /* Điều chỉnh vị trí ngang của cart-count so với bag */
+    top: -5px; /* Điều chỉnh vị trí đứng của cart-count so với bag */
+    right: -9px; /* Điều chỉnh vị trí ngang của cart-count so với bag */
     background-color: #ff0000; /* Màu nền của cart-count */
     color: var(--light); /* Màu chữ của cart-count */
     font-weight: 600;
@@ -1288,6 +1297,30 @@ body {
 .rad-group input:checked + label {
     background: #047b0f;
     color: white;
+}
+
+.addressSpan {
+    max-width: 320px; /* Độ rộng tối đa của địa chỉ trước khi bị cắt */
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis; /* Hiển thị dấu ... khi cắt địa chỉ */
+    vertical-align: middle;
+    display: inline-block;
+}
+
+/* Thay đổi màu và trang trí cho link */
+.change-address-link {
+    color: var(--blue);
+    padding-left: 5px;
+    float: right;
+    cursor: pointer;
+}
+
+/* Khi hover vào link, thay đổi màu sắc */
+.change-address-link:hover {
+    font-weight: bold;
+    color: var(--blue);
+    text-decoration: underline;
 }
 
 /* Format dark mode toggle button  */

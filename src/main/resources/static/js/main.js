@@ -1,15 +1,15 @@
 (function ($) {
     "use strict";
 
-    // Spinner
-    // var spinner = function () {
-    //     setTimeout(function () {
-    //         if ($('#spinner').length > 0) {
-    //             $('#spinner').removeClass('show');
-    //         }
-    //     }, 1);
-    // };
-    // spinner();
+    Spinner
+    var spinner = function () {
+        setTimeout(function () {
+            if ($('#spinner').length > 0) {
+                $('#spinner').removeClass('show');
+            }
+        }, 1);
+    };
+    spinner();
 
 
     // Initiate the wowjs
@@ -138,10 +138,10 @@ document.addEventListener("DOMContentLoaded", function () {
     // Handle search button click event
     var searchButton = document.getElementById("searchButton");
 
-        searchButton.addEventListener("click", function () {
+    searchButton.addEventListener("click", function () {
 
-            updateURLAndReload();
-        });
+        updateURLAndReload();
+    });
 
     // Get the current URL and parse the query parameters
     var urlParams = new URLSearchParams(window.location.search);
@@ -174,11 +174,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
-
-
-
-
-
 
 // Category combobox listener event
 var urlParams = new URLSearchParams(window.location.search);
@@ -213,7 +208,7 @@ function updateURLAndReload() {
 
 
     var newUrl = "/store?categoryId=" + selectedCategoryId;
-    if(selectedSortOption === 'sale') {
+    if (selectedSortOption === 'sale') {
         selectedCategoryId == '0';
         newUrl = "/store?categoryId=0";
     }
@@ -231,7 +226,7 @@ function updateURLAndReload() {
     }
 
     window.location.href = newUrl;
- }
+}
 
 
 // Pagination features
