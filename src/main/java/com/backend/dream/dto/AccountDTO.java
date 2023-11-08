@@ -29,4 +29,6 @@ public class AccountDTO {
     @Size(min = 9, max = 10, message = "Phone number must be between 9 and 10 digits")
     private String phone;
 
+    private String address;
+
 }

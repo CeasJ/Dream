@@ -87,7 +87,7 @@
 
 body {
   margin: 0;
-  font-family: 'Times New Roman', Times, serif;
+  font-family: "Times New Roman", Times, serif;
   font-size: var(--bs-body-font-size);
   font-weight: var(--bs-body-font-weight);
   line-height: var(--bs-body-line-height);
@@ -3494,8 +3494,7 @@ fieldset:disabled .btn {
   --bs-position: end;
 }
 .dropdown-menu-end[data-bs-popper] {
-  right: 0;
-  left: auto;
+  display: block;
 }
 
 @media (min-width: 576px) {
@@ -5557,6 +5556,7 @@ fieldset:disabled .btn {
   margin: var(--bs-modal-margin);
   pointer-events: none;
 }
+
 .modal.fade .modal-dialog {
   transition: transform 0.3s ease-out;
   transform: translate(0, -50px);
@@ -11556,6 +11556,11 @@ body {
   top: 0px;
 }
 
+.no-sort-end th:last-child .datatable-sorter::before,
+.no-sort-end th:last-child .datatable-sorter::after {
+  display: none;
+}
+
 .asc .datatable-sorter::after,
 .desc .datatable-sorter::before {
   opacity: 0.6;
@@ -11608,7 +11613,7 @@ body {
 
 #imageProduct {
   max-width: 80%;
-  height: 220px; /* Chiều cao cố định của hình ảnh */
+  height: 300px; /* Chiều cao cố định của hình ảnh */
   object-fit: cover; /* Để hình ảnh không bị bóp méo khi kích thước không phù hợp */
 }
 
@@ -11618,4 +11623,117 @@ body {
 
 .order-status {
   text-align: center;
+  font-weight: bold;
+}
+
+.notification-icon {
+  margin-right: 5px;
+  position: relative;
+  cursor: pointer;
+}
+
+.notification-dropdown {
+  margin-top: 8px;
+  position: absolute;
+  transform: translateX(-50%);
+  background-color: #ffffff;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  display: none;
+  width: 400px;
+}
+
+.notification-icon:hover .notification-dropdown {
+  display: block;
+}
+
+.notification-dropdown .notification-title {
+  font-size: 17px;
+  padding-left: 8px;
+  padding-top: 8px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 0px;
+  color: gray;
+}
+
+.notification-dropdown .notification-content {
+  margin-top: 0px;
+  display: flex;
+  align-items: center;
+  padding: 0px 8px;
+}
+
+.notification-dropdown img.notification-image {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+}
+
+.notification-dropdown .notification-text {
+  vertical-align: middle;
+  padding-left: 10px;
+}
+
+.hs-hd {
+  border: 1px solid gainsboro;
+  margin: 10px 0;
+  padding: 0;
+}
+
+.title-hs {
+  border-bottom: 1px solid gainsboro;
+  padding: 10px;
+  margin: 0;
+  font-weight: bold;
+}
+
+.cnt-hd {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+}
+
+.border-right {
+  border-right: 1px solid gainsboro;
+  padding-left: 25px;
+}
+
+.info-pair {
+  padding: 10px 0;
+}
+
+.info-pair h6 {
+  display: inline;
+  white-space: nowrap;
+  margin-right: 5px; /* Khoảng cách giữa h6 và p */
+  font-weight: bold;
+}
+
+.info-pair p {
+  display: inline;
+}
+
+.table-details th,
+.table-details td {
+  text-align: center; /* Căn giữa nội dung ngang trong các ô của bảng */
+  vertical-align: middle; /* Căn giữa nội dung dọc trong các ô của bảng */
+  padding: 10px 10px;
+}
+
+.status-info h5,
+.status-info p {
+  display: inline;
+  margin-right: 10px; /* Để tạo khoảng cách giữa các phần tử h5 và p */
+}
+
+.img-details {
+  height: 90px;
+  width: 90px;
+}
+
+#successToast {
+  bottom: 0;
+  left: 0;
+  margin: 8px;
+  z-index: 9999;
 }

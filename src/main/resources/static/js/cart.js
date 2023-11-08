@@ -88,6 +88,19 @@
       toast.show();
     });
   });
+
+  $(document).ready(function () {
+    $(".theme-mode input").change(function () {
+      if (this.checked) {
+        // Chuyển sang dark mode
+        $("body").removeClass("light-mode").addClass("dark-mode");
+      } else {
+        // Chuyển sang light mode
+        $("body").removeClass("dark-mode").addClass("light-mode");
+      }
+    });
+  });
+
 })(jQuery);
 
 //Cart Control Begin
@@ -143,8 +156,8 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
       $http
         .get(
           "https://provinces.open-api.vn/api/p/" +
-            $scope.selectedProvince +
-            "?depth=2"
+          $scope.selectedProvince +
+          "?depth=2"
         )
         .then(function (response) {
           $scope.districts = response.data.districts;
@@ -157,8 +170,8 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
       $http
         .get(
           "https://provinces.open-api.vn/api/d/" +
-            $scope.selectedDistrict +
-            "?depth=2"
+          $scope.selectedDistrict +
+          "?depth=2"
         )
         .then(function (response) {
           $scope.wards = response.data.wards;
@@ -219,9 +232,9 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
     return json
       ? JSON.parse(json)
       : {
-          username: username,
-          items: [],
-        };
+        username: username,
+        items: [],
+      };
   }
 
   function saveCart(username, cart) {
@@ -347,7 +360,7 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
           $scope.cart.clear();
           // location.href = "/order/detail/" + resp.data.id;
         })
-        .catch((error) => {});
+        .catch((error) => { });
     },
   };
 
@@ -385,3 +398,5 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
   //Order End
 });
 //Cart Control End
+
+

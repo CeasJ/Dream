@@ -32,7 +32,6 @@ app.controller("product_ctrl", function ($scope, $http) {
       active: true,
     };
   };
-
   $scope.edit = function (item) {
     $scope.form = angular.copy(item);
   };
@@ -46,34 +45,34 @@ app.controller("product_ctrl", function ($scope, $http) {
         $scope.reset();
         alert("Create Success");
       })
-      .catch((err) => {});
+      .catch((err) => { });
   };
 
-  	$scope.update = function() {
-  		let item = angular.copy($scope.form);
-  		$http.put(`/rest/products/${item.id}`, item).then(resp => {
-  			let index = $scope.items.findIndex(p => p.id == item.id);
-  			$scope.items[index] = item;
-  			$scope.reset();
-  			alert("Update Success");
-  		}).catch(err => {
-  		})
-  	};
-  
-  	$scope.delete = function(item) {
-  		$http.delete(`/rest/products/${item.id}`).then(resp => {
-  			let index = $scope.items.findIndex(p => p.id == item.id);
-  			$scope.items.splice(index, 1);
-  			$scope.reset();
-  			alert("Delete Success")
-  		}).catch(err => {
-  		})
-  	};
-   $scope.selectedImage = null;
+  $scope.update = function () {
+    let item = angular.copy($scope.form);
+    $http.put(`/rest/products/${item.id}`, item).then(resp => {
+      let index = $scope.items.findIndex(p => p.id == item.id);
+      $scope.items[index] = item;
+      $scope.reset();
+      alert("Update Success");
+    }).catch(err => {
+    })
+  };
 
-    $scope.selectImage = function () {
-      document.getElementById("image").click();
-    };
+  $scope.delete = function (item) {
+    $http.delete(`/rest/products/${item.id}`).then(resp => {
+      let index = $scope.items.findIndex(p => p.id == item.id);
+      $scope.items.splice(index, 1);
+      $scope.reset();
+      alert("Delete Success")
+    }).catch(err => {
+    })
+  };
+  $scope.selectedImage = null;
+
+  $scope.selectImage = function () {
+    document.getElementById("hiddenImageInput").click();
+  };
   $scope.imageChanged = function (files) {
     let data = new FormData();
     data.append("file", files[0]);
@@ -85,35 +84,25 @@ app.controller("product_ctrl", function ($scope, $http) {
       .then((resp) => {
         $scope.form.image = resp.data.name;
       })
-      .catch((err) => {});
+      .catch((err) => { });
   };
-  //	$scope.pager = {
-  //		page: 0,
-  //		size: 10,
-  //		get list() {
-  //			let start = this.page * this.size;
-  //			return $scope.list.slice(start, start + this.size);
-  //		},
-  //		get count() {
-  //			return Math.ceil(1.0 * $scope.items.length / this.size);
-  //		},
-  //		first() {
-  //			this.page = 0;
-  //		},
-  //		prev() {
-  //			this.page--;
-  //			if (this.page < 0) {
-  //				this.last();
-  //			}
-  //		},
-  //		next() {
-  //			this.page++;
-  //			if (this.page >= this.count) {
-  //				this.first();
-  //			}
-  //		},
-  //		last() {
-  //			this.page = this.count - 1;
-  //		}
-  //	}
+
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+  Promise.all([
+    fetch('/rest/products'),
+    fetch('/rest/category'),
+    fetch('/rest/productsizes')
+  ])
+    .then(responses => Promise.all(responses.map(response => response.json())))
+    .then(data => {
+      let productTables = document.querySelectorAll('.product-datatable');
+      productTables.forEach(table => {
+        new simpleDatatables.DataTable(table);
+      });
+    })
+    .catch(error => console.error("Error loading data:", error));
+
+  // Các phần logic khác của bạn trong file product.js có thể được viết ở đây
 });

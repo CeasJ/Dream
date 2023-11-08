@@ -12,8 +12,12 @@
     <link type="text/css" href="/css/admin/admin.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <!-- Angular -->
-    <!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.js"></script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.js"></script>
+    <!-- Angular -->
+    <!-- Boostrap -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.min.js"></script>
+    <!-- Boostrap -->
 </head>
 
 <body class="sb-nav-fixed" ng-app="authority-app" ng-controller="authority-ctrl">
@@ -103,72 +107,144 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
-                            <div class="modal-body">
-                                <div class="row mb-3">
-                                    <div class="col-md-6 text-center"
-                                        style="display: flex; align-items: center; justify-content: center;">
-                                        <div style="position: relative;">
-                                            <img class="img-fluid" id="imagePreview"
-                                                src="/img/gallery/testimonial-0.jpg">
-                                            <!-- ng-src="{{'/img/gallery/'+ avatar}}" -->
-                                            <div class="col-md-12 text-center">
-                                                <div class="upload-button">
-                                                    <button type="button" class="btn btn-secondary">
-                                                        Upload Image
-                                                    </button>
+                            <form name="myStaff" novalidate="novalidate">
+                                <div class="modal-body">
+                                    <div class="row mb-3">
+                                        <div class="col-md-6 text-center"
+                                            style="display: flex; align-items: center; justify-content: center;">
+                                            <div style="position: relative;">
+                                                <img class="img-fluid" id="imagePreview"
+                                                    ng-src="{{'/img/gallery/' + form.avatar}}">
+                                                <div class="col-md-12 text-center">
+                                                    <div class="upload-button">
+                                                        <button type="button" class="btn btn-outline-secondary"
+                                                            style="margin-bottom: 20px;" ng-click="selectImage()">
+                                                            Upload Image
+                                                        </button>
+                                                        <input type="file" id="avatar" name="avatar"
+                                                            onchange="angular.element(this).scope().imageChanged(this.files)"
+                                                            class="btn btn-outline-secondary"
+                                                            style="margin-bottom: 20px;display: none;">
+                                                        <p style="font-size: 16px; margin-bottom: 3px; color: grey;">
+                                                            File
+                                                            size: maximum 1 MB</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6" style="padding: 20px;">
+                                            <div class="mb-3">
+                                                <label for="username" class="form-label fw-bold">Username</label>
+                                                <input type="text" class="form-control" id="username" name="username"
+                                                    ng-model="form.username" placeholder="Username" required>
+                                                <div class="errortext"
+                                                    ng-show="myStaff.firstname.$dirty && myStaff.firstname.$invalid"
+                                                    style="float: left; margin-right: 40px; color:red">
+                                                    <span ng-show="myStaff.username.$error.required">Username is
+                                                        required</span>
+                                                    <span
+                                                        ng-show="myStaff.username.$error.pattern && !myStaff.username.$error.minlength">Username
+                                                        cannot contain special characters</span>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3 mt-2">
+                                                <label for="firstname" class="form-label fw-bold">Firstname</label>
+                                                <input type="text" class="form-control" id="firstname" name="firstname"
+                                                    ng-model="form.firstname" placeholder="Firstname" ng-minlength="3"
+                                                    required pattern="[\p{L}\d\s]*">
+                                                <div class="errortext"
+                                                    ng-show="myStaff.firstname.$dirty && myStaff.firstname.$invalid"
+                                                    style="float: left; margin-right: 40px; color:red">
+                                                    <span ng-show="myStaff.firstname.$error.required">Firstname is
+                                                        required</span>
+                                                    <span
+                                                        ng-show="myStaff.firstname.$error.pattern && !myStaff.firstname.$error.minlength">Firstname
+                                                        cannot contain special characters</span>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3 mt-2">
+                                                <label for="lastname" class="form-label fw-bold">Lastname</label>
+                                                <input type="text" class="form-control" id="lastname" name="lastname"
+                                                    ng-model="form.lastname" placeholder="Lastname" ng-minlength="3"
+                                                    required pattern="[\p{L}\d\s]*">
+                                                <div class="errortext"
+                                                    ng-show="myStaff.lastname.$dirty && myStaff.lastname.$invalid"
+                                                    style="float: left; margin-right: 40px; color:red">
+                                                    <span ng-show="myStaff.lastname.$error.required">Lastname is
+                                                        required</span>
+                                                    <span
+                                                        ng-show="myStaff.lastname.$error.pattern && !myStaff.lastname.$error.minlength">Lastname
+                                                        cannot contain special characters</span>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3 mt-2">
+                                                <label class="form-label fw-bold">Fullname</label>
+                                                <input type="text" class="form-control" id="fullname" name="fullname"
+                                                    ng-model="form.fullname"
+                                                    placeholder="{{ form.firstname || '' }} {{ form.lastname || '' }}"
+                                                    readonly>
+                                            </div>
+                                            <div class="mb-3 mt-2">
+                                                <label for="password" class="form-label fw-bold">Password</label>
+                                                <input type="password" class="form-control" id="password"
+                                                    name="password" ng-model="form.password" placeholder="Password"
+                                                    ng-minlength="8" required
+                                                    pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#$%^&*()_+{}\[\]:;<>,.?~]).*$">
+                                                <div class="errortext"
+                                                    ng-show="myStaff.password.$dirty && myStaff.password.$invalid"
+                                                    style="float: left; margin-right: 40px; color:red">
+                                                    <span ng-show="myStaff.password.$error.required">Password is
+                                                        required</span>
+                                                    <span ng-show="myStaff.password.$error.minlength">Password must be
+                                                        more than 8 characters</span>
+                                                    <span
+                                                        ng-show="myStaff.password.$error.pattern && !myStaff.password.$error.minlength">Password
+                                                        must contain at least one lowercase letter, one uppercase
+                                                        letter, one digit and one special character</span>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3 mt-2">
+                                                <label for="email" class="form-label fw-bold">Email</label>
+                                                <input type="email" class="form-control" id="email" name="email"
+                                                    ng-model="form.email" placeholder="Email" required>
+                                                <div class="errortext"
+                                                    ng-show="myStaff.email.$dirty && myStaff.email.$invalid"
+                                                    style="float: left; margin-right: 40px; color:red">
+                                                    <span ng-show="myStaff.email.$error.required">Email is
+                                                        required.</span>
+                                                    <span ng-show="myStaff.email.$error.email">Invalid email
+                                                        address.</span>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3 mt-2">
+                                                <label for="phone" class="form-label fw-bold">Phone</label>
+                                                <input type="text" class="form-control" id="phone" name="phone"
+                                                    ng-model="form.phone" placeholder="Phone" ng-minlength="10"
+                                                    ng-maxlength="10" required pattern="^[0-9]*$">
+                                                <div class="errortext"
+                                                    ng-show="myStaff.phone.$dirty && myStaff.phone.$invalid"
+                                                    style="float: left; margin-right: 40px; color:red">
+                                                    <span ng-show="myStaff.phone.$error.required">Phone is
+                                                        required</span>
+                                                    <span ng-show="myStaff.phone.$error.minlength">Phone must at least
+                                                        10 digit</span>
+                                                    <span
+                                                        ng-show="myStaff.phone.$error.pattern && !myStaff.phone.$error.maxlength">Phone
+                                                        must be a valid phone</span>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6" style="padding: 20px;">
-                                        <div class="mb-3">
-                                            <label for="username" class="form-label fw-bold">Username</label>
-                                            <input type="text" class="form-control" id="username" name="username"
-                                                ng-model="username" placeholder="Username" required>
-                                        </div>
-                                        <div class="mb-3 mt-2">
-                                            <label for="firstname" class="form-label fw-bold">Firstname</label>
-                                            <input type="text" class="form-control" id="firstname" name="firstname"
-                                                ng-model="firstname" placeholder="Firstname" ng-minlength="3" required
-                                                pattern="[\p{L}\d\s]*">
-                                        </div>
-                                        <div class="mb-3 mt-2">
-                                            <label for="lastname" class="form-label fw-bold">Lastname</label>
-                                            <input type="text" class="form-control" id="lastname" name="lastname"
-                                                ng-model="lastname" placeholder="Lastname" ng-minlength="3" required
-                                                pattern="[\p{L}\d\s]*">
-                                        </div>
-                                        <div class="mb-3 mt-2">
-                                            <label class="form-label fw-bold">Fullname</label>
-                                            <input type="text" class="form-control" id="fullname" name="fullname"
-                                                ng-model="fullname"
-                                                placeholder="{{ firstname || '' }} {{ lastname || '' }}" readonly>
-                                        </div>
-                                        <div class="mb-3 mt-2">
-                                            <label for="password" class="form-label fw-bold">Password</label>
-                                            <input type="password" class="form-control" id="password" name="password"
-                                                ng-model="password" placeholder="Password" ng-minlength="8" required
-                                                pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#$%^&*()_+{}\[\]:;<>,.?~]).*$">
-                                        </div>
-                                        <div class="mb-3 mt-2">
-                                            <label for="email" class="form-label fw-bold">Email</label>
-                                            <input type="email" class="form-control" id="email" name="email"
-                                                ng-model="email" placeholder="Email" required>
-                                        </div>
-                                        <div class="mb-3 mt-2">
-                                            <label for="phone" class="form-label fw-bold">Phone</label>
-                                            <input type="text" class="form-control" id="phone" name="phone"
-                                                ng-model="phone" placeholder="Phone" ng-minlength="10" ng-maxlength="10"
-                                                required pattern="^[0-9]*$">
-                                        </div>
-                                    </div>
                                 </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" ng-click="clearForm()">Clear</button>
-                                <button type="button" class="btn btn-success" ng-click="saveAccount()"
-                                    ng-disabled="myStaff.$invalid">Save</button>
-                            </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        ng-click="clearForm()">Clear</button>
+                                    <button type="button" class="btn btn-success" ng-click="saveAccount()"
+                                        ng-disabled="myStaff.$invalid">Save
+                                    </button>
+                                </div>
+                            </form>
+
                         </div>
                     </div>
                 </div>
@@ -180,7 +256,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous">
     </script>
-    <script src="/js/admin/scripts.js"></script>
+    <script src="/js/admin/authority.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
         crossorigin="anonymous"></script>
