@@ -60,6 +60,9 @@
                                     <th>
                                         <div class="text-center" style="font-size: 16px;">Phone</div>
                                     </th>
+                                    <th>
+                                        <div class="text-center" style="font-size: 16px;">Address</div>
+                                    </th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -85,6 +88,9 @@
                                 </td>
                                 <td>
                                     <p class="fw-semibold">{{acc.phone}}</p>
+                                </td>
+                                <td>
+                                    <p class="fw-semibold">{{acc.address}}</p>
                                 </td>
                                 <td>
                                     <button class="btn btn-primary" ng-click="edit(acc)" data-bs-toggle="modal"
@@ -232,6 +238,22 @@
                                                         ng-show="myStaff.phone.$error.pattern && !myStaff.phone.$error.maxlength">Phone
                                                         must be a valid phone</span>
                                                 </div>
+                                            </div>
+                                            <div class="mb-3 mt-2">
+                                                <label for="phone" class="form-label fw-bold">Address</label>
+                                                <input type="text" class="form-control" id="address" name="address"
+                                                       ng-model="form.address" placeholder="Address" required >
+<!--                                                <div class="errortext"-->
+<!--                                                     ng-show="myStaff.address.$dirty && myStaff.address.$invalid"-->
+<!--                                                     style="float: left; margin-right: 40px; color:red">-->
+<!--                                                    <span ng-show="myStaff.address.$error.required">Phone is-->
+<!--                                                        required</span>-->
+<!--                                                    <span ng-show="myStaff.address.$error.minlength">Phone must at least-->
+<!--                                                        10 digit</span>-->
+<!--                                                    <span-->
+<!--                                                            ng-show="myStaff.address.$error.pattern && !myStaff.address.$error.maxlength">Phone-->
+<!--                                                        must be a valid phone</span>-->
+<!--                                                </div>-->
                                             </div>
                                         </div>
                                     </div>

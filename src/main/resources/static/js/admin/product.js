@@ -86,6 +86,10 @@ app.controller("product_ctrl", function ($scope, $http) {
       })
       .catch((err) => {});
   };
+<<<<<<<<< Temporary merge branch 1
+=========
+
+>>>>>>>>> Temporary merge branch 2
 });
 
 //document.addEventListener('DOMContentLoaded', function () {

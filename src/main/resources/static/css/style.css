@@ -67,6 +67,14 @@ body {
     opacity: 1;
 }
 
+.tooltip-left {
+    position: absolute;
+    top: 50%;
+    right: calc(100% + 8px);
+    transform: translateY(-50%);
+    white-space: nowrap;
+}
+
 /*** Button ***/
 .btn {
     transition: 0.5s;
