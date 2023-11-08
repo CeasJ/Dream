@@ -32,15 +32,15 @@
   });
 
   // Show .cart-0 if cartCount is less than or equal to 0, otherwise show .cart-1
-   var cartCount = parseInt($("#cartCount").text());
+  var cartCount = parseInt($("#cartCount").text());
 
-   if (cartCount <= 0) {
-     $(".cart-0").show();
-     $(".cart-1").hide();
-   } else {
-     $(".cart-0").hide();
-     $(".cart-1").show();
-   }
+  if (cartCount <= 0) {
+    $(".cart-0").show();
+    $(".cart-1").hide();
+  } else {
+    $(".cart-0").hide();
+    $(".cart-1").show();
+  }
 
   $("#step-1").addClass("active-stext");
   // Show infor-cart and hide cart-0, cart-1 on Buy button click
@@ -104,6 +104,19 @@
       toast.show();
     });
   });
+
+  $(document).ready(function () {
+    $(".theme-mode input").change(function () {
+      if (this.checked) {
+        // Chuyển sang dark mode
+        $("body").removeClass("light-mode").addClass("dark-mode");
+      } else {
+        // Chuyển sang light mode
+        $("body").removeClass("dark-mode").addClass("light-mode");
+      }
+    });
+  });
+
 })(jQuery);
 
 //Cart Control Begin
@@ -351,6 +364,8 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
     purchaseOrder() {
       console.log($scope.cart.amount);
       console.log(getCurrentTime());
+      console.log($scope.cart.amount);
+      console.log(getCurrentTime());
       let order = angular.copy(this);
       $http
         .post(`/rest/order`, order)
@@ -369,7 +384,7 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
       $scope.order.purchaseOrder();
       $scope.completeButtonClicked();
     } else if ($scope.selectedPaymentMethod === "vnpay") {
-      $scope.order.purchaseOrder();  
+      $scope.order.purchaseOrder();
       location.href = "/vnpay";
     } else if ($scope.selectedPaymentMethod === "paypal") {
       location.href = "/paypal";

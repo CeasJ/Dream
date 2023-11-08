@@ -19,12 +19,13 @@ import org.springframework.stereotype.Service;
 public class TokenServiceImp implements TokenService {
 
 	@Autowired
-	TokenRepository tokenRepository;
+	private TokenRepository tokenRepository;
 
 	@Autowired
-	TokenMapper tokenMapper;
+	private TokenMapper tokenMapper;
+
 	@Autowired
-	AccountMapper accountMapper;
+	private AccountMapper accountMapper;
 
 	@Override
 	public TokenDTO createTokenForUser(Account account) {

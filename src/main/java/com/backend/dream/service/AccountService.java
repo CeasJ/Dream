@@ -41,6 +41,7 @@ public interface AccountService {
 
 
     boolean checkUsernameExists(String username);
+    
     Account updateStaff(Account staffToUpdate);
 
 }

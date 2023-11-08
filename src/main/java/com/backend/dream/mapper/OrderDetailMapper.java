@@ -22,9 +22,11 @@ public interface OrderDetailMapper {
     @Mapping(source = "orders.address",target = "order_address")
     @Mapping(source = "orders.status.id",target = "order_status")
     OrderDetailDTO orderDetailToOrderDetailDTO(OrderDetails orderDetails);
+
     @Mapping(source = "id_order",target = "orders.id")
     @Mapping(source = "id_product",target = "product.id")
     OrderDetails orderDetailDTOToOrderDetail(OrderDetailDTO orderDetailDTO);
+    
     @Mapping(source = "id_order",target = "order.id")
     @Mapping(source = "id_product",target = "product.id")
     List<OrderDetails> listOrderDetaiDTOlToListOrderDetail(List<OrderDetailDTO> orderDetailDTO);

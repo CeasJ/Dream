@@ -5,16 +5,37 @@
     <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!">
         <i class="fas fa-bars"></i>
     </button>
-    <!-- Navbar Search-->
-    <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-        <div class="input-group">
-            <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..."
-                aria-describedby="btnNavbarSearch" />
-            <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
-        </div>
-    </form>
     <!-- Navbar-->
-    <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+    <ul class="navbar-nav ms-auto pe-3 me-lg-4">
+        <li class="nav-item notification-icon">
+            <a class="nav-link" href="#">
+                <i class="bi bi-bell-fill"></i>
+            </a>
+            <div class="notification-dropdown">
+                <p class="notification-title">Thông báo mới nhận được</p>
+                <div class="notification-content">
+                    <img src="/img/gallery/image2.jpg" class="notification-image">
+                    <div class="notification-text">
+                        <p style="font-size: 17px; font-weight: bold; padding-top: 10px; margin-bottom: 3px;">Đơn hàng
+                            đã được thêm thành công</p>
+                        <p style="font-size: 15px; display: flex; margin-bottom: 3px;">Trà Hạt Sen Đá - SL: 1 - 39.000đ
+                        </p>
+                        <p style="font-size: 14px; display: flex;">08:15 29-10-2023</p>
+                    </div>
+                </div>
+                <div class="notification-content">
+                    <img src="/img/gallery/image11.jpg" class="notification-image">
+                    <div class="notification-text">
+                        <p style="font-size: 17px; font-weight: bold; padding-top: 10px; margin-bottom: 3px;">Đơn hàng
+                            đã được thêm thành công</p>
+                        <p style="font-size: 15px; display: flex; margin-bottom: 3px;">Cà Phê Đen Đá - SL: 1 - 29.000đ
+                        </p>
+                        <p style="font-size: 14px; display: flex;">08:20 29-10-2023</p>
+                    </div>
+                </div>
+                <!-- Thêm các thông báo khác nếu cần -->
+            </div>
+        </li>
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown"
                 aria-expanded="false"><i class="fas fa-user fa-fw"></i>

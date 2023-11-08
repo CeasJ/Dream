@@ -7,10 +7,6 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
-    <!-- Favicon -->
-
-    <link href="img/logo.png" rel="icon">
-
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -52,32 +48,33 @@
             <div class="container text-center py-5">
                 <h1 class="display-2 text-dark mb-4 animated slideInDown">Products</h1>
                 <nav aria-label="breadcrumb animated slideInDown">
-                    <ol class="breadcrumb justify-content-center mb-0">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item"><a href="#">Pages</a></li>
+                    <ul class="breadcrumb justify-content-center mb-0">
+                        <li class="breadcrumb-item"><a th:href="@{|/home|}">Home</a></li>
                         <li class="breadcrumb-item text-dark" aria-current="page">Products</li>
-                    </ol>
+                    </ul>
                 </nav>
             </div>
         </div>
         <!-- Page Header End -->
 
 
-<!-- Products Start -->
-<div class="container-xxl py-5">
-    <div class="container">
-        <div class="section-title text-center mx-auto wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
-            <p class="fs-5 fw-medium fst-italic text-primary">Online Store</p>
-            <h1 class="display-6">Want to stay healthy? Choose tea taste</h1>
-        </div>
-        <div class="row mt-2 mb-3">
-            <div class="col-md-4 sort">
-                <div class="d-flex align-items-center" style="margin-top: 3px;">
-                    <label for="productGroup" style="margin-right: 15px; font-weight: 600;">Theo nhóm</label>
-                    <select class="form-select cb-sort" id="productGroup" name="categoryId" style="width: 270px; height: 36px;">
-                        <option th:each="category : ${categories}" th:value="${category.id}"
-                                th:text="${category.name}"></option>
-                    </select>
+        <!-- Products Start -->
+        <div class="container-xxl py-5">
+            <div class="container">
+                <div class="section-title text-center mx-auto wow fadeInUp" data-wow-delay="0.1s"
+                    style="max-width: 500px;">
+                    <p class="fs-5 fw-medium fst-italic text-primary">Dream Tea & Coffee</p>
+                    <h1 class="display-6">Good to the last drop!</h1>
+                </div>
+                <div class="row mt-2 mb-3">
+                    <div class="col-md-4 sort">
+                        <div class="d-flex align-items-center" style="margin-top: 3px;">
+                            <label for="productGroup" style="margin-right: 15px; font-weight: 600;">Theo nhóm</label>
+                            <select class="form-select cb-sort" id="productGroup" name="categoryId"
+                                style="width: 270px; height: 36px;">
+                                <option th:each="category : ${categories}" th:value="${category.id}"
+                                    th:text="${category.name}"></option>
+                            </select>
 
                         </div>
                     </div>
@@ -97,7 +94,8 @@
                                         Không lựa chọn</option>
                                     <option value="asc" th:selected="${sortOption == 'asc'}">Từ thấp đến cao</option>
                                     <option value="desc" th:selected="${sortOption == 'desc'}">Từ cao đến thấp</option>
-                            <option value="sale" th:selected="${sortOption == 'sale'}">Đang được giảm giá</option>
+                                    <option value="sale" th:selected="${sortOption == 'sale'}">Đang được giảm giá
+                                    </option>
                                 </select>
                             </div>
                         </form>
@@ -159,10 +157,10 @@
                         </li>
                     </ul>
                 </div>
-        </div>
-
-
             </div>
+
+
+        </div>
         </div>
         <!-- Products End -->
     </main>
