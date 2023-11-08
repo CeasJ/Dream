@@ -104,22 +104,25 @@
               </a>
             </div> -->
             <div class="container-fluid cart-1">
-              <div class="row product-row" ng-repeat="product in cart.items">
+              <div class="row product-row my-3" ng-repeat="product in cart.items">
                 <div class="col-md-2">
                   <img ng-src="{{'/img/gallery/' + product.image}}" class="img-fluid img-product">
                 </div>
-                <div class="col-md-3 pt-4">
+                <div class="col-md-2 pt-4">
                   <h6> {{product.name}} </h6>
                 </div>
+                <div class="col-md-1 pt-4">
+                  <h6> {{product.name_size}}</h6>
+                </div>
                 <div class="col-md-2 pt-4">
-                  <p>{{product.price | number:0}}</p>
+                  <p>{{product.priceProduct_Size | number:0}} VND</p>
                 </div>
                 <div class="col-md-1 pt-4">
                   <input type="number" class="form-control quantity-input" min="1" ng-model="product.qty"
                     ng-change="cart.saveToLocalStorage()">
                 </div>
                 <div class="col-md-2 pt-4">
-                  <p> {{product.qty * product.price | number:0}} VND</p>
+                  <p> {{product.qty * product.priceProduct_Size | number:0}} VND</p>
                 </div>
                 <div class="col-md-2 pt-3">
                   <button ng-click="cart.remove(product.id)" class="btn">

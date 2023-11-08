@@ -129,6 +129,7 @@ function getProductPrice(productId, sizeId) {
             if (data >= 0) {
                 // Get discountPercent from service
                 getDiscountPercent(productId, data, priceElement, discountedPriceElement);
+          
             }
         })
         .catch(error => {

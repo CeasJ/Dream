@@ -17,4 +17,7 @@ public interface ProductSizeRepository extends JpaRepository<ProductSize,Long> {
 
     @Query("SELECT ps FROM ProductSize ps WHERE ps.product.id = :productId AND ps.size.id = :sizeId")
     Optional<ProductSize> findByProductIdAndSizeId(@Param("productId") Long productId, @Param("sizeId") Long sizeId);
+
+    @Query("SELECT ps FROM ProductSize ps WHERE ps.product.id = :productId AND ps.size.id = :sizeId")
+    ProductSize findProductSizeById(@Param("productId") Long productId, @Param("sizeId") Long sizeId);
 }
