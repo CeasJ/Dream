@@ -77,10 +77,9 @@ public class ProductController {
     }
 
     @GetMapping("/product")
-    public String listProducts(
-            Model model,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "3") int pageSize) {
+    public String listProducts(Model model,
+                               @RequestParam(defaultValue = "0") int page,
+                               @RequestParam(defaultValue = "3") int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
         Page<ProductDTO> productPage = productService.findAll(pageable);
         List<ProductDTO> productDTOs = productPage.getContent();
@@ -141,10 +140,9 @@ public class ProductController {
 
 
     @GetMapping("/search")
-    public String searchByName(
-            @RequestParam String productName,
-            @RequestParam(defaultValue = "0") int page,
-            Model model) {
+    public String searchByName(@RequestParam String productName,
+                               @RequestParam(defaultValue = "0") int page,
+                               Model model) {
         int pageSize = 6;
         Pageable pageable = PageRequest.of(page, pageSize);
 
@@ -160,6 +158,8 @@ public class ProductController {
     @RequestMapping(value = "/product/{name}", method = RequestMethod.GET)
     public String productDetail(@PathVariable(value = "name") String name,
                                 @RequestParam(value = "sizeId", required = false) Long sizeId,
+                                @RequestParam(value = "starRating", required = false, defaultValue = "0") int starRating,
+                                @RequestParam(value = "page", required = false, defaultValue = "0") int page,
                                 Model model) {
         try {
 
@@ -186,8 +186,15 @@ public class ProductController {
             // Get the discount percent
             DiscountDTO discount = discountService.getDiscountByProductId(product.getId());
             Double discountPercent = (discount != null) ? discount.getPercent() : 0.0;
-            //Get comment list
-            List<FeedBackDTO> feedbackList = feedbackService.getFeedbacksForProduct(product.getId());
+            //Get reviews list
+            List<FeedBackDTO> feedbackList;
+
+            if (starRating == 0) {
+                feedbackList = feedbackService.getFeedbacksForProduct(product.getId());
+            } else {
+                feedbackList = feedbackService.getFeedbacksForProductByRating(product.getId(), starRating);
+            }
+
             for (FeedBackDTO feedback : feedbackList) {
                 Account account = feedBackRepository.findAccountByFeedBackId(feedback.getId());
                 feedback.setAccountDTO(accountMapper.accountToAccountDTO(account));
@@ -195,16 +202,33 @@ public class ProductController {
 
             double averageRating = feedbackService.getAverageRating(product.getId());
 
-            // Get
+            // Pagination
+            int pageSize = 5;
+            int totalPages = (int) Math.ceil((double) feedbackList.size() / pageSize);
 
+            if (page < 0) {
+                page = 0;
+            } else if (page >= totalPages) {
+                page = totalPages - 1;
+            }
+
+            int start = page * pageSize;
+            int end = Math.min((start + pageSize), feedbackList.size());
+
+            if (start >= 0 && end <= feedbackList.size()) {
+                List<FeedBackDTO> pagedFeedbackList = feedbackList.subList(start, end);
+                model.addAttribute("feedbackList", pagedFeedbackList);
+            }
             // Show the comments
-            model.addAttribute("feedbackList", feedbackList);
             model.addAttribute("discountPercent", discountPercent);
             model.addAttribute("product", product);
             model.addAttribute("availableSizes", availableSizes);
 
             model.addAttribute("name", name);
             model.addAttribute("averageRating", averageRating);
+
+            model.addAttribute("currentPage", page);
+            model.addAttribute("totalPages", totalPages);
 
             return "user/product/detail";
         } catch (UnsupportedEncodingException e) {

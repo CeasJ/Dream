@@ -92,19 +92,60 @@
                         <div th:unless="${product.isDiscounted}">
                             <h3 th:id="${'product-price' + product.id}" class="product-price" th:text="${product.formattedPrice}"></h3>
                         </div>
-
-
-                    <div class="ratings d-flex flex-row align-items-center">
-                        <input type="radio" class="star-check" value="1"
-                               th:checked="${averageRating == 1}" disabled/>
-                        <input type="radio" class="star-check" value="2"
-                               th:checked="${averageRating == 2}" disabled/>
-                        <input type="radio" class="star-check" value="3"
-                               th:checked="${averageRating == 3}" disabled/>
-                        <input type="radio" class="star-check" value="4"
-                               th:checked="${averageRating == 4}" disabled/>
-                        <input type="radio" class="star-check" value="5"
-                               th:checked="${averageRating == 5}" disabled/>
+                    <!-- Display the average star rating -->
+                    <div th:if="${averageRating == 0}" class="ratings d-flex flex-row align-items-center">
+                        <div class="d-flex flex-row">
+                            <i class='bx bx-star'></i>
+                            <i class='bx bx-star'></i>
+                            <i class='bx bx-star'></i>
+                            <i class='bx bx-star'></i>
+                            <i class='bx bx-star'></i>
+                        </div>
+                    </div>
+                    <div th:if="${averageRating == 1}" class="ratings d-flex flex-row align-items-center">
+                        <div class="d-flex flex-row">
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bx-star'></i>
+                            <i class='bx bx-star'></i>
+                            <i class='bx bx-star'></i>
+                            <i class='bx bx-star'></i>
+                        </div>
+                    </div>
+                    <div th:if="${averageRating == 2}" class="ratings d-flex flex-row align-items-center">
+                        <div class="d-flex flex-row">
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bx-star'></i>
+                            <i class='bx bx-star'></i>
+                            <i class='bx bx-star'></i>
+                        </div>
+                    </div>
+                    <div th:if="${averageRating == 3}" class="ratings d-flex flex-row align-items-center">
+                        <div class="d-flex flex-row">
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bx-star'></i>
+                            <i class='bx bx-star'></i>
+                        </div>
+                    </div>
+                    <div th:if="${averageRating == 4}" class="ratings d-flex flex-row align-items-center">
+                        <div class="d-flex flex-row">
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bx-star'></i>
+                        </div>
+                    </div>
+                    <div th:if="${averageRating == 5}" class="ratings d-flex flex-row align-items-center">
+                        <div class="d-flex flex-row">
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                        </div>
                     </div>
 
                     <div class="mt-5" th:if="${availableSizes.size() > 0}">
@@ -155,8 +196,22 @@
                     </div>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary">Gửi</button>
+            <button type="submit" class="btn btn-primary" id="submitButton" disabled>Gửi</button>
         </form>
+        <form id="ratingFilter" th:action="@{'/product/' + ${name}}" method="get">
+            <div class="form-group">
+                <label for="starRating">Chọn số sao:</label>
+                <select id="starRating" name="starRating" class="form-control">
+                    <option value="0">Tất cả</option>
+                    <option value="1">1 sao</option>
+                    <option value="2">2 sao</option>
+                    <option value="3">3 sao</option>
+                    <option value="4">4 sao</option>
+                    <option value="5">5 sao</option>
+                </select>
+            </div>
+        </form>
+
 
         <div th:each="feedback : ${feedbackList}">
             <div class="row d-flex justify-content-center">
@@ -178,22 +233,59 @@
                                     </div>
                                     <p class="mb-0" th:text="${feedback.note}"></p>
                                 </div>
-                                <div class="rating">
-                                    <label>
-                                        <input type="radio" th:checked="${feedback.rating == 1}" disabled>
-                                    </label>
-                                    <label>
-                                        <input type="radio" th:checked="${feedback.rating == 2}" disabled>
-                                    </label>
-                                    <label>
-                                        <input type="radio" th:checked="${feedback.rating == 3}" disabled>
-                                    </label>
-                                    <label>
-                                        <input type="radio" th:checked="${feedback.rating == 4}" disabled>
-                                    </label>
-                                    <label>
-                                        <input type="radio" th:checked="${feedback.rating == 5}" disabled>
-                                    </label>
+                                <div th:if="${feedback.rating == 0}" class="ratings d-flex flex-row align-items-center">
+                                    <div class="d-flex flex-row">
+                                        <i class='bx bx-star'></i>
+                                        <i class='bx bx-star'></i>
+                                        <i class='bx bx-star'></i>
+                                        <i class='bx bx-star'></i>
+                                        <i class='bx bx-star'></i>
+                                    </div>
+                                </div>
+                                <div th:if="${feedback.rating == 1}" class="ratings d-flex flex-row align-items-center">
+                                    <div class="d-flex flex-row">
+                                        <i class='bx bxs-star'></i>
+                                        <i class='bx bx-star'></i>
+                                        <i class='bx bx-star'></i>
+                                        <i class='bx bx-star'></i>
+                                        <i class='bx bx-star'></i>
+                                    </div>
+                                </div>
+                                <div th:if="${feedback.rating == 2}" class="ratings d-flex flex-row align-items-center">
+                                    <div class="d-flex flex-row">
+                                        <i class='bx bxs-star'></i>
+                                        <i class='bx bxs-star'></i>
+                                        <i class='bx bx-star'></i>
+                                        <i class='bx bx-star'></i>
+                                        <i class='bx bx-star'></i>
+                                    </div>
+                                </div>
+                                <div th:if="${feedback.rating == 3}" class="ratings d-flex flex-row align-items-center">
+                                    <div class="d-flex flex-row">
+                                        <i class='bx bxs-star'></i>
+                                        <i class='bx bxs-star'></i>
+                                        <i class='bx bxs-star'></i>
+                                        <i class='bx bx-star'></i>
+                                        <i class='bx bx-star'></i>
+                                    </div>
+                                </div>
+                                <div th:if="${feedback.rating == 4}" class="ratings d-flex flex-row align-items-center">
+                                    <div class="d-flex flex-row">
+                                        <i class='bx bxs-star'></i>
+                                        <i class='bx bxs-star'></i>
+                                        <i class='bx bxs-star'></i>
+                                        <i class='bx bxs-star'></i>
+                                        <i class='bx bx-star'></i>
+                                    </div>
+                                </div>
+                                <div th:if="${feedback.rating == 5}" class="ratings d-flex flex-row align-items-center">
+                                    <div class="d-flex flex-row">
+                                        <i class='bx bxs-star'></i>
+                                        <i class='bx bxs-star'></i>
+                                        <i class='bx bxs-star'></i>
+                                        <i class='bx bxs-star'></i>
+                                        <i class='bx bxs-star'></i>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -203,6 +295,13 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="feedback-pagination">
+            <a th:href="@{'/product/' + ${name} + '?page=0'}" class="btn btn-primary" th:classappend="${currentPage == 0} ? 'disabled' : ''">First Page</a>
+            <a th:href="@{'/product/' + ${name} + '?page=' + ${currentPage - 1} }" class="btn btn-primary" th:classappend="${currentPage == 0} ? 'disabled' : ''">Previous Page</a>
+            <span th:text="${currentPage + 1} + ' / ' + ${totalPages}" class="btn btn-light" disabled="disabled"></span>
+            <a th:href="@{'/product/' + ${name} + '?page=' + ${currentPage + 1} }" class="btn btn-primary" th:classappend="${currentPage == totalPages - 1} ? 'disabled' : ''">Next Page</a>
+            <a th:href="@{'/product/' + ${name} + '?page=' + ${totalPages - 1} }" class="btn btn-primary" th:classappend="${currentPage == totalPages - 1} ? 'disabled' : ''">Last Page</a>
         </div>
     </div>
     <!--    Comment section end-->

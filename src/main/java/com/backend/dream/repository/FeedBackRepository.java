@@ -17,4 +17,8 @@ public interface FeedBackRepository extends JpaRepository<FeedBack,Long> {
 
     @Query("SELECT fb.account FROM FeedBack fb WHERE fb.id = :feedbackId")
     Account findAccountByFeedBackId(@Param("feedbackId") Long feedbackId);
+
+    @Query("SELECT f FROM FeedBack f WHERE f.product.id = :productId AND f.rating = :rating")
+    List<FeedBack> findByProductIdAndRating(@Param("productId") Long productId, @Param("rating") int rating);
+
 }

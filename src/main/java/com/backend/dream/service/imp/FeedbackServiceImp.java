@@ -78,4 +78,18 @@ public class FeedbackServiceImp implements FeedbackService {
         double averageRating = sum / feedbackList.size();
         return Math.round(averageRating);
     }
+
+    @Override
+    public List<FeedBackDTO> getFeedbacksForProductByRating(Long productId, int rating) {
+        // Gọi phương thức từ repository hoặc mapper để lấy danh sách bình luận với số sao đã chọn
+        List<FeedBack> feedbackList = feedBackRepository.findByProductIdAndRating(productId, rating);
+
+        // Chuyển danh sách bình luận sang DTO nếu cần
+        List<FeedBackDTO> feedbackDTOList = feedbackList.stream()
+                .map(feedback -> feedBackMapper.feedBackToFeedBackDTO(feedback))
+                .collect(Collectors.toList());
+
+        return feedbackDTOList;
+    }
+
 }

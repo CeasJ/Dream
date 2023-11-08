@@ -15,4 +15,6 @@ public interface FeedbackService {
     // Calculate average rating feedbacks
     double getAverageRating(Long productId);
 
+    List<FeedBackDTO> getFeedbacksForProductByRating(Long productId, int rating);
+
 }
