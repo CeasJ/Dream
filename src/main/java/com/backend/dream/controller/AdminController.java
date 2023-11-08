@@ -41,4 +41,8 @@ public class AdminController {
     public String Cates() {
         return "/admin/home/category";
     }
+    @RequestMapping("/admin/discount")
+    public String discount() {
+        return "/admin/home/discount";
+    }
 }

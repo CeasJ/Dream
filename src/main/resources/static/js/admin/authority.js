@@ -10,7 +10,7 @@ app.controller("authority-ctrl", function ($scope, $http, $location) {
     });
 
 
-    $http.get(`/rest/account/admin?admin=true`).then((resp) => {
+    $http.get(`/rest/profile/admin?admin=true`).then((resp) => {
       $scope.admins = resp.data;
 
     });
@@ -83,7 +83,7 @@ app.controller("authority-ctrl", function ($scope, $http, $location) {
       alert("Username is exist");
     } else {
       $http
-        .post(`/rest/account/add`, account)
+        .post(`/rest/profile/add`, account)
         .then(function (response) {
           $scope.clearForm();
           alert("Create Successful");
@@ -113,7 +113,7 @@ app.controller("authority-ctrl", function ($scope, $http, $location) {
   $scope.update = function () {
     let account = angular.copy($scope.form);
     $http
-      .put(`/rest/account/update/${account.id}`, account)
+      .put(`/rest/profile/update/${account.id}`, account)
       .then((resp) => {
         let index = $scope.admins.findIndex(
           (a) => a.username === account.username
