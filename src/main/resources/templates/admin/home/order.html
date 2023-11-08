@@ -82,9 +82,10 @@
                                             data-bs-target="#confirmModal">
                                             <i class="bi bi-pencil-square"></i>
                                         </button>
-                                        <button class="btn btn-danger">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
+                                        <button class="btn btn-danger"
+                                                ng-click="updateOrder.cancelOrder(order.id)">Cancel</button>
+                                        <button class="btn btn-primary"
+                                                ng-click="updateOrder.confirmOrder(order.id)">Confirm</button>
                                     </td>
                                 </tr>
                                 <tr ng-repeat-end></tr>
@@ -203,9 +204,10 @@
                                             data-bs-target="#processingModal">
                                             <i class="bi bi-pencil-square"></i>
                                         </button>
-                                        <button class="btn btn-danger">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
+                                        <button class="btn btn-danger"
+                                                ng-click="updateOrder.cancelOrder(order.id)">Cancel</button>
+                                        <button class="btn btn-primary"
+                                                ng-click="updateOrder.shippingOrder(order.id)">Ship</button>
                                     </td>
                                 </tr>
                                 <tr ng-repeat-end></tr>
@@ -319,9 +321,10 @@
                                             data-bs-target="#shippingModal">
                                             <i class="bi bi-pencil-square"></i>
                                         </button>
-                                        <button class="btn btn-danger">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
+                                        <button class="btn btn-danger"
+                                                ng-click="updateOrder.cancelOrder(order.id)">Cancel</button>
+                                        <button class="btn btn-success"
+                                                ng-click="updateOrder.successOrder(order.id)">Success</button>
                                     </td>
                                 </tr>
                                 <tr ng-repeat-end></tr>
@@ -437,9 +440,7 @@
                                             data-bs-target="#successModal">
                                             <i class="bi bi-pencil-square"></i>
                                         </button>
-                                        <button class="btn btn-danger">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
+
                                     </td>
                                 </tr>
                                 <tr ng-repeat-end></tr>
@@ -550,8 +551,8 @@
                                             data-bs-target="#cancelModal">
                                             <i class="bi bi-pencil-square"></i>
                                         </button>
-                                        <button class="btn btn-danger">
-                                            <i class="bi bi-trash"></i>
+                                        <button class="btn btn-danger" ng-click="updateOrder.resetOrder(order.id)">
+                                            Reset
                                         </button>
                                     </td>
                                 </tr>

@@ -1,10 +1,7 @@
 package com.backend.dream.interceptor;
 
 import com.backend.dream.entity.Account;
-import com.backend.dream.service.AccountService;
-import com.backend.dream.service.CategoryService;
-import com.backend.dream.service.ProductService;
-import com.backend.dream.service.ProductSizeService;
+import com.backend.dream.service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;

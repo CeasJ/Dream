@@ -83,19 +83,5 @@ public class AccountRestController {
         }
     }
 
-    @PostMapping("/authenticate/{id}")
-    public boolean authenticate(@PathVariable("id") Long id, @RequestBody Map<String, String> body) {
-        String password = body.get("password");
-        AccountDTO accountDTO = accountService.findById(id);
-        return passwordEncoder.matches(password, accountDTO.getPassword());
-    }
 
-    @PutMapping("/changePassword/{id}")
-    public ResponseEntity<AccountDTO> updatePassword(@PathVariable("id") Long id,
-            @RequestBody Map<String, String> requestBody) {
-        String newPassword = requestBody.get("password");
-        AccountDTO accountDTO = accountService.findById(id);
-        accountService.updatePassword(accountDTO, newPassword);
-        return new ResponseEntity<>(accountDTO, HttpStatus.OK);
-    }
 }

@@ -88,20 +88,20 @@ app.controller("product_ctrl", function ($scope, $http) {
   };
 });
 
-document.addEventListener('DOMContentLoaded', function () {
-  Promise.all([
-    fetch('/rest/products'),
-    fetch('/rest/category'),
-    fetch('/rest/productsizes')
-  ])
-    .then(responses => Promise.all(responses.map(response => response.json())))
-    .then(data => {
-      let productTables = document.querySelectorAll('.product-datatable');
-      productTables.forEach(table => {
-        new simpleDatatables.DataTable(table);
-      });
-    })
-    .catch(error => console.error("Error loading data:", error));
-
-  // Các phần logic khác của bạn trong file product.js có thể được viết ở đây
-});
+//document.addEventListener('DOMContentLoaded', function () {
+//  Promise.all([
+//    fetch('/rest/products'),
+//    fetch('/rest/category'),
+//    fetch('/rest/productsizes')
+//  ])
+//    .then(responses => Promise.all(responses.map(response => response.json())))
+//    .then(data => {
+//      let productTables = document.querySelectorAll('.product-datatable');
+//      productTables.forEach(table => {
+//        new simpleDatatables.DataTable(table);
+//      });
+//    })
+//    .catch(error => console.error("Error loading data:", error));
+//
+//  // Các phần logic khác của bạn trong file product.js có thể được viết ở đây
+//});
