@@ -1,5 +1,5 @@
 <!-- Navbar Start -->
-<div class="container-fluid bg-white sticky-top" xmlns:th="http://www.thymeleaf.org">
+<div class="container-fluid bg-white sticky-top">
     <div class="container">
         <nav class="navbar navbar-expand-lg bg-white navbar-light py-2 py-lg-0">
             <a th:href="@{|/home|}" class="navbar-brand">
@@ -61,9 +61,12 @@
 
                 </div>
                 <div class="border-start ps-4 d-none d-lg-block icons">
-                    <button style="font-size: 19px;" type="button" class="btn btn-sm p-0">
-                        <i class="fa fa-search"></i>
-                    </button>
+                    <label class="theme-mode">
+                        <input type="checkbox">
+                        <i class="bi bi-moon-fill moon"></i>
+                        <i class="bi bi-brightness-high-fill sun"></i>
+                        <span class="mode-toggle"></span>
+                    </label>
                     <button style="font-size: 24px;" type="button" class="btn btn-sm p-0 notification-icon">
                         <i class="bi bi-bell-fill"></i>
                         <div class="notification-dropdown">
@@ -98,8 +101,8 @@
                             </div>
                         </div>
                     </button>
-                    <a th:href="@{|/cart|}" class="btn btn-sm ps-3 pb-2">
-                        <i style="font-size: 24px;" class="bi bi-bag-fill"></i>
+                    <a th:href="@{|/cart|}" class="btn btn-sm ps-3 pb-2 cart-icon">
+                        <i class="bi bi-bag-fill"></i>
                         <span style="font-size: 12px;" id="cartCount" class="cart-count">{{cart.count}}</span>
                     </a>
                 </div>

@@ -1,6 +1,5 @@
 package com.backend.dream.service.imp;
 
-import com.backend.dream.dto.ProductDTO;
 import com.backend.dream.dto.ProductSizeDTO;
 import com.backend.dream.dto.SizeDTO;
 import com.backend.dream.entity.Product;

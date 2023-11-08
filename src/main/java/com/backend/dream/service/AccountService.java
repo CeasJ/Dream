@@ -38,7 +38,11 @@ public interface AccountService {
     String getImageByUserName(String remoteUser) throws NoSuchElementException;
 
     Account createStaff(JsonNode account);
+
+    Account updateStaff(JsonNode staffToUpdate);
+
     boolean checkUsernameExists(String username);
+    
     Account updateStaff(Account staffToUpdate);
 
 }
