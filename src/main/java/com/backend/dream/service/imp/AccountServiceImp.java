@@ -147,4 +147,9 @@ public class AccountServiceImp implements AccountService {
         return accountRepository.findById(Long.valueOf(username)).get();
     }
 
+    @Override
+    public Account findById(String username) {
+        return accountRepository.findById(Long.valueOf(username)).get();
+    }
+
 }
