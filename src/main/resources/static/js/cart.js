@@ -103,6 +103,7 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
   $scope.result = "";
   $scope.orderDetails = {};
   $scope.listOrder = [];
+  $scope.selectedSizeID = "";
 
   $scope.selectOrder = function (orderID) {
     this.selectedOrderId = orderID;
@@ -111,11 +112,9 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
       .then((response) => {
         if (response.data) {
           $scope.listOrder = response.data;
-          console.log(this.listOrder);
         }
       })
       .catch((error) => {
-        console.log(error);
       });
   };
 
@@ -234,7 +233,7 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
   function totalPrice() {
     let totalPrice = 0;
     angular.forEach($scope.cart.items, function (item) {
-      totalPrice += item.price * item.qty;
+      totalPrice += item.priceProduct_Size * item.qty;
     });
     return totalPrice;
   }
@@ -244,27 +243,35 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
 
     items: [],
 
-    add(id) {
+    add(id, size_id) {
       if (!this.items) {
         this.items = [];
       }
 
-      let item = this.items.find((item) => item.id == id);
+
+      let sizeID = parseInt(size_id);
+
+      if(sizeID === null || sizeID === undefined || isNaN(sizeID)) {
+        sizeID = 1;
+      }
+
+      let item = this.items.find((item) =>item.id_product === id && item.id_size === sizeID);
+
 
       if (item) {
         item.qty++;
         saveCart(this.username, this);
       } else {
-        $http.get(`/rest/products/${id}`).then((resp) => {
+        $http.get(`/rest/products/${id}/${sizeID}`).then((resp) => {
           let newItem = resp.data;
           newItem.qty = 1;
           this.items.push(newItem);
           saveCart(this.username, this);
         });
-      }
+      } 
     },
     remove(id) {
-      let index = this.items.findIndex((item) => item.id === id);
+      let index = this.items.findIndex((item) => item.id_product === id);
       this.items.splice(index, 1);
       saveCart(this.username, this);
     },
@@ -325,16 +332,14 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
     get orderDetails() {
       return $scope.cart.items.map((item) => {
         return {
-          id_product: parseInt(item.id),
-          price: item.price,
+          id_product: parseInt(item.id_product),
+          price: item.priceProduct_Size,
           quantity: item.qty,
         };
       });
     },
 
     purchaseOrder() {
-      console.log($scope.cart.amount);
-      console.log(getCurrentTime());
       let order = angular.copy(this);
       $http
         .post(`/rest/order`, order)
@@ -361,7 +366,10 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
     }
   };
 
+
   let isSuccess = true;
+
+
 
   $scope.completeButtonClicked = function () {
     if (isSuccess) {

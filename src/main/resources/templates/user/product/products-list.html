@@ -144,7 +144,7 @@
                                 <a th:href="@{/product/{name}(name=${product.name})}"
                                     class="btn btn-primary rounded-pill py-2 px-4 m-2">More Detail <i
                                         class="fa fa-arrow-right ms-2"></i></a>
-                                <button th:attr="ng-click=@{|cart.add(${product.id})|}"
+                                <button th:attr="ng-click=@{|cart.add(${product.id}, selectedSizeID)|}"
                                     class="btn btn-dark rounded-pill py-2 px-4 m-2">Add to Cart <i
                                         class="fa fa-cart-plus ms-2"></i></button>
                             </div>
