@@ -55,4 +55,6 @@ public class ProductDTO {
 
     private String formattedPriceBySize;
 
+    private Double averageRating;
+
 }

@@ -7,8 +7,6 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface ProductService {
-    List<ProductDTO> findAll();
-
     ProductDTO findById(Long id);
 
     // Page<ProductDTO> findByName(String productName, Pageable pageable);
@@ -27,11 +25,8 @@ public interface ProductService {
 
     void delete(Long id);
 
-    Page<ProductDTO> findAll(Pageable pageable);
-
     Page<ProductDTO> findSaleProducts(Pageable pageable);
 
-//    double calculatePrice(Long productId, Long sizeId);
     //  Display discounted price and original price in product detail and product list
     double getDiscountedPrice(Long productId);
 
@@ -39,6 +34,7 @@ public interface ProductService {
 
     double getProductPriceBySize(Long productId, Long sizeId);
 
-    public double getDiscountPercentByProductId(Long productId);
+    double getDiscountPercentByProductId(Long productId);
+
 
 }

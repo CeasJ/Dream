@@ -251,10 +251,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 // Get the target page from the pagination link
                 var targetPage = link.getAttribute("data-page");
 
-                // Update the 'page' parameter in the URL
                 urlParams.set("page", targetPage);
 
-                // Replace the current URL with the updated URL
                 window.location.href = window.location.pathname + "?" + urlParams.toString();
             });
         });

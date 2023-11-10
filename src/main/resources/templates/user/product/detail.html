@@ -173,41 +173,47 @@
     <!--    Comment section start-->
     <div id="feedback-section">
         <h3>Recent reviews from our customers</h3>
-        <form th:action="@{'/feedback/' + ${product.name}}" method="post">
-            <div class="form-group">
-                <label for="comment">Bình luận</label>
-                <textarea id="comment" name="comment" class="form-control" required></textarea>
-            </div>
-            <div class="form-group">
-                <div class="rating">
-                    <div id="radio" class="star-rate">
-                        <input type="radio" class="star-check" name="rating" value="1" required/>
-                        <input type="radio" class="star-check" name="rating" value="2" required/>
-                        <input type="radio" class="star-check" name="rating" value="3" required/>
-                        <input type="radio" class="star-check" name="rating" value="4" required/>
-                        <input type="radio" class="star-check" name="rating" value="5" required/>
-                        <div class="stars">
-                            <span><i data-star-value="1" class="fa fa-star"></i></span>
-                            <span><i data-star-value="2" class="fa fa-star"></i></span>
-                            <span><i data-star-value="3" class="fa fa-star"></i></span>
-                            <span><i data-star-value="4" class="fa fa-star"></i></span>
-                            <span><i data-star-value="5" class="fa fa-star"></i></span>
+        <div th:if="${remoteUser != null}">
+            <form th:action="@{'/feedback/' + ${product.name}}" method="post">
+                <div class="form-group">
+                    <label for="comment">Leave a comment</label>
+                    <textarea id="comment" name="comment" class="form-control" required></textarea>
+                </div>
+                <div class="form-group">
+                    <div class="rating">
+                        <div id="radio" class="star-rate">
+                            <input type="radio" class="star-check" name="rating" value="1" required/>
+                            <input type="radio" class="star-check" name="rating" value="2" required/>
+                            <input type="radio" class="star-check" name="rating" value="3" required/>
+                            <input type="radio" class="star-check" name="rating" value="4" required/>
+                            <input type="radio" class="star-check" name="rating" value="5" required/>
+                            <div class="stars">
+                                <span><i data-star-value="1" class="fa fa-star"></i></span>
+                                <span><i data-star-value="2" class="fa fa-star"></i></span>
+                                <span><i data-star-value="3" class="fa fa-star"></i></span>
+                                <span><i data-star-value="4" class="fa fa-star"></i></span>
+                                <span><i data-star-value="5" class="fa fa-star"></i></span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <button type="submit" class="btn btn-primary" id="submitButton" disabled>Gửi</button>
-        </form>
+                <button type="submit" class="btn btn-primary" id="submitButton" disabled>Gửi</button>
+            </form>
+        </div>
+        <div th:if="${remoteUser == null}">
+            <!-- Hiển thị thông báo khi chưa đăng nhập -->
+            <h3>Vui lòng đăng nhập để bình luận.</h3>
+        </div>
         <form id="ratingFilter" th:action="@{'/product/' + ${name}}" method="get">
             <div class="form-group">
-                <label for="starRating">Chọn số sao:</label>
+                <label for="starRating">Sort by star rating:</label>
                 <select id="starRating" name="starRating" class="form-control">
-                    <option value="0">Tất cả</option>
-                    <option value="1">1 sao</option>
-                    <option value="2">2 sao</option>
-                    <option value="3">3 sao</option>
-                    <option value="4">4 sao</option>
-                    <option value="5">5 sao</option>
+                    <option value="0">None</option>
+                    <option value="1">1 star</option>
+                    <option value="2">2 stars</option>
+                    <option value="3">3 stars</option>
+                    <option value="4">4 stars</option>
+                    <option value="5">5 stars</option>
                 </select>
             </div>
         </form>

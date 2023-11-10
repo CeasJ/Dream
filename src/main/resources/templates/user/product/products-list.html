@@ -115,16 +115,60 @@
 
         </div>
         <div class="row g-4">
-            <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s"  th:each="product : ${products}">
+            <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s"  th:each="product: ${products}">
                 <div class="store-item position-relative text-center">
                     <img class="img-fluid" th:src="@{'/img/' + ${product.image}}" alt="">
                     <div class="p-4">
-                        <!-- Tên sản phẩm và mô tả -->
+                        <div class="text-center mb-3">
+                            <div th:if="${product.averageRating == 0}">
+                                <small class="fa fa-star"></small>
+                                <small class="fa fa-star"></small>
+                                <small class="fa fa-star"></small>
+                                <small class="fa fa-star"></small>
+                                <small class="fa fa-star"></small>
+                            </div>
+                            <div th:if="${product.averageRating == 1}">
+                                <small class="fa fa-star text-primary"></small>
+                                <small class="fa fa-star"></small>
+                                <small class="fa fa-star"></small>
+                                <small class="fa fa-star"></small>
+                                <small class="fa fa-star"></small>
+                            </div>
+                            <div th:if="${product.averageRating == 2}">
+                                <small class="fa fa-star text-primary"></small>
+                                <small class="fa fa-star text-primary"></small>
+                                <small class="fa fa-star"></small>
+                                <small class="fa fa-star"></small>
+                                <small class="fa fa-star"></small>
+                            </div>
+                            <div th:if="${product.averageRating == 3}">
+                                <small class="fa fa-star text-primary"></small>
+                                <small class="fa fa-star text-primary"></small>
+                                <small class="fa fa-star text-primary"></small>
+                                <small class="fa fa-star"></small>
+                                <small class="fa fa-star"></small>
+                            </div>
+                            <div th:if="${product.averageRating == 4}">
+                                <small class="fa fa-star text-primary"></small>
+                                <small class="fa fa-star text-primary"></small>
+                                <small class="fa fa-star text-primary"></small>
+                                <small class="fa fa-star text-primary"></small>
+                                <small class="fa fa-star"></small>
+                            </div>
+                             <div th:if="${product.averageRating == 5}">
+                                <small class="fa fa-star text-primary"></small>
+                                <small class="fa fa-star text-primary"></small>
+                                <small class="fa fa-star text-primary"></small>
+                                <small class="fa fa-star text-primary"></small>
+                                 <small class="fa fa-star text-primary"></small>
+                            </div>
+
+                        </div>
                         <h4 class="mb-3" th:text="${product.name}">Nature close tea</h4>
                         <p class="product-description" th:text="${product.describe}" ></p>
 
+
                         <div th:if="${product.discountedPrice != null}">
-                            <!-- Hiển thị giá giảm giá -->
                             <p class="header">
                                 <h5 style="display: inline;"><del><i><span th:text="${product.formattedPrice}"></span></i></del></h5>
                                 <h4 style="display: inline;"><span th:text="${product.formattedDiscountedPrice}"></span></h4>

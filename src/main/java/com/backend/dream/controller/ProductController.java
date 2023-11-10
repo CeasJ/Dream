@@ -11,6 +11,7 @@ import com.backend.dream.service.DiscountService;
 import com.backend.dream.service.FeedbackService;
 import com.backend.dream.service.ProductService;
 import com.backend.dream.service.ProductSizeService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -52,6 +53,10 @@ public class ProductController {
     FeedbackService feedbackService;
 
     @Autowired
+    private HttpServletRequest request;
+
+
+    @Autowired
     public ProductController(ProductService productService, ProductSizeService productSizeService) {
         this.productService = productService;
         this.productSizeService = productSizeService;
@@ -76,26 +81,15 @@ public class ProductController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("/product")
-    public String listProducts(Model model,
-                               @RequestParam(defaultValue = "0") int page,
-                               @RequestParam(defaultValue = "3") int pageSize) {
-        Pageable pageable = PageRequest.of(page, pageSize);
-        Page<ProductDTO> productPage = productService.findAll(pageable);
-        List<ProductDTO> productDTOs = productPage.getContent();
-        model.addAttribute("products", productDTOs);
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", productPage.getTotalPages());
-        return "user/product/store";
-    }
 
     @GetMapping("/store")
     public String showListProducts(
             @RequestParam(required = false) String sortOption,
             @RequestParam(name = "categoryId", required = false) String categoryIdString,
+            @RequestParam(value = "starRating", required = false, defaultValue = "0") int starRating,
             @RequestParam(defaultValue = "0") int page,
             Model model) {
-        int pageSize = 6; // Kích thước trang
+        int pageSize = 6;
         Pageable pageable = PageRequest.of(page, pageSize); // Tạo Pageable
 
         Page<ProductDTO> productPage;
@@ -130,6 +124,7 @@ public class ProductController {
             }
         }
 
+
         model.addAttribute("products", products);
         model.addAttribute("currentPage", page);
         model.addAttribute("categoryId", categoryIdValue);
@@ -150,7 +145,7 @@ public class ProductController {
         model.addAttribute("products", productPage.getContent());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", productPage.getTotalPages());
-        model.addAttribute("searchValue", productName); // Add this line to pass search value to the view
+        model.addAttribute("searchValue", productName);
 
         return "user/product/products-list";
     }
@@ -219,16 +214,18 @@ public class ProductController {
                 List<FeedBackDTO> pagedFeedbackList = feedbackList.subList(start, end);
                 model.addAttribute("feedbackList", pagedFeedbackList);
             }
-            // Show the comments
+
+            // Check if user has logged in yet
+            String remoteUser = request.getRemoteUser();
+            
             model.addAttribute("discountPercent", discountPercent);
             model.addAttribute("product", product);
             model.addAttribute("availableSizes", availableSizes);
-
             model.addAttribute("name", name);
             model.addAttribute("averageRating", averageRating);
-
             model.addAttribute("currentPage", page);
             model.addAttribute("totalPages", totalPages);
+            model.addAttribute("remoteUser", remoteUser);
 
             return "user/product/detail";
         } catch (UnsupportedEncodingException e) {

@@ -43,8 +43,10 @@ public class FeedbackController {
 
 
     @PostMapping("/feedback/{name}")
-    public String postFeedback(@PathVariable String name, @RequestParam String comment, @RequestParam int rating) {
-        // Kiểm tra người dùng đã đăng nhập hay chưa
+    public String postFeedback(@PathVariable String name,
+                               @RequestParam String comment,
+                               @RequestParam int rating) {
+        // Check if there is a logged-in user
         String remoteUser = request.getRemoteUser();
         if (remoteUser == null) {
             return "redirect:/product/" + name;
@@ -70,5 +72,3 @@ public class FeedbackController {
 
 
 }
-
-
