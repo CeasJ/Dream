@@ -17,4 +17,7 @@ public interface FeedbackService {
 
     List<FeedBackDTO> getFeedbacksForProductByRating(Long productId, int rating);
 
+    void deleteFeedback(Long id);
+
+
 }

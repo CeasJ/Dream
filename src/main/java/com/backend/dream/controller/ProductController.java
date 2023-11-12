@@ -217,7 +217,7 @@ public class ProductController {
 
             // Check if user has logged in yet
             String remoteUser = request.getRemoteUser();
-            
+
             model.addAttribute("discountPercent", discountPercent);
             model.addAttribute("product", product);
             model.addAttribute("availableSizes", availableSizes);
