@@ -138,39 +138,3 @@ app.controller("order_ctrl", function ($scope, $http) {
 		}
 	};
 });
-
-document.addEventListener('DOMContentLoaded', function () {
-	Promise.all([
-		fetch(`/rest/order`),
-		fetch(`/rest/order/confirm`),
-		fetch(`/rest/order/cancel`),
-		fetch(`/rest/order/success`),
-		fetch(`/rest/order/ship`)
-	])
-		.then(responses => Promise.all(responses.map(response => response.json())))
-		.then(data => {
-			let orderStatus1 = document.querySelectorAll('#datatablesSimple1');
-			orderStatus1.forEach(table => {
-				new simpleDatatables.DataTable(table);
-			});
-			let orderStatus2 = document.querySelectorAll('#datatablesSimple2');
-			orderStatus2.forEach(table => {
-				new simpleDatatables.DataTable(table);
-			});
-			let orderStatus3 = document.querySelectorAll('#datatablesSimple3');
-			orderStatus3.forEach(table => {
-				new simpleDatatables.DataTable(table);
-			});
-			let orderStatus4 = document.querySelectorAll('#datatablesSimple4');
-			orderStatus4.forEach(table => {
-				new simpleDatatables.DataTable(table);
-			});
-			let orderStatus5 = document.querySelectorAll('#datatablesSimple5');
-			orderStatus5.forEach(table => {
-				new simpleDatatables.DataTable(table);
-			});
-		})
-		.catch(error => console.error("Error loading data:", error));
-
-	// Các phần logic khác của bạn trong file order.js có thể được viết ở đây
-});

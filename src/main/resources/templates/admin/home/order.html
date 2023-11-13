@@ -8,7 +8,6 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
     <title>Orders - Dream Admin</title>
-    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link type="text/css" href="/css/admin/admin.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <!-- Angular -->
@@ -29,61 +28,78 @@
                 <!-- Bảng cho trạng thái Confirm -->
                 <div class="card" style="border-radius: 0px; margin-bottom: 40px;">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <h4 class="mb-0"> <i class="fas fa-table me-1"></i> Pending</h4>
+                        <h4 class="mb-0 text-primary"> <i class="fas fa-table me-1"></i> Orders</h4>
                     </div>
                     <div class="card-body">
-                        <table id="datatablesSimple1" class="order-status no-sort-end">
-                            <thead>
-                                <th>
-                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">No</div>
-                                </th>
-                                <th>
-                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">ID</div>
-                                </th>
-                                <th>
-                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">CreateDate</div>
-                                </th>
-                                <th>
-                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">CreateTime</div>
-                                </th>
-                                <th>
-                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">Fullname</div>
-                                </th>
-                                <th>
-                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">Address</div>
-                                </th>
-                                <th>
-                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">Total Amount
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">Status</div>
-                                </th>
-                                <th></th>
-                            </thead>
-                            <tbody>
-                                <tr ng-repeat-start="order in listOrders">
-                                    <td>{{$index + 1}}</td>
-                                    <td>{{order.id}}</td>
-                                    <td>{{order.createDate | date: 'dd-MM-yyyy'}}</td>
-                                    <td>{{order.createTime}}</td>
-                                    <td>{{order.fullname}}</td>
-                                    <td>{{order.address}}</td>
-                                    <td>{{order.totalAmount | number : 0}} đ</td>
-                                    <td ng-if="order.status === 1"> Đã đặt hàng</td>
-                                    <td>
-                                        <button class="btn btn-dark" ng-click="edit(item)" data-bs-toggle="modal"
-                                            data-bs-target="#confirmModal">
-                                            <i class="bi bi-pencil-square"></i>
-                                        </button>
-                                        <button class="btn btn-danger">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr ng-repeat-end></tr>
-                            </tbody>
-                        </table>
+                        <div class="row justify-content-between align-items-center mb-3 mt-1">
+                            <!-- Thanh tìm kiếm ở góc phải -->
+                            <div class="col-md-2 ms-auto">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Search..." aria-label="Search"
+                                        aria-describedby="basic-addon2">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover table-bordered text-center order-datatable">
+                                <thead class="table-dark">
+                                    <th>No</th>
+                                    <th>ID</th>
+                                    <th>CreateDate</th>
+                                    <th>CreateTime</th>
+                                    <th>Fullname</th>
+                                    <th>Address</th>
+                                    <th>Total Amount</th>
+                                    <th>Status</th>
+                                    <th></th>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat-start="order in listOrders">
+                                        <td>{{$index + 1}}</td>
+                                        <td>{{order.id}}</td>
+                                        <td>{{order.createDate | date: 'dd-MM-yyyy'}}</td>
+                                        <td>{{order.createTime}}</td>
+                                        <td>{{order.fullname}}</td>
+                                        <td>{{order.address}}</td>
+                                        <td>{{order.totalAmount | number : 0}} đ</td>
+                                        <td ng-if="order.status === 1"> Đã đặt hàng</td>
+                                        <td>
+                                            <button class="btn btn-primary"
+                                                ng-click="updateOrder.confirmOrder(order.id)">Confirm</button>
+                                            <button class="btn btn-danger"
+                                                ng-click="updateOrder.cancelOrder(order.id)">Cancel</button>
+                                            <button class="btn btn-dark" ng-click="edit(item)" data-bs-toggle="modal"
+                                                data-bs-target="#confirmModal">
+                                                <i class="bi bi-eye-fill"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr ng-repeat-end></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center pt-2 pb-0">
+                            <div class="fw-normal" style="font-size: 18px;">
+                                Showing 1 to 5 of 15 entries
+                            </div>
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination justify-content-end">
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                                            <i class="bi bi-caret-left-fill"></i>
+                                        </a>
+                                    </li>
+                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#">
+                                            <i class="bi bi-caret-right-fill"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
                     </div>
                 </div>
                 <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -93,7 +109,7 @@
                             <div class="modal-header">
                                 <h5 class="modal-title" id="exampleModalLabel">
                                     <i class="bi bi-pencil-square pe-2"></i>
-                                    Order Confirm
+                                    Orders
                                 </h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
@@ -216,10 +232,6 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button class="btn btn-danger"
-                                    ng-click="updateOrder.cancelOrder(order.id)">Cancel</button>
-                                <button class="btn btn-primary"
-                                    ng-click="updateOrder.confirmOrder(order.id)">Confirm</button>
                             </div>
                         </div>
                     </div>
@@ -228,60 +240,77 @@
                 <!-- Bảng cho trạng thái Proc -->
                 <div class="card" style="border-radius: 0px; margin-bottom: 40px;">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <h4><i class="fas fa-table me-1"></i> Order Processing</h4>
+                        <h4 class="text-info mb-0"> <i class="fas fa-table me-1"></i> Processing</h4>
                     </div>
                     <div class="card-body">
-                        <table id="datatablesSimple2" class="order-status no-sort-end">
-                            <thead>
-                                <th>
-                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">No</div>
-                                </th>
-                                <th>
-                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">ID</div>
-                                </th>
-                                <th>
-                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">CreateDate
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">Fullname
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">Address
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">Total Amount
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">Status</div>
-                                </th>
-                                <th></th>
-                            </thead>
-                            <tbody>
-                                <tr ng-repeat-start="order in listOrdersConfirmed">
-                                    <td>{{$index + 1 }}</td>
-                                    <td>{{order.id}}</td>
-                                    <td>{{order.createDate | date: 'dd-MM-yyyy'}}</td>
-                                    <td>{{order.fullname}}</td>
-                                    <td>{{order.address}}</td>
-                                    <td>{{order.totalAmount | number : 0}} đ</td>
-                                    <td ng-if="order.status === 2"> Đã xác nhận</td>
-                                    <td>
-                                        <button class="btn btn-dark" data-bs-toggle="modal"
-                                            data-bs-target="#processingModal">
-                                            <i class="bi bi-pencil-square"></i>
-                                        </button>
-                                        <button class="btn btn-danger">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr ng-repeat-end></tr>
-                            </tbody>
-                        </table>
+                        <div class="row justify-content-between align-items-center mb-3 mt-1">
+                            <!-- Thanh tìm kiếm ở góc phải -->
+                            <div class="col-md-2 ms-auto">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Search..." aria-label="Search"
+                                        aria-describedby="basic-addon2">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover table-bordered text-center order-datatable">
+                                <thead class="table-dark">
+                                    <th>No</th>
+                                    <th>ID</th>
+                                    <th>CreateDate</th>
+                                    <th>Fullname</th>
+                                    <th>Address</th>
+                                    <th>Total Amount</th>
+                                    <th>Status</th>
+                                    <th></th>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat-start="order in listOrdersConfirmed">
+                                        <td>{{$index + 1 }}</td>
+                                        <td>{{order.id}}</td>
+                                        <td>{{order.createDate | date: 'dd-MM-yyyy'}}</td>
+                                        <td>{{order.fullname}}</td>
+                                        <td>{{order.address}}</td>
+                                        <td>{{order.totalAmount | number : 0}} đ</td>
+                                        <td ng-if="order.status === 2"> Đã xác nhận</td>
+                                        <td>
+                                            <button class="btn btn-danger"
+                                                ng-click="updateOrder.cancelOrder(order.id)">Cancel</button>
+                                            <button class="btn btn-info"
+                                                ng-click="updateOrder.shippingOrder(order.id)">Ship</button>
+                                            <button class="btn btn-dark" data-bs-toggle="modal"
+                                                data-bs-target="#processingModal">
+                                                <i class="bi bi-eye-fill"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr ng-repeat-end></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center pt-2 pb-0">
+                            <div class="fw-normal" style="font-size: 18px;">
+                                Showing 1 to 5 of 15 entries
+                            </div>
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination justify-content-end">
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                                            <i class="bi bi-caret-left-fill"></i>
+                                        </a>
+                                    </li>
+                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#">
+                                            <i class="bi bi-caret-right-fill"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+
                     </div>
                 </div>
                 <div class="modal fade" id="processingModal" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -291,7 +320,7 @@
                             <div class="modal-header">
                                 <h5 class="modal-title" id="exampleModalLabel">
                                     <i class="bi bi-pencil-square pe-2"></i>
-                                    Order Processing
+                                    Processing
                                 </h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
@@ -413,10 +442,6 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button class="btn btn-danger"
-                                    ng-click="updateOrder.cancelOrder(order.id)">Cancel</button>
-                                <button class="btn btn-primary"
-                                    ng-click="updateOrder.shippingOrder(order.id)">Ship</button>
                             </div>
                         </div>
                     </div>
@@ -425,60 +450,76 @@
                 <!-- Bảng cho trạng thái Success -->
                 <div class="card" style="border-radius: 0px; margin-bottom: 40px;">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <h4><i class="fas fa-table me-1"></i> Order Shipping</h4>
+                        <h4 class="text-dark mb-0"><i class="fas fa-table me-1"></i> Shipping</h4>
                     </div>
                     <div class="card-body">
-                        <table id="datatablesSimple3" class="order-status no-sort-end">
-                            <thead>
-                                <th>
-                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">No</div>
-                                </th>
-                                <th>
-                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">ID</div>
-                                </th>
-                                <th>
-                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">CreateDate
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">Fullname
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">Address
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">Total Amount
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">Status</div>
-                                </th>
-                                <th></th>
-                            </thead>
-                            <tbody>
-                                <tr ng-repeat-start="order in listOrderIsShipping">
-                                    <td>{{$index +1}}</td>
-                                    <td>{{order.id}}</td>
-                                    <td>{{order.createDate | date: 'dd-MM-yyyy'}}</td>
-                                    <td>{{order.fullname}}</td>
-                                    <td>{{order.address}}</td>
-                                    <td>{{order.totalAmount | number : 0}} đ</td>
-                                    <td ng-if="order.status === 3">Đang giao hàng</td>
-                                    <td>
-                                        <button class="btn btn-dark" data-bs-toggle="modal"
-                                            data-bs-target="#shippingModal">
-                                            <i class="bi bi-pencil-square"></i>
-                                        </button>
-                                        <button class="btn btn-danger">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr ng-repeat-end></tr>
-                            </tbody>
-                        </table>
+                        <div class="row justify-content-between align-items-center mb-3 mt-1">
+                            <!-- Thanh tìm kiếm ở góc phải -->
+                            <div class="col-md-2 ms-auto">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Search..." aria-label="Search"
+                                        aria-describedby="basic-addon2">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover table-bordered text-center order-datatable">
+                                <thead class="table-dark">
+                                    <th>No</th>
+                                    <th>ID</th>
+                                    <th>CreateDate</th>
+                                    <th>Fullname</th>
+                                    <th>Address</th>
+                                    <th>Total Amount</th>
+                                    <th>Status</th>
+                                    <th></th>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat-start="order in listOrderIsShipping">
+                                        <td>{{$index +1}}</td>
+                                        <td>{{order.id}}</td>
+                                        <td>{{order.createDate | date: 'dd-MM-yyyy'}}</td>
+                                        <td>{{order.fullname}}</td>
+                                        <td>{{order.address}}</td>
+                                        <td>{{order.totalAmount | number : 0}} đ</td>
+                                        <td ng-if="order.status === 3">Đang giao hàng</td>
+                                        <td>
+                                            <button class="btn btn-success"
+                                                ng-click="updateOrder.successOrder(order.id)">Success</button>
+                                            <button class="btn btn-danger"
+                                                ng-click="updateOrder.cancelOrder(order.id)">Cancel</button>
+                                            <button class="btn btn-dark" data-bs-toggle="modal"
+                                                data-bs-target="#shippingModal">
+                                                <i class="bi bi-eye-fill"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr ng-repeat-end></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center pt-2 pb-0">
+                            <div class="fw-normal" style="font-size: 18px;">
+                                Showing 1 to 5 of 15 entries
+                            </div>
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination justify-content-end">
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                                            <i class="bi bi-caret-left-fill"></i>
+                                        </a>
+                                    </li>
+                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#">
+                                            <i class="bi bi-caret-right-fill"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
                     </div>
                 </div>
                 <!-- Modal Shipping -->
@@ -489,7 +530,7 @@
                             <div class="modal-header">
                                 <h5 class="modal-title" id="exampleModalLabel">
                                     <i class="bi bi-pencil-square pe-2"></i>
-                                    Order Shipping
+                                    Shipping
                                 </h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
@@ -612,10 +653,6 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button class="btn btn-danger"
-                                    ng-click="updateOrder.cancelOrder(order.id)">Cancel</button>
-                                <button class="btn btn-success"
-                                    ng-click="updateOrder.successOrder(order.id)">Success</button>
                             </div>
                         </div>
                     </div>
@@ -624,60 +661,73 @@
                 <!-- Bảng cho trạng thái success -->
                 <div class="card" style="border-radius: 0px; margin-bottom: 40px;">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <h4><i class="fas fa-table me-1"></i> Order Success</h4>
+                        <h4 class="text-success mb-0"><i class="fas fa-table me-1"></i> Success</h4>
                     </div>
                     <div class="card-body">
-                        <table id="datatablesSimple4" class="order-status no-sort-end">
-                            <thead>
-                                <th>
-                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">No</div>
-                                </th>
-                                <th>
-                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">ID</div>
-                                </th>
-                                <th>
-                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">CreateDate
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">Fullname
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">Address
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">Total Amount
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">Status</div>
-                                </th>
-                                <th></th>
-                            </thead>
-                            <tbody>
-                                <tr ng-repeat-start="order in listOrdersSuccessful">
-                                    <td>{{$index + 1}}</td>
-                                    <td>{{order.id}}</td>
-                                    <td>{{order.createDate | date: 'dd-MM-yyyy'}}</td>
-                                    <td>{{order.fullname}}</td>
-                                    <td>{{order.address}}</td>
-                                    <td>{{order.totalAmount | number : 0}} đ</td>
-                                    <td ng-if="order.status === 4"> Đã giao hàng</td>
-                                    <td>
-                                        <button class="btn btn-dark" data-bs-toggle="modal"
-                                            data-bs-target="#successModal">
-                                            <i class="bi bi-pencil-square"></i>
-                                        </button>
-                                        <button class="btn btn-danger">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr ng-repeat-end></tr>
-                            </tbody>
-                        </table>
+                        <div class="row justify-content-between align-items-center mb-3 mt-1">
+                            <!-- Thanh tìm kiếm ở góc phải -->
+                            <div class="col-md-2 ms-auto">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Search..." aria-label="Search"
+                                        aria-describedby="basic-addon2">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover table-bordered text-center order-datatable">
+                                <thead class="table-dark">
+                                    <th>No</th>
+                                    <th>ID</th>
+                                    <th>CreateDate</th>
+                                    <th>Fullname</th>
+                                    <th>Address</th>
+                                    <th>Total Amount</th>
+                                    <th>Status</th>
+                                    <th></th>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat-start="order in listOrdersSuccessful">
+                                        <td>{{$index + 1}}</td>
+                                        <td>{{order.id}}</td>
+                                        <td>{{order.createDate | date: 'dd-MM-yyyy'}}</td>
+                                        <td>{{order.fullname}}</td>
+                                        <td>{{order.address}}</td>
+                                        <td>{{order.totalAmount | number : 0}} đ</td>
+                                        <td ng-if="order.status === 4"> Đã giao hàng</td>
+                                        <td>
+                                            <button class="btn btn-dark" data-bs-toggle="modal"
+                                                data-bs-target="#successModal">
+                                                <i class="bi bi-eye-fill"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr ng-repeat-end></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center pt-2 pb-0">
+                            <div class="fw-normal" style="font-size: 18px;">
+                                Showing 1 to 5 of 15 entries
+                            </div>
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination justify-content-end">
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                                            <i class="bi bi-caret-left-fill"></i>
+                                        </a>
+                                    </li>
+                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#">
+                                            <i class="bi bi-caret-right-fill"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+
                     </div>
                 </div>
                 <!-- Modal Success -->
@@ -688,7 +738,7 @@
                             <div class="modal-header">
                                 <h5 class="modal-title" id="exampleModalLabel">
                                     <i class="bi bi-pencil-square pe-2"></i>
-                                    Order Success
+                                    Success
                                 </h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
@@ -820,60 +870,75 @@
                 <!-- Bảng cho trạng thái cancel -->
                 <div class="card" style="border-radius: 0px; margin-bottom: 30px;">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <h4><i class="fas fa-table me-1"></i> Order Cancel</h4>
+                        <h4 class="mb-0 text-danger"><i class="fas fa-table me-1"></i> Cancel</h4>
                     </div>
                     <div class="card-body">
-                        <table id="datatablesSimple5" class="order-status no-sort-end">
-                            <thead>
-                                <th>
-                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">No</div>
-                                </th>
-                                <th>
-                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">ID</div>
-                                </th>
-                                <th>
-                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">CreateDate
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">Fullname
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">Address
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">Total Amount
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">Status</div>
-                                </th>
-                                <th></th>
-                            </thead>
-                            <tbody>
-                                <tr ng-repeat-start="order in listOrdersCancelled">
-                                    <td>{{$index + 1 }}</td>
-                                    <td>{{order.id}}</td>
-                                    <td>{{order.createDate | date: 'dd-MM-yyyy'}}</td>
-                                    <td>{{order.fullname}}</td>
-                                    <td>{{order.address}}</td>
-                                    <td>{{order.totalAmount | number : 0}} đ</td>
-                                    <td ng-if="order.status === 5"> Đã hủy</td>
-                                    <td>
-                                        <button class="btn btn-dark" data-bs-toggle="modal"
-                                            data-bs-target="#cancelModal">
-                                            <i class="bi bi-pencil-square"></i>
-                                        </button>
-                                        <button class="btn btn-danger">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr ng-repeat-end></tr>
-                            </tbody>
-                        </table>
+                        <div class="row justify-content-between align-items-center mb-3 mt-1">
+                            <!-- Thanh tìm kiếm ở góc phải -->
+                            <div class="col-md-2 ms-auto">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Search..." aria-label="Search"
+                                        aria-describedby="basic-addon2">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover table-bordered text-center order-datatable">
+                                <thead class="table-dark">
+                                    <th>No</th>
+                                    <th>ID</th>
+                                    <th>CreateDate</th>
+                                    <th>Fullname</th>
+                                    <th>Address</th>
+                                    <th>Total Amount</th>
+                                    <th>Status</th>
+                                    <th></th>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat-start="order in listOrdersCancelled">
+                                        <td>{{$index + 1 }}</td>
+                                        <td>{{order.id}}</td>
+                                        <td>{{order.createDate | date: 'dd-MM-yyyy'}}</td>
+                                        <td>{{order.fullname}}</td>
+                                        <td>{{order.address}}</td>
+                                        <td>{{order.totalAmount | number : 0}} đ</td>
+                                        <td ng-if="order.status === 5"> Đã hủy</td>
+                                        <td>
+                                            <button class="btn btn-danger" ng-click="updateOrder.resetOrder(order.id)">
+                                                Reset
+                                            </button>
+                                            <button class="btn btn-dark" data-bs-toggle="modal"
+                                                data-bs-target="#cancelModal">
+                                                <i class="bi bi-eye-fill"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr ng-repeat-end></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center pt-2 pb-0">
+                            <div class="fw-normal" style="font-size: 18px;">
+                                Showing 1 to 5 of 15 entries
+                            </div>
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination justify-content-end">
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                                            <i class="bi bi-caret-left-fill"></i>
+                                        </a>
+                                    </li>
+                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#">
+                                            <i class="bi bi-caret-right-fill"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
                     </div>
                 </div>
                 <!-- Modal Cancel -->
@@ -884,7 +949,7 @@
                             <div class="modal-header">
                                 <h5 class="modal-title" id="exampleModalLabel">
                                     <i class="bi bi-pencil-square pe-2"></i>
-                                    Order Cancel
+                                    Cancel
                                 </h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
@@ -1007,9 +1072,6 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button class="btn btn-danger" ng-click="updateOrder.resetOrder(order.id)">
-                                    Reset
-                                </button>
                             </div>
                         </div>
                     </div>
@@ -1026,8 +1088,6 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
-        crossorigin="anonymous"></script>
 </body>
 
 </html>

@@ -11737,3 +11737,18 @@ body {
   margin: 8px;
   z-index: 9999;
 }
+
+.product-datatable td {
+  vertical-align: middle;
+  /* Căn giữa dữ liệu trong ô */
+}
+
+.product-datatable th:nth-child(6) {
+  /* Định dạng cột Describe */
+  width: 500px;
+}
+
+.order-datatable td {
+  vertical-align: middle;
+  /* Căn giữa dữ liệu trong ô */
+}
