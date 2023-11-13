@@ -7,26 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Product - Dream Admin</title>
-    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+    <title>Discounts - Dream Admin</title>
     <link type="text/css" href="/css/admin/admin.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <!-- Angular -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.js"></script>
-
-    <style>
-        .product-datatable td {
-            vertical-align: middle;
-            /* Căn giữa dữ liệu trong ô */
-        }
-
-        .product-datatable th:nth-child(5) {
-            /* Định dạng cột Describe */
-            width: 700px;
-            /* Độ rộng của cột Describe */
-        }
-    </style>
 </head>
 
 <body class="sb-nav-fixed" ng-app="discount-app" ng-controller="discount-ctrl">
@@ -37,58 +23,53 @@
         </div>
         <div id="layoutSidenav_content">
             <main>
-                <div class="card mb-4" style="border-radius: 0px;">
+                <div class="card mb-4" style="border: none;">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <h4 class="mb-0"> <i class="fas fa-table me-1"></i> Products</h4>
-                        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#myModal">
+                        <h4 class="mb-0"> <i class="fas fa-table me-1"></i> Discounts</h4>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
                             <i class="bi bi-plus-lg"></i>
                         </button>
                     </div>
                     <div class="card-body">
+                        <div class="row justify-content-between align-items-center mb-3 mt-1">
+                            <div class="col-md-3">
+                                <div class="d-flex">
+                                    <div class="form-group mb-0 me-3">
+                                        <label for="dateFilter" class="fw-bold pt-1" style="font-size: 18px;">
+                                            Filter by Date:</label>
+                                    </div>
+                                    <div class="form-group mb-0" style="width: 200px;">
+                                        <input type="date" class="form-control" id="dateFilter" ng-model="selectedDate">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Thanh tìm kiếm ở góc phải -->
+                            <div class="col-md-2 ms-auto">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Search..." aria-label="Search"
+                                        aria-describedby="basic-addon2">
+                                </div>
+                            </div>
+                        </div>
                         <div class="table-responsive">
-                            <table class="product-datatable no-sort-end order-status" id="datatablesSimple">
-                                <thead>
+                            <table class="table table-hover table-bordered text-center order-datatable">
+                                <thead class="table-dark">
                                     <tr>
-                                        <th>
-                                            <div class="text-center text-primary ms-3" style="font-size: 18px;">DiscountName
-                                            </div>
-                                        </th>
-                                        <th>
-                                            <div class="text-center text-primary ms-3" style="font-size: 18px;">DiscountNumber
-                                            </div>
-                                        </th>
-                                        <th>
-                                            <div class="text-center text-primary ms-3" style="font-size: 18px;">DiscountNumberPercent
-                                            </div>
-                                        </th>
-                                        <th>
-                                            <div class="text-center text-primary ms-3" style="font-size: 18px;">ActiveDate
-                                            </div>
-                                        </th>
-                                        <th>
-                                            <div class="text-center text-primary ms-3" style="font-size: 18px;">Expiredate
-                                            </div>
-                                        </th>
+                                        <th>DiscountName</th>
+                                        <th>DiscountNumber</th>
+                                        <th>DiscountPercent</th>
+                                        <th>ActiveDate</th>
+                                        <th>Expiredate</th>
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tbody class="no-border-x">
                                     <tr ng-repeat-start="count in discounts">
-                                        <td>
-                                            {{count.name}}
-                                        </td>
-                                        <td>
-                                            {{count.number}}
-                                        </td>
-                                        <td>
-                                            <div style="text-align: justify;">{{count.percent}}</div>
-                                        </td>
-                                        <td>
-                                            {{count.activeDate | date: 'dd-MM-yyyy'}}
-                                        </td>
-                                        <td>
-                                            {{count.expiredDate | date: 'dd-MM-yyyy'}}
-                                        </td>
+                                        <td>{{count.name}}</td>
+                                        <td>{{count.number}}</td>
+                                        <td>{{count.percent}}</td>
+                                        <td>{{count.activeDate | date: 'dd-MM-yyyy'}}</td>
+                                        <td>{{count.expiredDate | date: 'dd-MM-yyyy'}}</td>
                                         <td>
                                             <button class="btn btn-dark" ng-click="edit(count)" data-bs-toggle="modal"
                                                 data-bs-target="#myModal">
@@ -102,6 +83,28 @@
                                     <tr ng-repeat-end></tr>
                                 </tbody>
                             </table>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center pt-2 pb-0">
+                            <div class="fw-normal" style="font-size: 18px;">
+                                Showing 1 to 5 of 15 entries
+                            </div>
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination justify-content-end">
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                                            <i class="bi bi-caret-left-fill"></i>
+                                        </a>
+                                    </li>
+                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#">
+                                            <i class="bi bi-caret-right-fill"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
                         </div>
                     </div>
                 </div>
@@ -140,8 +143,8 @@
                                                 <div class="form-group">
                                                     <label for="name" class="fw-bold mb-3">DiscountPercent</label>
                                                     <input type="text" class="form-control" id="DiscountPercent"
-                                                           ng-model="form.percent" name="number"
-                                                           placeholder="DiscountPercent" />
+                                                        ng-model="form.percent" name="number"
+                                                        placeholder="DiscountPercent" />
                                                 </div>
                                             </div>
                                         </div>
@@ -159,7 +162,7 @@
                                                 <div class="form-group">
                                                     <label class="fw-bold mb-3">Expiredate</label>
                                                     <input ng-model="form.expiredDate" class="form-control" type="date"
-                                                           name="day" required>
+                                                        name="day" required>
                                                 </div>
                                             </div>
                                         </div>
@@ -184,8 +187,6 @@
         crossorigin="anonymous"></script>
     <script src="/js/admin/discount.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
-        crossorigin="anonymous"></script>
 </body>
 
 </html>

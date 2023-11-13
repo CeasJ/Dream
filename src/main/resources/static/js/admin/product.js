@@ -11,6 +11,7 @@ app.controller("product_ctrl", function ($scope, $http) {
   $scope.initialize = function () {
     $http.get(`/rest/products`).then((resp) => {
       $scope.items = resp.data;
+      console.log($scope.items);
       $scope.items.forEach((item) => {
         item.createDate = new Date(item.createDate);
       });
@@ -84,11 +85,7 @@ app.controller("product_ctrl", function ($scope, $http) {
       .then((resp) => {
         $scope.form.image = resp.data.name;
       })
-      .catch((err) => {});
+      .catch((err) => { });
   };
-<<<<<<<<< Temporary merge branch 1
-=========
 
->>>>>>>>> Temporary merge branch 2
 });
-

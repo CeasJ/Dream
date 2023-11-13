@@ -19,7 +19,7 @@
                     <!--When customer not login-->
                     <th:block th:unless="${isAuthenticated}">
                         <a th:href="@{|/login/form|}" class="nav-item nav-link">Login</a>
-                        <a th:href="@{|register|}" class="nav-item nav-link">Register</a>
+                        <a th:href="@{|/register|}" class="nav-item nav-link">Register</a>
                     </th:block>
 
                     <!--When customer login-->
@@ -105,7 +105,7 @@
                         <i class="bi bi-bag-fill"></i>
                         <span style="font-size: 12px;" id="cartCount" class="cart-count">{{cart.count}}</span>
                     </a>
-                  
+
 
                 </div>
             </div>
