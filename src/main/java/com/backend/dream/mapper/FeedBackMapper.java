@@ -12,9 +12,10 @@ public interface FeedBackMapper {
 
     @Mapping(source = "account.id",target = "id_account")
     @Mapping(source = "product.id", target = "id_product")
+    @Mapping(source = "account", target = "accountDTO")
     FeedBackDTO feedBackToFeedBackDTO(FeedBack feedback);
 
-//    @Mapping(source = "id_account",target = "account.id")
-//    @Mapping(source = "id_product", target = "product.id")
+    @Mapping(source = "id_account",target = "account.id")
+    @Mapping(source = "id_product", target = "product.id")
     FeedBack feedBackDTOToFeedBack(FeedBackDTO feedbackDTO);
 }

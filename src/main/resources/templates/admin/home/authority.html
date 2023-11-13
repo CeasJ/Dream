@@ -10,7 +10,6 @@
     <meta name="author" content="">
 
     <title>Authority - Dream Admin</title>
-    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link type="text/css" href="/css/admin/admin.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <!-- Angular -->
@@ -27,36 +26,204 @@
         </div>
         <div id="layoutSidenav_content">
             <main>
-                <div class="card mb-4" style="border-radius: 0px;">
+                <div class="card mb-4" style="border: none;">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <h3 class="mb-0">Decentralization</h3>
+                        <h3 class="mb-0"><i class="fas fa-table me-1"></i> Permission</h3>
                     </div>
                     <div class="card-body">
-                        <table id="datatablesSimple">
-                            <thead>
-                                <tr>
-                                    <th>
-                                        <div class="text-center" style="font-size: 16px;">Họ và tên</div>
-                                    </th>
-                                    <th ng-repeat="role in roles">
-                                        <div class="text-center" style="font-size: 16px;">{{role.name}}</div>
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr ng-repeat="acc in admins">
-                                    <td>
-                                        <div class="text-center">{{acc.fullname}}</div>
-                                    </td>
-                                    <td ng-repeat="role in roles">
-                                        <div class="text-center">
+                        <div class="row justify-content-between align-items-center mb-3 mt-1">
+                            <!-- Combobox Role -->
+                            <div class="d-flex col-md-3">
+                                <div class="form-group mb-0 me-3">
+                                    <label for="categoryFilter" class="fw-bold pt-1" style="font-size: 18px;">
+                                        Select Role:
+                                    </label>
+                                </div>
+                                <div class="form-group mb-0" style="width: 200px;">
+                                    <select class="form-select" ng-model="selectedRole"
+                                        ng-options="role.name for role in roles">
+                                        <option value="" disabled>All Role</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- Thanh tìm kiếm ở góc phải -->
+                            <div class="col-md-2 ms-auto">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Search..." aria-label="Search"
+                                        aria-describedby="basic-addon2">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover table-bordered order-datatable text-center">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>STT</th>
+                                        <th>Họ và tên</th>
+                                        <th ng-repeat="role in roles">{{role.name}}</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat-start="acc in admins">
+                                        <td>{{$index + 1}}</td>
+                                        <td>{{acc.fullname}}</td>
+                                        <td ng-repeat="role in roles">
                                             <input ng-checked="authority_of(acc, role)"
                                                 ng-click="authority_changed(acc, role)" type="checkbox">
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-dark" data-bs-toggle="modal"
+                                                data-bs-target="#myModal">
+                                                <i class="bi bi-eye-fill"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr ng-repeat-end></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center pt-2">
+                            <div class="fw-normal pb-3" style="font-size: 18px;">
+                                Showing 1 to 5 of 15 entries
+                            </div>
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination justify-content-end">
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                                            <i class="bi bi-caret-left-fill"></i>
+                                        </a>
+                                    </li>
+                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#">
+                                            <i class="bi bi-caret-right-fill"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-xl">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">
+                                    <i class="bi bi-pencil-square pe-2"></i>
+                                    Edit information
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form name="myStaff">
+                                    <div class="col-md-12 text-center"
+                                        style="display: flex; justify-content: center; align-items: center;">
+                                        <label for="avatar" style="cursor: pointer;">
+                                            <img class="img-fluid" id="imagePreview"
+                                                ng-src="{{'/img/gallery/' + form.avatar}}" ng-click="selectImage()">
+                                            <input type="file" id="avatar" name="avatar" ng-model="form.avatar"
+                                                onchange="angular.element(this).scope().imageChanged(this.files)"
+                                                style="display: none;">
+                                        </label>
+                                    </div>
+                                    <div class="col-md-9 offset-sm-2" style="padding: 20px; margin-top: 30px;">
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label for="username" class="form-label fw-bold mb-3">Username</label>
+                                                <input type="text" class="form-control" id="username" name="username"
+                                                    ng-model="form.username" placeholder="Username" readonly>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="firstname" class="form-label fw-bold mb-3">Firstname</label>
+                                                <input type="text" class="form-control" id="firstname" name="firstname"
+                                                    ng-model="form.firstname" placeholder="Firstname" ng-minlength="3"
+                                                    readonly pattern="[\p{L}\d\s]*">
+                                            </div>
                                         </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label for="lastname" class="form-label fw-bold mb-3">Lastname</label>
+                                                <input type="text" class="form-control" id="lastname" name="lastname"
+                                                    ng-model="form.lastname" placeholder="Lastname" ng-minlength="3"
+                                                    readonly pattern="[\p{L}\d\s]*">
+                                                <div class="invalid-feedback"
+                                                    ng-show="myStaff.lastname.$dirty && myStaff.lastname.$invalid">
+                                                    <span ng-show="myStaff.lastname.$error.required">Lastname is
+                                                        required</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label fw-bold mb-3">Fullname</label>
+                                                <input type="text" class="form-control" id="fullname" name="fullname"
+                                                    ng-model="form.fullname"
+                                                    placeholder="{{ form.firstname || '' }} {{ form.lastname || '' }}"
+                                                    readonly>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label for="password" class="form-label fw-bold mb-3">Password</label>
+                                                <input type="password" class="form-control" id="password"
+                                                    name="password" ng-model="form.password" placeholder="Password"
+                                                    ng-minlength="8" readonly
+                                                    pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#$%^&*()_+{}\[\]:;<>,.?~]).*$">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="email" class="form-label fw-bold mb-3">Email</label>
+                                                <input type="email" class="form-control" id="email" name="email"
+                                                    ng-model="form.email" placeholder="Email" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label for="phone" class="form-label fw-bold mb-3">Phone</label>
+                                                <input type="text" class="form-control" id="phone" name="phone"
+                                                    ng-model="form.phone" placeholder="Phone" ng-minlength="10"
+                                                    ng-maxlength="10" readonly pattern="^[0-9]*$" min="0">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="phone" class="form-label fw-bold mb-3">Address</label>
+                                                <input type="text" class="form-control" id="address" name="address"
+                                                    ng-model="form.address" placeholder="Address" readonly>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label for="userType" class="form-label fw-bold mb-3 mt-1 me-3">
+                                                    Role
+                                                </label>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="userType"
+                                                        id="adminType" value="admin" ng-model="form.userType" required>
+                                                    <label class="form-check-label" for="adminType">Admin</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="userType"
+                                                        id="staffType" value="staff" ng-model="form.userType" required>
+                                                    <label class="form-check-label" for="staffType">Staff</label>
+                                                </div>
+                                                <div class="invalid-feedback"
+                                                    ng-show="myStaff.userType.$dirty && myStaff.userType.$invalid">
+                                                    <span ng-show="myStaff.userType.$error.required">
+                                                        Please select a user type
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" ng-click="clearForm()">Clear</button>
+                                <button type="submit" class="btn btn-success" ng-click="saveAccount()">Save</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </main>
@@ -68,8 +235,6 @@
     </script>
     <script src="/js/admin/authority.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
-        crossorigin="anonymous"></script>
 </body>
 
 </html>

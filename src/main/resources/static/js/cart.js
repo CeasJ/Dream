@@ -82,6 +82,22 @@
     }
   });
 
+  // let isSuccess = true;
+
+  // $("#completeButton").click(function () {
+  //     if(isSuccess) {
+  //       $("#completeButton").click(function () {
+  //         $(".cart-3").show();
+  //         $(".cart-0, .cart-1, .form-buy, .infor-cart").hide();
+  //         $("#number-3").addClass("active");
+  //         $("#line-2").addClass("active-line");
+  //         $("#step-3").addClass("active-stext");
+  //       });
+  //   } else {
+
+  //   }
+  // });
+
   $(document).ready(function () {
     $("#applyDiscountBtn").click(function () {
       var toast = new bootstrap.Toast(document.getElementById("successToast"));
@@ -157,8 +173,8 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
       $http
         .get(
           "https://provinces.open-api.vn/api/p/" +
-          $scope.selectedProvince +
-          "?depth=2"
+            $scope.selectedProvince +
+            "?depth=2"
         )
         .then(function (response) {
           $scope.districts = response.data.districts;
@@ -171,8 +187,8 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
       $http
         .get(
           "https://provinces.open-api.vn/api/d/" +
-          $scope.selectedDistrict +
-          "?depth=2"
+            $scope.selectedDistrict +
+            "?depth=2"
         )
         .then(function (response) {
           $scope.wards = response.data.wards;
@@ -233,9 +249,9 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
     return json
       ? JSON.parse(json)
       : {
-        username: username,
-        items: [],
-      };
+          username: username,
+          items: [],
+        };
   }
 
   function saveCart(username, cart) {
@@ -354,6 +370,8 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
     },
 
     purchaseOrder() {
+      console.log($scope.cart.amount);
+      console.log(getCurrentTime());
       let order = angular.copy(this);
       $http
         .post(`/rest/order`, order)
@@ -361,7 +379,7 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
           $scope.cart.clear();
           // location.href = "/order/detail/" + resp.data.id;
         })
-        .catch((error) => { });
+        .catch((error) => {});
     },
   };
 
@@ -399,5 +417,3 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
   //Order End
 });
 //Cart Control End
-
-

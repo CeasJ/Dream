@@ -28,6 +28,7 @@
 
     <!-- Template Stylesheet -->
     <link href="/css/style.css" rel="stylesheet">
+    <link href="/css/detail.css" rel="stylesheet">
 
     <!-- Template detail -->
     <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"> -->
@@ -100,15 +101,63 @@
                             <h3 th:id="${'product-price' + product.id}" class="product-price"
                                 th:text="${product.formattedPrice}"></h3>
                         </div>
-
-
-                        <div class="ratings d-flex flex-row align-items-center">
-                            <div class="d-flex flex-row"><i class='bx bxs-star'></i> <i class='bx bxs-star'></i> <i
-                                    class='bx bxs-star'></i> <i class='bx bxs-star'></i> <i class='bx bx-star'></i>
-                            </div>
+                    <!-- Display the average star rating -->
+                    <div th:if="${averageRating == 0}" class="ratings d-flex flex-row align-items-center">
+                        <div class="d-flex flex-row">
+                            <i class='bx bx-star'></i>
+                            <i class='bx bx-star'></i>
+                            <i class='bx bx-star'></i>
+                            <i class='bx bx-star'></i>
+                            <i class='bx bx-star'></i>
                         </div>
+                    </div>
+                    <div th:if="${averageRating == 1}" class="ratings d-flex flex-row align-items-center">
+                        <div class="d-flex flex-row">
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bx-star'></i>
+                            <i class='bx bx-star'></i>
+                            <i class='bx bx-star'></i>
+                            <i class='bx bx-star'></i>
+                        </div>
+                    </div>
+                    <div th:if="${averageRating == 2}" class="ratings d-flex flex-row align-items-center">
+                        <div class="d-flex flex-row">
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bx-star'></i>
+                            <i class='bx bx-star'></i>
+                            <i class='bx bx-star'></i>
+                        </div>
+                    </div>
+                    <div th:if="${averageRating == 3}" class="ratings d-flex flex-row align-items-center">
+                        <div class="d-flex flex-row">
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bx-star'></i>
+                            <i class='bx bx-star'></i>
+                        </div>
+                    </div>
+                    <div th:if="${averageRating == 4}" class="ratings d-flex flex-row align-items-center">
+                        <div class="d-flex flex-row">
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bx-star'></i>
+                        </div>
+                    </div>
+                    <div th:if="${averageRating == 5}" class="ratings d-flex flex-row align-items-center">
+                        <div class="d-flex flex-row">
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                        </div>
+                    </div>
 
-                    <div class="mt-5" th:if="${availableSizes.size() > 0}">
+                    <div class="mt-5" th:if="${availableSizes.size() > 1}">
                         <h3 class="fw-bold">Size</h3>
                         <form th:object="${product}" class="rad-group">
                             <div th:each="size : ${availableSizes}">
@@ -126,8 +175,175 @@
             </div>
         </div>
     </div>
+
+
+    <!--    Comment section start-->
+    <div id="feedback-section">
+        <h3>Recent reviews from our customers</h3>
+        <div th:if="${remoteUser != null}">
+            <form th:action="@{'/feedback/' + ${product.name}}" method="post">
+                <div class="form-group">
+                    <label for="comment">Leave a comment</label>
+                    <textarea id="comment" name="comment" class="form-control" required></textarea>
+                </div>
+                <div class="form-group">
+                    <div class="rating">
+                        <div id="radio" class="star-rate">
+                            <input type="radio" class="star-check" name="rating" value="1" required/>
+                            <input type="radio" class="star-check" name="rating" value="2" required/>
+                            <input type="radio" class="star-check" name="rating" value="3" required/>
+                            <input type="radio" class="star-check" name="rating" value="4" required/>
+                            <input type="radio" class="star-check" name="rating" value="5" required/>
+                            <div class="stars">
+                                <span><i data-star-value="1" class="fa fa-star"></i></span>
+                                <span><i data-star-value="2" class="fa fa-star"></i></span>
+                                <span><i data-star-value="3" class="fa fa-star"></i></span>
+                                <span><i data-star-value="4" class="fa fa-star"></i></span>
+                                <span><i data-star-value="5" class="fa fa-star"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary" id="submitButton" disabled>Gửi</button>
+            </form>
+        </div>
+        <div th:if="${remoteUser == null}">
+            <!-- Hiển thị thông báo khi chưa đăng nhập -->
+            <h3>Vui lòng đăng nhập để bình luận.</h3>
+        </div>
+        <form id="ratingFilter" th:action="@{'/product/' + ${name}}" method="get">
+            <div class="form-group">
+                <label for="starRating">Sort by star rating:</label>
+                <select id="starRating" name="starRating" class="form-control">
+                    <option value="0">None</option>
+                    <option value="1">1 star</option>
+                    <option value="2">2 stars</option>
+                    <option value="3">3 stars</option>
+                    <option value="4">4 stars</option>
+                    <option value="5">5 stars</option>
+                </select>
+            </div>
+        </form>
+
+
+        <div th:each="feedback : ${feedbackList}">
+            <div class="row d-flex justify-content-center">
+                <div class="col-md-12 col-lg-10">
+                    <div class="card text-dark">
+                        <div class="card-body p-4">
+
+                            <div class="d-flex flex-start">
+                                <img class="rounded-circle shadow-1-strong me-3"
+                                     th:src="@{'/img/avatar/' + ${feedback.accountDTO.avatar}}" alt="avatar"
+                                     width="60" height="60" />
+                                <div th:if="${isAdminOrStaff}">
+                                    <button class="btn btn-danger" data-bs-toggle="modal" th:data-bs-target="'#deleteModal' + ${feedback.id}">X</button>
+                                </div>
+                                <div class="modal fade" th:id="'deleteModal' + ${feedback.id}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                                     aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Confirm Deletion</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>Are you sure you want to delete this comment?</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                <a th:href="@{'/product/' + ${name}}"  class="btn btn-danger">Yes</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <h6 class="mb-1" th:text="${feedback.accountDTO.fullname}"></h6>
+                                    <div class="d-flex align-items-center mb-3">
+                                        <p class="mb-0" th:text="${feedback.createDate}"></p>
+                                    </div>
+                                    <div class="d-flex align-items-center mb-3">
+                                        <p class="mb-0" th:text="${#dates.format(feedback.createTime, 'HH:mm')}"></p>
+                                    </div>
+                                    <p class="mb-0" th:text="${feedback.note}"></p>
+                                </div>
+                                <div th:if="${feedback.rating == 0}" class="ratings d-flex flex-row align-items-center">
+                                    <div class="d-flex flex-row">
+                                        <i class='bx bx-star'></i>
+                                        <i class='bx bx-star'></i>
+                                        <i class='bx bx-star'></i>
+                                        <i class='bx bx-star'></i>
+                                        <i class='bx bx-star'></i>
+                                    </div>
+                                </div>
+                                <div th:if="${feedback.rating == 1}" class="ratings d-flex flex-row align-items-center">
+                                    <div class="d-flex flex-row">
+                                        <i class='bx bxs-star'></i>
+                                        <i class='bx bx-star'></i>
+                                        <i class='bx bx-star'></i>
+                                        <i class='bx bx-star'></i>
+                                        <i class='bx bx-star'></i>
+                                    </div>
+                                </div>
+                                <div th:if="${feedback.rating == 2}" class="ratings d-flex flex-row align-items-center">
+                                    <div class="d-flex flex-row">
+                                        <i class='bx bxs-star'></i>
+                                        <i class='bx bxs-star'></i>
+                                        <i class='bx bx-star'></i>
+                                        <i class='bx bx-star'></i>
+                                        <i class='bx bx-star'></i>
+                                    </div>
+                                </div>
+                                <div th:if="${feedback.rating == 3}" class="ratings d-flex flex-row align-items-center">
+                                    <div class="d-flex flex-row">
+                                        <i class='bx bxs-star'></i>
+                                        <i class='bx bxs-star'></i>
+                                        <i class='bx bxs-star'></i>
+                                        <i class='bx bx-star'></i>
+                                        <i class='bx bx-star'></i>
+                                    </div>
+                                </div>
+                                <div th:if="${feedback.rating == 4}" class="ratings d-flex flex-row align-items-center">
+                                    <div class="d-flex flex-row">
+                                        <i class='bx bxs-star'></i>
+                                        <i class='bx bxs-star'></i>
+                                        <i class='bx bxs-star'></i>
+                                        <i class='bx bxs-star'></i>
+                                        <i class='bx bx-star'></i>
+                                    </div>
+                                </div>
+                                <div th:if="${feedback.rating == 5}" class="ratings d-flex flex-row align-items-center">
+                                    <div class="d-flex flex-row">
+                                        <i class='bx bxs-star'></i>
+                                        <i class='bx bxs-star'></i>
+                                        <i class='bx bxs-star'></i>
+                                        <i class='bx bxs-star'></i>
+                                        <i class='bx bxs-star'></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="my-0" style="height: 1px;" />
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="feedback-pagination">
+            <a th:href="@{'/product/' + ${name} + '?page=0'}" class="btn btn-primary" th:classappend="${currentPage == 0} ? 'disabled' : ''">First Page</a>
+            <a th:href="@{'/product/' + ${name} + '?page=' + ${currentPage - 1} }" class="btn btn-primary" th:classappend="${currentPage == 0} ? 'disabled' : ''">Previous Page</a>
+            <span th:text="${currentPage + 1} + ' / ' + ${totalPages}" class="btn btn-light" disabled="disabled"></span>
+            <a th:href="@{'/product/' + ${name} + '?page=' + ${currentPage + 1} }" class="btn btn-primary" th:classappend="${currentPage == totalPages - 1} ? 'disabled' : ''">Next Page</a>
+            <a th:href="@{'/product/' + ${name} + '?page=' + ${totalPages - 1} }" class="btn btn-primary" th:classappend="${currentPage == totalPages - 1} ? 'disabled' : ''">Last Page</a>
+        </div>
+    </div>
+    <!--    Comment section end-->
+
 </div>
 <!-- Main content end -->
+
 
     <!-- Footer Start -->
     <div th:replace="~{/user/component/footer.html}"></div>
@@ -145,15 +361,12 @@
 
 
     <!-- JavaScript Libraries -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/lib/wow/wow.min.js"></script>
     <script src="/lib/easing/easing.min.js"></script>
     <script src="/lib/waypoints/waypoints.min.js"></script>
     <script src="/lib/owlcarousel/owl.carousel.min.js"></script>
-
-    <!-- Angular -->
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 
     <!-- Template Javascript -->
     <script src="/js/detail.js"></script>

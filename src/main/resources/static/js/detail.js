@@ -179,3 +179,58 @@ function calculateDiscountedPrice(originalPrice, discountPercent) {
     console.log(originalPrice);
     return originalPrice - (originalPrice * discountPercent); // Calculate the discounted price based on the discount percentage
 }
+
+// Enable send button
+document.addEventListener("DOMContentLoaded", function () {
+        var starRadios = document.querySelectorAll('input.star-check');
+        var commentTextArea = document.getElementById('comment');
+        var submitButton = document.getElementById('submitButton');
+
+        var isStarSelected = false;
+        var isCommentFilled = false;
+
+        starRadios.forEach(function (radio) {
+            radio.addEventListener('change', function () {
+                isStarSelected = document.querySelector('input.star-check:checked') !== null;
+                enableSubmitButton();
+            });
+        });
+
+        commentTextArea.addEventListener('input', function () {
+            isCommentFilled = commentTextArea.value.trim() !== '';
+            enableSubmitButton();
+        });
+
+        function enableSubmitButton() {
+            if (isStarSelected && isCommentFilled) {
+                submitButton.disabled = false;
+            } else {
+                submitButton.disabled = true;
+            }
+        }
+    });
+
+// Star filter listener
+document.addEventListener("DOMContentLoaded", function () {
+        var starRatingSelect = document.getElementById("starRating");
+        var filterForm = document.getElementById("ratingFilter");
+
+        var urlParams = new URLSearchParams(window.location.search);
+        var selectedValue = urlParams.get("starRating");
+
+        if (selectedValue) {
+            starRatingSelect.value = selectedValue;
+        }
+
+        starRatingSelect.addEventListener("change", function () {
+            selectedValue = starRatingSelect.value;
+
+            var currentURL = new URL(window.location.href);
+            currentURL.searchParams.set("starRating", selectedValue);
+
+            filterForm.action = currentURL.toString();
+
+            filterForm.submit();
+        });
+    });
+
