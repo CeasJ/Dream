@@ -8,6 +8,9 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface ProductService {
+
+    List<ProductDTO> findAll();
+
     ProductDTO findById(Long id);
 
     // Page<ProductDTO> findByName(String productName, Pageable pageable);
@@ -26,6 +29,9 @@ public interface ProductService {
     void delete(Long id);
 
     Page<ProductDTO> findSaleProducts(Pageable pageable);
+
+    Page<ProductDTO> findAll(Pageable pageable);
+
 
     //  Display discounted price and original price in product detail and product list
     double getDiscountedPrice(Long productId);

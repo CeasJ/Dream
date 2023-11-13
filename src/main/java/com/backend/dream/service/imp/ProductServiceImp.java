@@ -50,6 +50,14 @@ public class ProductServiceImp implements ProductService {
 
     }
 
+    @Override
+    public List<ProductDTO> findAll() {
+        List<Product> products = productRepository.findAll();
+        return products.stream()
+                .map(productMapper::productToProductDTO)
+                .collect(Collectors.toList());
+    }
+
 
     @Override
     public ProductDTO findById(Long id) {
@@ -96,6 +104,12 @@ public class ProductServiceImp implements ProductService {
             productDTO.setAverageRating(feedbackService.getAverageRating(product.getId()));
             return productDTO;
         });
+    }
+
+    @Override
+    public Page<ProductDTO> findAll(Pageable pageable) {
+        Page<Product> productPage = productRepository.findAll(pageable);
+        return productPage.map(productMapper::productToProductDTO);
     }
 
 

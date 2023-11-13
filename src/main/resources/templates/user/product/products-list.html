@@ -123,7 +123,7 @@
         <div class="row g-4">
             <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s"  th:each="product: ${products}">
                 <div class="store-item position-relative text-center">
-                    <img class="img-fluid" th:src="@{'/img/' + ${product.image}}" alt="">
+                    <img class="img-fluid" th:src="@{'/img/gallery/' + ${product.image}}" alt="">
                     <div class="p-4">
                         <div class="text-center mb-3">
                             <div th:if="${product.averageRating == 0}">
