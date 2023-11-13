@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -26,7 +25,7 @@ public class ProductDTO {
 
     private Boolean active;
 
-    private String category;
+    private String name_category;
 
     private Long id_category;
 
@@ -57,5 +56,7 @@ public class ProductDTO {
     private Long selectedSizeId;
 
     private String formattedPriceBySize;
+
+    private Double averageRating;
 
 }

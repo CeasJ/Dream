@@ -7,14 +7,15 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Date;
+import java.sql.Time;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @Entity
-@Table
+@Table(name="feedback")
 public class FeedBack implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,8 +25,6 @@ public class FeedBack implements Serializable {
 
     private int rating;
 
-    private Date createDate;
-
     @ManyToOne
     @JoinColumn(name = "idaccount")
     private Account account;
@@ -33,4 +32,12 @@ public class FeedBack implements Serializable {
     @ManyToOne
     @JoinColumn(name = "idproduct")
     private Product product;
+
+    @Column(name = "createdate")
+    private Date createDate;
+
+
+    @Column(name = "createtime")
+    private Time createTime;
+
 }

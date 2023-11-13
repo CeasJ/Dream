@@ -84,8 +84,11 @@ app.controller("product_ctrl", function ($scope, $http) {
       .then((resp) => {
         $scope.form.image = resp.data.name;
       })
-      .catch((err) => { });
+      .catch((err) => {});
   };
+<<<<<<<<< Temporary merge branch 1
+=========
 
+>>>>>>>>> Temporary merge branch 2
 });
 

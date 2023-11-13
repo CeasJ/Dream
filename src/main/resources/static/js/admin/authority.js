@@ -10,10 +10,9 @@ app.controller("authority-ctrl", function ($scope, $http, $location) {
     });
 
 
-    $http.get(`/rest/account/admin?admin=true`).then((resp) => {
-      $scope.admins = resp.data;
-
-    });
+        $http.get(`/rest/profile/admin?admin=true`).then((resp) => {
+          $scope.admins = resp.data;
+        });
 
     $http.get(`/rest/authorities?admin=true`).then((resp) => {
       $scope.authories = resp.data;
@@ -110,21 +109,20 @@ app.controller("authority-ctrl", function ($scope, $http, $location) {
       .catch((err) => { });
   };
 
-  $scope.update = function () {
-    let account = angular.copy($scope.form);
-    $http
-      .put(`/rest/account/update/${account.id}`, account)
-      .then((resp) => {
-        let index = $scope.admins.findIndex(
-          (a) => a.username === account.username
-        );
-        $scope.admins[index] = account;
-        alert("update success");
-        $scope.clearForm();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-});
-
+                $scope.update = function () {
+                 let account = angular.copy($scope.form);
+                  $http
+                    .put(`/rest/profile/update/${account.id}`, account)
+                    .then((resp) => {
+                      let index = $scope.admins.findIndex(
+                        (a) => a.username === account.username
+                      );
+                      $scope.admins[index] = account;
+                      alert("update success");
+                      $scope.clearForm();
+                    })
+                    .catch((err) => {
+                      console.log(err);
+                    });
+                }
+    });

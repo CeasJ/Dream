@@ -90,7 +90,7 @@
                         <td th:text="${order.id}"></td>
                         <td th:text="${order.fullname}"></td>
                         <td th:text="${order.createDate}"></td>
-                        <td th:text="${#dates.format(order.createTime, 'hh:mm a')}"></td>
+                        <td th:text="${order.createTime}"></td>
                         <td th:text="${order.formattedPrice}"></td>
                         <th:block th:if="${order.status == 1}">
                             <td><span class="order-status status-info">Đã đặt hàng</span></td>
@@ -262,12 +262,6 @@
                                 <h5>Tình trạng đơn hàng:</h5>
                                 <p class="text-success" style="font-size: 20px; font-weight: 500;">
                                     Đơn hàng đã được giao thành công.</p>
-                            </div>
-
-                            <div ng-if="listOrder[0].order_status === 5" class="status-failed" style="border: none;">
-                                <h5>Tình trạng đơn hàng:</h5>
-                                <p class="text-danger" style="font-size: 20px; font-weight: 500;">
-                                    Đơn hàng đã bị hủy.</p>
                             </div>
                         </div>
                     </div>

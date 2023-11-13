@@ -11,10 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @CrossOrigin("*")
 @RestController
@@ -55,10 +58,6 @@ public class AccountRestController {
         }
     }
 
-    @PutMapping("/update/{id}")
-    public Account updateStaff(@RequestBody Account staffToUpdate, @PathVariable("id") Long id) {
-        return accountService.updateStaff(staffToUpdate);
-    }
     @PostMapping("/authenticate/{id}")
     public boolean authenticate(@PathVariable("id") Long id, @RequestBody Map<String, String> body) {
         String password = body.get("password");
@@ -68,11 +67,29 @@ public class AccountRestController {
 
     @PutMapping("/changePassword/{id}")
     public ResponseEntity<AccountDTO> updatePassword(@PathVariable("id") Long id,
-            @RequestBody Map<String, String> requestBody) {
+                                                     @RequestBody Map<String, String> requestBody) {
         String newPassword = requestBody.get("password");
         AccountDTO accountDTO = accountService.findById(id);
         accountService.updatePassword(accountDTO, newPassword);
         return new ResponseEntity<>(accountDTO, HttpStatus.OK);
     }
 
+    @GetMapping("/admin")
+    public List<Account> getAccounts(@RequestParam("admin") Optional<Boolean> admin) {
+        if (admin.orElse(false)) {
+            return accountService.getStaff();
+        } else {
+            return accountService.findALL();
+        }
+    }
+    @PostMapping("/add")
+    public Account createStaff(@RequestBody JsonNode account, Model model) {
+        String username = account.get("username").asText();
+        return accountService.checkUsernameExists(username) ? null : accountService.createStaff(account);
+    }
+
+    @PutMapping("/update/{id}")
+    public Account updateStaff(@RequestBody Account staffToUpdate, @PathVariable("id") Long id) {
+        return accountService.updateStaff(staffToUpdate);
+    }
 }
