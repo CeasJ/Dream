@@ -12,17 +12,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.OptionalInt;
 import java.util.stream.Collectors;
 
 @Service
 public class ProductSizeServiceImp implements ProductSizeService {
     private final ProductSizeRepository productSizeRepository;
-    private final ProductSizeMapper productSizeMapper;
-
+    private final SizeRepository sizeRepository;
+    @Autowired
+    private ProductSizeMapper productSizeMapper;
 
     @Autowired
-    public ProductSizeServiceImp(ProductSizeRepository productSizeRepository, ProductSizeMapper productSizeMapper) {
+    public ProductSizeServiceImp(ProductSizeRepository productSizeRepository, SizeRepository sizeRepository,
+            ProductSizeMapper productSizeMapper) {
         this.productSizeRepository = productSizeRepository;
+        this.sizeRepository = sizeRepository;
         this.productSizeMapper = productSizeMapper;
     }
 
@@ -36,6 +42,31 @@ public class ProductSizeServiceImp implements ProductSizeService {
         return sizeDTOs;
     }
 
+    @Override
+    public List<ProductSizeDTO> findAll() {
+        List<ProductSize> products = productSizeRepository.findAll();
+        return products.stream().map(productSizeMapper::productSizeToProductSizeDTO)
+                .collect(Collectors.toList());
+    }
 
+    @Override
+    public ProductSize create(ProductSizeDTO productSizeDTO) {
+        ProductSize saveproductsize = productSizeMapper.productSizeDTOToProductSize(productSizeDTO);
+        return productSizeRepository.save(saveproductsize);
+    }
+
+    @Override
+    public void delete(Long id) {
+        productSizeRepository.deleteById(id);
+    }
+
+    @Override
+    public ProductSizeDTO getProductSizeByProductIdAndSizeId(Long id_product, Long id_size) throws NoSuchElementException {
+        ProductSize productSize = productSizeRepository.findProductSizeById(id_product,id_size);
+
+        ProductSizeDTO productSizeDTO = productSizeMapper.productSizeToProductSizeDTO(productSize);
+
+        return productSizeDTO;
+    }
 
 }

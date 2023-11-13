@@ -4,11 +4,12 @@ import com.backend.dream.dto.OrderDTO;
 import com.backend.dream.entity.Orders;
 import com.fasterxml.jackson.databind.JsonNode;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.NoSuchElementException;
 
 public interface OrderService {
-    Orders create(JsonNode orderData) throws NoSuchElementException,NullPointerException;
+    Orders create(JsonNode orderData) throws NoSuchElementException, NullPointerException, ParseException;
     List<OrderDTO> listOrderByUsername(String username) throws NoSuchElementException;
     List<OrderDTO> getListOrder() throws ClassNotFoundException;
     List<OrderDTO> getListOrderConfirm() throws ClassNotFoundException;

@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.sql.Time;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 
@@ -30,6 +32,13 @@ public class Orders implements Serializable {
 
     private String note;
 
+    @Temporal(TemporalType.TIME)
+    @Column(name = "createtime")
+    private Time createTime = Time.valueOf(LocalTime.now());
+
+    @Column(name = "totalamount")
+    private Double totalAmount;
+
     @ManyToOne
     @JoinColumn(name = "idaccount")
     private Account account;
@@ -39,7 +48,7 @@ public class Orders implements Serializable {
     private OrderStatus status;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "orders")
+    @OneToMany(mappedBy = "orders", fetch = FetchType.EAGER)
     private List<OrderDetails> detail;
 
 }

@@ -7,6 +7,5 @@ import lombok.Setter;
 @Setter
 public class SizeDTO {
     private Long id;
-
     private String name;
 }

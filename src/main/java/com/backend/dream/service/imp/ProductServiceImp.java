@@ -53,7 +53,7 @@ public class ProductServiceImp implements ProductService {
 
     @Override
     public ProductDTO findById(Long id) {
-        Product product = productRepository.findById(id).orElse(null);
+        Product product = productRepository.getReferenceById(id);
         return product != null ? productMapper.productToProductDTO(product) : null;
     }
 
@@ -70,10 +70,9 @@ public class ProductServiceImp implements ProductService {
 
 
     @Override
-    public ProductDTO create(ProductDTO productDTO) {
+    public Product create(ProductDTO productDTO) {
         Product product = productMapper.productDTOToProduct(productDTO);
-        Product createdProduct = productRepository.save(product);
-        return productMapper.productToProductDTO(createdProduct);
+        return productRepository.save(product);
     }
 
     @Override

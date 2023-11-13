@@ -19,12 +19,13 @@ import org.springframework.stereotype.Service;
 public class TokenServiceImp implements TokenService {
 
 	@Autowired
-	TokenRepository tokenRepository;
+	private TokenRepository tokenRepository;
 
 	@Autowired
-	TokenMapper tokenMapper;
+	private TokenMapper tokenMapper;
+
 	@Autowired
-	AccountMapper accountMapper;
+	private AccountMapper accountMapper;
 
 	@Override
 	public TokenDTO createTokenForUser(Account account) {
@@ -37,7 +38,7 @@ public class TokenServiceImp implements TokenService {
 		token.setTokenType("Password");
 		token.setAccount(account);
 
-		LocalDateTime expiry_date = LocalDateTime.now().plusSeconds(60);
+		LocalDateTime expiry_date = LocalDateTime.now().plusMinutes(5);
 		token.setExpiredDate(expiry_date);
 		tokenRepository.save(token);
 		return tokenMapper.tokenToTokenDTO(token);

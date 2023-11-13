@@ -113,6 +113,7 @@ public class ProductController {
             productPage = productService.findByCategory(categoryIdValue, pageable);
         }
 
+
         List<ProductDTO> products = productPage.getContent();
         for (ProductDTO product : products) {
             double discountedPrice = productService.getDiscountedPrice(product.getId());

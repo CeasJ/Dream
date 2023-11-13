@@ -1,12 +1,14 @@
 package com.backend.dream.controller;
 
-import com.backend.dream.config.EmailService;
+import com.backend.dream.dto.AccountDTO;
 import com.backend.dream.dto.TokenDTO;
 import com.backend.dream.entity.Account;
 import com.backend.dream.entity.Token;
+import com.backend.dream.mapper.AccountMapper;
 import com.backend.dream.repository.TokenRepository;
 import com.backend.dream.service.AccountService;
 import com.backend.dream.service.TokenService;
+import com.backend.dream.config.EmailService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +30,8 @@ public class ForgotPasswordController {
     EmailService emailService;
     @Autowired
     private TokenRepository tokenRepository;
-
+    @Autowired
+    AccountMapper accountMapper;
     @GetMapping("/forgot")
     public String showForgotPasswordForm() {
         return "/user/security/forgotPass";
@@ -46,8 +49,8 @@ public class ForgotPasswordController {
         TokenDTO token = tokenService.createTokenForUser(account);
         String tokenValue = token.getToken();
         session.setAttribute("tokenValue", tokenValue);
-        emailService.sendEmailTokenPass(email, String.valueOf(tokenValue), account.getFullname());
-        model.addAttribute("message", "An email with a reset link has been sent to your email address");
+        emailService.sendEmailTokenPass(email, String.valueOf(tokenValue),account.getFullname());
+        model.addAttribute("message", "An email with OTP has been sent to your email address");
         return "/user/security/verifi";
     }
 
@@ -87,12 +90,12 @@ public class ForgotPasswordController {
         String tokenValue = (String) session.getAttribute("tokenValue");
         Token token = tokenService.findByToken(tokenValue);
         Account account = token.getAccount();
-
+        AccountDTO accountDTO = accountMapper.accountToAccountDTO(account);
         if (!password.equals(confirmPassword)) {
             model.addAttribute("message", "Passwords do not match");
             return "/user/security/confirmPass";
         }
-        accountService.updatePassword(account, password);
+        accountService.updatePassword(accountDTO, password);
 
         delete();
 
@@ -102,7 +105,7 @@ public class ForgotPasswordController {
 
     @Transactional
     public void delete() {
-        LocalDateTime now = LocalDateTime.now().plusMinutes(1);
+        LocalDateTime now = LocalDateTime.now().plusMinutes(5);
         tokenRepository.deleteByExpiredDateBefore(now);
     }
 }

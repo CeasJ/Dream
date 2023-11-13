@@ -1,16 +1,17 @@
 package com.backend.dream.dto;
 
 import com.backend.dream.entity.Size;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.Date;
 import java.util.List;
 
 @Getter
 @Setter
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ProductDTO {
     private Long id;
 
@@ -24,7 +25,9 @@ public class ProductDTO {
 
     private Boolean active;
 
-    private String category;
+    private String name_category;
+
+    private Long id_category;
 
     private Date createDate = new Date();
 
@@ -33,24 +36,23 @@ public class ProductDTO {
         return df.format(price);
     }
 
-    private Double discountedPrice = null;
+    private Double discountedPrice;
 
-
-    // Display the discounted price in product list page
     public String getFormattedDiscountedPrice() {
-        DecimalFormat df = new DecimalFormat("#,### ₫");
-        return df.format(discountedPrice);
+        if (discountedPrice != null) {
+            DecimalFormat df = new DecimalFormat("#,### ₫");
+            return df.format(discountedPrice);
+        } else {
+            return "";
+        }
     }
 
-
     private Boolean isDiscounted;
-
 
     private List<SizeDTO> availableSizes;
 
     private Size selectedSize;
 
-    // For save the chosen id size
     private Long selectedSizeId;
 
     private String formattedPriceBySize;

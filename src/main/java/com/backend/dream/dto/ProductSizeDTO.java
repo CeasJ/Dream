@@ -12,6 +12,13 @@ public class ProductSizeDTO {
 
     private Long id_size;
 
+    private String name_size;
+
     private Double priceProduct_Size;
+
+    private String image;
+
+    private String name;
+
 
 }
