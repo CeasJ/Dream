@@ -125,6 +125,7 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
       .then((response) => {
         if (response.data) {
           $scope.listOrder = response.data;
+          console.log($scope.listOrder);
         }
       })
       .catch((error) => {
@@ -217,11 +218,11 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
     ) {
       $scope.order.address =
         $scope.number +
-        "," +
+        "," + " " +
         $scope.getSelectedWards($scope.selectedWard) +
-        "," +
+        "," + " " +
         $scope.getSelectedDistricts($scope.selectedDistrict) +
-        "," +
+        "," + " " +
         $scope.getSelectedProvinces($scope.selectedProvince);
     }
   };

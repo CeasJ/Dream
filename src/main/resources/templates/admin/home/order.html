@@ -8,14 +8,18 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
     <title>Orders - Dream Admin</title>
-    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
-    <link type="text/css" href="/css/admin/admin.css" rel="stylesheet" />
-    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-    <!-- Angular -->
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
 
-    <!-- Angular Route-->
-    <!--    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.js"></script>-->
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+
+    <link type="text/css" href="/css/admin/admin.css" rel="stylesheet" />
+    
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+
+    <!-- Angular -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 </head>
 
 <body ng-app="order_app" ng-controller="order_ctrl" class="sb-nav-fixed">
@@ -35,29 +39,29 @@
                         <table id="datatablesSimple1" class="order-status no-sort-end">
                             <thead>
                                 <th>
-                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">No</div>
+                                    <div class="text-center text-primary ms-3" style="font-size: 16px;">No</div>
                                 </th>
                                 <th>
-                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">ID</div>
+                                    <div class="text-center text-primary ms-3" style="font-size: 16px;">ID</div>
                                 </th>
                                 <th>
-                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">CreateDate</div>
+                                    <div class="text-center text-primary ms-3" style="font-size: 16px;">CreateDate</div>
                                 </th>
                                 <th>
-                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">CreateTime</div>
+                                    <div class="text-center text-primary ms-3" style="font-size: 16px;">CreateTime</div>
                                 </th>
                                 <th>
-                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">Fullname</div>
+                                    <div class="text-center text-primary ms-3" style="font-size: 16px;">Fullname</div>
                                 </th>
                                 <th>
-                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">Address</div>
+                                    <div class="text-center text-primary ms-3" style="font-size: 16px;">Address</div>
                                 </th>
                                 <th>
-                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">Total Amount
+                                    <div class="text-center text-primary ms-3" style="font-size: 16px;">Total Amount
                                     </div>
                                 </th>
                                 <th>
-                                    <div class="text-center text-primary ms-3" style="font-size: 18px;">Status</div>
+                                    <div class="text-center text-primary ms-3" style="font-size: 16px;">Status</div>
                                 </th>
                                 <th></th>
                             </thead>
@@ -72,7 +76,7 @@
                                     <td>{{order.totalAmount | number : 0}} đ</td>
                                     <td ng-if="order.status === 1"> Đã đặt hàng</td>
                                     <td>
-                                        <button class="btn btn-dark" ng-click="edit(item)" data-bs-toggle="modal"
+                                        <button class="btn btn-dark" ng-click="selectOrder(order.id)" data-bs-toggle="modal"
                                             data-bs-target="#confirmModal">
                                             <i class="bi bi-pencil-square"></i>
                                         </button>
@@ -105,11 +109,11 @@
                                         <div class="col-md-6 cnt-hd border-right">
                                             <div class="info-pair">
                                                 <h6>Order ID:</h6>
-                                                <p>#1</p>
+                                                <p>{{listOrder[0].id_order}}</p>
                                             </div>
                                             <div class="info-pair">
                                                 <h6>Order Date:</h6>
-                                                <p>14-10-2023</p>
+                                                <p>{{listOrder[0].order_createDate}}</p>
                                             </div>
                                             <!-- Thêm thông tin khác nếu cần -->
                                         </div>
@@ -132,15 +136,15 @@
                                         <div class="col-md-6 cnt-hd border-right">
                                             <div class="info-pair">
                                                 <h6>Họ và tên:</h6>
-                                                <p>Tran Thanh</p>
+                                                <p>{{listOrder[0].account_fullname}}</p>
                                             </div>
                                             <div class="info-pair">
                                                 <h6>Số điện thoại:</h6>
-                                                <p>0123456789</p>
+                                                <p>{{listOrder[0].account_phone}}</p>
                                             </div>
                                             <div class="info-pair">
                                                 <h6>Địa chỉ:</h6>
-                                                <p>B000, Phường Phan Thiết, Thành phố Tuyên Quang, Tỉnh Tuyên Quang</p>
+                                                <p>{{listOrder[0].order_address}}</p>
                                             </div>
                                         </div>
                                         <div class="col-md-6 cnt-hd">
@@ -174,33 +178,30 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td>1</td>
-                                                        <td>
-                                                            <img class="img-fluid img-details"
-                                                                src="/img/gallery/image10.jpg">
-                                                        </td>
-                                                        <td>Đường đen sữa đá</td>
-                                                        <td>1</td>
-                                                        <td>45,000 đ</td>
-                                                        <td>45,000 đ</td>
-                                                    </tr>
-                                                    <td colspan="5" class="text-end">
-                                                        <strong>Tạm tính:</strong>
-                                                    </td>
-                                                    <td>45,000 đ</td>
+                                                    <tr ng-repeat="orderDetail in listOrder">
+                                                        <td>{{$index + 1}}</td>
+                                                        <td><img ng-src="{{'/img/gallery/' + orderDetail.product_image}}"
+                                                                class="img-fluid img-details"></td>
+                                                        <td>{{orderDetail.product_name}}</td>
+                                                        <td>{{orderDetail.quantity}}</td>
+                                                        <td>{{orderDetail.price | number : 0}} đ</td>
+                                                        <td>{{orderDetail.quantity * orderDetail.price | number :0}} đ</td>
                                                     </tr>
                                                     <tr>
-                                                        <td colspan="5" class="text-end">
-                                                            <strong>Chi phí vận chuyển:</strong>
+                                                        <td colspan="5" class="text-end"><strong>Tạm
+                                                                tính:</strong></td>
+                                                        <td>{{getSubTotal() | number : 0}} đ</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="5" class="text-end"><strong>Chi phí vận
+                                                                chuyển:</strong>
                                                         </td>
                                                         <td>20.000 đ</td>
                                                     </tr>
                                                     <tr>
-                                                        <td colspan="5" class="text-end">
-                                                            <strong> Tổng thanh toán:</strong>
-                                                        </td>
-                                                        <th class="text-success">65,000 đ</th>
+                                                        <td colspan="5" class="text-end"><strong>Tổng thanh
+                                                                toán:</strong></td>
+                                                        <th class="text-success">{{getTotal() | number : 0}} đ</th>
                                                     </tr>
                                                 </tbody>
                                             </table>
