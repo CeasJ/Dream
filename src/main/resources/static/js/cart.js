@@ -382,6 +382,14 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
     },
   };
 
+  // voucher.condition and total amount comparison
+  let voucherCondition = document.getElementById('voucherCondition').getAttribute('data-condition');
+
+  if (parseFloat($scope.cart.amount) > parseFloat(voucherCondition)) {
+    $scope.showVoucher = true;
+  }
+
+
   $scope.selectedPaymentMethod = "";
 
   $scope.handlePaymentMethodChange = function () {

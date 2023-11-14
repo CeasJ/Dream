@@ -1,17 +1,23 @@
 package com.backend.dream.controller;
 
+import com.backend.dream.dto.VoucherDTO;
+import com.backend.dream.service.VoucherService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
 
 @Controller
 public class HomeController {
 
     @Autowired
     private HttpServletRequest request;
+
+    @Autowired
+    VoucherService voucherService;
 
     @RequestMapping("/home")
     public String index() {
@@ -24,7 +30,9 @@ public class HomeController {
     }
 
     @RequestMapping("/cart")
-    public String cart() {
+    public String cart(Model model) {
+        List<VoucherDTO> applicableVouchers = voucherService.getApplicableVouchers();
+        model.addAttribute("applicableVouchers", applicableVouchers);
         return "/user/cart/cart";
     }
 

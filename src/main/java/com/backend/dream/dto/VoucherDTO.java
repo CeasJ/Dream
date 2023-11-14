@@ -14,7 +14,7 @@ public class VoucherDTO {
 
     private Date createDate;
 
-    private Date expiredDate;
+    private Date expireddate;
 
     private Double percent;
 
