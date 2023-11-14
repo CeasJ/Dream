@@ -28,11 +28,11 @@
                 <div class="row justify-content-between align-items-center" style="margin: 20px auto;">
                     <div class="d-flex col-md-3">
                         <div class="form-group mb-0 me-3">
-                            <label for="categoryFilter" class="fw-bold pt-1" style="font-size: 18px;">
+                            <label for="categoryFilter" class="fw-bold pt-1" style="font-size: 16px;">
                                 Filter by Status:
                             </label>
                         </div>
-                        <div class="form-group mb-0" style="width: 200px;">
+                        <div class="form-group mb-0" style="width: 170px;">
                             <select class="form-control" id="categoryFilter" ng-model="selectedCategory">
                                 <option value="" selected>All Status</option>
                                 <option>Đã đặt</option>
@@ -47,10 +47,10 @@
                     <div class="col-md-3">
                         <div class="d-flex">
                             <div class="form-group mb-0 me-3">
-                                <label for="dateFilter" class="fw-bold pt-1" style="font-size: 18px;">
+                                <label for="dateFilter" class="fw-bold pt-1" style="font-size: 16px;">
                                     Filter by Date:</label>
                             </div>
-                            <div class="form-group mb-0" style="width: 200px;">
+                            <div class="form-group mb-0" style="width: 170px;">
                                 <input type="date" class="form-control" id="dateFilter" ng-model="selectedDate">
                             </div>
                         </div>
@@ -94,9 +94,12 @@
                                         <td ng-if="order.status === 1"> Đã đặt hàng</td>
                                         <td>
                                             <button class="btn btn-primary"
-                                                ng-click="updateOrder.confirmOrder(order.id)">Confirm</button>
-                                            <button class="btn btn-danger"
-                                                ng-click="updateOrder.cancelOrder(order.id)">Cancel</button>
+                                                ng-click="updateOrder.confirmOrder(order.id)">
+                                                <i class="bi bi-plus-circle-fill"></i>
+                                            </button>
+                                            <button class="btn btn-danger" ng-click="updateOrder.cancelOrder(order.id)">
+                                                <i class="bi bi-x-circle-fill"></i>
+                                            </button>
                                             <button class="btn btn-dark" ng-click="edit(item)" data-bs-toggle="modal"
                                                 data-bs-target="#confirmModal">
                                                 <i class="bi bi-eye-fill"></i>
@@ -294,10 +297,12 @@
                                         <td>{{order.totalAmount | number : 0}} đ</td>
                                         <td ng-if="order.status === 2"> Đã xác nhận</td>
                                         <td>
-                                            <button class="btn btn-info"
-                                                ng-click="updateOrder.shippingOrder(order.id)">Ship</button>
-                                            <button class="btn btn-danger"
-                                                ng-click="updateOrder.cancelOrder(order.id)">Cancel</button>
+                                            <button class="btn btn-info" ng-click="updateOrder.shippingOrder(order.id)">
+                                                <i class="bi bi-truck-front-fill"></i>
+                                            </button>
+                                            <button class="btn btn-danger" ng-click="updateOrder.cancelOrder(order.id)">
+                                                <i class="bi bi-x-circle-fill"></i>
+                                            </button>
                                             <button class="btn btn-dark" data-bs-toggle="modal"
                                                 data-bs-target="#processingModal">
                                                 <i class="bi bi-eye-fill"></i>
@@ -496,9 +501,12 @@
                                         <td ng-if="order.status === 3">Đang giao hàng</td>
                                         <td>
                                             <button class="btn btn-success"
-                                                ng-click="updateOrder.successOrder(order.id)">Success</button>
-                                            <button class="btn btn-danger"
-                                                ng-click="updateOrder.cancelOrder(order.id)">Cancel</button>
+                                                ng-click="updateOrder.successOrder(order.id)">
+                                                <i class="bi bi-check-circle-fill"></i>
+                                            </button>
+                                            <button class="btn btn-danger" ng-click="updateOrder.cancelOrder(order.id)">
+                                                <i class="bi bi-x-circle-fill"></i>
+                                            </button>
                                             <button class="btn btn-dark" data-bs-toggle="modal"
                                                 data-bs-target="#shippingModal">
                                                 <i class="bi bi-eye-fill"></i>
@@ -898,7 +906,7 @@
                                         <td ng-if="order.status === 5"> Đã hủy</td>
                                         <td>
                                             <button class="btn btn-danger" ng-click="updateOrder.resetOrder(order.id)">
-                                                Reset
+                                                <i class="bi bi-arrow-clockwise"></i>
                                             </button>
                                             <button class="btn btn-dark" data-bs-toggle="modal"
                                                 data-bs-target="#cancelModal">

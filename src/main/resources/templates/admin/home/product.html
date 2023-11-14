@@ -36,11 +36,11 @@
                             <!-- Combobox Category ở góc trái -->
                             <div class="d-flex col-md-3">
                                 <div class="form-group mb-0 me-3">
-                                    <label for="categoryFilter" class="fw-bold pt-1" style="font-size: 18px;">
+                                    <label for="categoryFilter" class="fw-bold pt-2" style="font-size: 16px;">
                                         Filter by Category:
                                     </label>
                                 </div>
-                                <div class="form-group mb-0" style="width: 200px;">
+                                <div class="form-group mb-0" style="width: 170px;">
                                     <select class="form-control" id="categoryFilter" ng-model="selectedCategory">
                                         <option value="" selected>All Categories</option>
                                         <option ng-repeat="c in cates" ng-value="c.id">{{c.name}}</option>
@@ -52,11 +52,11 @@
                             <div class="col-md-3">
                                 <div class="d-flex">
                                     <div class="form-group mb-0 me-3">
-                                        <label for="activeFilter" class="fw-bold pt-1" style="font-size: 18px;">
+                                        <label for="activeFilter" class="fw-bold pt-2" style="font-size: 16px;">
                                             Filter by Active:
                                         </label>
                                     </div>
-                                    <div class="form-group mb-0" style="width: 200px;">
+                                    <div class="form-group mb-0" style="width: 170px;">
                                         <select class="form-control" id="activeFilter" ng-model="selectedActive">
                                             <option value="" selected>All Active Status</option>
                                             <option value="true">True</option>
@@ -78,7 +78,7 @@
                             <table class="table table-hover table-bordered product-datatable text-center">
                                 <thead class="table-dark">
                                     <tr>
-                                        <th>No</th>
+                                        <th>STT</th>
                                         <th>ID</th>
                                         <th>Image</th>
                                         <th>Name</th>

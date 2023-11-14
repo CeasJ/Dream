@@ -59,13 +59,14 @@
 
 
         <!-- Products Start -->
-        <div class="container-xxl py-5">
+        <div class="container-xxl" style="margin-bottom: 0px; padding-top: 20px;">
             <div class="container">
                 <div class="section-title text-center mx-auto wow fadeInUp" data-wow-delay="0.1s"
                     style="max-width: 500px;">
                     <p class="fs-5 fw-medium fst-italic text-primary">Dream Tea & Coffee</p>
                     <h1 class="display-6">Good to the last drop!</h1>
                 </div>
+
                 <div class="row mt-2 mb-3">
                     <div class="col-md-4 sort">
                         <div class="d-flex align-items-center" style="margin-top: 3px;">
@@ -79,11 +80,8 @@
                         </div>
                     </div>
 
-
-
                     <div class="col-md-4 sort">
                         <!-- Theo giá + comboBox( Từ thấp đến cao, từ cao đến thấp ) -->
-
                         <form th:action="@{/store}" method="get">
                             <div class="d-flex align-items-center" style="margin-top: 3px;">
                                 <label for="sortByPrice" class="mr-2" style="margin-right: 15px; font-weight: 600;">Theo
@@ -99,12 +97,7 @@
                                 </select>
                             </div>
                         </form>
-
                     </div>
-
-
-
-
                     <div class="col-md-4 sort">
                         <form th:action="@{/search}" method="get">
                             <div class="input-group" style="margin-top: 1px; padding: 0 10px;">
@@ -118,92 +111,95 @@
                             </div>
                         </form>
                     </div>
+                </div>
+                <div class="row g-4">
+                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s" th:each="product: ${products}">
+                        <div class="store-item position-relative text-center">
+                            <img class="img-fluid" th:src="@{'/img/gallery/' + ${product.image}}" alt="">
+                            <div class="p-4">
+                                <div class="text-center mb-3">
+                                    <div th:if="${product.averageRating == 0}">
+                                        <small class="fa fa-star"></small>
+                                        <small class="fa fa-star"></small>
+                                        <small class="fa fa-star"></small>
+                                        <small class="fa fa-star"></small>
+                                        <small class="fa fa-star"></small>
+                                    </div>
+                                    <div th:if="${product.averageRating == 1}">
+                                        <small class="fa fa-star text-primary"></small>
+                                        <small class="fa fa-star"></small>
+                                        <small class="fa fa-star"></small>
+                                        <small class="fa fa-star"></small>
+                                        <small class="fa fa-star"></small>
+                                    </div>
+                                    <div th:if="${product.averageRating == 2}">
+                                        <small class="fa fa-star text-primary"></small>
+                                        <small class="fa fa-star text-primary"></small>
+                                        <small class="fa fa-star"></small>
+                                        <small class="fa fa-star"></small>
+                                        <small class="fa fa-star"></small>
+                                    </div>
+                                    <div th:if="${product.averageRating == 3}">
+                                        <small class="fa fa-star text-primary"></small>
+                                        <small class="fa fa-star text-primary"></small>
+                                        <small class="fa fa-star text-primary"></small>
+                                        <small class="fa fa-star"></small>
+                                        <small class="fa fa-star"></small>
+                                    </div>
+                                    <div th:if="${product.averageRating == 4}">
+                                        <small class="fa fa-star text-primary"></small>
+                                        <small class="fa fa-star text-primary"></small>
+                                        <small class="fa fa-star text-primary"></small>
+                                        <small class="fa fa-star text-primary"></small>
+                                        <small class="fa fa-star"></small>
+                                    </div>
+                                    <div th:if="${product.averageRating == 5}">
+                                        <small class="fa fa-star text-primary"></small>
+                                        <small class="fa fa-star text-primary"></small>
+                                        <small class="fa fa-star text-primary"></small>
+                                        <small class="fa fa-star text-primary"></small>
+                                        <small class="fa fa-star text-primary"></small>
+                                    </div>
 
-        </div>
-        <div class="row g-4">
-            <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s"  th:each="product: ${products}">
-                <div class="store-item position-relative text-center">
-                    <img class="img-fluid" th:src="@{'/img/gallery/' + ${product.image}}" alt="">
-                    <div class="p-4">
-                        <div class="text-center mb-3">
-                            <div th:if="${product.averageRating == 0}">
-                                <small class="fa fa-star"></small>
-                                <small class="fa fa-star"></small>
-                                <small class="fa fa-star"></small>
-                                <small class="fa fa-star"></small>
-                                <small class="fa fa-star"></small>
-                            </div>
-                            <div th:if="${product.averageRating == 1}">
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star"></small>
-                                <small class="fa fa-star"></small>
-                                <small class="fa fa-star"></small>
-                                <small class="fa fa-star"></small>
-                            </div>
-                            <div th:if="${product.averageRating == 2}">
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star"></small>
-                                <small class="fa fa-star"></small>
-                                <small class="fa fa-star"></small>
-                            </div>
-                            <div th:if="${product.averageRating == 3}">
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star"></small>
-                                <small class="fa fa-star"></small>
-                            </div>
-                            <div th:if="${product.averageRating == 4}">
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star"></small>
-                            </div>
-                             <div th:if="${product.averageRating == 5}">
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                 <small class="fa fa-star text-primary"></small>
-                            </div>
+                                </div>
+                                <h4 class="mb-3" th:text="${product.name}">Nature close tea</h4>
+                                <p class="product-description" th:text="${product.describe}"></p>
 
+
+                                <div th:if="${product.discountedPrice != null}">
+                                    <p class="header">
+                                    <h5 style="display: inline;"><del><i><span
+                                                    th:text="${product.formattedPrice}"></span></i></del></h5>
+                                    <h4 style="display: inline;"><span
+                                            th:text="${product.formattedDiscountedPrice}"></span>
+                                    </h4>
+                                    </p>
+                                </div>
+                                <div th:unless="${product.discountedPrice != null}">
+                                    <!-- Hiển thị giá gốc nếu không có giảm giá -->
+                                    <h4><span th:text="${product.formattedPrice}"></span></h4>
+                                </div>
+                            </div>
+                            <div class="store-overlay">
+                                <a th:href="@{/product/{name}(name=${product.name})}"
+                                    class="btn btn-primary rounded-pill py-2 px-4 m-2">More Detail <i
+                                        class="fa fa-arrow-right ms-2"></i></a>
+                                <button th:attr="ng-click=@{|cart.add(${product.id})|}"
+                                    class="btn btn-dark rounded-pill py-2 px-4 m-2">Add to Cart <i
+                                        class="fa fa-cart-plus ms-2"></i></button>
+                            </div>
                         </div>
-                        <h4 class="mb-3" th:text="${product.name}">Nature close tea</h4>
-                        <p class="product-description" th:text="${product.describe}" ></p>
-
-
-                        <div th:if="${product.discountedPrice != null}">
-                            <p class="header">
-                                <h5 style="display: inline;"><del><i><span th:text="${product.formattedPrice}"></span></i></del></h5>
-                                <h4 style="display: inline;"><span th:text="${product.formattedDiscountedPrice}"></span></h4>
-                            </p>
-                        </div>
-                        <div th:unless="${product.discountedPrice != null}">
-                            <!-- Hiển thị giá gốc nếu không có giảm giá -->
-                            <h4><span th:text="${product.formattedPrice}"></span></h4>
-                        </div>
-                    </div>
-                    <div class="store-overlay">
-                        <a th:href="@{/product/{name}(name=${product.name})}" class="btn btn-primary rounded-pill py-2 px-4 m-2">More Detail <i class="fa fa-arrow-right ms-2"></i></a>
-                        <button th:attr="ng-click=@{|cart.add(${product.id})|}" class="btn btn-dark rounded-pill py-2 px-4 m-2">Add to Cart <i class="fa fa-cart-plus ms-2"></i></button>
                     </div>
                 </div>
+                <div class="pagination">
+                    <ul class="d-flex flex-row">
+                        <li th:each="pageNumber : ${#numbers.sequence(0, totalPages-1)}"
+                            th:class="${pageNumber == currentPage ? 'active' : ''}">
+                            <a th:attr="data-page=${pageNumber}" href="#" th:text="${pageNumber+1}"></a>
+                        </li>
+                    </ul>
+                </div>
             </div>
-        </div>
-        <div class="pagination">
-            <ul class="d-flex flex-row">
-                <li th:each="pageNumber : ${#numbers.sequence(0, totalPages-1)}"
-                    th:class="${pageNumber == currentPage ? 'active' : ''}">
-                    <a th:attr="data-page=${pageNumber}" href="#" th:text="${pageNumber+1}"></a>
-                </li>
-            </ul>
-        </div>
-
-
-
-        </div>
         </div>
         <!-- Products End -->
     </main>
@@ -211,11 +207,9 @@
     <div th:replace="~{/user/component/footer.html}"></div>
     <!-- Footer End -->
 
-
     <!-- Copyright Start -->
     <div th:replace="~{/user/component/copyright.html}"></div>
     <!-- Copyright End -->
-
 
     <!-- Back to Top -->
     <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i

@@ -138,17 +138,88 @@
               <p class="title-prc">Tổng số lượng <span style="float: right; font-weight: bold; font-size: 16px;">
                   {{cart.count}}</span>
               </p>
-              </p>
               <p class="title-prc">Tiền vận chuyển <span
                   style="float: right; font-weight: bold; font-size: 16px;">30,000 VNĐ</span>
               </p>
               <p class="title-prc">Áp dụng Voucher
                 <span class="text-danger" style="float: right; font-weight: bold; font-size: 16px;">- 12,000 VNĐ</span>
               </p>
-              <div class="input-group mb-4 mt-3">
-                <input type="text" class="form-control" id="discountCode" placeholder="Nhập mã giảm giá">
-                <button class="btn btn-secondary text-white" id="applyDiscountBtn">Áp dụng</button>
+              <div class="input-group mb-4 mt-3 d-flex justify-content-between align-items-center">
+                <label class="mb-0 me-2 ps-2">Dream Voucher</label>
+                <a href="#" class="change-voucher-link pt-1" id="applyDiscountBtn" data-bs-toggle="modal"
+                  data-bs-target="#voucherModal">
+                  Chọn mã giảm giá
+                </a>
               </div>
+              <!-- Modal -->
+              <div class="modal fade voucher-modal" id="voucherModal" tabindex="-1" aria-labelledby="voucherModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h3 class="modal-title" id="voucherModalLabel">Dream Voucher</h3>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <p class="text-muted ps-3" style="font-size: 18px;">Có thể chọn 1 Voucher</p>
+                      <div class="container mx-auto">
+                        <!-- Voucher 1 -->
+                        <div class="row custom-shadow" style="margin-bottom: 30px;">
+                          <div class="col-md-3 content-sale text-center">
+                            <div class="icon-container">
+                              <i class="bi bi-truck text-white"></i>
+                            </div>
+                            <h6 class="text-white">Mã vận chuyển</h6>
+                          </div>
+                          <div class="col-md-9">
+                            <div class="discount-info" style="margin-left: 5px; padding: 10px 0;">
+                              <p style="margin-bottom: 5px; font-weight: bold; font-size: 24px;">
+                                Giảm tối đa 25k</p>
+                              <div class="form-check float-end">
+                                <input class="form-check-input" type="radio" id="customRadio" name="customRadio">
+                              </div>
+                              <p style="font-size: 15px; margin-bottom: 10px;">Đơn tối thiểu 50k</p>
+                              <div class="expiry-info text-danger" style="display: flex; font-size: 14px;">
+                                <i class="far fa-clock" style="padding-top: 3px; padding-right: 5px;"></i>
+                                <p style="margin-bottom: 0px;">Có hiệu lực: Còn 1 ngày</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- Voucher 1 -->
+                        <!-- Voucher 2 -->
+                        <div class="row custom-shadow" style="margin-bottom: 30px;">
+                          <div class="col-md-3 content-sale text-center">
+                            <div class="icon-container">
+                              <i class="bi bi-truck text-white"></i>
+                            </div>
+                            <h6 class="text-white">Mã vận chuyển</h6>
+                          </div>
+                          <div class="col-md-9">
+                            <div class="discount-info" style="margin-left: 5px; padding: 10px 0;">
+                              <p style="margin-bottom: 5px; font-weight: bold; font-size: 24px;">
+                                Giảm tối đa 25k</p>
+                              <div class="form-check float-end">
+                                <input class="form-check-input" type="radio" id="customRadio" name="customRadio">
+                              </div>
+                              <p style="font-size: 15px; margin-bottom: 10px;">Đơn tối thiểu 50k</p>
+                              <div class="expiry-info text-danger" style="display: flex; font-size: 14px;">
+                                <i class="far fa-clock" style="padding-top: 3px; padding-right: 5px;"></i>
+                                <p style="margin-bottom: 0px;">Có hiệu lực: Còn 1 ngày</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- Voucher 2 -->
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Áp dụng</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <hr>
               <p class="title-prc">Tổng tiền <span class="price" style="float: right;">{{cart.amount | number : 0}}
                   VND</span></p>
@@ -219,27 +290,28 @@
                     </div>
                   </div>
 
-                <div class="text-center">
-                  <button type="button" class="btn btn-secondary btn-infor" id="backButton">Trở lại</button>
-                  <button class="btn btn-danger btn-infor" id="completeButton" ng-click="handlePaymentMethodChange()">Hoàn thành</button>
-                </div>
-              </form>
+                  <div class="text-center">
+                    <button type="button" class="btn btn-secondary btn-infor" id="backButton">Trở lại</button>
+                    <button class="btn btn-danger btn-infor" id="completeButton"
+                      ng-click="handlePaymentMethodChange()">Hoàn thành</button>
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="container-fluid cart-3 mx-auto" style="display: none;">
-          <img class="img-cart" src="/img/gallery/cart-0.png">
-          <h5>Đơn hàng của bạn đã được xử lý</h5>
-          <a th:href="@{|/store|}">
-            <button class="btn btn-danger mt-3" style="padding: 8px 18px;">
-              <h6 style="color: white;">Tiếp tục mua sắm</h6>
-            </button>
-          </a>
+          <div class="container-fluid cart-3 mx-auto" style="display: none;">
+            <img class="img-cart" src="/img/gallery/cart-0.png">
+            <h5>Đơn hàng của bạn đã được xử lý</h5>
+            <a th:href="@{|/store|}">
+              <button class="btn btn-danger mt-3" style="padding: 8px 18px;">
+                <h6 style="color: white;">Tiếp tục mua sắm</h6>
+              </button>
+            </a>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <!--Cart End  -->
+    <!--Cart End  -->
 
     <!-- Back to Top -->
     <!-- Footer Start -->
@@ -269,7 +341,6 @@
   <script src="/lib/easing/easing.min.js"></script>
   <script src="/lib/waypoints/waypoints.min.js"></script>
   <script src="/lib/owlcarousel/owl.carousel.min.js"></script>
-
   <!-- Cart Control -->
   <script src="/js/cart.js"></script>
 
