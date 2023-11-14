@@ -11,22 +11,19 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav ms-auto">
-                    <a th:href="@{|/home|}" class="nav-item nav-link">Home</a>
-                    <a th:href="@{|/store|}" class="nav-item nav-link">Store</a>
-
-
-
+                    <a th:href="@{|/home|}" class="nav-item nav-link" th:text="#{navbar.home}"></a>
+                    <a th:href="@{|/store|}" class="nav-item nav-link" th:text="#{navbar.store}"></a>
                     <!--When customer not login-->
                     <th:block th:unless="${isAuthenticated}">
-                        <a th:href="@{|/login/form|}" class="nav-item nav-link">Login</a>
-                        <a th:href="@{|/register|}" class="nav-item nav-link">Register</a>
+                        <a th:href="@{|/login/form|}" class="nav-item nav-link" th:text="#{navbar.login}"></a>
+                        <a th:href="@{|/register|}" class="nav-item nav-link" th:text="#{navbar.register}"></a>
                     </th:block>
 
                     <!--When customer login-->
                     <th:block th:if="${isAuthenticated}">
                         <a id="username" class="nav-item nav-link" hidden>[[${username}]]</a>
                         <a id="id_account" class="nav-item nav-link" hidden>[[${id_account}]]</a>
-                        <a th:href="@{|/orders|}" class="nav-item nav-link">Order</a>
+                        <a th:href="@{|/orders|}" class="nav-item nav-link" th:text="#{navbar.order}"></a>
                         <div class="user-icon">
                             <div class="user-icon-circle">
                                 <img th:src="@{'/img/avatar/' + ${avatar}}" class="img-fluid">
@@ -38,28 +35,35 @@
                                     <!--When customer has role admin or staff-->
                                     <th:block th:if="${isAdminOrStaff}">
                                         <a th:href="@{|/admin|}">
-                                            <li>Admin Management</li>
+                                            <li th:text="#{navbar.admin}"></li>
                                         </a>
                                     </th:block>
                                     <a th:href="@{|/profile|}">
-                                        <li>My Account</li>
+                                        <li th:text="#{navbar.myAccount}"></li>
                                     </a>
                                     <a th:href="@{|/voucher|}">
-                                        <li>My Vouchers</li>
+                                        <li th:text="#{navbar.myVouchers}"></li>
                                     </a>
                                     <a th:href="@{|/changePassword|}">
-                                        <li>ChangePassword</li>
+                                        <li th:text="#{navbar.changePassword}"></li>
                                     </a>
                                     <a th:href="@{|/logout|}">
-                                        <li>Logout</li>
+                                        <li th:text="#{navbar.logout}"></li>
                                     </a>
                                 </ul>
                             </div>
                         </div>
                     </th:block>
                     <!-- Icon Account và Tên người dùng -->
-
                 </div>
+                <div class="language">
+                    <a th:class="${#locale.language == 'vi' ? 'language-link active' : 'language-link'}"
+                        href="?lang=vi">VN</a>
+                    <span>|</span>
+                    <a th:class="${#locale.language == 'en' ? 'language-link active' : 'language-link'}"
+                        href="?lang=en">EN</a>
+                </div>
+
                 <div class="border-start ps-4 d-none d-lg-block icons">
                     <label class="theme-mode">
                         <input type="checkbox">
@@ -105,8 +109,6 @@
                         <i class="bi bi-bag-fill"></i>
                         <span style="font-size: 12px;" id="cartCount" class="cart-count">{{cart.count}}</span>
                     </a>
-
-
                 </div>
             </div>
         </nav>
