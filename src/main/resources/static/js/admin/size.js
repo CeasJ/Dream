@@ -3,6 +3,7 @@ app.controller("size-ctrl", function ($scope, $http, $location) {
   $scope.sizes = [];
   $scope.products = [];
   $scope.productsize = [];
+  $scope.priceInput = {};
 
   $scope.intialize = function () {
     $http.get(`/rest/size`).then((resp) => {
@@ -36,24 +37,25 @@ app.controller("size-ctrl", function ($scope, $http, $location) {
     if (productSize) {
       $scope.revoke_size(productSize);
     } else {
-
-      //        productSize = { product: name, size: size};
-      productSize = { id_product: name.id, id_size: size.id };
-      console.log(productSize);
-      $scope.grant_size(productSize);
+      productSize = { id_product: name.id, id_size: size.id};
+       $scope.grant_size(productSize);
+      $scope.showInput(name.id, size.id, true);
     }
+       // Khởi tạo priceInput nếu chưa tồn tại
+        if (!$scope.priceInput[name.id]) {
+            $scope.priceInput[name.id] = {};
+        }
   };
 
-  $scope.grant_size = function (productSize) {
+  $scope.grant_size = function (productSize,priceProduct_Size) {
+  productSize.priceProduct_Size = priceProduct_Size;
     $http.post(`/rest/productsizes`, productSize)
       .then((resp) => {
         $scope.productsize.push(resp.data);
-        alert("Them Size thành công");
       })
       .catch((error) => {
       });
   };
-
   $scope.revoke_size = function (productSize) {
     $http.delete(`/rest/productsizes/${productSize.id}`, productSize)
       .then((resp) => {
@@ -64,22 +66,40 @@ app.controller("size-ctrl", function ($scope, $http, $location) {
       .catch((error) => {
       });
   };
+     $scope.savePrice = function (id_product, id_size, priceProduct_Size) {
+         var priceProduct_Size = $scope.priceInput[id_product] ? $scope.priceInput[id_product][id_size] : null;
+         if (priceProduct_Size !== null && priceProduct_Size !== undefined) {
+             $scope.showInput(id_product, id_size, false);
+           var productSize = {
+                id_product: id_product,
+                id_size: id_size,
+                priceProduct_Size: priceProduct_Size
+           };
+            $scope.grant_size(productSize);
+             alert('Thêm giá thành công cho size ' + id_size + ' của sản phẩm ' + id_product);
+         } else {
+             alert('Vui lòng nhập giá trước khi lưu.');
+         }
+     };
+
+     $scope.showInput = function (id_product, id_size) {
+         return $scope.priceInput[id_product] && $scope.priceInput[id_product][id_size];
+     };
 });
 
-document.addEventListener('DOMContentLoaded', function () {
-  Promise.all([
-    fetch('/rest/size'),
-    fetch('/rest/products'),
-    fetch('/rest/productsizes')
-  ])
-    .then(responses => Promise.all(responses.map(response => response.json())))
-    .then(data => {
-      let sizeTables = document.querySelectorAll('.size-datatable');
-      sizeTables.forEach(table => {
-        new simpleDatatables.DataTable(table);
-      });
-    })
-    .catch(error => console.error("Error loading data:", error));
-
-  // Các phần logic khác của bạn trong file product.js có thể được viết ở đây
-});
+//document.addEventListener('DOMContentLoaded', function () {
+//  Promise.all([
+//    fetch('/rest/size'),
+//    fetch('/rest/products'),
+//    fetch('/rest/productsizes')
+//  ])
+//    .then(responses => Promise.all(responses.map(response => response.json())))
+//    .then(data => {
+//      let sizeTables = document.querySelectorAll('.size-datatable');
+//      sizeTables.forEach(table => {
+//        new simpleDatatables.DataTable(table);
+//      });
+//    })
+//    .catch(error => console.error("Error loading data:", error));
+//
+//});

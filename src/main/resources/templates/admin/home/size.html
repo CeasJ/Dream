@@ -43,16 +43,25 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat-start="name in products">
-                                    <td>
-                                        {{name.name}}
-                                    </td>
-                                    <td ng-repeat="size in sizes">
-                                        <input ng-checked="size_of(name, size)" ng-click="size_changed(name, size)"
-                                            type="checkbox">
-                                    </td>
-                                </tr>
-                                <tr ng-repeat-end></tr>
+                            <tr ng-repeat-start="name in products">
+                                <td>
+                                    {{name.name}}
+                                </td>
+                                <td ng-repeat="size in sizes">
+                                    <input ng-checked="size_of(name, size)" ng-click="size_changed(name, size)" type="checkbox">
+                                </td>
+                            </tr>
+                            <tr ng-repeat-end>
+                                <td colspan="{{sizes.length}}">
+                                    <div ng-repeat="size in sizes" ng-if="size_of(name, size)">
+                                        <form ng-submit="savePrice(name.id, size.id)">
+                                            <label for="priceInput">Giá cho {{size.name}}:</label>
+                                            <input type="number" ng-model="priceInput[name.id][size.id]" id="priceInput" placeholder="Nhập giá" required>
+                                            <button type="submit">Lưu</button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>
