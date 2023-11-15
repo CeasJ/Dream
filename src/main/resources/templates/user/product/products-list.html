@@ -84,8 +84,7 @@
                         <!-- Theo giá + comboBox( Từ thấp đến cao, từ cao đến thấp ) -->
                         <form th:action="@{/store}" method="get">
                             <div class="d-flex align-items-center" style="margin-top: 3px;">
-                                <label for="sortByPrice" class="mr-2" style="margin-right: 15px; font-weight: 600;">Theo
-                                    giá</label>
+                                <label for="sortByPrice" class="mr-2" style="margin-right: 15px; font-weight: 600;">Theo giá</label>
                                 <select class="form-select cb-sort" name="sortOption" id="sortByPrice"
                                     style="width: 270px; height: 36px;" onchange="updateCategoryIdAndSubmit(this)">
                                     <option value="none" th:selected="${sortOption == null || sortOption == 'none'}">
@@ -162,7 +161,7 @@
                                     </div>
 
                                 </div>
-                                <h4 class="mb-3" th:text="${product.name}">Nature close tea</h4>
+                                <h4 class="mb-3" th:text="${product.name}"></h4>
                                 <p class="product-description" th:text="${product.describe}"></p>
 
 
@@ -224,10 +223,10 @@
     <script src="lib/owlcarousel/owl.carousel.min.js"></script>
 
     <!-- Cart AngularJS -->
-    <script src="js/cart.js"></script>
+    <script src="/js/cart.js"></script>
 
 
-    <script src="js/main.js"></script>
+    <script src="/js/main.js"></script>
 </body>
 
 </html>

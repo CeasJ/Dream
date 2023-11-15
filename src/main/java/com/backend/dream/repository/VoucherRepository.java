@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public interface VoucherRepository extends JpaRepository<Voucher, Long> {
-    @Query("SELECT v FROM Voucher v WHERE CURRENT_DATE <= v.expireddate " +
+    @Query("SELECT v FROM Voucher v WHERE CURRENT_DATE < v.expireddate " +
             "AND v.status.id = 1")
     List<Voucher> findApplicableVouchers();
 }

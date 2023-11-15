@@ -19,5 +19,7 @@ public interface FeedbackService {
 
     void deleteFeedback(Long id);
 
+    Long countFeedback(Long productId);
+
 
 }

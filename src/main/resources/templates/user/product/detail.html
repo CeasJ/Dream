@@ -218,7 +218,7 @@
             <div style="margin: 40px auto;">
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
-                        <p style="font-size: 25px;" class="mb-0 fw-bold">Comments(3)</p>
+                        <p style="font-size: 25px;" class="mb-0 fw-bold">Comments(<span th:text="${totalComments}"></span>)</p>
                     </div>
                     <form id="ratingFilter" th:action="@{'/product/' + ${name}}" method="get">
                         <div class="d-flex align-items-center sort-comments">
@@ -257,7 +257,7 @@
                                         <div class="col-md-2 ms-auto">
                                             <div style="float: right;">
                                                 <div class="d-flex align-items-center">
-                                                    <p class="mb-0 me-2" th:text="${feedback.createDate}"></p>
+                                                    <p class="mb-0 me-2" th:text="${#dates.format(feedback.createDate, 'dd-MM-yyyy')}"></p>
                                                     <p class="mb-0"
                                                         th:text="${#dates.format(feedback.createTime, 'HH:mm')}">
                                                     </p>

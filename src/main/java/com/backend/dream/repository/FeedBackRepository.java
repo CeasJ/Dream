@@ -21,4 +21,8 @@ public interface FeedBackRepository extends JpaRepository<FeedBack,Long> {
     @Query("SELECT f FROM FeedBack f WHERE f.product.id = :productId AND f.rating = :rating")
     List<FeedBack> findByProductIdAndRating(@Param("productId") Long productId, @Param("rating") int rating);
 
+    @Query("SELECT COUNT(*) FROM FeedBack f WHERE f.product.id = :productId")
+    Long countByProductId(Long productId);
+
+
 }

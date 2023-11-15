@@ -219,6 +219,9 @@ public class ProductController {
             // Check if user has logged in yet
             String remoteUser = request.getRemoteUser();
 
+            // Count number of comments
+            Long totalComments = feedbackService.countFeedback(product.getId());
+
             model.addAttribute("discountPercent", discountPercent);
             model.addAttribute("product", product);
             model.addAttribute("availableSizes", availableSizes);
@@ -227,6 +230,8 @@ public class ProductController {
             model.addAttribute("currentPage", page);
             model.addAttribute("totalPages", totalPages);
             model.addAttribute("remoteUser", remoteUser);
+            model.addAttribute("totalComments", totalComments);
+
 
             return "user/product/detail";
         } catch (UnsupportedEncodingException e) {

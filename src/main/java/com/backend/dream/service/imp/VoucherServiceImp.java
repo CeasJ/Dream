@@ -22,8 +22,8 @@ public class VoucherServiceImp implements VoucherService {
 
     @Override
     public List<VoucherDTO> getApplicableVouchers() {
-        List<Voucher> vouchers = voucherRepository.findApplicableVouchers();
-        return vouchers.stream()
+        List<Voucher> applicableVouchers = voucherRepository.findApplicableVouchers();
+        return applicableVouchers.stream()
                 .map(voucherMapper::voucherToVoucherDTO)
                 .collect(Collectors.toList());
     }
