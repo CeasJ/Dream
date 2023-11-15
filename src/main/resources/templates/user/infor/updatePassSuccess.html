@@ -47,30 +47,34 @@
         <!-- Page Header Start -->
         <div class="container-fluid page-header py-5 wow fadeIn" data-wow-delay="0.1s">
             <div class="container text-center py-5">
-                <h1 class="display-2 text-dark mb-4 animated slideInDown">Change Password</h1>
+                <h1 class="display-2 text-dark mb-4 animated slideInDown" th:text="#{breadcrumb.changePassword}"></h1>
                 <nav aria-label="breadcrumb animated slideInDown">
                     <ol class="breadcrumb justify-content-center mb-0">
-                        <li class="breadcrumb-item"><a th:href="@{|/home|}">Home</a></li>
-                        <li class="breadcrumb-item text-dark" aria-current="page">Change Password</li>
+                        <li class="breadcrumb-item"><a th:href="@{|/home|}" th:text="#{breadcrumb.home}"></a></li>
+                        <li class="breadcrumb-item text-dark" aria-current="page"
+                            th:text="#{breadcrumb.changePassword}"></li>
                     </ol>
                 </nav>
             </div>
         </div>
         <!-- Page Header End -->
+
+        <!-- Password Changed Success Start -->
         <section class="wrapper rs-3">
             <div class="container" style="background-color: white; padding: 10px; border-radius: 5px;">
                 <div class="col-sm-8 offset-sm-2 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4 text-center">
                     <img class="img-fluid mt-3 mb-2" src="/img/cart-1.png" style="height: 150px; width: 150px;">
-                    <h3 class="text-success fw-bolder fs-4 mb-3 mt-3">Password Changed Successfully!</h3>
-                    <p>Congratulations! Your password has been successfully changed.</p>
+                    <h3 class="text-success fw-bolder fs-4 mb-3 mt-3" th:text="#{message.passwordChangedSuccess}"></h3>
+                    <p th:text="#{message.congratulations}"></p>
                     <a th:href="@{|/home|}">
-                        <button class="btn btn-success mt-3 mb-3" style="padding: 8px 18px;">
-                            Back to Homepage
-                        </button>
+                        <button class="btn btn-success mt-3 mb-3" style="padding: 8px 18px;"
+                            th:text="#{button.backToHomepage}"></button>
                     </a>
                 </div>
             </div>
         </section>
+        <!-- Password Changed Success End -->
+
         <!--changePassword End  -->
 
         <!-- Back to Top -->

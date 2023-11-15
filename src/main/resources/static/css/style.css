@@ -136,7 +136,7 @@ body {
 }
 
 .navbar .navbar-nav .nav-link {
-    margin-right: 35px;
+    margin-right: 27px;
     padding: 25px 0;
     color: var(--dark);
     font-weight: 600;
@@ -404,14 +404,14 @@ body {
 .title-prc {
     font-size: 15px;
     position: relative; /* Đặt position thành relative để các phần tử con có thể sử dụng position: absolute; dựa trên chúng */
-    padding: 10px 5px;
-    margin-bottom: 5px;
+    padding: 8px 5px;
 }
 
 .price {
     color: red; /* Màu chữ của giá tiền */
     font-weight: 600; /* Độ đậm của chữ giá tiền */
     font-size: 22px;
+    float: right;
 }
 
 .quantity-input {
@@ -482,9 +482,45 @@ body {
     border: 1px solid var(--red);
 }
 
-.table-hs tbody tr td {
-    padding-top: 20px;
-    padding-bottom: 20px;
+.table-hs td {
+    vertical-align: middle;
+}
+
+/* CSS riêng cho voucher-modal */
+.voucher-modal .modal-dialog {
+    width: 100%; /* Điều chỉnh chiều rộng của modal */
+    max-width: 600px; /* Điều chỉnh chiều rộng tối đa của modal */
+    margin: auto; /* Để modal nằm giữa màn hình */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.voucher-modal .modal-header .btn-close {
+    position: absolute;
+    left: 15px;
+    top: 30px;
+}
+.voucher-modal .modal-header {
+    text-align: center;
+    border: none;
+}
+.voucher-modal .modal-title {
+    margin: 0 auto;
+}
+
+.voucher-modal .modal-content {
+    height: 70%; /* Điều chỉnh chiều rộng tối đa của modal */
+}
+
+.voucher-modal .modal-body {
+    overflow-y: auto;
+}
+
+.custom-shadow {
+    border: 1px solid #d3d3d3;
+    border-radius: 0 5px 5px 0;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); /* Điều chỉnh giá trị bóng tùy theo mong muốn */
 }
 
 /* CSS của modal */
@@ -1159,18 +1195,18 @@ body {
 }
 
 .pagination ul li a {
-  text-decoration: none;
-  color: white;
-  display: block;
-  width: 100%;
-  height: 100%;
-  margin-top: 13px;
-  color: white;
+    text-decoration: none;
+    color: white;
+    display: block;
+    width: 100%;
+    height: 100%;
+    margin-top: 13px;
+    color: white;
 }
 
 .pagination ul li.active {
-  background-color: var(--primary);
-  color: white;
+    background-color: var(--primary);
+    color: white;
 }
 
 .pagination ul li:hover {
@@ -1199,6 +1235,13 @@ body {
 
 .right-side {
     position: relative;
+}
+
+#submitButton {
+    margin-top: 15px;
+    padding: 10px 20px;
+    float: right;
+    font-size: 14px;
 }
 
 .search-option {
@@ -1325,6 +1368,16 @@ body {
     cursor: pointer;
 }
 
+.change-voucher-link {
+    color: var(--blue);
+    cursor: pointer;
+}
+
+.change-voucher-link:hover {
+    color: var(--blue);
+    text-decoration: underline;
+}
+
 /* Khi hover vào link, thay đổi màu sắc */
 .change-address-link:hover {
     font-weight: bold;
@@ -1411,4 +1464,25 @@ body {
     background-color: #000;
     color: #ffffff;
     /* Các thuộc tính khác */
+}
+.language {
+    display: flex;
+    align-items: center;
+    margin-right: 15px;
+}
+.language-link {
+    font-weight: bold;
+    color: black;
+    margin: 0 5px;
+    font-size: 18px;
+}
+
+.language-link:hover {
+    color: var(--primary);
+    font-weight: bold;
+}
+
+.language-link.active {
+    color: var(--primary);
+    font-weight: bold;
 }

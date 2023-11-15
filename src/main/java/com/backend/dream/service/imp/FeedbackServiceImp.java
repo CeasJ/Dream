@@ -8,12 +8,14 @@ import com.backend.dream.repository.FeedBackRepository;
 import com.backend.dream.repository.ProductRepository;
 import com.backend.dream.service.AccountService;
 import com.backend.dream.service.FeedbackService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -92,4 +94,15 @@ public class FeedbackServiceImp implements FeedbackService {
         return feedbackDTOList;
     }
 
+    @Override
+    public void deleteFeedback(Long id) {
+        Optional<FeedBack> feedbackOptional = feedBackRepository.findById(id);
+
+        if (feedbackOptional.isPresent()) {
+            FeedBack feedback = feedbackOptional.get();
+            feedBackRepository.delete(feedback);
+        } else {
+            throw new EntityNotFoundException("Feedback not found: " + id);
+        }
+    }
 }

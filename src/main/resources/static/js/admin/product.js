@@ -11,6 +11,7 @@ app.controller("product_ctrl", function ($scope, $http) {
   $scope.initialize = function () {
     $http.get(`/rest/products`).then((resp) => {
       $scope.items = resp.data;
+      console.log($scope.items);
       $scope.items.forEach((item) => {
         item.createDate = new Date(item.createDate);
       });
@@ -84,28 +85,7 @@ app.controller("product_ctrl", function ($scope, $http) {
       .then((resp) => {
         $scope.form.image = resp.data.name;
       })
-      .catch((err) => {});
+      .catch((err) => { });
   };
-<<<<<<<<< Temporary merge branch 1
-=========
 
->>>>>>>>> Temporary merge branch 2
 });
-
-//document.addEventListener('DOMContentLoaded', function () {
-//  Promise.all([
-//    fetch('/rest/products'),
-//    fetch('/rest/category'),
-//    fetch('/rest/productsizes')
-//  ])
-//    .then(responses => Promise.all(responses.map(response => response.json())))
-//    .then(data => {
-//      let productTables = document.querySelectorAll('.product-datatable');
-//      productTables.forEach(table => {
-//        new simpleDatatables.DataTable(table);
-//      });
-//    })
-//    .catch(error => console.error("Error loading data:", error));
-//
-//  // Các phần logic khác của bạn trong file product.js có thể được viết ở đây
-//});
