@@ -9,12 +9,14 @@
     <meta name="author" content="" />
     <title>Orders - Dream Admin</title>
     <link type="text/css" href="/css/admin/admin.css" rel="stylesheet" />
+    
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-    <!-- Angular -->
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
 
-    <!-- Angular Route-->
-    <!--    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.js"></script>-->
+    <!-- Angular -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 </head>
 
 <body ng-app="order_app" ng-controller="order_ctrl" class="sb-nav-fixed">
@@ -32,14 +34,9 @@
                                 Filter by Status:
                             </label>
                         </div>
-                        <div class="form-group mb-0" style="width: 170px;">
-                            <select class="form-control" id="categoryFilter" ng-model="selectedCategory">
-                                <option value="" selected>All Status</option>
-                                <option>Đã đặt</option>
-                                <option>Đã xác nhận</option>
-                                <option>Đang giao hàng</option>
-                                <option>Đã giao hàng</option>
-                                <option>Đã hủy</option>
+                        <div class="form-group mb-0" style="width: 150px;">
+                            <select class="form-control" id="statusFilter" ng-model="selectedStatus" ng-options="s.id as s.name for s in status" ng-change="selectedStatusChanged()">
+                                <option value="">All Status</option>
                             </select>
                         </div>
                     </div>
@@ -50,7 +47,7 @@
                                 <label for="dateFilter" class="fw-bold pt-1" style="font-size: 16px;">
                                     Filter by Date:</label>
                             </div>
-                            <div class="form-group mb-0" style="width: 170px;">
+                            <div class="form-group mb-0" style="width: 150px;">
                                 <input type="date" class="form-control" id="dateFilter" ng-model="selectedDate">
                             </div>
                         </div>
@@ -63,12 +60,12 @@
                         </div>
                     </div>
                 </div>
-                <!-- Bảng cho trạng thái Confirm -->
-                <div class="card" style="border-radius: 0px; margin-bottom: 40px;">
+                <!-- Bảng cho trạng thái  -->
+                <div class="card" style="border-radius: 0px; margin-bottom: 40px;" id="order">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h4 class="mb-0 text-primary"> <i class="fas fa-table me-1"></i> Orders</h4>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body" >
                         <div class="table-responsive">
                             <table class="table table-hover table-bordered text-center order-datatable">
                                 <thead class="table-dark">
@@ -78,12 +75,12 @@
                                     <th>CreateTime</th>
                                     <th>Fullname</th>
                                     <th>Address</th>
-                                    <th>Total Amount</th>
+                                    <th>Total</th>
                                     <th>Status</th>
                                     <th></th>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat-start="order in listOrders">
+                                    <tr ng-repeat-start="order in pagerOrder.paginatedList">
                                         <td>{{$index + 1}}</td>
                                         <td>{{order.id}}</td>
                                         <td>{{order.createDate | date: 'dd-MM-yyyy'}}</td>
@@ -94,13 +91,10 @@
                                         <td ng-if="order.status === 1"> Đã đặt hàng</td>
                                         <td>
                                             <button class="btn btn-primary"
-                                                ng-click="updateOrder.confirmOrder(order.id)">
-                                                <i class="bi bi-plus-circle-fill"></i>
-                                            </button>
-                                            <button class="btn btn-danger" ng-click="updateOrder.cancelOrder(order.id)">
-                                                <i class="bi bi-x-circle-fill"></i>
-                                            </button>
-                                            <button class="btn btn-dark" ng-click="edit(item)" data-bs-toggle="modal"
+                                                ng-click="updateOrder.confirmOrder(order.id)">Confirm</button>
+                                            <button class="btn btn-danger"
+                                                ng-click="updateOrder.cancelOrder(order.id)">Cancel</button>
+                                            <button class="btn btn-dark" ng-click="selectOrder(order.id)" data-bs-toggle="modal"
                                                 data-bs-target="#confirmModal">
                                                 <i class="bi bi-eye-fill"></i>
                                             </button>
@@ -112,27 +106,38 @@
                         </div>
                         <div class="d-flex justify-content-between align-items-center pt-2 pb-0">
                             <div class="fw-normal" style="font-size: 18px;">
-                                Showing 1 to 5 of 15 entries
+                                Showing {{pagerOrder.page + 1}} of {{pagerOrder.count}} entries
                             </div>
                             <nav aria-label="Page navigation">
                                 <ul class="pagination justify-content-end">
-                                    <li class="page-item disabled">
-                                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
-                                            <i class="bi bi-caret-left-fill"></i>
-                                        </a>
-                                    </li>
-                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
                                     <li class="page-item">
-                                        <a class="page-link" href="#">
+                                        <button class="page-link" tabindex="-1" aria-disabled="true" ng-click="pagerOrder.first()">
+                                            <i class="bi bi-skip-start-circle-fill"></i>
+                                        </button>
+                                    </li>
+                                    <li class="page-item">
+                                        <button class="page-link" tabindex="-1" aria-disabled="true" ng-click="pagerOrder.prev()">
+                                            <i class="bi bi-caret-left-fill"></i>
+                                        </button>
+                                    </li>
+                                    <li class="page-item"><button class="page-link">{{pagerOrder.page + 1}}</button></li>
+                                    <li class="page-item">
+                                        <button class="page-link" ng-click="pagerOrder.next()">
                                             <i class="bi bi-caret-right-fill"></i>
-                                        </a>
+                                        </button>
+                                    </li>
+                                    <li class="page-item">
+                                        <button class="page-link" ng-click="pagerOrder.last()">
+                                            <i class="bi bi-skip-end-circle-fill"></i>
+                                        </button>
                                     </li>
                                 </ul>
                             </nav>
                         </div>
+
+
                     </div>
+                   
                 </div>
                 <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                     aria-hidden="true">
@@ -153,11 +158,11 @@
                                         <div class="col-md-6 cnt-hd border-right">
                                             <div class="info-pair">
                                                 <h6>Order ID:</h6>
-                                                <p>#1</p>
+                                                <p>{{listOrder[0].id_order}}</p>
                                             </div>
                                             <div class="info-pair">
                                                 <h6>Order Date:</h6>
-                                                <p>14-10-2023</p>
+                                                <p>{{listOrder[0].order_createDate | date:'dd-MM-yyyy'}}</p>
                                             </div>
                                             <!-- Thêm thông tin khác nếu cần -->
                                         </div>
@@ -180,15 +185,15 @@
                                         <div class="col-md-6 cnt-hd border-right">
                                             <div class="info-pair">
                                                 <h6>Họ và tên:</h6>
-                                                <p>Tran Thanh</p>
+                                                <p>{{listOrder[0].account_fullname}}</p>
                                             </div>
                                             <div class="info-pair">
                                                 <h6>Số điện thoại:</h6>
-                                                <p>0123456789</p>
+                                                <p>{{listOrder[0].account_phone}}</p>
                                             </div>
                                             <div class="info-pair">
                                                 <h6>Địa chỉ:</h6>
-                                                <p>B000, Phường Phan Thiết, Thành phố Tuyên Quang, Tỉnh Tuyên Quang</p>
+                                                <p>{{listOrder[0].order_address}}</p>
                                             </div>
                                         </div>
                                         <div class="col-md-6 cnt-hd">
@@ -217,38 +222,39 @@
                                                         <th>Hình ảnh</th>
                                                         <th>Tên sản phẩm</th>
                                                         <th>Số lượng</th>
+                                                        <th>Size</th>
                                                         <th>Giá</th>
                                                         <th>Tổng tiền</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td>1</td>
-                                                        <td>
-                                                            <img class="img-fluid img-details"
-                                                                src="/img/gallery/image10.jpg">
-                                                        </td>
-                                                        <td>Đường đen sữa đá</td>
-                                                        <td>1</td>
-                                                        <td>45,000 đ</td>
-                                                        <td>45,000 đ</td>
-                                                    </tr>
-                                                    <td colspan="5" class="text-end">
-                                                        <strong>Tạm tính:</strong>
-                                                    </td>
-                                                    <td>45,000 đ</td>
+                                                    <tr ng-repeat="orderDetail in listOrder">
+                                                        <td>{{$index + 1}}</td>
+                                                        <td><img ng-src="{{'/img/gallery/' + orderDetail.product_image}}"
+                                                                class="img-fluid img-details"></td>
+                                                        <td>{{orderDetail.product_name}}</td>
+                                                        <td>{{orderDetail.quantity}}</td>
+                                                        <td ng-if="orderDetail.id_size === 1">S</td>
+                                                        <td ng-if="orderDetail.id_size === 2">M</td>
+                                                        <td ng-if="orderDetail.id_size === 3">L</td>
+                                                        <td>{{orderDetail.price | number : 0}} đ</td>
+                                                        <td>{{orderDetail.quantity * orderDetail.price | number :0}} đ</td>
                                                     </tr>
                                                     <tr>
-                                                        <td colspan="5" class="text-end">
-                                                            <strong>Chi phí vận chuyển:</strong>
+                                                        <td colspan="5" class="text-end"><strong>Tạm
+                                                                tính:</strong></td>
+                                                        <td>{{getSubTotal() | number : 0}} đ</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="5" class="text-end"><strong>Chi phí vận
+                                                                chuyển:</strong>
                                                         </td>
                                                         <td>20.000 đ</td>
                                                     </tr>
                                                     <tr>
-                                                        <td colspan="5" class="text-end">
-                                                            <strong> Tổng thanh toán:</strong>
-                                                        </td>
-                                                        <th class="text-success">65,000 đ</th>
+                                                        <td colspan="5" class="text-end"><strong>Tổng thanh
+                                                                toán:</strong></td>
+                                                        <th class="text-success">{{getTotal() | number : 0}} đ</th>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -269,8 +275,8 @@
                     </div>
                 </div>
 
-                <!-- Bảng cho trạng thái Proc -->
-                <div class="card" style="border-radius: 0px; margin-bottom: 40px;">
+                <!-- Bảng cho trạng thái confirm -->
+                <div class="card" style="border-radius: 0px; margin-bottom: 40px;" id="order-confirm">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h4 class="text-info mb-0"> <i class="fas fa-table me-1"></i> Processing</h4>
                     </div>
@@ -288,7 +294,7 @@
                                     <th></th>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat-start="order in listOrdersConfirmed">
+                                    <tr ng-repeat-start="order in pagerOrderConfirm.paginatedList">
                                         <td>{{$index + 1 }}</td>
                                         <td>{{order.id}}</td>
                                         <td>{{order.createDate | date: 'dd-MM-yyyy'}}</td>
@@ -297,13 +303,11 @@
                                         <td>{{order.totalAmount | number : 0}} đ</td>
                                         <td ng-if="order.status === 2"> Đã xác nhận</td>
                                         <td>
-                                            <button class="btn btn-info" ng-click="updateOrder.shippingOrder(order.id)">
-                                                <i class="bi bi-truck-front-fill"></i>
-                                            </button>
-                                            <button class="btn btn-danger" ng-click="updateOrder.cancelOrder(order.id)">
-                                                <i class="bi bi-x-circle-fill"></i>
-                                            </button>
-                                            <button class="btn btn-dark" data-bs-toggle="modal"
+                                            <button class="btn btn-info"
+                                                ng-click="updateOrder.shippingOrder(order.id)">Ship</button>
+                                            <button class="btn btn-danger"
+                                                ng-click="updateOrder.cancelOrder(order.id)">Cancel</button>
+                                            <button class="btn btn-dark" data-bs-toggle="modal" ng-click="selectOrder(order.id)"
                                                 data-bs-target="#processingModal">
                                                 <i class="bi bi-eye-fill"></i>
                                             </button>
@@ -313,24 +317,32 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="d-flex justify-content-between align-items-center pt-2 pb-0">
+                        <div  class="d-flex justify-content-between align-items-center pt-2 pb-0">
                             <div class="fw-normal" style="font-size: 18px;">
-                                Showing 1 to 5 of 15 entries
+                                Showing {{pagerOrderConfirm.page + 1}} of {{pagerOrderConfirm.count}} entries
                             </div>
                             <nav aria-label="Page navigation">
                                 <ul class="pagination justify-content-end">
-                                    <li class="page-item disabled">
-                                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
-                                            <i class="bi bi-caret-left-fill"></i>
-                                        </a>
-                                    </li>
-                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
                                     <li class="page-item">
-                                        <a class="page-link" href="#">
+                                        <button class="page-link" tabindex="-1" aria-disabled="true" ng-click="pagerOrderConfirm.first()">
+                                            <i class="bi bi-skip-start-circle-fill"></i>
+                                        </button>
+                                    </li>
+                                    <li class="page-item">
+                                        <button class="page-link" tabindex="-1" aria-disabled="true" ng-click="pagerOrderConfirm.prev()">
+                                            <i class="bi bi-caret-left-fill"></i>
+                                        </button>
+                                    </li>
+                                    <li class="page-item"><button class="page-link">{{pagerOrderConfirm.page + 1}}</button></li>
+                                    <li class="page-item">
+                                        <button class="page-link" ng-click="pagerOrderConfirm.next()">
                                             <i class="bi bi-caret-right-fill"></i>
-                                        </a>
+                                        </button>
+                                    </li>
+                                    <li class="page-item">
+                                        <button class="page-link" ng-click="pagerOrderConfirm.last()">
+                                            <i class="bi bi-skip-end-circle-fill"></i>
+                                        </button>
                                     </li>
                                 </ul>
                             </nav>
@@ -357,11 +369,11 @@
                                         <div class="col-md-6 cnt-hd border-right">
                                             <div class="info-pair">
                                                 <h6>Order ID:</h6>
-                                                <p>#1</p>
+                                                <p>#{{listOrder.id_order}}</p>
                                             </div>
                                             <div class="info-pair">
                                                 <h6>Order Date:</h6>
-                                                <p>14-10-2023</p>
+                                                <p>{{listOrder[0].order_createDate | date:'dd-MM-yyyy'}}</p>
                                             </div>
                                             <!-- Thêm thông tin khác nếu cần -->
                                         </div>
@@ -384,15 +396,15 @@
                                         <div class="col-md-6 cnt-hd border-right">
                                             <div class="info-pair">
                                                 <h6>Họ và tên:</h6>
-                                                <p>Tran Thanh</p>
+                                                <p>{{listOrder[0].account_fullname}}</p>
                                             </div>
                                             <div class="info-pair">
                                                 <h6>Số điện thoại:</h6>
-                                                <p>0123456789</p>
+                                                <p>{{listOrder[0].account_phone}}</p>
                                             </div>
                                             <div class="info-pair">
                                                 <h6>Địa chỉ:</h6>
-                                                <p>B000, Phường Phan Thiết, Thành phố Tuyên Quang, Tỉnh Tuyên Quang</p>
+                                                <p>{{listOrder[0].order_address}}</p>
                                             </div>
                                         </div>
                                         <div class="col-md-6 cnt-hd">
@@ -417,30 +429,32 @@
                                             <table class="table table-bordered table-details">
                                                 <thead class="table-dark">
                                                     <tr>
-                                                        <th>No.</th>
+                                                        <th>STT.</th>
                                                         <th>Hình ảnh</th>
                                                         <th>Tên sản phẩm</th>
                                                         <th>Số lượng</th>
+                                                        <th>Size</th>
                                                         <th>Giá</th>
                                                         <th>Tổng tiền</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td>1</td>
-                                                        <td>
-                                                            <img class="img-fluid img-details"
-                                                                src="/img/gallery/image10.jpg">
-                                                        </td>
-                                                        <td>Đường đen sữa đá</td>
-                                                        <td>1</td>
-                                                        <td>45,000 đ</td>
-                                                        <td>45,000 đ</td>
+                                                    <tr ng-repeat="orderDetail in listOrder">
+                                                        <td>{{$index + 1}}</td>
+                                                        <td><img ng-src="{{'/img/gallery/' + orderDetail.product_image}}"
+                                                            class="img-fluid img-details"></td>
+                                                        <td>{{orderDetail.product_name}}</td>
+                                                        <td>{{orderDetail.quantity}}</td>
+                                                        <td ng-if="orderDetail.id_size === 1">S</td>
+                                                        <td ng-if="orderDetail.id_size === 2">M</td>
+                                                        <td ng-if="orderDetail.id_size === 3">L</td>
+                                                        <td>{{orderDetail.price | number : 0}} đ</td>
+                                                        <td>{{orderDetail.quantity * orderDetail.price | number :0}} đ</td>
                                                     </tr>
                                                     <td colspan="5" class="text-end">
                                                         <strong>Tạm tính:</strong>
                                                     </td>
-                                                    <td>45,000 đ</td>
+                                                    <td>{{getSubTotal() | number : 0}} đ</td>
                                                     </tr>
                                                     <tr>
                                                         <td colspan="5" class="text-end">
@@ -452,7 +466,7 @@
                                                         <td colspan="5" class="text-end">
                                                             <strong> Tổng thanh toán:</strong>
                                                         </td>
-                                                        <th class="text-success">65,000 đ</th>
+                                                        <th class="text-success">{{getTotal() | number : 0}} đ</th>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -472,8 +486,8 @@
                     </div>
                 </div>
 
-                <!-- Bảng cho trạng thái Success -->
-                <div class="card" style="border-radius: 0px; margin-bottom: 40px;">
+                <!-- Bảng cho trạng thái shipping -->
+                <div class="card" style="border-radius: 0px; margin-bottom: 40px;" id="order-shipping">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h4 class="text-dark mb-0"><i class="fas fa-table me-1"></i> Shipping</h4>
                     </div>
@@ -491,7 +505,7 @@
                                     <th></th>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat-start="order in listOrderIsShipping">
+                                    <tr ng-repeat-start="order in pagerOrderShipping.paginatedList">
                                         <td>{{$index +1}}</td>
                                         <td>{{order.id}}</td>
                                         <td>{{order.createDate | date: 'dd-MM-yyyy'}}</td>
@@ -501,13 +515,10 @@
                                         <td ng-if="order.status === 3">Đang giao hàng</td>
                                         <td>
                                             <button class="btn btn-success"
-                                                ng-click="updateOrder.successOrder(order.id)">
-                                                <i class="bi bi-check-circle-fill"></i>
-                                            </button>
-                                            <button class="btn btn-danger" ng-click="updateOrder.cancelOrder(order.id)">
-                                                <i class="bi bi-x-circle-fill"></i>
-                                            </button>
-                                            <button class="btn btn-dark" data-bs-toggle="modal"
+                                                ng-click="updateOrder.successOrder(order.id)">Success</button>
+                                            <button class="btn btn-danger"
+                                                ng-click="updateOrder.cancelOrder(order.id)">Cancel</button>
+                                            <button class="btn btn-dark" data-bs-toggle="modal" ng-click="selectOrder(order.id)"
                                                 data-bs-target="#shippingModal">
                                                 <i class="bi bi-eye-fill"></i>
                                             </button>
@@ -519,22 +530,30 @@
                         </div>
                         <div class="d-flex justify-content-between align-items-center pt-2 pb-0">
                             <div class="fw-normal" style="font-size: 18px;">
-                                Showing 1 to 5 of 15 entries
+                                Showing {{pagerOrderShipping.page + 1}} of {{pagerOrderShipping.count}} entries
                             </div>
                             <nav aria-label="Page navigation">
                                 <ul class="pagination justify-content-end">
-                                    <li class="page-item disabled">
-                                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
-                                            <i class="bi bi-caret-left-fill"></i>
-                                        </a>
-                                    </li>
-                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
                                     <li class="page-item">
-                                        <a class="page-link" href="#">
+                                        <button class="page-link" tabindex="-1" aria-disabled="true" ng-click="pagerOrderShipping.first()">
+                                            <i class="bi bi-skip-start-circle-fill"></i>
+                                        </button>
+                                    </li>
+                                    <li class="page-item">
+                                        <button class="page-link" tabindex="-1" aria-disabled="true" ng-click="pagerOrderShipping.prev()">
+                                            <i class="bi bi-caret-left-fill"></i>
+                                        </button>
+                                    </li>
+                                    <li class="page-item"><button class="page-link">{{pagerOrderShipping.page + 1}}</button></li>
+                                    <li class="page-item">
+                                        <button class="page-link" ng-click="pagerOrderShipping.next()">
                                             <i class="bi bi-caret-right-fill"></i>
-                                        </a>
+                                        </button>
+                                    </li>
+                                    <li class="page-item">
+                                        <button class="page-link" ng-click="pagerOrderShipping.last()">
+                                            <i class="bi bi-skip-end-circle-fill"></i>
+                                        </button>
                                     </li>
                                 </ul>
                             </nav>
@@ -561,11 +580,11 @@
                                         <div class="col-md-6 cnt-hd border-right">
                                             <div class="info-pair">
                                                 <h6>Order ID:</h6>
-                                                <p>#1</p>
+                                                <p>#{{listOrder[0].id_order}}</p>
                                             </div>
                                             <div class="info-pair">
                                                 <h6>Order Date:</h6>
-                                                <p>14-10-2023</p>
+                                                <p>{{listOrder[0].order_createDate | date :'dd-MM-yyyy'}}</p>
                                             </div>
                                             <!-- Thêm thông tin khác nếu cần -->
                                         </div>
@@ -588,15 +607,15 @@
                                         <div class="col-md-6 cnt-hd border-right">
                                             <div class="info-pair">
                                                 <h6>Họ và tên:</h6>
-                                                <p>Tran Thanh</p>
+                                                <p>{{listOrder[0].account_fullname}}</p>
                                             </div>
                                             <div class="info-pair">
                                                 <h6>Số điện thoại:</h6>
-                                                <p>0123456789</p>
+                                                <p>{{listOrder[0].account_fullname}}</p>
                                             </div>
                                             <div class="info-pair">
                                                 <h6>Địa chỉ:</h6>
-                                                <p>B000, Phường Phan Thiết, Thành phố Tuyên Quang, Tỉnh Tuyên Quang</p>
+                                                <p>{{listOrder[0].order_address}}</p>
                                             </div>
                                         </div>
                                         <div class="col-md-6 cnt-hd">
@@ -625,38 +644,39 @@
                                                         <th>Hình ảnh</th>
                                                         <th>Tên sản phẩm</th>
                                                         <th>Số lượng</th>
+                                                        <th>Size</th>
                                                         <th>Giá</th>
                                                         <th>Tổng tiền</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td>1</td>
-                                                        <td>
-                                                            <img class="img-fluid img-details"
-                                                                src="/img/gallery/image10.jpg">
-                                                        </td>
-                                                        <td>Đường đen sữa đá</td>
-                                                        <td>1</td>
-                                                        <td>45,000 đ</td>
-                                                        <td>45,000 đ</td>
-                                                    </tr>
-                                                    <td colspan="5" class="text-end">
-                                                        <strong>Tạm tính:</strong>
-                                                    </td>
-                                                    <td>45,000 đ</td>
+                                                    <tr ng-repeat="orderDetail in listOrder">
+                                                        <td>{{$index + 1}}</td>
+                                                        <td><img ng-src="{{'/img/gallery/' + orderDetail.product_image}}"
+                                                                class="img-fluid img-details"></td>
+                                                        <td>{{orderDetail.product_name}}</td>
+                                                        <td>{{orderDetail.quantity}}</td>
+                                                        <td ng-if="orderDetail.id_size === 1">S</td>
+                                                        <td ng-if="orderDetail.id_size === 2">M</td>
+                                                        <td ng-if="orderDetail.id_size === 3">L</td>
+                                                        <td>{{orderDetail.price | number : 0}} đ</td>
+                                                        <td>{{orderDetail.quantity * orderDetail.price | number :0}} đ</td>
                                                     </tr>
                                                     <tr>
-                                                        <td colspan="5" class="text-end">
-                                                            <strong>Chi phí vận chuyển:</strong>
+                                                        <td colspan="5" class="text-end"><strong>Tạm
+                                                                tính:</strong></td>
+                                                        <td>{{getSubTotal() | number : 0}} đ</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="5" class="text-end"><strong>Chi phí vận
+                                                                chuyển:</strong>
                                                         </td>
                                                         <td>20.000 đ</td>
                                                     </tr>
                                                     <tr>
-                                                        <td colspan="5" class="text-end">
-                                                            <strong> Tổng thanh toán:</strong>
-                                                        </td>
-                                                        <th class="text-success">65,000 đ</th>
+                                                        <td colspan="5" class="text-end"><strong>Tổng thanh
+                                                                toán:</strong></td>
+                                                        <th class="text-success">{{getTotal() | number : 0}} đ</th>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -678,7 +698,7 @@
                 </div>
 
                 <!-- Bảng cho trạng thái success -->
-                <div class="card" style="border-radius: 0px; margin-bottom: 40px;">
+                <div class="card" style="border-radius: 0px; margin-bottom: 40px;" id="order-success">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h4 class="text-success mb-0"><i class="fas fa-table me-1"></i> Success</h4>
                     </div>
@@ -696,7 +716,7 @@
                                     <th></th>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat-start="order in listOrdersSuccessful">
+                                    <tr ng-repeat-start="order in pagerOrderSuccess.paginatedList">
                                         <td>{{$index + 1}}</td>
                                         <td>{{order.id}}</td>
                                         <td>{{order.createDate | date: 'dd-MM-yyyy'}}</td>
@@ -705,7 +725,7 @@
                                         <td>{{order.totalAmount | number : 0}} đ</td>
                                         <td ng-if="order.status === 4"> Đã giao hàng</td>
                                         <td>
-                                            <button class="btn btn-dark" data-bs-toggle="modal"
+                                            <button class="btn btn-dark" data-bs-toggle="modal" ng-click="selectOrder(order.id)"
                                                 data-bs-target="#successModal">
                                                 <i class="bi bi-eye-fill"></i>
                                             </button>
@@ -715,24 +735,32 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="d-flex justify-content-between align-items-center pt-2 pb-0">
+                        <div  class="d-flex justify-content-between align-items-center pt-2 pb-0">
                             <div class="fw-normal" style="font-size: 18px;">
-                                Showing 1 to 5 of 15 entries
+                                Showing {{pagerOrderSuccess.page + 1}} of {{pagerOrderSuccess.count}} entries
                             </div>
                             <nav aria-label="Page navigation">
                                 <ul class="pagination justify-content-end">
-                                    <li class="page-item disabled">
-                                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
-                                            <i class="bi bi-caret-left-fill"></i>
-                                        </a>
-                                    </li>
-                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
                                     <li class="page-item">
-                                        <a class="page-link" href="#">
+                                        <button class="page-link" tabindex="-1" aria-disabled="true" ng-click="pagerOrderSuccess.first()">
+                                            <i class="bi bi-skip-start-circle-fill"></i>
+                                        </button>
+                                    </li>
+                                    <li class="page-item">
+                                        <button class="page-link" tabindex="-1" aria-disabled="true" ng-click="pagerOrderSuccess.prev()">
+                                            <i class="bi bi-caret-left-fill"></i>
+                                        </button>
+                                    </li>
+                                    <li class="page-item"><button class="page-link">{{pagerOrderSuccess.page + 1}}</button></li>
+                                    <li class="page-item">
+                                        <button class="page-link" ng-click="pagerOrderSuccess.next()">
                                             <i class="bi bi-caret-right-fill"></i>
-                                        </a>
+                                        </button>
+                                    </li>
+                                    <li class="page-item">
+                                        <button class="page-link" ng-click="pagerOrderSuccess.last()">
+                                            <i class="bi bi-skip-end-circle-fill"></i>
+                                        </button>
                                     </li>
                                 </ul>
                             </nav>
@@ -760,11 +788,11 @@
                                         <div class="col-md-6 cnt-hd border-right">
                                             <div class="info-pair">
                                                 <h6>Order ID:</h6>
-                                                <p>#1</p>
+                                                <p>#{{listOrder[0].id_order}}</p>
                                             </div>
                                             <div class="info-pair">
                                                 <h6>Order Date:</h6>
-                                                <p>14-10-2023</p>
+                                                <p>{{listOrder[0].order_createDate | date :'dd-MM-yyyy'}}</p>
                                             </div>
                                             <!-- Thêm thông tin khác nếu cần -->
                                         </div>
@@ -787,15 +815,15 @@
                                         <div class="col-md-6 cnt-hd border-right">
                                             <div class="info-pair">
                                                 <h6>Họ và tên:</h6>
-                                                <p>Tran Thanh</p>
+                                                <p>{{listOrder[0].account_fullname}}</p>
                                             </div>
                                             <div class="info-pair">
                                                 <h6>Số điện thoại:</h6>
-                                                <p>0123456789</p>
+                                                <p>{{listOrder[0].account_phone}}</p>
                                             </div>
                                             <div class="info-pair">
                                                 <h6>Địa chỉ:</h6>
-                                                <p>B000, Phường Phan Thiết, Thành phố Tuyên Quang, Tỉnh Tuyên Quang
+                                                <p>{{listOrder[0].order_address}}
                                                 </p>
                                             </div>
                                         </div>
@@ -825,38 +853,39 @@
                                                         <th>Hình ảnh</th>
                                                         <th>Tên sản phẩm</th>
                                                         <th>Số lượng</th>
+                                                        <th>Size</th>
                                                         <th>Giá</th>
                                                         <th>Tổng tiền</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td>1</td>
-                                                        <td>
-                                                            <img class="img-fluid img-details"
-                                                                src="/img/gallery/image10.jpg">
-                                                        </td>
-                                                        <td>Đường đen sữa đá</td>
-                                                        <td>1</td>
-                                                        <td>45,000 đ</td>
-                                                        <td>45,000 đ</td>
-                                                    </tr>
-                                                    <td colspan="5" class="text-end">
-                                                        <strong>Tạm tính:</strong>
-                                                    </td>
-                                                    <td>45,000 đ</td>
+                                                    <tr ng-repeat="orderDetail in listOrder">
+                                                        <td>{{$index + 1}}</td>
+                                                        <td><img ng-src="{{'/img/gallery/' + orderDetail.product_image}}"
+                                                                class="img-fluid img-details"></td>
+                                                        <td>{{orderDetail.product_name}}</td>
+                                                        <td>{{orderDetail.quantity}}</td>
+                                                        <td ng-if="orderDetail.id_size === 1">S</td>
+                                                        <td ng-if="orderDetail.id_size === 2">M</td>
+                                                        <td ng-if="orderDetail.id_size === 3">L</td>
+                                                        <td>{{orderDetail.price | number : 0}} đ</td>
+                                                        <td>{{orderDetail.quantity * orderDetail.price | number :0}} đ</td>
                                                     </tr>
                                                     <tr>
-                                                        <td colspan="5" class="text-end">
-                                                            <strong>Chi phí vận chuyển:</strong>
+                                                        <td colspan="5" class="text-end"><strong>Tạm
+                                                                tính:</strong></td>
+                                                        <td>{{getSubTotal() | number : 0}} đ</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="5" class="text-end"><strong>Chi phí vận
+                                                                chuyển:</strong>
                                                         </td>
                                                         <td>20.000 đ</td>
                                                     </tr>
                                                     <tr>
-                                                        <td colspan="5" class="text-end">
-                                                            <strong> Tổng thanh toán:</strong>
-                                                        </td>
-                                                        <th class="text-success">65,000 đ</th>
+                                                        <td colspan="5" class="text-end"><strong>Tổng thanh
+                                                                toán:</strong></td>
+                                                        <th class="text-success">{{getTotal() | number : 0}} đ</th>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -878,7 +907,7 @@
                 </div>
 
                 <!-- Bảng cho trạng thái cancel -->
-                <div class="card" style="border-radius: 0px; margin-bottom: 30px;">
+                <div class="card" style="border-radius: 0px; margin-bottom: 30px;" id="order-cancel">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h4 class="mb-0 text-danger"><i class="fas fa-table me-1"></i> Cancel</h4>
                     </div>
@@ -896,7 +925,7 @@
                                     <th></th>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat-start="order in listOrdersCancelled">
+                                    <tr ng-repeat-start="order in pagerOrderCancel.paginatedList">
                                         <td>{{$index + 1 }}</td>
                                         <td>{{order.id}}</td>
                                         <td>{{order.createDate | date: 'dd-MM-yyyy'}}</td>
@@ -908,7 +937,7 @@
                                             <button class="btn btn-danger" ng-click="updateOrder.resetOrder(order.id)">
                                                 <i class="bi bi-arrow-clockwise"></i>
                                             </button>
-                                            <button class="btn btn-dark" data-bs-toggle="modal"
+                                            <button class="btn btn-dark" data-bs-toggle="modal" ng-click="selectOrder(order.id)"
                                                 data-bs-target="#cancelModal">
                                                 <i class="bi bi-eye-fill"></i>
                                             </button>
@@ -918,24 +947,32 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="d-flex justify-content-between align-items-center pt-2 pb-0">
+                        <div  class="d-flex justify-content-between align-items-center pt-2 pb-0">
                             <div class="fw-normal" style="font-size: 18px;">
-                                Showing 1 to 5 of 15 entries
+                                Showing {{pagerOrderCancel.page + 1}} of {{pagerOrderCancel.count}} entries
                             </div>
                             <nav aria-label="Page navigation">
                                 <ul class="pagination justify-content-end">
-                                    <li class="page-item disabled">
-                                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
-                                            <i class="bi bi-caret-left-fill"></i>
-                                        </a>
-                                    </li>
-                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
                                     <li class="page-item">
-                                        <a class="page-link" href="#">
+                                        <button class="page-link" tabindex="-1" aria-disabled="true" ng-click="pagerOrderCancel.first()">
+                                            <i class="bi bi-skip-start-circle-fill"></i>
+                                        </button>
+                                    </li>
+                                    <li class="page-item">
+                                        <button class="page-link" tabindex="-1" aria-disabled="true" ng-click="pagerOrderCancel.prev()">
+                                            <i class="bi bi-caret-left-fill"></i>
+                                        </button>
+                                    </li>
+                                    <li class="page-item"><button class="page-link">{{pagerOrderCancel.page + 1 }}</button></li>
+                                    <li class="page-item">
+                                        <button class="page-link" ng-click="pagerOrderCancel.next()">
                                             <i class="bi bi-caret-right-fill"></i>
-                                        </a>
+                                        </button>
+                                    </li>
+                                    <li class="page-item">
+                                        <button class="page-link" ng-click="pagerOrderCancel.last()">
+                                            <i class="bi bi-skip-end-circle-fill"></i>
+                                        </button>
                                     </li>
                                 </ul>
                             </nav>
@@ -962,11 +999,11 @@
                                         <div class="col-md-6 cnt-hd border-right">
                                             <div class="info-pair">
                                                 <h6>Order ID:</h6>
-                                                <p>#1</p>
+                                                <p>#{{listOrder[0].id_order}}</p>
                                             </div>
                                             <div class="info-pair">
                                                 <h6>Order Date:</h6>
-                                                <p>14-10-2023</p>
+                                                <p>{{listOrder[0].order_createDate | date :'dd-MM-yyyy'}}</p>
                                             </div>
                                             <!-- Thêm thông tin khác nếu cần -->
                                         </div>
@@ -989,15 +1026,15 @@
                                         <div class="col-md-6 cnt-hd border-right">
                                             <div class="info-pair">
                                                 <h6>Họ và tên:</h6>
-                                                <p>Tran Thanh</p>
+                                                <p>{{listOrder[0].account_fullname}}</p>
                                             </div>
                                             <div class="info-pair">
                                                 <h6>Số điện thoại:</h6>
-                                                <p>0123456789</p>
+                                                <p>{{listOrder[0].account_phone}}</p>
                                             </div>
                                             <div class="info-pair">
                                                 <h6>Địa chỉ:</h6>
-                                                <p>B000, Phường Phan Thiết, Thành phố Tuyên Quang, Tỉnh Tuyên Quang</p>
+                                                <p>{{listOrder[0].order_address}}</p>
                                             </div>
                                         </div>
                                         <div class="col-md-6 cnt-hd">
@@ -1026,38 +1063,39 @@
                                                         <th>Hình ảnh</th>
                                                         <th>Tên sản phẩm</th>
                                                         <th>Số lượng</th>
+                                                        <th>Size</th>
                                                         <th>Giá</th>
                                                         <th>Tổng tiền</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td>1</td>
-                                                        <td>
-                                                            <img class="img-fluid img-details"
-                                                                src="/img/gallery/image10.jpg">
-                                                        </td>
-                                                        <td>Đường đen sữa đá</td>
-                                                        <td>1</td>
-                                                        <td>45,000 đ</td>
-                                                        <td>45,000 đ</td>
-                                                    </tr>
-                                                    <td colspan="5" class="text-end">
-                                                        <strong>Tạm tính:</strong>
-                                                    </td>
-                                                    <td>45,000 đ</td>
+                                                    <tr ng-repeat="orderDetail in listOrder">
+                                                        <td>{{$index + 1}}</td>
+                                                        <td><img ng-src="{{'/img/gallery/' + orderDetail.product_image}}"
+                                                                class="img-fluid img-details"></td>
+                                                        <td>{{orderDetail.product_name}}</td>
+                                                        <td>{{orderDetail.quantity}}</td>
+                                                        <td ng-if="orderDetail.id_size === 1">S</td>
+                                                        <td ng-if="orderDetail.id_size === 2">M</td>
+                                                        <td ng-if="orderDetail.id_size === 3">L</td>
+                                                        <td>{{orderDetail.price | number : 0}} đ</td>
+                                                        <td>{{orderDetail.quantity * orderDetail.price | number :0}} đ</td>
                                                     </tr>
                                                     <tr>
-                                                        <td colspan="5" class="text-end">
-                                                            <strong>Chi phí vận chuyển:</strong>
+                                                        <td colspan="5" class="text-end"><strong>Tạm
+                                                                tính:</strong></td>
+                                                        <td>{{getSubTotal() | number : 0}} đ</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="5" class="text-end"><strong>Chi phí vận
+                                                                chuyển:</strong>
                                                         </td>
                                                         <td>20.000 đ</td>
                                                     </tr>
                                                     <tr>
-                                                        <td colspan="5" class="text-end">
-                                                            <strong> Tổng thanh toán:</strong>
-                                                        </td>
-                                                        <th class="text-success">65,000 đ</th>
+                                                        <td colspan="5" class="text-end"><strong>Tổng 
+                                                                toán:</strong></td>
+                                                        <th class="text-success">{{getTotal() | number : 0}} đ</th>
                                                     </tr>
                                                 </tbody>
                                             </table>
