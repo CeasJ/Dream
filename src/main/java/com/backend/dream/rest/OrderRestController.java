@@ -1,8 +1,10 @@
 package com.backend.dream.rest;
 
 import com.backend.dream.dto.OrderDTO;
+import com.backend.dream.dto.OrderStatusDTO;
 import com.backend.dream.entity.Orders;
 import com.backend.dream.service.OrderService;
+import com.backend.dream.service.OrderStatusService;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,13 +19,19 @@ import java.util.List;
 @RequestMapping("/rest/order")
 public class OrderRestController {
     @Autowired
-    OrderService orderService;
+    private OrderService orderService;
+    @Autowired
+    private OrderStatusService orderStatusService;
 
     @PostMapping
     public Orders create(@RequestBody JsonNode orderData) throws ParseException {
         return orderService.create(orderData);
     }
 
+    @GetMapping("/status")
+    public List<OrderStatusDTO> getAll(){
+        return orderStatusService.getAll();
+    }
     @GetMapping()
     public List<OrderDTO> getListOrder() throws ClassNotFoundException {
         List<OrderDTO> listOrder = orderService.getListOrder();

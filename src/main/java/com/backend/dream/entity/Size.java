@@ -26,4 +26,8 @@ public class Size implements Serializable {
     @JsonIgnore
     @OneToMany(mappedBy = "size")
     private List<ProductSize> size;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "sizes")
+    private List<OrderDetails> sizes;
 }
