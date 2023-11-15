@@ -141,7 +141,7 @@
                                     </div>
                                     <div class="info-pair">
                                         <h6>Ngày đặt hàng:</h6>
-                                        <p>{{listOrder[0].order_createDate}}</p>
+                                        <p>{{listOrder[0].order_createDate | date :'dd-MM-yyyy'}}</p>
                                     </div>
                                     <!-- Thêm thông tin khác nếu cần -->
                                 </div>
@@ -199,10 +199,11 @@
                                     <table class="table table-bordered table-details">
                                         <thead class="table-dark">
                                             <tr>
-                                                <th>No.</th>
+                                                <th>STT.</th>
                                                 <th>Hình ảnh</th>
                                                 <th>Tên sản phẩm</th>
                                                 <th>Số lượng</th>
+                                                <th>Size</th>
                                                 <th>Giá</th>
                                                 <th>Tổng tiền</th>
                                             </tr>
@@ -214,6 +215,9 @@
                                                         class="img-fluid img-details"></td>
                                                 <td>{{orderDetail.product_name}}</td>
                                                 <td>{{orderDetail.quantity}}</td>
+                                                <td ng-if="orderDetail.id_size === 1">S</td>
+                                                <td ng-if="orderDetail.id_size === 2">M</td>
+                                                <td ng-if="orderDetail.id_size === 3">L</td>
                                                 <td>{{orderDetail.price | number : 0}} đ</td>
                                                 <td>{{orderDetail.quantity * orderDetail.price | number :0}} đ</td>
                                             </tr>
