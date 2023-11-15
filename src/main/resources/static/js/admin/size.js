@@ -47,8 +47,7 @@ app.controller("size-ctrl", function ($scope, $http, $location) {
         }
   };
 
-  $scope.grant_size = function (productSize,priceProduct_Size) {
-  productSize.priceProduct_Size = priceProduct_Size;
+  $scope.grant_size = function (productSize) {
     $http.post(`/rest/productsizes`, productSize)
       .then((resp) => {
         $scope.productsize.push(resp.data);
