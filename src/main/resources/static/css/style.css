@@ -136,7 +136,7 @@ body {
 }
 
 .navbar .navbar-nav .nav-link {
-    margin-right: 35px;
+    margin-right: 27px;
     padding: 25px 0;
     color: var(--dark);
     font-weight: 600;
@@ -411,6 +411,7 @@ body {
     color: red; /* Màu chữ của giá tiền */
     font-weight: 600; /* Độ đậm của chữ giá tiền */
     font-size: 22px;
+    float: right;
 }
 
 .quantity-input {
@@ -481,9 +482,8 @@ body {
     border: 1px solid var(--red);
 }
 
-.table-hs tbody tr td {
-    padding-top: 20px;
-    padding-bottom: 20px;
+.table-hs td {
+    vertical-align: middle;
 }
 
 /* CSS riêng cho voucher-modal */
@@ -675,6 +675,11 @@ body {
     border-radius: 3.5rem;
     background-color: var(--dark);
     border: 15px solid var(--dark);
+}
+
+.text-carousel {
+    width: 100%;
+    font-size: 55px;
 }
 
 @media (max-width: 768px) {
@@ -1464,4 +1469,25 @@ body {
     background-color: #000;
     color: #ffffff;
     /* Các thuộc tính khác */
+}
+.language {
+    display: flex;
+    align-items: center;
+    margin-right: 15px;
+}
+.language-link {
+    font-weight: bold;
+    color: black;
+    margin: 0 5px;
+    font-size: 18px;
+}
+
+.language-link:hover {
+    color: var(--primary);
+    font-weight: bold;
+}
+
+.language-link.active {
+    color: var(--primary);
+    font-weight: bold;
 }
