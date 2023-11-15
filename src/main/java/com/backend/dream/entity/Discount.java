@@ -30,10 +30,12 @@ public class Discount implements Serializable {
     private Double percent;
 
     @Column(name = "activedate")
-    private Date activeDate;
+    @Temporal(TemporalType.DATE)
+    private Date activeDate=new Date();
 
     @Column(name = "expireddate")
-    private Date expiredDate;
+    @Temporal(TemporalType.DATE)
+    private Date expiredDate=new Date();
 
     @ManyToOne
     @JoinColumn(name = "idproduct")

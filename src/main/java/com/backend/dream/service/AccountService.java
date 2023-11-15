@@ -39,7 +39,6 @@ public interface AccountService {
 
     Account createStaff(JsonNode account);
 
-    Account updateStaff(JsonNode staffToUpdate);
 
     boolean checkUsernameExists(String username);
     

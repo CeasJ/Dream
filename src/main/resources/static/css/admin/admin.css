@@ -5556,6 +5556,7 @@ fieldset:disabled .btn {
   margin: var(--bs-modal-margin);
   pointer-events: none;
 }
+
 .modal.fade .modal-dialog {
   transition: transform 0.3s ease-out;
   transform: translate(0, -50px);
@@ -11604,7 +11605,7 @@ body {
 }
 
 #imagePreview {
-  max-width: 90%;
+  max-width: 100%;
   height: 300px; /* Chiều cao cố định của hình ảnh */
   object-fit: cover; /* Để hình ảnh không bị bóp méo khi kích thước không phù hợp */
   border-radius: 50%; /* Để hình ảnh trở thành hình tròn */
@@ -11671,4 +11672,83 @@ body {
 .notification-dropdown .notification-text {
   vertical-align: middle;
   padding-left: 10px;
+}
+
+.hs-hd {
+  border: 1px solid gainsboro;
+  margin: 10px 0;
+  padding: 0;
+}
+
+.title-hs {
+  border-bottom: 1px solid gainsboro;
+  padding: 10px;
+  margin: 0;
+  font-weight: bold;
+}
+
+.cnt-hd {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+}
+
+.border-right {
+  border-right: 1px solid gainsboro;
+  padding-left: 25px;
+}
+
+.info-pair {
+  padding: 10px 0;
+}
+
+.info-pair h6 {
+  display: inline;
+  white-space: nowrap;
+  margin-right: 5px; /* Khoảng cách giữa h6 và p */
+  font-weight: bold;
+}
+
+.info-pair p {
+  display: inline;
+}
+
+.table-details th,
+.table-details td {
+  text-align: center; /* Căn giữa nội dung ngang trong các ô của bảng */
+  vertical-align: middle; /* Căn giữa nội dung dọc trong các ô của bảng */
+  padding: 10px 10px;
+}
+
+.status-info h5,
+.status-info p {
+  display: inline;
+  margin-right: 10px; /* Để tạo khoảng cách giữa các phần tử h5 và p */
+}
+
+.img-details {
+  height: 90px;
+  width: 90px;
+}
+
+#successToast {
+  bottom: 0;
+  left: 0;
+  margin: 8px;
+  z-index: 9999;
+}
+
+.product-datatable td {
+  vertical-align: middle;
+  /* Căn giữa dữ liệu trong ô */
+}
+
+.product-datatable th:nth-child(6) {
+  /* Định dạng cột Describe */
+  width: 500px;
+}
+
+.order-datatable td {
+  vertical-align: middle;
+  /* Căn giữa dữ liệu trong ô */
 }

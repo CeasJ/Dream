@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 @RequestMapping("/rest/category")
 @RestController
 public class CategoryRestController {
@@ -18,22 +19,26 @@ public class CategoryRestController {
         return categoryService.findAll();
     }
 
-    //    @PostMapping("/rest/category")
-//    public Category createCategory(@RequestBody JsonNode cate, Model model) throws Exception{
-//        String namecategory = cate.get("name").asText();
-//        return categoryService.checknameExists(namecategory) ? null : categoryService.createCategory(cate);
-//    }
+    // @PostMapping("/rest/category")
+    // public Category createCategory(@RequestBody JsonNode cate, Model model)
+    // throws Exception{
+    // String namecategory = cate.get("name").asText();
+    // return categoryService.checknameExists(namecategory) ? null :
+    // categoryService.createCategory(cate);
+    // }
     @PostMapping()
     public CategoryDTO create(@RequestBody CategoryDTO categoryDTO) {
         return categoryService.create(categoryDTO);
     }
 
     @PutMapping("/update/{id}")
-    public CategoryDTO update(@RequestBody CategoryDTO categoryDTO, @PathVariable("id") Long id){
+    public CategoryDTO update(@RequestBody CategoryDTO categoryDTO, @PathVariable("id") Long id) {
         return categoryService.update(categoryDTO);
     }
+
     @DeleteMapping("/delete/{id}")
-    public void delete( @PathVariable("id") Long id){
-         categoryService.delete(id);
+    public void delete(@PathVariable("id") Long id) {
+        categoryService.delete(id);
     }
+
 }

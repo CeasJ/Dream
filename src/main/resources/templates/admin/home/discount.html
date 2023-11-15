@@ -7,16 +7,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Product - Dream Admin</title>
+    <title>Discounts - Dream Admin</title>
     <link type="text/css" href="/css/admin/admin.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <!-- Angular -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.js"></script>
-
 </head>
 
-<body class="sb-nav-fixed" ng-app="product_app" ng-controller="product_ctrl">
+<body class="sb-nav-fixed" ng-app="discount-app" ng-controller="discount-ctrl">
     <div th:replace="~{/admin/component/header.html}"></div>
     <div id="layoutSidenav">
         <div id="layoutSidenav_nav">
@@ -26,46 +25,24 @@
             <main>
                 <div class="card mb-4" style="border: none;">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <h4 class="mb-0"> <i class="fas fa-table me-1"></i> Products</h4>
+                        <h4 class="mb-0"> <i class="fas fa-table me-1"></i> Discounts</h4>
                         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
                             <i class="bi bi-plus-lg"></i>
                         </button>
                     </div>
                     <div class="card-body">
-                        <div class="row justify-content-between align-items-center mb-3 mt-2">
-                            <!-- Combobox Category ở góc trái -->
-                            <div class="d-flex col-md-3">
-                                <div class="form-group mb-0 me-3">
-                                    <label for="categoryFilter" class="fw-bold pt-2" style="font-size: 16px;">
-                                        Filter by Category:
-                                    </label>
-                                </div>
-                                <div class="form-group mb-0" style="width: 170px;">
-                                    <select class="form-control" id="categoryFilter" ng-model="selectedCategory">
-                                        <option value="" selected>All Categories</option>
-                                        <option ng-repeat="c in cates" ng-value="c.id">{{c.name}}</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <!-- Combobox Active -->
-                            <div class="col-md-3">
+                        <div class="row justify-content-between align-items-center mb-3 mt-1">
+                            <div class="col-md-4">
                                 <div class="d-flex">
                                     <div class="form-group mb-0 me-3">
-                                        <label for="activeFilter" class="fw-bold pt-2" style="font-size: 16px;">
-                                            Filter by Active:
-                                        </label>
+                                        <label for="dateFilter" class="fw-bold pt-1" style="font-size: 18px;">
+                                            Filter by Date:</label>
                                     </div>
-                                    <div class="form-group mb-0" style="width: 170px;">
-                                        <select class="form-control" id="activeFilter" ng-model="selectedActive">
-                                            <option value="" selected>All Active Status</option>
-                                            <option value="true">True</option>
-                                            <option value="false">False</option>
-                                        </select>
+                                    <div class="form-group mb-0" style="width: 200px;">
+                                        <input type="date" class="form-control" id="dateFilter" ng-model="selectedDate">
                                     </div>
                                 </div>
                             </div>
-
                             <!-- Thanh tìm kiếm ở góc phải -->
                             <div class="col-md-2 ms-auto">
                                 <div class="input-group">
@@ -75,41 +52,32 @@
                             </div>
                         </div>
                         <div class="table-responsive">
-                            <table class="table table-hover table-bordered product-datatable text-center">
+                            <table class="table table-hover table-bordered text-center order-datatable">
                                 <thead class="table-dark">
                                     <tr>
                                         <th>STT</th>
-                                        <th>ID</th>
-                                        <th>Image</th>
-                                        <th>Name</th>
-                                        <th>Price</th>
-                                        <th>Describe</th>
-                                        <th>Category</th>
-                                        <th>Date</th>
-                                        <th>Active</th>
-                                        <th>Action</th>
+                                        <th>DiscountName</th>
+                                        <th>DiscountNumber</th>
+                                        <th>DiscountPercent</th>
+                                        <th>ActiveDate</th>
+                                        <th>Expiredate</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr ng-repeat-start="item in items">
+                                <tbody class="no-border-x">
+                                    <tr ng-repeat-start="count in discounts">
                                         <td>{{$index + 1}}</td>
-                                        <td>{{item.id}}</td>
-                                        <td><img class="img-fluid" ng-src="{{'/img/gallery/' + item.image}}"
-                                                style="width: 90px; height: 90px; border: none;"></td>
-                                        <td>{{item.name}}</td>
-                                        <td>{{item.price}}</td>
+                                        <td>{{count.name}}</td>
+                                        <td>{{count.number}}</td>
+                                        <td>{{count.percent}}</td>
+                                        <td>{{count.activeDate | date: 'dd-MM-yyyy'}}</td>
+                                        <td>{{count.expiredDate | date: 'dd-MM-yyyy'}}</td>
                                         <td>
-                                            <div style="text-align: justify; padding: 0 10px;">{{item.describe}}</div>
-                                        </td>
-                                        <td>{{item.category}}</td>
-                                        <td>{{item.createDate | date: 'dd-MM-yyyy'}}</td>
-                                        <td>{{item.active}}</td>
-                                        <td>
-                                            <button class="btn btn-dark" ng-click="edit(item)" data-bs-toggle="modal"
+                                            <button class="btn btn-dark" ng-click="edit(count)" data-bs-toggle="modal"
                                                 data-bs-target="#myModal">
                                                 <i class="bi bi-pencil-square"></i>
                                             </button>
-                                            <button class="btn btn-danger" ng-click="delete(item)">
+                                            <button class="btn btn-danger" ng-click="delete(count)">
                                                 <i class="bi bi-trash"></i>
                                             </button>
                                         </td>
@@ -118,8 +86,8 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="d-flex justify-content-between align-items-center pt-2">
-                            <div class="fw-normal pb-3" style="font-size: 18px;">
+                        <div class="d-flex justify-content-between align-items-center pt-2 pb-0">
+                            <div class="fw-normal" style="font-size: 18px;">
                                 Showing 1 to 5 of 15 entries
                             </div>
                             <nav aria-label="Page navigation">
@@ -156,70 +124,48 @@
                             </div>
                             <div class="modal-body">
                                 <div class="row">
-                                    <div class="col-md-12 text-center"
-                                        style="display: flex; justify-content: center; align-items: center;">
-                                        <img class="img-fluid" id="imageProduct"
-                                            ng-src="{{'/img/gallery/'+ form.image}}" ng-click="selectImage()"
-                                            style="cursor: pointer;">
-                                        <input type="file" id="hiddenImageInput" style="display: none;" accept="image/*"
-                                            onchange="angular.element(this).scope().imageChanged(this.files)">
-                                    </div>
-                                    <div class="col-md-9 offset-sm-2" style="margin-top: 30px;">
+                                    <div class="col-md-9 offset-sm-2" style="margin-top: 50px;">
                                         <div class="row mb-3">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label for="name" class="fw-bold mb-3">Name</label>
+                                                    <label for="name" class="fw-bold mb-3">DiscountName</label>
                                                     <input type="text" class="form-control" id="name"
                                                         ng-model="form.name" name="name" placeholder="Product Name" />
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label for="price" class="fw-bold mb-3">Price</label>
-                                                    <input type="number" class="form-control" id="price"
-                                                        ng-model="form.price" name="price"
-                                                        placeholder="Product Price" />
+                                                    <label for="name" class="fw-bold mb-3">DiscountNumber</label>
+                                                    <input type="text" class="form-control" id="discountNumber"
+                                                        ng-model="form.number" name="number"
+                                                        placeholder="DiscountNumber" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="name" class="fw-bold mb-3">DiscountPercent</label>
+                                                    <input type="text" class="form-control" id="DiscountPercent"
+                                                        ng-model="form.percent" name="number"
+                                                        placeholder="DiscountPercent" />
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="row mb-3">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label class="fw-bold mb-3">Ngày tạo</label>
-                                                    <input ng-model="form.createDate" class="form-control" type="date"
+                                                    <label class="fw-bold mb-3">ActiveDate</label>
+                                                    <input ng-model="form.activeDate" class="form-control" type="date"
                                                         name="day" required>
                                                 </div>
                                             </div>
+                                        </div>
+                                        <div class="row mb-3">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label for="category" class="fw-bold mb-3">Category</label>
-                                                    <select ng-model="form.id_category" class="form-control"
-                                                        name="category" id="category">
-                                                        <option value="" selected disabled>Select a category
-                                                        </option>
-                                                        <option ng-repeat="c in cates" ng-value="c.id">{{c.name}}
-                                                        </option>
-                                                    </select>
+                                                    <label class="fw-bold mb-3">Expiredate</label>
+                                                    <input ng-model="form.expiredDate" class="form-control" type="date"
+                                                        name="day" required>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group mb-3">
-                                            <label for="describe" class="fw-bold mb-3">Describe</label>
-                                            <textarea type="text" class="form-control" id="describe"
-                                                ng-model="form.describe" name="name" placeholder="Describe"
-                                                style="height: 120px;"></textarea>
-                                        </div>
-                                        <div class="form-group mt-4">
-                                            <label class="form-label fw-bold pe-4">Available</label>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" ng-model="form.active"
-                                                    id="radio1" name="active" ng-value="true" ng-required />
-                                                <label class="form-check-label" for="radio1">Yes</label>
-                                            </div>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" ng-model="form.active"
-                                                    id="radio2" name="active" ng-value="false" ng-required />
-                                                <label class="form-check-label" for="radio2">No</label>
                                             </div>
                                         </div>
                                     </div>
@@ -241,7 +187,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
         crossorigin="anonymous"></script>
-    <script src="/js/admin/product.js"></script>
+    <script src="/js/admin/discount.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
 </body>
 
