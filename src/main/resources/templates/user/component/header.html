@@ -58,10 +58,14 @@
                 </div>
                 <div class="language">
                     <a th:class="${#locale.language == 'vi' ? 'language-link active' : 'language-link'}"
-                        href="?lang=vi">VN</a>
+                        href="?lang=vi">
+                        <img src="/img/vietnam.png" alt="Vietnamese Flag" class="language-icon" />
+                    </a>
                     <span>|</span>
                     <a th:class="${#locale.language == 'en' ? 'language-link active' : 'language-link'}"
-                        href="?lang=en">EN</a>
+                        href="?lang=en">
+                        <img src="/img/united-kingdom.png" alt="Vietnamese Flag" class="language-icon" />
+                    </a>
                 </div>
 
                 <div class="border-start ps-4 d-none d-lg-block icons">

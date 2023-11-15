@@ -56,7 +56,7 @@
                                 <thead class="table-dark">
                                     <tr>
                                         <th>STT</th>
-                                        <th>DiscountName</th>
+                                        <th style="text-align: left;">DiscountName</th>
                                         <th>DiscountNumber</th>
                                         <th>DiscountPercent</th>
                                         <th>ActiveDate</th>
@@ -67,7 +67,7 @@
                                 <tbody class="no-border-x">
                                     <tr ng-repeat-start="count in discounts">
                                         <td>{{$index + 1}}</td>
-                                        <td>{{count.name}}</td>
+                                        <td style="text-align: left;">{{count.name}}</td>
                                         <td>{{count.number}}</td>
                                         <td>{{count.percent}}</td>
                                         <td>{{count.activeDate | date: 'dd-MM-yyyy'}}</td>
@@ -141,6 +141,8 @@
                                                         placeholder="DiscountNumber" />
                                                 </div>
                                             </div>
+                                        </div>
+                                        <div class="row mb-3">
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="name" class="fw-bold mb-3">DiscountPercent</label>
@@ -158,8 +160,6 @@
                                                         name="day" required>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="row mb-3">
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label class="fw-bold mb-3">Expiredate</label>
