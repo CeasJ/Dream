@@ -43,15 +43,17 @@
     <!-- Navbar End -->
 
     <main>
+
         <!-- Page Header Start -->
         <div class="container-fluid page-header py-5 wow fadeIn" data-wow-delay="0.1s">
             <div class="container text-center py-5">
-                <h1 class="display-2 text-dark mb-4 animated slideInDown">Products</h1>
+                <h1 class="display-2 text-dark mb-4 animated slideInDown" th:text="#{product.title}"></h1>
                 <nav aria-label="breadcrumb animated slideInDown">
-                    <ul class="breadcrumb justify-content-center mb-0">
-                        <li class="breadcrumb-item"><a th:href="@{|/home|}">Home</a></li>
-                        <li class="breadcrumb-item text-dark" aria-current="page">Products</li>
-                    </ul>
+                    <ol class="breadcrumb justify-content-center mb-0">
+                        <li class="breadcrumb-item"><a th:href="@{|/home|}" th:text="#{breadcrumb.home}"></a></li>
+                        <li class="breadcrumb-item text-dark" aria-current="page" th:text="#{product.title}">
+                        </li>
+                    </ol>
                 </nav>
             </div>
         </div>
@@ -62,15 +64,16 @@
         <div class="container-xxl" style="margin-bottom: 0px; padding-top: 20px;">
             <div class="container">
                 <div class="section-title text-center mx-auto wow fadeInUp" data-wow-delay="0.1s"
-                    style="max-width: 500px;">
+                    style="max-width: 600px;">
                     <p class="fs-5 fw-medium fst-italic text-primary">Dream Tea & Coffee</p>
-                    <h1 class="display-6">Good to the last drop!</h1>
+                    <h1 class="display-6" th:text="#{product.brand}"></h1>
                 </div>
 
                 <div class="row mt-2 mb-3">
                     <div class="col-md-4 sort">
                         <div class="d-flex align-items-center" style="margin-top: 3px;">
-                            <label for="productGroup" style="margin-right: 15px; font-weight: 600;">Theo nhóm</label>
+                            <label for="productGroup" style="margin-right: 15px; font-weight: 600;"
+                                th:text="#{product.sortBy}"></label>
                             <select class="form-select cb-sort" id="productGroup" name="categoryId"
                                 style="width: 270px; height: 36px;">
                                 <option th:each="category : ${categories}" th:value="${category.id}"
@@ -84,15 +87,19 @@
                         <!-- Theo giá + comboBox( Từ thấp đến cao, từ cao đến thấp ) -->
                         <form th:action="@{/store}" method="get">
                             <div class="d-flex align-items-center" style="margin-top: 3px;">
-                                <label for="sortByPrice" class="mr-2" style="margin-right: 15px; font-weight: 600;">Theo
-                                    giá</label>
+                                <label for="sortByPrice" class="mr-2" style="margin-right: 15px; font-weight: 600;"
+                                    th:text="#{product.sortPrices}"></label>
                                 <select class="form-select cb-sort" name="sortOption" id="sortByPrice"
                                     style="width: 270px; height: 36px;" onchange="updateCategoryIdAndSubmit(this)">
-                                    <option value="none" th:selected="${sortOption == null || sortOption == 'none'}">
-                                        Không lựa chọn</option>
-                                    <option value="asc" th:selected="${sortOption == 'asc'}">Từ thấp đến cao</option>
-                                    <option value="desc" th:selected="${sortOption == 'desc'}">Từ cao đến thấp</option>
-                                    <option value="sale" th:selected="${sortOption == 'sale'}">Đang được giảm giá
+                                    <option value="none" th:selected="${sortOption == null || sortOption == 'none'}"
+                                        th:text="#{product.none}">
+                                    </option>
+                                    <option value="asc" th:selected="${sortOption == 'asc'}"
+                                        th:text="#{product.lowToHigh}"></option>
+                                    <option value="desc" th:selected="${sortOption == 'desc'}"
+                                        th:text="#{product.highToLow}"></option>
+                                    <option value="sale" th:selected="${sortOption == 'sale'}"
+                                        th:text="#{product.sale}">
                                     </option>
                                 </select>
                             </div>
@@ -102,7 +109,7 @@
                         <form th:action="@{/search}" method="get">
                             <div class="input-group" style="margin-top: 1px; padding: 0 10px;">
                                 <input type="text" class="form-control ip-sort" name="productName"
-                                    placeholder="Tìm kiếm...">
+                                    th:placeholder="#{search.placeholder}">
                                 <div class="input-group-append">
                                     <button class="btn btn-dark" type="submit" id="searchButton">
                                         <i class="bi bi-search"></i>
@@ -162,9 +169,8 @@
                                     </div>
 
                                 </div>
-                                <h4 class="mb-3" th:text="${product.name}">Nature close tea</h4>
+                                <h4 class="mb-3" th:text="${product.name}"></h4>
                                 <p class="product-description" th:text="${product.describe}"></p>
-
 
                                 <div th:if="${product.discountedPrice != null}">
                                     <p class="header">
@@ -182,12 +188,15 @@
                             </div>
                             <div class="store-overlay">
                                 <a th:href="@{/product/{name}(name=${product.name})}"
-                                    class="btn btn-primary rounded-pill py-2 px-4 m-2">More Detail <i
-                                        class="fa fa-arrow-right ms-2"></i></a>
+                                    class="btn btn-primary rounded-pill py-2 px-4 m-2" style="width: 154px;">
+                                    <span th:text="#{button.moreDetail}"></span> <i class="fa fa-arrow-right ms-2"></i>
+                                </a>
                                 <button th:attr="ng-click=@{|cart.add(${product.id})|}"
-                                    class="btn btn-dark rounded-pill py-2 px-4 m-2">Add to Cart <i
-                                        class="fa fa-cart-plus ms-2"></i></button>
+                                    class="btn btn-dark rounded-pill py-2 px-4 m-2">
+                                    <span th:text="#{button.addToCart}"></span> <i class="fa fa-cart-plus ms-2"></i>
+                                </button>
                             </div>
+
                         </div>
                     </div>
                 </div>

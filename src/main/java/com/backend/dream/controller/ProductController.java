@@ -45,7 +45,6 @@ public class ProductController {
     @Autowired
     private ProductRepository productRepository;
 
-
     @Autowired
     DiscountService discountService;
 
@@ -54,7 +53,6 @@ public class ProductController {
 
     @Autowired
     private HttpServletRequest request;
-
 
     @Autowired
     public ProductController(ProductService productService, ProductSizeService productSizeService) {
@@ -80,7 +78,6 @@ public class ProductController {
         productRepository.deleteById(productDTO.getId());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
 
     @GetMapping("/store")
     public String showListProducts(
@@ -113,7 +110,6 @@ public class ProductController {
             productPage = productService.findByCategory(categoryIdValue, pageable);
         }
 
-
         List<ProductDTO> products = productPage.getContent();
         for (ProductDTO product : products) {
             double discountedPrice = productService.getDiscountedPrice(product.getId());
@@ -125,7 +121,6 @@ public class ProductController {
             }
         }
 
-
         model.addAttribute("products", products);
         model.addAttribute("currentPage", page);
         model.addAttribute("categoryId", categoryIdValue);
@@ -133,12 +128,10 @@ public class ProductController {
         return "user/product/products-list";
     }
 
-
-
     @GetMapping("/search")
     public String searchByName(@RequestParam String productName,
-                               @RequestParam(defaultValue = "0") int page,
-                               Model model) {
+            @RequestParam(defaultValue = "0") int page,
+            Model model) {
         int pageSize = 6;
         Pageable pageable = PageRequest.of(page, pageSize);
 
@@ -153,10 +146,10 @@ public class ProductController {
 
     @RequestMapping(value = "/product/{name}", method = RequestMethod.GET)
     public String productDetail(@PathVariable(value = "name") String name,
-                                @RequestParam(value = "sizeId", required = false) Long sizeId,
-                                @RequestParam(value = "starRating", required = false, defaultValue = "0") int starRating,
-                                @RequestParam(value = "page", required = false, defaultValue = "0") int page,
-                                Model model) {
+            @RequestParam(value = "sizeId", required = false) Long sizeId,
+            @RequestParam(value = "starRating", required = false, defaultValue = "0") int starRating,
+            @RequestParam(value = "page", required = false, defaultValue = "0") int page,
+            Model model) {
         try {
 
             String decoded = URLDecoder.decode(name, "UTF-8");
@@ -182,7 +175,7 @@ public class ProductController {
             // Get the discount percent
             DiscountDTO discount = discountService.getDiscountByProductId(product.getId());
             Double discountPercent = (discount != null) ? discount.getPercent() : 0.0;
-            //Get reviews list
+            // Get reviews list
             List<FeedBackDTO> feedbackList;
 
             if (starRating == 0) {
