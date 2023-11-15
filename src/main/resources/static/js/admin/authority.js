@@ -12,7 +12,6 @@ app.controller("authority-ctrl", function ($scope, $http, $location) {
 
     $http.get(`/rest/profile/admin?admin=true`).then((resp) => {
       $scope.admins = resp.data;
-
     });
 
     $http.get(`/rest/authorities?admin=true`).then((resp) => {
@@ -83,7 +82,7 @@ app.controller("authority-ctrl", function ($scope, $http, $location) {
       alert("Username is exist");
     } else {
       $http
-        .post(`/rest/profile/add`, account)
+        .post(`/rest/account/add`, account)
         .then(function (response) {
           $scope.clearForm();
           alert("Create Successful");
@@ -127,4 +126,3 @@ app.controller("authority-ctrl", function ($scope, $http, $location) {
       });
   }
 });
-

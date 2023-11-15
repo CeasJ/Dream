@@ -30,8 +30,9 @@ public interface OrderMapper {
     @Mapping(source = "account.id", target = "id_account")
     @Mapping(source = "account.fullname", target = "fullname")
     List<OrderDTO> listOrderToListOrderDTO(List<Orders> orders);
-    
+
     List<OrderDetailDTO> map(List<OrderDetails> orderDetails);
+
 
 
 
