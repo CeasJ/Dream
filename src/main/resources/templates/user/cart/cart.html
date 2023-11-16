@@ -167,7 +167,7 @@
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                      <p class="text-muted ps-3" style="font-size: 18px;">One voucher only</p>
+                      <p class="text-muted ps-3" style="font-size: 18px;" th:text="#{modal.title}"></p>
                       <div class="container mx-auto">
                         <!-- Voucher 1 -->
                         <div class="row custom-shadow" style="margin-bottom: 30px;" ng-repeat="voucher in vouchers" ng-if="voucher.condition <= cart.amount">
