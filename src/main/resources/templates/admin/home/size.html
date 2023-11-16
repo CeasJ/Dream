@@ -43,7 +43,7 @@
                                 <thead class="table-dark">
                                     <tr>
                                         <th>STT</th>
-                                        <th>Tên sản phẩm</th>
+                                        <th style="text-align: left;">Tên sản phẩm</th>
                                         <th ng-repeat="size in sizes">{{size.name}}</th>
                                         <th></th>
                                     </tr>
@@ -51,7 +51,7 @@
                                 <tbody>
                                     <tr ng-repeat-start="name in products">
                                         <td>{{$index + 1}}</td>
-                                        <td>{{name.name}}</td>
+                                        <td style="text-align: left;">{{name.name}}</td>
                                         <td ng-repeat="size in sizes">
                                             <input ng-checked="size_of(name, size)" ng-click="size_changed(name, size)"
                                                 type="checkbox">
@@ -104,7 +104,7 @@
                             </div>
                             <div class="modal-body">
                                 <div class="row mb-5">
-                                    <div class="col-md-9 offset-sm-2" style="margin-top: 50px;">
+                                    <div class="col-md-9 offset-sm-2" style="margin-top: 20px;">
                                         <!-- New content starts here -->
                                         <div class="row mb-4">
                                             <div class="form-group d-flex align-items-center">

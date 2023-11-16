@@ -59,7 +59,7 @@
                                 <thead class="table-dark">
                                     <tr>
                                         <th>STT</th>
-                                        <th>Họ và tên</th>
+                                        <th style="text-align: left;">Họ và tên</th>
                                         <th ng-repeat="role in roles">{{role.name}}</th>
                                         <th></th>
                                     </tr>
@@ -67,7 +67,7 @@
                                 <tbody>
                                     <tr ng-repeat-start="acc in admins">
                                         <td>{{$index + 1}}</td>
-                                        <td>{{acc.fullname}}</td>
+                                        <td style="text-align: left;">{{acc.fullname}}</td>
                                         <td ng-repeat="role in roles">
                                             <input ng-checked="authority_of(acc, role)"
                                                 ng-click="authority_changed(acc, role)" type="checkbox">

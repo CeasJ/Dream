@@ -81,7 +81,7 @@
                                         <th>STT</th>
                                         <th>ID</th>
                                         <th>Image</th>
-                                        <th>Name</th>
+                                        <th style="text-align: left;">Name</th>
                                         <th>Price</th>
                                         <th>Describe</th>
                                         <th>Category</th>
@@ -96,12 +96,12 @@
                                         <td>{{item.id}}</td>
                                         <td><img class="img-fluid" ng-src="{{'/img/gallery/' + item.image}}"
                                                 style="width: 90px; height: 90px; border: none;"></td>
-                                        <td>{{item.name}}</td>
+                                        <td style="text-align: left;">{{item.name}}</td>
                                         <td>{{item.price}}</td>
                                         <td>
                                             <div style="text-align: justify; padding: 0 10px;">{{item.describe}}</div>
                                         </td>
-                                        <td>{{item.category}}</td>
+                                        <td>{{item.name_category}}</td>
                                         <td>{{item.createDate | date: 'dd-MM-yyyy'}}</td>
                                         <td>{{item.active}}</td>
                                         <td>
@@ -185,7 +185,7 @@
                                         <div class="row mb-3">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label class="fw-bold mb-3">Ngày tạo</label>
+                                                    <label class="fw-bold mb-3">Create Date</label>
                                                     <input ng-model="form.createDate" class="form-control" type="date"
                                                         name="day" required>
                                                 </div>
