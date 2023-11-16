@@ -517,6 +517,33 @@ body {
     overflow-y: auto;
 }
 
+/* CSS riêng cho delete-modal */
+.delete-modal .modal-dialog {
+    width: 100%; /* Điều chỉnh chiều rộng của modal */
+    max-width: 500px; /* Điều chỉnh chiều rộng tối đa của modal */
+    margin: auto; /* Để modal nằm giữa màn hình */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.delete-modal .modal-header .btn-close {
+    position: absolute;
+    left: 15px;
+    top: 30px;
+}
+.delete-modal .modal-header {
+    text-align: center;
+    border: none;
+}
+.delete-modal .modal-title {
+    margin: 0 auto;
+}
+
+.delete-modal .modal-content {
+    height: 22%; /* Điều chỉnh chiều rộng tối đa của modal */
+}
+
 .custom-shadow {
     border: 1px solid #d3d3d3;
     border-radius: 0 5px 5px 0;

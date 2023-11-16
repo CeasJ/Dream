@@ -11764,7 +11764,7 @@ body {
 }
 
 .size-modal .modal-content {
-  height: 60%; /* Điều chỉnh chiều rộng tối đa của modal */
+  height: 35%; /* Điều chỉnh chiều rộng tối đa của modal */
 }
 
 .size-modal .modal-body {
