@@ -147,8 +147,6 @@ app.controller('profile_ctrl', function ($scope, $http, $rootScope) {
     console.log(id_account);
     $http.get(`/rest/profile/${id_account}`).then(resp => {
       $scope.account = resp.data;
-      console.log($scope.account)
-
     });
   }
 
@@ -159,8 +157,8 @@ app.controller('profile_ctrl', function ($scope, $http, $rootScope) {
     if (account.id) {
       $http.put(`/rest/profile/${id_account}`, account).then(resp => {
         $scope.account = angular.copy(account);
-        alert("Update success");
         location.href = "/profile";
+        toastr.success('Update success');
       }).catch(err => {
       });
     }
@@ -172,7 +170,7 @@ app.controller('profile_ctrl', function ($scope, $http, $rootScope) {
         document.getElementById("checkOldPassword").style.display = "none"; // Ẩn section checkOldPassword
         document.getElementById("formConfirmPass").style.display = "block"; // Hiển thị section formConfirmPass
       } else {
-        alert("Wrong password ");
+       toastr.error("Wrong password");
       }
     });
   }
@@ -187,7 +185,7 @@ app.controller('profile_ctrl', function ($scope, $http, $rootScope) {
         console.log(err);
       })
     } else {
-      alert("Wrong password ");
+      toastr.error("Passwords do not match");
     }
   }
   $scope.selectedImage = null;
