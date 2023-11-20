@@ -15,7 +15,7 @@
                     <a th:href="@{|/store|}" class="nav-item nav-link" th:text="#{navbar.store}"></a>
                     <!--When customer not login-->
                     <th:block th:unless="${isAuthenticated}">
-                        <a th:href="@{|/login/form|}" class="nav-item nav-link" th:text="#{navbar.login}"></a>
+                        <a th:href="@{|/login|}" class="nav-item nav-link" th:text="#{navbar.login}"></a>
                         <a th:href="@{|/register|}" class="nav-item nav-link" th:text="#{navbar.register}"></a>
                     </th:block>
 
