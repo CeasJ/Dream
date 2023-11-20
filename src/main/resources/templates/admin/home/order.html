@@ -9,7 +9,7 @@
     <meta name="author" content="" />
     <title>Orders - Dream Admin</title>
     <link type="text/css" href="/css/admin/admin.css" rel="stylesheet" />
-    
+
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 
     <!-- Angular -->
@@ -31,11 +31,13 @@
                     <div class="d-flex col-md-3">
                         <div class="form-group mb-0 me-3">
                             <label for="categoryFilter" class="fw-bold pt-1" style="font-size: 16px;">
-                                Filter by Status:
-                            </label>
+                                <label for="categoryFilter" class="fw-bold pt-1" style="font-size: 16px;">
+                                    Filter by Status:
+                                </label>
                         </div>
                         <div class="form-group mb-0" style="width: 150px;">
-                            <select class="form-control" id="statusFilter" ng-model="selectedStatus" ng-options="s.id as s.name for s in status" ng-change="selectedStatusChanged()">
+                            <select class="form-control" id="statusFilter" ng-model="selectedStatus"
+                                ng-options="s.id as s.name for s in status" ng-change="selectedStatusChanged()">
                                 <option value="">All Status</option>
                             </select>
                         </div>
@@ -136,144 +138,146 @@
                         </div>
 
 
+                        </div>
+
                     </div>
-                   
-                </div>
-                <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                    aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">
-                                    <i class="bi bi-pencil-square pe-2"></i>
-                                    Orders
-                                </h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="container hs-hd mx-auto">
-                                    <h5 class="title-hs col-md-12">Hóa đơn</h5>
-                                    <div class="row">
-                                        <div class="col-md-6 cnt-hd border-right">
-                                            <div class="info-pair">
-                                                <h6>Order ID:</h6>
-                                                <p>{{listOrder[0].id_order}}</p>
-                                            </div>
-                                            <div class="info-pair">
-                                                <h6>Order Date:</h6>
-                                                <p>{{listOrder[0].order_createDate | date:'dd-MM-yyyy'}}</p>
-                                            </div>
-                                            <!-- Thêm thông tin khác nếu cần -->
-                                        </div>
-                                        <div class="col-md-6 cnt-hd">
-                                            <div class="info-pair">
-                                                <h6>Thanh toán:</h6>
-                                                <p>Tiền mặt</p>
-                                            </div>
-                                            <div class="info-pair">
-                                                <h6>Vận chuyển:</h6>
-                                                <p>Shipper</p>
-                                            </div>
-                                            <!-- Thêm thông tin khác nếu cần -->
-                                        </div>
-                                    </div>
+                    <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">
+                                        <i class="bi bi-pencil-square pe-2"></i>
+                                        Orders
+                                    </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
                                 </div>
-                                <div class="container hs-hd mx-auto" style="margin-top: 30px;">
-                                    <h5 class="title-hs col-md-12">Địa chỉ giao hàng</h5>
-                                    <div class="row">
-                                        <div class="col-md-6 cnt-hd border-right">
-                                            <div class="info-pair">
-                                                <h6>Họ và tên:</h6>
-                                                <p>{{listOrder[0].account_fullname}}</p>
+                                <div class="modal-body">
+                                    <div class="container hs-hd mx-auto">
+                                        <h5 class="title-hs col-md-12">Hóa đơn</h5>
+                                        <div class="row">
+                                            <div class="col-md-6 cnt-hd border-right">
+                                                <div class="info-pair">
+                                                    <h6>Order ID:</h6>
+                                                    <p>{{listOrder[0].id_order}}</p>
+                                                </div>
+                                                <div class="info-pair">
+                                                    <h6>Order Date:</h6>
+                                                    <p>{{listOrder[0].order_createDate | date:'dd-MM-yyyy'}}</p>
+                                                </div>
+                                                <!-- Thêm thông tin khác nếu cần -->
                                             </div>
-                                            <div class="info-pair">
-                                                <h6>Số điện thoại:</h6>
-                                                <p>{{listOrder[0].account_phone}}</p>
-                                            </div>
-                                            <div class="info-pair">
-                                                <h6>Địa chỉ:</h6>
-                                                <p>{{listOrder[0].order_address}}</p>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 cnt-hd">
-                                            <div class="info-pair">
-                                                <h6>Tỉnh/Thành phố:</h6>
-                                                <p>Hồ Chí Minh</p>
-                                            </div>
-                                            <div class="info-pair">
-                                                <h6>Quận/Huyện:</h6>
-                                                <p>Thủ Đức</p>
-                                            </div>
-                                            <div class="info-pair">
-                                                <h6>Phường/Xã:</h6>
-                                                <p>Hiệp Bình Phước</p>
+                                            <div class="col-md-6 cnt-hd">
+                                                <div class="info-pair">
+                                                    <h6>Thanh toán:</h6>
+                                                    <p>Tiền mặt</p>
+                                                </div>
+                                                <div class="info-pair">
+                                                    <h6>Vận chuyển:</h6>
+                                                    <p>Shipper</p>
+                                                </div>
+                                                <!-- Thêm thông tin khác nếu cần -->
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="container" style="margin-top: 30px; padding: 0;">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <table class="table table-bordered table-details">
-                                                <thead class="table-dark">
-                                                    <tr>
-                                                        <th>No.</th>
-                                                        <th>Hình ảnh</th>
-                                                        <th>Tên sản phẩm</th>
-                                                        <th>Số lượng</th>
-                                                        <th>Size</th>
-                                                        <th>Giá</th>
-                                                        <th>Tổng tiền</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr ng-repeat="orderDetail in listOrder">
-                                                        <td>{{$index + 1}}</td>
-                                                        <td><img ng-src="{{'/img/gallery/' + orderDetail.product_image}}"
-                                                                class="img-fluid img-details"></td>
-                                                        <td>{{orderDetail.product_name}}</td>
-                                                        <td>{{orderDetail.quantity}}</td>
-                                                        <td ng-if="orderDetail.id_size === 1">S</td>
-                                                        <td ng-if="orderDetail.id_size === 2">M</td>
-                                                        <td ng-if="orderDetail.id_size === 3">L</td>
-                                                        <td>{{orderDetail.price | number : 0}} đ</td>
-                                                        <td>{{orderDetail.quantity * orderDetail.price | number :0}} đ</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colspan="5" class="text-end"><strong>Tạm
-                                                                tính:</strong></td>
-                                                        <td>{{getSubTotal() | number : 0}} đ</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colspan="5" class="text-end"><strong>Chi phí vận
-                                                                chuyển:</strong>
-                                                        </td>
-                                                        <td>20.000 đ</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colspan="5" class="text-end"><strong>Tổng thanh
-                                                                toán:</strong></td>
-                                                        <th class="text-success">{{getTotal() | number : 0}} đ</th>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
+                                    <div class="container hs-hd mx-auto" style="margin-top: 30px;">
+                                        <h5 class="title-hs col-md-12">Địa chỉ giao hàng</h5>
+                                        <div class="row">
+                                            <div class="col-md-6 cnt-hd border-right">
+                                                <div class="info-pair">
+                                                    <h6>Họ và tên:</h6>
+                                                    <p>{{listOrder[0].account_fullname}}</p>
+                                                </div>
+                                                <div class="info-pair">
+                                                    <h6>Số điện thoại:</h6>
+                                                    <p>{{listOrder[0].account_phone}}</p>
+                                                </div>
+                                                <div class="info-pair">
+                                                    <h6>Địa chỉ:</h6>
+                                                    <p>{{listOrder[0].order_address}}</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 cnt-hd">
+                                                <div class="info-pair">
+                                                    <h6>Tỉnh/Thành phố:</h6>
+                                                    <p>Hồ Chí Minh</p>
+                                                </div>
+                                                <div class="info-pair">
+                                                    <h6>Quận/Huyện:</h6>
+                                                    <p>Thủ Đức</p>
+                                                </div>
+                                                <div class="info-pair">
+                                                    <h6>Phường/Xã:</h6>
+                                                    <p>Hiệp Bình Phước</p>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
+                                    <div class="container" style="margin-top: 30px; padding: 0;">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <table class="table table-bordered table-details">
+                                                    <thead class="table-dark">
+                                                        <tr>
+                                                            <th>No.</th>
+                                                            <th>Hình ảnh</th>
+                                                            <th>Tên sản phẩm</th>
+                                                            <th>Số lượng</th>
+                                                            <th>Size</th>
+                                                            <th>Giá</th>
+                                                            <th>Tổng tiền</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr ng-repeat="orderDetail in listOrder">
+                                                            <td>{{$index + 1}}</td>
+                                                            <td><img ng-src="{{'/img/gallery/' + orderDetail.product_image}}"
+                                                                    class="img-fluid img-details"></td>
+                                                            <td>{{orderDetail.product_name}}</td>
+                                                            <td>{{orderDetail.quantity}}</td>
+                                                            <td ng-if="orderDetail.id_size === 1">S</td>
+                                                            <td ng-if="orderDetail.id_size === 2">M</td>
+                                                            <td ng-if="orderDetail.id_size === 3">L</td>
+                                                            <td>{{orderDetail.price | number : 0}} đ</td>
+                                                            <td>{{orderDetail.quantity * orderDetail.price | number :0}}
+                                                                đ</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="5" class="text-end"><strong>Tạm
+                                                                    tính:</strong></td>
+                                                            <td>{{getSubTotal() | number : 0}} đ</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="5" class="text-end"><strong>Chi phí vận
+                                                                    chuyển:</strong>
+                                                            </td>
+                                                            <td>20.000 đ</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="5" class="text-end"><strong>Tổng thanh
+                                                                    toán:</strong></td>
+                                                            <th class="text-success">{{getTotal() | number : 0}} đ</th>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mt-2" style="font-size: 20px;">
+                                        <label for="confirmOrderStatus" class="form-label fw-bold mb-3">
+                                            Order Status:</label>
+                                        <span class="fw-bold text-primary ps-1">Đã đặt hàng</span>
+                                    </div>
+                                    <!-- Add more input fields here based on your table columns -->
                                 </div>
-                                <div class="mt-2" style="font-size: 20px;">
-                                    <label for="confirmOrderStatus" class="form-label fw-bold mb-3">
-                                        Order Status:</label>
-                                    <span class="fw-bold text-primary ps-1">Đã đặt hàng</span>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
                                 </div>
-                                <!-- Add more input fields here based on your table columns -->
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                             </div>
                         </div>
                     </div>
-                </div>
 
                 <!-- Bảng cho trạng thái confirm -->
                 <div class="card" style="border-radius: 0px; margin-bottom: 40px;" id="order-confirm">
@@ -348,143 +352,145 @@
                             </nav>
                         </div>
 
+                        </div>
                     </div>
-                </div>
-                <div class="modal fade" id="processingModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                    aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">
-                                    <i class="bi bi-pencil-square pe-2"></i>
-                                    Processing
-                                </h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="container hs-hd mx-auto">
-                                    <h5 class="title-hs col-md-12">Hóa đơn</h5>
-                                    <div class="row">
-                                        <div class="col-md-6 cnt-hd border-right">
-                                            <div class="info-pair">
-                                                <h6>Order ID:</h6>
-                                                <p>#{{listOrder.id_order}}</p>
-                                            </div>
-                                            <div class="info-pair">
-                                                <h6>Order Date:</h6>
-                                                <p>{{listOrder[0].order_createDate | date:'dd-MM-yyyy'}}</p>
-                                            </div>
-                                            <!-- Thêm thông tin khác nếu cần -->
-                                        </div>
-                                        <div class="col-md-6 cnt-hd">
-                                            <div class="info-pair">
-                                                <h6>Thanh toán:</h6>
-                                                <p>Tiền mặt</p>
-                                            </div>
-                                            <div class="info-pair">
-                                                <h6>Vận chuyển:</h6>
-                                                <p>Shipper</p>
-                                            </div>
-                                            <!-- Thêm thông tin khác nếu cần -->
-                                        </div>
-                                    </div>
+                    <div class="modal fade" id="processingModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">
+                                        <i class="bi bi-pencil-square pe-2"></i>
+                                        Processing
+                                    </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
                                 </div>
-                                <div class="container hs-hd mx-auto" style="margin-top: 30px;">
-                                    <h5 class="title-hs col-md-12">Địa chỉ giao hàng</h5>
-                                    <div class="row">
-                                        <div class="col-md-6 cnt-hd border-right">
-                                            <div class="info-pair">
-                                                <h6>Họ và tên:</h6>
-                                                <p>{{listOrder[0].account_fullname}}</p>
+                                <div class="modal-body">
+                                    <div class="container hs-hd mx-auto">
+                                        <h5 class="title-hs col-md-12">Hóa đơn</h5>
+                                        <div class="row">
+                                            <div class="col-md-6 cnt-hd border-right">
+                                                <div class="info-pair">
+                                                    <h6>Order ID:</h6>
+                                                    <p>#{{listOrder.id_order}}</p>
+                                                </div>
+                                                <div class="info-pair">
+                                                    <h6>Order Date:</h6>
+                                                    <p>{{listOrder[0].order_createDate | date:'dd-MM-yyyy'}}</p>
+                                                </div>
+                                                <!-- Thêm thông tin khác nếu cần -->
                                             </div>
-                                            <div class="info-pair">
-                                                <h6>Số điện thoại:</h6>
-                                                <p>{{listOrder[0].account_phone}}</p>
-                                            </div>
-                                            <div class="info-pair">
-                                                <h6>Địa chỉ:</h6>
-                                                <p>{{listOrder[0].order_address}}</p>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 cnt-hd">
-                                            <div class="info-pair">
-                                                <h6>Tỉnh/Thành phố:</h6>
-                                                <p>Hồ Chí Minh</p>
-                                            </div>
-                                            <div class="info-pair">
-                                                <h6>Quận/Huyện:</h6>
-                                                <p>Thủ Đức</p>
-                                            </div>
-                                            <div class="info-pair">
-                                                <h6>Phường/Xã:</h6>
-                                                <p>Hiệp Bình Phước</p>
+                                            <div class="col-md-6 cnt-hd">
+                                                <div class="info-pair">
+                                                    <h6>Thanh toán:</h6>
+                                                    <p>Tiền mặt</p>
+                                                </div>
+                                                <div class="info-pair">
+                                                    <h6>Vận chuyển:</h6>
+                                                    <p>Shipper</p>
+                                                </div>
+                                                <!-- Thêm thông tin khác nếu cần -->
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="container" style="margin-top: 30px; padding: 0;">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <table class="table table-bordered table-details">
-                                                <thead class="table-dark">
-                                                    <tr>
-                                                        <th>STT.</th>
-                                                        <th>Hình ảnh</th>
-                                                        <th>Tên sản phẩm</th>
-                                                        <th>Số lượng</th>
-                                                        <th>Size</th>
-                                                        <th>Giá</th>
-                                                        <th>Tổng tiền</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr ng-repeat="orderDetail in listOrder">
-                                                        <td>{{$index + 1}}</td>
-                                                        <td><img ng-src="{{'/img/gallery/' + orderDetail.product_image}}"
-                                                            class="img-fluid img-details"></td>
-                                                        <td>{{orderDetail.product_name}}</td>
-                                                        <td>{{orderDetail.quantity}}</td>
-                                                        <td ng-if="orderDetail.id_size === 1">S</td>
-                                                        <td ng-if="orderDetail.id_size === 2">M</td>
-                                                        <td ng-if="orderDetail.id_size === 3">L</td>
-                                                        <td>{{orderDetail.price | number : 0}} đ</td>
-                                                        <td>{{orderDetail.quantity * orderDetail.price | number :0}} đ</td>
-                                                    </tr>
-                                                    <td colspan="5" class="text-end">
-                                                        <strong>Tạm tính:</strong>
-                                                    </td>
-                                                    <td>{{getSubTotal() | number : 0}} đ</td>
-                                                    </tr>
-                                                    <tr>
+                                    <div class="container hs-hd mx-auto" style="margin-top: 30px;">
+                                        <h5 class="title-hs col-md-12">Địa chỉ giao hàng</h5>
+                                        <div class="row">
+                                            <div class="col-md-6 cnt-hd border-right">
+                                                <div class="info-pair">
+                                                    <h6>Họ và tên:</h6>
+                                                    <p>{{listOrder[0].account_fullname}}</p>
+                                                </div>
+                                                <div class="info-pair">
+                                                    <h6>Số điện thoại:</h6>
+                                                    <p>{{listOrder[0].account_phone}}</p>
+                                                </div>
+                                                <div class="info-pair">
+                                                    <h6>Địa chỉ:</h6>
+                                                    <p>{{listOrder[0].order_address}}</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 cnt-hd">
+                                                <div class="info-pair">
+                                                    <h6>Tỉnh/Thành phố:</h6>
+                                                    <p>Hồ Chí Minh</p>
+                                                </div>
+                                                <div class="info-pair">
+                                                    <h6>Quận/Huyện:</h6>
+                                                    <p>Thủ Đức</p>
+                                                </div>
+                                                <div class="info-pair">
+                                                    <h6>Phường/Xã:</h6>
+                                                    <p>Hiệp Bình Phước</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="container" style="margin-top: 30px; padding: 0;">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <table class="table table-bordered table-details">
+                                                    <thead class="table-dark">
+                                                        <tr>
+                                                            <th>STT.</th>
+                                                            <th>Hình ảnh</th>
+                                                            <th>Tên sản phẩm</th>
+                                                            <th>Số lượng</th>
+                                                            <th>Size</th>
+                                                            <th>Giá</th>
+                                                            <th>Tổng tiền</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr ng-repeat="orderDetail in listOrder">
+                                                            <td>{{$index + 1}}</td>
+                                                            <td><img ng-src="{{'/img/gallery/' + orderDetail.product_image}}"
+                                                                    class="img-fluid img-details"></td>
+                                                            <td>{{orderDetail.product_name}}</td>
+                                                            <td>{{orderDetail.quantity}}</td>
+                                                            <td ng-if="orderDetail.id_size === 1">S</td>
+                                                            <td ng-if="orderDetail.id_size === 2">M</td>
+                                                            <td ng-if="orderDetail.id_size === 3">L</td>
+                                                            <td>{{orderDetail.price | number : 0}} đ</td>
+                                                            <td>{{orderDetail.quantity * orderDetail.price | number :0}}
+                                                                đ</td>
+                                                        </tr>
                                                         <td colspan="5" class="text-end">
-                                                            <strong>Chi phí vận chuyển:</strong>
+                                                            <strong>Tạm tính:</strong>
                                                         </td>
-                                                        <td>20.000 đ</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colspan="5" class="text-end">
-                                                            <strong> Tổng thanh toán:</strong>
-                                                        </td>
-                                                        <th class="text-success">{{getTotal() | number : 0}} đ</th>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
+                                                        <td>{{getSubTotal() | number : 0}} đ</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="5" class="text-end">
+                                                                <strong>Chi phí vận chuyển:</strong>
+                                                            </td>
+                                                            <td>20.000 đ</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="5" class="text-end">
+                                                                <strong> Tổng thanh toán:</strong>
+                                                            </td>
+                                                            <th class="text-success">{{getTotal() | number : 0}} đ</th>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
                                     </div>
+                                    <div class="mt-2" style="font-size: 20px;">
+                                        <label for="processingOrderStatus" class="form-label fw-bold mb-3">
+                                            Order Status:</label>
+                                        <span class="fw-bold text-primary ps-1">Đã xác nhận</span>
+                                    </div>
                                 </div>
-                                <div class="mt-2" style="font-size: 20px;">
-                                    <label for="processingOrderStatus" class="form-label fw-bold mb-3">
-                                        Order Status:</label>
-                                    <span class="fw-bold text-primary ps-1">Đã xác nhận</span>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
                                 </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                             </div>
                         </div>
                     </div>
-                </div>
 
                 <!-- Bảng cho trạng thái shipping -->
                 <div class="card" style="border-radius: 0px; margin-bottom: 40px;" id="order-shipping">
@@ -766,145 +772,147 @@
                             </nav>
                         </div>
 
+                        </div>
                     </div>
-                </div>
-                <!-- Modal Success -->
-                <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                    aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">
-                                    <i class="bi bi-pencil-square pe-2"></i>
-                                    Success
-                                </h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="container hs-hd mx-auto">
-                                    <h5 class="title-hs col-md-12">Hóa đơn</h5>
-                                    <div class="row">
-                                        <div class="col-md-6 cnt-hd border-right">
-                                            <div class="info-pair">
-                                                <h6>Order ID:</h6>
-                                                <p>#{{listOrder[0].id_order}}</p>
-                                            </div>
-                                            <div class="info-pair">
-                                                <h6>Order Date:</h6>
-                                                <p>{{listOrder[0].order_createDate | date :'dd-MM-yyyy'}}</p>
-                                            </div>
-                                            <!-- Thêm thông tin khác nếu cần -->
-                                        </div>
-                                        <div class="col-md-6 cnt-hd">
-                                            <div class="info-pair">
-                                                <h6>Thanh toán:</h6>
-                                                <p>Tiền mặt</p>
-                                            </div>
-                                            <div class="info-pair">
-                                                <h6>Vận chuyển:</h6>
-                                                <p>Shipper</p>
-                                            </div>
-                                            <!-- Thêm thông tin khác nếu cần -->
-                                        </div>
-                                    </div>
+                    <!-- Modal Success -->
+                    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">
+                                        <i class="bi bi-pencil-square pe-2"></i>
+                                        Success
+                                    </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
                                 </div>
-                                <div class="container hs-hd mx-auto" style="margin-top: 30px;">
-                                    <h5 class="title-hs col-md-12">Địa chỉ giao hàng</h5>
-                                    <div class="row">
-                                        <div class="col-md-6 cnt-hd border-right">
-                                            <div class="info-pair">
-                                                <h6>Họ và tên:</h6>
-                                                <p>{{listOrder[0].account_fullname}}</p>
+                                <div class="modal-body">
+                                    <div class="container hs-hd mx-auto">
+                                        <h5 class="title-hs col-md-12">Hóa đơn</h5>
+                                        <div class="row">
+                                            <div class="col-md-6 cnt-hd border-right">
+                                                <div class="info-pair">
+                                                    <h6>Order ID:</h6>
+                                                    <p>#{{listOrder[0].id_order}}</p>
+                                                </div>
+                                                <div class="info-pair">
+                                                    <h6>Order Date:</h6>
+                                                    <p>{{listOrder[0].order_createDate | date :'dd-MM-yyyy'}}</p>
+                                                </div>
+                                                <!-- Thêm thông tin khác nếu cần -->
                                             </div>
-                                            <div class="info-pair">
-                                                <h6>Số điện thoại:</h6>
-                                                <p>{{listOrder[0].account_phone}}</p>
-                                            </div>
-                                            <div class="info-pair">
-                                                <h6>Địa chỉ:</h6>
-                                                <p>{{listOrder[0].order_address}}
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 cnt-hd">
-                                            <div class="info-pair">
-                                                <h6>Tỉnh/Thành phố:</h6>
-                                                <p>Hồ Chí Minh</p>
-                                            </div>
-                                            <div class="info-pair">
-                                                <h6>Quận/Huyện:</h6>
-                                                <p>Thủ Đức</p>
-                                            </div>
-                                            <div class="info-pair">
-                                                <h6>Phường/Xã:</h6>
-                                                <p>Hiệp Bình Phước</p>
+                                            <div class="col-md-6 cnt-hd">
+                                                <div class="info-pair">
+                                                    <h6>Thanh toán:</h6>
+                                                    <p>Tiền mặt</p>
+                                                </div>
+                                                <div class="info-pair">
+                                                    <h6>Vận chuyển:</h6>
+                                                    <p>Shipper</p>
+                                                </div>
+                                                <!-- Thêm thông tin khác nếu cần -->
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="container" style="margin-top: 30px; padding: 0;">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <table class="table table-bordered table-details">
-                                                <thead class="table-dark">
-                                                    <tr>
-                                                        <th>No.</th>
-                                                        <th>Hình ảnh</th>
-                                                        <th>Tên sản phẩm</th>
-                                                        <th>Số lượng</th>
-                                                        <th>Size</th>
-                                                        <th>Giá</th>
-                                                        <th>Tổng tiền</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr ng-repeat="orderDetail in listOrder">
-                                                        <td>{{$index + 1}}</td>
-                                                        <td><img ng-src="{{'/img/gallery/' + orderDetail.product_image}}"
-                                                                class="img-fluid img-details"></td>
-                                                        <td>{{orderDetail.product_name}}</td>
-                                                        <td>{{orderDetail.quantity}}</td>
-                                                        <td ng-if="orderDetail.id_size === 1">S</td>
-                                                        <td ng-if="orderDetail.id_size === 2">M</td>
-                                                        <td ng-if="orderDetail.id_size === 3">L</td>
-                                                        <td>{{orderDetail.price | number : 0}} đ</td>
-                                                        <td>{{orderDetail.quantity * orderDetail.price | number :0}} đ</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colspan="5" class="text-end"><strong>Tạm
-                                                                tính:</strong></td>
-                                                        <td>{{getSubTotal() | number : 0}} đ</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colspan="5" class="text-end"><strong>Chi phí vận
-                                                                chuyển:</strong>
-                                                        </td>
-                                                        <td>20.000 đ</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colspan="5" class="text-end"><strong>Tổng thanh
-                                                                toán:</strong></td>
-                                                        <th class="text-success">{{getTotal() | number : 0}} đ</th>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
+                                    <div class="container hs-hd mx-auto" style="margin-top: 30px;">
+                                        <h5 class="title-hs col-md-12">Địa chỉ giao hàng</h5>
+                                        <div class="row">
+                                            <div class="col-md-6 cnt-hd border-right">
+                                                <div class="info-pair">
+                                                    <h6>Họ và tên:</h6>
+                                                    <p>{{listOrder[0].account_fullname}}</p>
+                                                </div>
+                                                <div class="info-pair">
+                                                    <h6>Số điện thoại:</h6>
+                                                    <p>{{listOrder[0].account_phone}}</p>
+                                                </div>
+                                                <div class="info-pair">
+                                                    <h6>Địa chỉ:</h6>
+                                                    <p>{{listOrder[0].order_address}}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 cnt-hd">
+                                                <div class="info-pair">
+                                                    <h6>Tỉnh/Thành phố:</h6>
+                                                    <p>Hồ Chí Minh</p>
+                                                </div>
+                                                <div class="info-pair">
+                                                    <h6>Quận/Huyện:</h6>
+                                                    <p>Thủ Đức</p>
+                                                </div>
+                                                <div class="info-pair">
+                                                    <h6>Phường/Xã:</h6>
+                                                    <p>Hiệp Bình Phước</p>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
+                                    <div class="container" style="margin-top: 30px; padding: 0;">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <table class="table table-bordered table-details">
+                                                    <thead class="table-dark">
+                                                        <tr>
+                                                            <th>No.</th>
+                                                            <th>Hình ảnh</th>
+                                                            <th>Tên sản phẩm</th>
+                                                            <th>Số lượng</th>
+                                                            <th>Size</th>
+                                                            <th>Giá</th>
+                                                            <th>Tổng tiền</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr ng-repeat="orderDetail in listOrder">
+                                                            <td>{{$index + 1}}</td>
+                                                            <td><img ng-src="{{'/img/gallery/' + orderDetail.product_image}}"
+                                                                    class="img-fluid img-details"></td>
+                                                            <td>{{orderDetail.product_name}}</td>
+                                                            <td>{{orderDetail.quantity}}</td>
+                                                            <td ng-if="orderDetail.id_size === 1">S</td>
+                                                            <td ng-if="orderDetail.id_size === 2">M</td>
+                                                            <td ng-if="orderDetail.id_size === 3">L</td>
+                                                            <td>{{orderDetail.price | number : 0}} đ</td>
+                                                            <td>{{orderDetail.quantity * orderDetail.price | number :0}}
+                                                                đ</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="5" class="text-end"><strong>Tạm
+                                                                    tính:</strong></td>
+                                                            <td>{{getSubTotal() | number : 0}} đ</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="5" class="text-end"><strong>Chi phí vận
+                                                                    chuyển:</strong>
+                                                            </td>
+                                                            <td>20.000 đ</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="5" class="text-end"><strong>Tổng thanh
+                                                                    toán:</strong></td>
+                                                            <th class="text-success">{{getTotal() | number : 0}} đ</th>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mt-2" style="font-size: 20px;">
+                                        <label for="successOrderStatus" class="form-label fw-bold mb-3">
+                                            Order Status:</label>
+                                        <span class="fw-bold text-success ps-1">Đã giao hàng</span>
+                                    </div>
+                                    <!-- Add more input fields here based on your table columns -->
                                 </div>
-                                <div class="mt-2" style="font-size: 20px;">
-                                    <label for="successOrderStatus" class="form-label fw-bold mb-3">
-                                        Order Status:</label>
-                                    <span class="fw-bold text-success ps-1">Đã giao hàng</span>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
                                 </div>
-                                <!-- Add more input fields here based on your table columns -->
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                             </div>
                         </div>
                     </div>
-                </div>
 
                 <!-- Bảng cho trạng thái cancel -->
                 <div class="card" style="border-radius: 0px; margin-bottom: 30px;" id="order-cancel">

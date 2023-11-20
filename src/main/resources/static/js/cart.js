@@ -173,8 +173,8 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
       $http
         .get(
           "https://provinces.open-api.vn/api/p/" +
-            $scope.selectedProvince +
-            "?depth=2"
+          $scope.selectedProvince +
+          "?depth=2"
         )
         .then(function (response) {
           $scope.districts = response.data.districts;
@@ -187,8 +187,8 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
       $http
         .get(
           "https://provinces.open-api.vn/api/d/" +
-            $scope.selectedDistrict +
-            "?depth=2"
+          $scope.selectedDistrict +
+          "?depth=2"
         )
         .then(function (response) {
           $scope.wards = response.data.wards;
@@ -249,9 +249,9 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
     return json
       ? JSON.parse(json)
       : {
-          username: username,
-          items: [],
-        };
+        username: username,
+        items: [],
+      };
   }
 
   function saveCart(username, cart) {
@@ -281,11 +281,11 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
 
       let sizeID = parseInt(size_id);
 
-      if(sizeID === null || sizeID === undefined || isNaN(sizeID)) {
+      if (sizeID === null || sizeID === undefined || isNaN(sizeID)) {
         sizeID = 1;
       }
 
-      let item = this.items.find((item) =>item.id_product === id && item.id_size === sizeID);
+      let item = this.items.find((item) => item.id_product === id && item.id_size === sizeID);
 
 
       if (item) {
@@ -298,7 +298,7 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
           this.items.push(newItem);
           saveCart(this.username, this);
         });
-      } 
+      }
     },
     remove(id) {
       let index = this.items.findIndex((item) => item.id_product === id);
@@ -378,7 +378,7 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
           $scope.cart.clear();
           // location.href = "/order/detail/" + resp.data.id;
         })
-        .catch((error) => {});
+        .catch((error) => { });
     },
   };
 
@@ -416,3 +416,4 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
   //Order End
 });
 //Cart Control End
+

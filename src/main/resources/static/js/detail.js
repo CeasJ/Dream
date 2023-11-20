@@ -35,7 +35,7 @@
         }
     });
     $('.back-to-top').click(function () {
-        $('html, body').animate({scrollTop: 0}, 1500, 'easeInOutExpo');
+        $('html, body').animate({ scrollTop: 0 }, 1500, 'easeInOutExpo');
         return false;
     });
 
@@ -63,22 +63,22 @@
         center: true,
         dots: false,
         nav: true,
-        navText : [
+        navText: [
             '<i class="bi bi-chevron-left"></i>',
             '<i class="bi bi-chevron-right"></i>'
         ],
         responsive: {
-			0:{
-                items:1
+            0: {
+                items: 1
             },
-            576:{
-                items:1
+            576: {
+                items: 1
             },
-            768:{
-                items:2
+            768: {
+                items: 2
             },
-            992:{
-                items:3
+            992: {
+                items: 3
             }
         }
     });
@@ -129,7 +129,7 @@ function getProductPrice(productId, sizeId) {
             if (data >= 0) {
                 // Get discountPercent from service
                 getDiscountPercent(productId, data, priceElement, discountedPriceElement);
-          
+
             }
         })
         .catch(error => {
@@ -154,7 +154,7 @@ function getDiscountPercent(productId, sizePrice, priceElement, discountedPriceE
                 var discountedPrice = calculateDiscountedPrice(sizePrice, discountPercent);
 
                 // Display original price in del
-//                priceElement.textContent = formatPrice(sizePrice);
+                //                priceElement.textContent = formatPrice(sizePrice);
 
                 // Display the discounted price in h3
                 if (discountedPriceElement) {
@@ -182,55 +182,55 @@ function calculateDiscountedPrice(originalPrice, discountPercent) {
 
 // Enable send button
 document.addEventListener("DOMContentLoaded", function () {
-        var starRadios = document.querySelectorAll('input.star-check');
-        var commentTextArea = document.getElementById('comment');
-        var submitButton = document.getElementById('submitButton');
+    var starRadios = document.querySelectorAll('input.star-check');
+    var commentTextArea = document.getElementById('comment');
+    var submitButton = document.getElementById('submitButton');
 
-        var isStarSelected = false;
-        var isCommentFilled = false;
+    var isStarSelected = false;
+    var isCommentFilled = false;
 
-        starRadios.forEach(function (radio) {
-            radio.addEventListener('change', function () {
-                isStarSelected = document.querySelector('input.star-check:checked') !== null;
-                enableSubmitButton();
-            });
-        });
-
-        commentTextArea.addEventListener('input', function () {
-            isCommentFilled = commentTextArea.value.trim() !== '';
+    starRadios.forEach(function (radio) {
+        radio.addEventListener('change', function () {
+            isStarSelected = document.querySelector('input.star-check:checked') !== null;
             enableSubmitButton();
         });
-
-        function enableSubmitButton() {
-            if (isStarSelected && isCommentFilled) {
-                submitButton.disabled = false;
-            } else {
-                submitButton.disabled = true;
-            }
-        }
     });
+
+    commentTextArea.addEventListener('input', function () {
+        isCommentFilled = commentTextArea.value.trim() !== '';
+        enableSubmitButton();
+    });
+
+    function enableSubmitButton() {
+        if (isStarSelected && isCommentFilled) {
+            submitButton.disabled = false;
+        } else {
+            submitButton.disabled = true;
+        }
+    }
+});
 
 // Star filter listener
 document.addEventListener("DOMContentLoaded", function () {
-        var starRatingSelect = document.getElementById("starRating");
-        var filterForm = document.getElementById("ratingFilter");
+    var starRatingSelect = document.getElementById("starRating");
+    var filterForm = document.getElementById("ratingFilter");
 
-        var urlParams = new URLSearchParams(window.location.search);
-        var selectedValue = urlParams.get("starRating");
+    var urlParams = new URLSearchParams(window.location.search);
+    var selectedValue = urlParams.get("starRating");
 
-        if (selectedValue) {
-            starRatingSelect.value = selectedValue;
-        }
+    if (selectedValue) {
+        starRatingSelect.value = selectedValue;
+    }
 
-        starRatingSelect.addEventListener("change", function () {
-            selectedValue = starRatingSelect.value;
+    starRatingSelect.addEventListener("change", function () {
+        selectedValue = starRatingSelect.value;
 
-            var currentURL = new URL(window.location.href);
-            currentURL.searchParams.set("starRating", selectedValue);
+        var currentURL = new URL(window.location.href);
+        currentURL.searchParams.set("starRating", selectedValue);
 
-            filterForm.action = currentURL.toString();
+        filterForm.action = currentURL.toString();
 
-            filterForm.submit();
-        });
+        filterForm.submit();
     });
+});
 
