@@ -91,9 +91,9 @@
                                         <td ng-if="order.status === 1"> Đã đặt hàng</td>
                                         <td>
                                             <button class="btn btn-primary"
-                                                ng-click="updateOrder.confirmOrder(order.id)">Confirm</button>
+                                                ng-click="updateOrder.confirmOrder(order.id,2)">Confirm</button>
                                             <button class="btn btn-danger"
-                                                ng-click="updateOrder.cancelOrder(order.id)">Cancel</button>
+                                                ng-click="updateOrder.cancelOrder(order.id,5)">Cancel</button>
                                             <button class="btn btn-dark" ng-click="selectOrder(order.id)" data-bs-toggle="modal"
                                                 data-bs-target="#confirmModal">
                                                 <i class="bi bi-eye-fill"></i>
@@ -304,9 +304,9 @@
                                         <td ng-if="order.status === 2"> Đã xác nhận</td>
                                         <td>
                                             <button class="btn btn-info"
-                                                ng-click="updateOrder.shippingOrder(order.id)">Ship</button>
+                                                ng-click="updateOrder.shippingOrder(order.id,3)">Ship</button>
                                             <button class="btn btn-danger"
-                                                ng-click="updateOrder.cancelOrder(order.id)">Cancel</button>
+                                                ng-click="updateOrder.cancelOrder(order.id,5)">Cancel</button>
                                             <button class="btn btn-dark" data-bs-toggle="modal" ng-click="selectOrder(order.id)"
                                                 data-bs-target="#processingModal">
                                                 <i class="bi bi-eye-fill"></i>
@@ -515,9 +515,9 @@
                                         <td ng-if="order.status === 3">Đang giao hàng</td>
                                         <td>
                                             <button class="btn btn-success"
-                                                ng-click="updateOrder.successOrder(order.id)">Success</button>
+                                                ng-click="updateOrder.successOrder(order.id,4)">Success</button>
                                             <button class="btn btn-danger"
-                                                ng-click="updateOrder.cancelOrder(order.id)">Cancel</button>
+                                                ng-click="updateOrder.cancelOrder(order.id,5)">Cancel</button>
                                             <button class="btn btn-dark" data-bs-toggle="modal" ng-click="selectOrder(order.id)"
                                                 data-bs-target="#shippingModal">
                                                 <i class="bi bi-eye-fill"></i>
@@ -725,7 +725,7 @@
                                         <td>{{order.totalAmount | number : 0}} đ</td>
                                         <td ng-if="order.status === 4"> Đã giao hàng</td>
                                         <td>
-                                            <button class="btn btn-dark" data-bs-toggle="modal" ng-click="selectOrder(order.id)"
+                                            <button class="btn btn-dark" data-bs-toggle="modal" ng-click="selectOrder(order.id,4)"
                                                 data-bs-target="#successModal">
                                                 <i class="bi bi-eye-fill"></i>
                                             </button>
@@ -934,7 +934,7 @@
                                         <td>{{order.totalAmount | number : 0}} đ</td>
                                         <td ng-if="order.status === 5"> Đã hủy</td>
                                         <td>
-                                            <button class="btn btn-danger" ng-click="updateOrder.resetOrder(order.id)">
+                                            <button class="btn btn-danger" ng-click="updateOrder.resetOrder(order.id,2)">
                                                 Reset
                                             </button>
                                             <button class="btn btn-dark" data-bs-toggle="modal" ng-click="selectOrder(order.id)"

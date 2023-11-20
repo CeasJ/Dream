@@ -95,21 +95,8 @@ app.controller("order_ctrl", function ($scope, $http) {
 
   $scope.initialize();
 
-//   $scope.showOrderSection = function(sectionId) {
-//     document.getElementById("order").style.display = "none";
-//     document.getElementById("order-confirm").style.display = "none";
-//     document.getElementById("order-shipping").style.display = "none";
-//     document.getElementById("order-cancel").style.display = "none";
-//     document.getElementById("order-success").style.display = "none";
-
-//     if (sectionId) {
-//         document.getElementById(sectionId).style.display = "block";
-//     }
-// };
-
-
   $scope.updateOrder = {
-    confirmOrder(orderID) {
+    confirmOrder(orderID, newStatus) {
       let orderToUpdate = $scope.listOrders.find(function (order) {
         return order.id === orderID;
       });
@@ -120,13 +107,13 @@ app.controller("order_ctrl", function ($scope, $http) {
           .put(`/rest/order/${orderToUpdate.id}`, updateOrder)
           .then((resp) => {
             $scope.initialize();
-            $scope.selectedStatusChanged(2);
+            $scope.selectedStatusChanged(newStatus);
           })
           .catch((err) => {});
       }
     },
 
-    cancelOrder(orderID) {
+    cancelOrder(orderID, newStatus) {
       let orderToUpdateWhenOrderConfirm = $scope.listOrdersConfirmed.find(
         function (order) {
           return order.id === orderID;
@@ -163,7 +150,7 @@ app.controller("order_ctrl", function ($scope, $http) {
           .put(`/rest/order/cancel/${orderUpdateWhenOrder.id}`, orderCancel)
           .then((resp) => {
             $scope.initialize();
-            $scope.selectedStatusChanged(5);
+            $scope.selectedStatusChanged(newStatus);
           })
           .catch((err) => {});
         } else if (orderUpdateWhenOrderIsShipping) {
@@ -176,12 +163,12 @@ app.controller("order_ctrl", function ($scope, $http) {
             )
             .then((resp) => {
               $scope.initialize();
-              $scope.selectedStatusChanged(5);
+              $scope.selectedStatusChanged(newStatus);
             })
             .catch((err) => {});
           }
     },
-    resetOrder(orderID) {
+    resetOrder(orderID,newStatus) {
       let orderToUpdate = $scope.listOrdersCancelled.find(function (order) {
         return order.id === orderID;
       });
@@ -192,12 +179,12 @@ app.controller("order_ctrl", function ($scope, $http) {
           .put(`/rest/order/reset/${orderToUpdate.id}`, orderReset)
           .then((resp) => {
             $scope.initialize();
-            $scope.selectedStatusChanged(2);
+            $scope.selectedStatusChanged(newStatus);
           })
           .catch((err) => {});
         }
       },
-      successOrder(orderID) {
+      successOrder(orderID, newStatus) {
         let orderToUpdate = $scope.listOrdersConfirmed.find(function (order) {
         return order.id === orderID;
       });
@@ -215,7 +202,7 @@ app.controller("order_ctrl", function ($scope, $http) {
           .put(`/rest/order/success/${orderToUpdate.id}`, orderSuccess)
           .then((resp) => {
             $scope.initialize();
-            $scope.selectedStatusChanged(4);
+            $scope.selectedStatusChanged(newStatus);
           })
           .catch((err) => {});
         } else if (orderUpdateWhenOrderIsShipping) {
@@ -228,12 +215,12 @@ app.controller("order_ctrl", function ($scope, $http) {
             )
             .then((resp) => {
               $scope.initialize();
-              $scope.selectedStatusChanged(4);
+              $scope.selectedStatusChanged(newStatus);
             })
             .catch((err) => {});
           }
         },
-        shippingOrder(orderID) {
+        shippingOrder(orderID,newStatus) {
           let orderToUpdate = $scope.listOrdersConfirmed.find(function (order) {
             return order.id === orderID;
           });
@@ -245,7 +232,7 @@ app.controller("order_ctrl", function ($scope, $http) {
         .put(`/rest/order/ship/${orderToUpdate.id}`, orderIsShipping)
         .then((resp) => {
           $scope.initialize();
-          $scope.selectedStatusChanged(3);
+          $scope.selectedStatusChanged(newStatus);
           })
           .catch((err) => {});
       }
