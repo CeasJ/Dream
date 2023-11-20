@@ -11752,3 +11752,21 @@ body {
   vertical-align: middle;
   /* Căn giữa dữ liệu trong ô */
 }
+
+/* CSS riêng cho size-modal */
+.size-modal .modal-dialog {
+  width: 100%; /* Điều chỉnh chiều rộng của modal */
+  max-width: 500px; /* Điều chỉnh chiều rộng tối đa của modal */
+  margin: auto; /* Để modal nằm giữa màn hình */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.size-modal .modal-content {
+  height: 60%; /* Điều chỉnh chiều rộng tối đa của modal */
+}
+
+.size-modal .modal-body {
+  overflow-y: auto;
+}

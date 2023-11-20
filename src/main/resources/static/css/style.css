@@ -677,6 +677,11 @@ body {
     border: 15px solid var(--dark);
 }
 
+.text-carousel {
+    width: 100%;
+    font-size: 55px;
+}
+
 @media (max-width: 768px) {
     #header-carousel .carousel-item {
         position: relative;
