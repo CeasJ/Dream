@@ -176,7 +176,7 @@ public class ProductServiceImp implements ProductService {
         Optional<ProductSize> productSize = productSizeRepository.findByProductIdAndSizeId(productId, sizeId);
 
         if (productSize.isPresent()) {
-            double sizeSpecificPrice = productSize.get().getPriceProduct_Size();
+            double sizeSpecificPrice = productSize.get().getPrice();
             DiscountDTO discount = discountService.getDiscountByProductId(productId);
 
             if (discount != null) {

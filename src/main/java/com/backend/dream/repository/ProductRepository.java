@@ -36,7 +36,7 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
     Page<Product> findSaleProducts(Pageable pageable);
 
     // Change price of product according to the chosen size
-    @Query("SELECT ps.priceProduct_Size FROM ProductSize ps WHERE ps.product.id = :productId AND ps.size.id = :sizeId")
+    @Query("SELECT ps.price FROM ProductSize ps WHERE ps.product.id = :productId AND ps.size.id = :sizeId")
     Double findProductPriceBySize(@Param("productId") Long productId, @Param("sizeId") Long sizeId);
 
 

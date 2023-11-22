@@ -17,6 +17,9 @@
 
     <!-- jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 </head>
 
 <body ng-app="order_app" ng-controller="order_ctrl" class="sb-nav-fixed">
@@ -309,8 +312,6 @@
                                         <td>
                                             <button class="btn btn-info"
                                                 ng-click="updateOrder.shippingOrder(order.id,3)">Ship</button>
-                                            <button class="btn btn-danger"
-                                                ng-click="updateOrder.cancelOrder(order.id,5)">Cancel</button>
                                             <button class="btn btn-dark" data-bs-toggle="modal" ng-click="selectOrder(order.id)"
                                                 data-bs-target="#processingModal">
                                                 <i class="bi bi-eye-fill"></i>
@@ -522,8 +523,6 @@
                                         <td>
                                             <button class="btn btn-success"
                                                 ng-click="updateOrder.successOrder(order.id,4)">Success</button>
-                                            <button class="btn btn-danger"
-                                                ng-click="updateOrder.cancelOrder(order.id,5)">Cancel</button>
                                             <button class="btn btn-dark" data-bs-toggle="modal" ng-click="selectOrder(order.id)"
                                                 data-bs-target="#shippingModal">
                                                 <i class="bi bi-eye-fill"></i>

@@ -106,69 +106,41 @@ app.controller("order_ctrl", function ($scope, $http) {
         $http
           .put(`/rest/order/${orderToUpdate.id}`, updateOrder)
           .then((resp) => {
-            $scope.initialize();
-            $scope.selectedStatusChanged(newStatus);
+            toastr.success('Confirm Order Success');
+            setTimeout(()=>{
+              $scope.initialize();
+              $scope.selectedStatusChanged(newStatus);
+            },2000);
           })
-          .catch((err) => {});
+          .catch((err) => {
+            toastr.error('Confirm Order Fail');
+          });
       }
     },
 
     cancelOrder(orderID, newStatus) {
-      let orderToUpdateWhenOrderConfirm = $scope.listOrdersConfirmed.find(
-        function (order) {
-          return order.id === orderID;
-        }
-      );
-
       let orderUpdateWhenOrder = $scope.listOrders.find(function (order) {
         return order.id === orderID;
       });
 
-      let orderUpdateWhenOrderIsShipping = $scope.listOrderIsShipping.find(
-        function (order) {
-          return order.id === orderID;
-        }
-      );
-
-      if (orderToUpdateWhenOrderConfirm) {
-        let orderCancel = angular.copy(orderToUpdateWhenOrderConfirm);
-        orderCancel.status = 5;
-        $http
-          .put(
-            `/rest/order/cancel/${orderToUpdateWhenOrderConfirm.id}`,
-            orderCancel
-          )
-          .then((resp) => {
-            $scope.initialize();
-            $scope.selectedStatusChanged(5);
-          })
-          .catch((err) => {});
-        } else if (orderUpdateWhenOrder) {
+      if (orderUpdateWhenOrder) {
           let orderCancel = angular.copy(orderUpdateWhenOrder);
           orderCancel.status = 5;
           $http
           .put(`/rest/order/cancel/${orderUpdateWhenOrder.id}`, orderCancel)
           .then((resp) => {
-            $scope.initialize();
-            $scope.selectedStatusChanged(newStatus);
-          })
-          .catch((err) => {});
-        } else if (orderUpdateWhenOrderIsShipping) {
-          let orderCancel = angular.copy(orderUpdateWhenOrderIsShipping);
-          orderCancel.status = 5;
-          $http
-          .put(
-            `/rest/order/cancel/${orderUpdateWhenOrderIsShipping.id}`,
-            orderCancel
-            )
-            .then((resp) => {
+            toastr.warning('Cancel Order Success');
+            setTimeout(()=>{
               $scope.initialize();
               $scope.selectedStatusChanged(newStatus);
+            },2000);
             })
-            .catch((err) => {});
-          }
+          .catch((err) => {
+            toastr.error('Cancel Order Fail');
+          });
+        } 
     },
-    resetOrder(orderID,newStatus) {
+    resetOrder(orderID, newStatus) {
       let orderToUpdate = $scope.listOrdersCancelled.find(function (order) {
         return order.id === orderID;
       });
@@ -178,10 +150,15 @@ app.controller("order_ctrl", function ($scope, $http) {
         $http
           .put(`/rest/order/reset/${orderToUpdate.id}`, orderReset)
           .then((resp) => {
-            $scope.initialize();
-            $scope.selectedStatusChanged(newStatus);
+            toastr.success('Reset Order Success');
+            setTimeout(()=>{
+              $scope.initialize();
+              $scope.selectedStatusChanged(newStatus);
+            },2000);
           })
-          .catch((err) => {});
+          .catch((err) => {
+            toastr.error('Reset Order Fail');
+          });
         }
       },
       successOrder(orderID, newStatus) {
@@ -201,10 +178,15 @@ app.controller("order_ctrl", function ($scope, $http) {
           $http
           .put(`/rest/order/success/${orderToUpdate.id}`, orderSuccess)
           .then((resp) => {
-            $scope.initialize();
-            $scope.selectedStatusChanged(newStatus);
+            toastr.success('Order Success');
+            setTimeout(()=>{
+              $scope.initialize();
+              $scope.selectedStatusChanged(newStatus);
+            },2000);
           })
-          .catch((err) => {});
+          .catch((err) => {
+            toastr.error('Order Fail');
+          });
         } else if (orderUpdateWhenOrderIsShipping) {
           let orderSuccess = angular.copy(orderUpdateWhenOrderIsShipping);
           orderSuccess.status = 4;
@@ -214,10 +196,15 @@ app.controller("order_ctrl", function ($scope, $http) {
             orderSuccess
             )
             .then((resp) => {
+            toastr.success('Order Success');
+            setTimeout(()=>{
               $scope.initialize();
               $scope.selectedStatusChanged(newStatus);
+            },2000);
             })
-            .catch((err) => {});
+            .catch((err) => {
+            toastr.error('Order Fail');
+            });
           }
         },
         shippingOrder(orderID,newStatus) {
@@ -231,10 +218,16 @@ app.controller("order_ctrl", function ($scope, $http) {
         $http
         .put(`/rest/order/ship/${orderToUpdate.id}`, orderIsShipping)
         .then((resp) => {
-          $scope.initialize();
-          $scope.selectedStatusChanged(newStatus);
+          toastr.success('Change Status Order Success');
+          setTimeout(()=>{
+            $scope.initialize();
+            $scope.selectedStatusChanged(newStatus);
+          },2000);
           })
-          .catch((err) => {});
+          .catch((err) => {
+          toastr.error('Change Status Order Fail');
+
+          });
       }
     },
   };

@@ -12,7 +12,12 @@
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <!-- Angular -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <!-- Angular Route-->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.js"></script>
+    <!--    toastr-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
 </head>
 
@@ -101,7 +106,7 @@
                                         <td>
                                             <div style="text-align: justify; padding: 0 10px;">{{item.describe}}</div>
                                         </td>
-                                        <td>{{item.category}}</td>
+                                        <td>{{item.name_category}}</td>
                                         <td>{{item.createDate | date: 'dd-MM-yyyy'}}</td>
                                         <td>{{item.active}}</td>
                                         <td>

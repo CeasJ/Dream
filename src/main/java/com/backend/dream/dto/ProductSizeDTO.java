@@ -1,10 +1,12 @@
 package com.backend.dream.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ProductSizeDTO {
     private Long id;
 
@@ -14,7 +16,7 @@ public class ProductSizeDTO {
 
     private String name_size;
 
-    private Double priceProduct_Size;
+    private Double price;
 
     private String image;
 

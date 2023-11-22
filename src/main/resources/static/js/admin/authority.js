@@ -46,9 +46,10 @@ app.controller("authority-ctrl", function ($scope, $http, $location) {
       .post(`/rest/authorities`, authority)
       .then((resp) => {
         $scope.authories.push(resp.data);
-        alert("Cap quyen thanh cong");
+        toastr.success("Authorization successful");
       })
       .catch((error) => {
+        toastr.error('Authorization Fail');
       });
   };
 
@@ -58,9 +59,11 @@ app.controller("authority-ctrl", function ($scope, $http, $location) {
       .then((resp) => {
         let index = $scope.authories.findIndex((a) => a.id == authority.id);
         $scope.authories.splice(index, 1);
-        alert("Thu hoi quyen thanh cong");
+        toastr.success("Permissions revoked successfully");
       })
-      .catch((error) => {
+      .catch((err) => {
+        toastr.error('Permissions revoked Fail');
+
       });
   };
 
@@ -85,9 +88,12 @@ app.controller("authority-ctrl", function ($scope, $http, $location) {
         .post(`/rest/account/add`, account)
         .then(function (response) {
           $scope.clearForm();
-          alert("Create Successful");
+          location.href("/admin/authority")          
+          toastr.success("Create Successful");
         })
-        .catch(function (error) { });
+        .catch(function (err) { 
+          toastr.error("Create Fail");
+        });
     }
   };
 
@@ -106,7 +112,9 @@ app.controller("authority-ctrl", function ($scope, $http, $location) {
       .then((resp) => {
         $scope.form.avatar = resp.data.name;
       })
-      .catch((err) => { });
+      .catch((err) => {
+        toastr.error("Select image Fail");
+       });
   };
 
   $scope.update = function () {
@@ -118,10 +126,11 @@ app.controller("authority-ctrl", function ($scope, $http, $location) {
           (a) => a.username === account.username
         );
         $scope.admins[index] = account;
-        alert("update success");
+        toastr.success("Update Successful");
         $scope.clearForm();
       })
       .catch((err) => {
+        toastr.error("Update Successful");
         console.log(err);
       });
   }

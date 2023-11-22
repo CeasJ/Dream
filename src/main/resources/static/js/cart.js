@@ -376,6 +376,7 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
         .post(`/rest/order`, order)
         .then((resp) => {
           $scope.cart.clear();
+          toastr.success('Order Success');
           // location.href = "/order/detail/" + resp.data.id;
         })
         .catch((error) => { });
