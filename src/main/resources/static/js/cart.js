@@ -141,7 +141,6 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
       .then((response) => {
         if (response.data) {
           $scope.listOrder = response.data;
-          console.log($scope.listOrder);
         }
       })
       .catch((error) => {
@@ -363,7 +362,7 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
       return $scope.cart.items.map((item) => {
         return {
           id_product: parseInt(item.id_product),
-          price: item.priceProduct_Size,
+          price: item.price,
           quantity: item.qty,
           id_size:parseInt(item.id_size),
         };
@@ -372,6 +371,7 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
 
     purchaseOrder() {
       let order = angular.copy(this);
+      console.log($scope.cart.totalDiscount);
       $http
         .post(`/rest/order`, order)
         .then((resp) => {
@@ -419,12 +419,11 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
 
     $http.get('/api/vouchers/applicable')
     .then(function(response) {
-        $scope.vouchers = response.data; // Gán dữ liệu từ API vào biến vouchers trong $scope
+        $scope.vouchers = response.data; 
     }, function(error) {
         console.log('Error fetching data:', error);
     });
 
-    console.log('Vouchers:', $scope.vouchers);
     $scope.getRemainingTime = function(expireDate) {
         const oneDay = 24 * 60 * 60 * 1000;
         const today = new Date();
