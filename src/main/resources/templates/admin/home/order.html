@@ -18,6 +18,8 @@
     <!-- jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 </head>
 
 <body ng-app="order_app" ng-controller="order_ctrl" class="sb-nav-fixed">
@@ -36,14 +38,10 @@
                                     Filter by Status:
                                 </label>
                         </div>
-                        <div class="form-group mb-0" style="width: 170px;">
-                            <select class="form-control" id="categoryFilter" ng-model="selectedCategory">
-                                <option value="" selected>All Status</option>
-                                <option>Ordered</option>
-                                <option>Confirmed</option>
-                                <option>On delivery</option>
-                                <option>Delivered</option>
-                                <option>Cancelled</option>
+                        <div class="form-group mb-0" style="width: 150px;">
+                            <select class="form-control" id="statusFilter" ng-model="selectedStatus"
+                                ng-options="s.id as s.name for s in status" ng-change="selectedStatusChanged()">
+                                <option value="">All Status</option>
                             </select>
                         </div>
                     </div>
@@ -76,11 +74,11 @@
                         <div class="table-responsive">
                             <table class="table table-hover table-bordered text-center order-datatable">
                                 <thead class="table-dark">
-                                    <th>Number</th>
+                                    <th>No</th>
                                     <th>ID</th>
                                     <th>CreateDate</th>
                                     <th>CreateTime</th>
-                                    <th style="text-align: left;">Fullname</th>
+                                    <th>Fullname</th>
                                     <th>Address</th>
                                     <th>Total</th>
                                     <th>Status</th>
@@ -92,15 +90,15 @@
                                         <td>{{order.id}}</td>
                                         <td>{{order.createDate | date: 'dd-MM-yyyy'}}</td>
                                         <td>{{order.createTime}}</td>
-                                        <td style="text-align: left;">{{order.fullname}}</td>
+                                        <td>{{order.fullname}}</td>
                                         <td>{{order.address}}</td>
                                         <td>{{order.totalAmount | number : 0}} đ</td>
-                                        <td ng-if="order.status === 1">Ordered</td>
+                                        <td ng-if="order.status === 1"> Đã đặt hàng</td>
                                         <td>
                                             <button class="btn btn-primary"
-                                                ng-click="updateOrder.confirmOrder(order.id)">Confirm</button>
+                                                ng-click="updateOrder.confirmOrder(order.id,2)">Confirm</button>
                                             <button class="btn btn-danger"
-                                                ng-click="updateOrder.cancelOrder(order.id)">Cancel</button>
+                                                ng-click="updateOrder.cancelOrder(order.id,5)">Cancel</button>
                                             <button class="btn btn-dark" ng-click="selectOrder(order.id)" data-bs-toggle="modal"
                                                 data-bs-target="#confirmModal">
                                                 <i class="bi bi-eye-fill"></i>
@@ -289,10 +287,10 @@
                         <div class="table-responsive">
                             <table class="table table-hover table-bordered text-center order-datatable">
                                 <thead class="table-dark">
-                                    <th>Number</th>
+                                    <th>No</th>
                                     <th>ID</th>
                                     <th>CreateDate</th>
-                                    <th style="text-align: left;">Fullname</th>
+                                    <th>Fullname</th>
                                     <th>Address</th>
                                     <th>Total Amount</th>
                                     <th>Status</th>
@@ -303,15 +301,13 @@
                                         <td>{{$index + 1 }}</td>
                                         <td>{{order.id}}</td>
                                         <td>{{order.createDate | date: 'dd-MM-yyyy'}}</td>
-                                        <td style="text-align: left;">{{order.fullname}}</td>
+                                        <td>{{order.fullname}}</td>
                                         <td>{{order.address}}</td>
                                         <td>{{order.totalAmount | number : 0}} đ</td>
-                                        <td ng-if="order.status === 2"> Confirmed</td>
+                                        <td ng-if="order.status === 2"> Đã xác nhận</td>
                                         <td>
                                             <button class="btn btn-info"
-                                                ng-click="updateOrder.shippingOrder(order.id)">Ship</button>
-                                            <button class="btn btn-danger"
-                                                ng-click="updateOrder.cancelOrder(order.id)">Cancel</button>
+                                                ng-click="updateOrder.shippingOrder(order.id,3)">Ship</button>
                                             <button class="btn btn-dark" data-bs-toggle="modal" ng-click="selectOrder(order.id)"
                                                 data-bs-target="#processingModal">
                                                 <i class="bi bi-eye-fill"></i>
@@ -500,10 +496,10 @@
                         <div class="table-responsive">
                             <table class="table table-hover table-bordered text-center order-datatable">
                                 <thead class="table-dark">
-                                    <th>Number</th>
+                                    <th>No</th>
                                     <th>ID</th>
                                     <th>CreateDate</th>
-                                    <th style="text-align: left;">Fullname</th>
+                                    <th>Fullname</th>
                                     <th>Address</th>
                                     <th>Total Amount</th>
                                     <th>Status</th>
@@ -514,15 +510,13 @@
                                         <td>{{$index +1}}</td>
                                         <td>{{order.id}}</td>
                                         <td>{{order.createDate | date: 'dd-MM-yyyy'}}</td>
-                                        <td style="text-align: left;">{{order.fullname}}</td>
+                                        <td>{{order.fullname}}</td>
                                         <td>{{order.address}}</td>
                                         <td>{{order.totalAmount | number : 0}} đ</td>
-                                        <td ng-if="order.status === 3">On delivery</td>
+                                        <td ng-if="order.status === 3">Đang giao hàng</td>
                                         <td>
                                             <button class="btn btn-success"
-                                                ng-click="updateOrder.successOrder(order.id)">Success</button>
-                                            <button class="btn btn-danger"
-                                                ng-click="updateOrder.cancelOrder(order.id)">Cancel</button>
+                                                ng-click="updateOrder.successOrder(order.id,4)">Success</button>
                                             <button class="btn btn-dark" data-bs-toggle="modal" ng-click="selectOrder(order.id)"
                                                 data-bs-target="#shippingModal">
                                                 <i class="bi bi-eye-fill"></i>
@@ -580,7 +574,7 @@
                             </div>
                             <div class="modal-body">
                                 <div class="container hs-hd mx-auto">
-                                    <h5 class="title-hs col-md-12">Invoice</h5>
+                                    <h5 class="title-hs col-md-12">Hóa đơn</h5>
                                     <div class="row">
                                         <div class="col-md-6 cnt-hd border-right">
                                             <div class="info-pair">
@@ -591,50 +585,50 @@
                                                 <h6>Order Date:</h6>
                                                 <p>{{listOrder[0].order_createDate | date :'dd-MM-yyyy'}}</p>
                                             </div>
-                                            <!-- Add additional information if needed -->
+                                            <!-- Thêm thông tin khác nếu cần -->
                                         </div>
                                         <div class="col-md-6 cnt-hd">
                                             <div class="info-pair">
-                                                <h6>Payment:</h6>
-                                                <p>Cash</p>
+                                                <h6>Thanh toán:</h6>
+                                                <p>Tiền mặt</p>
                                             </div>
                                             <div class="info-pair">
-                                                <h6>Shipping:</h6>
+                                                <h6>Vận chuyển:</h6>
                                                 <p>Shipper</p>
                                             </div>
-                                            <!-- Add additional information if needed -->
+                                            <!-- Thêm thông tin khác nếu cần -->
                                         </div>
                                     </div>
                                 </div>
                                 <div class="container hs-hd mx-auto" style="margin-top: 30px;">
-                                    <h5 class="title-hs col-md-12">Delivery Address</h5>
+                                    <h5 class="title-hs col-md-12">Địa chỉ giao hàng</h5>
                                     <div class="row">
                                         <div class="col-md-6 cnt-hd border-right">
                                             <div class="info-pair">
-                                                <h6>Full Name:</h6>
+                                                <h6>Họ và tên:</h6>
                                                 <p>{{listOrder[0].account_fullname}}</p>
                                             </div>
                                             <div class="info-pair">
-                                                <h6>Phone Number:</h6>
+                                                <h6>Số điện thoại:</h6>
                                                 <p>{{listOrder[0].account_fullname}}</p>
                                             </div>
                                             <div class="info-pair">
-                                                <h6>Address:</h6>
+                                                <h6>Địa chỉ:</h6>
                                                 <p>{{listOrder[0].order_address}}</p>
                                             </div>
                                         </div>
                                         <div class="col-md-6 cnt-hd">
                                             <div class="info-pair">
-                                                <h6>Province:</h6>
-                                                <p>Ho Chi Minh</p>
+                                                <h6>Tỉnh/Thành phố:</h6>
+                                                <p>Hồ Chí Minh</p>
                                             </div>
                                             <div class="info-pair">
-                                                <h6>District:</h6>
-                                                <p>Thu Duc</p>
+                                                <h6>Quận/Huyện:</h6>
+                                                <p>Thủ Đức</p>
                                             </div>
                                             <div class="info-pair">
-                                                <h6>Ward:</h6>
-                                                <p>Hiep Binh Phuoc</p>
+                                                <h6>Phường/Xã:</h6>
+                                                <p>Hiệp Bình Phước</p>
                                             </div>
                                         </div>
                                     </div>
@@ -645,26 +639,27 @@
                                             <table class="table table-bordered table-details">
                                                 <thead class="table-dark">
                                                     <tr>
-                                                        <th>Number</th>
-                                                        <th>Image</th>
-                                                        <th>Product Name</th>
-                                                        <th>Quantity</th>
+                                                        <th>No.</th>
+                                                        <th>Hình ảnh</th>
+                                                        <th>Tên sản phẩm</th>
+                                                        <th>Số lượng</th>
                                                         <th>Size</th>
-                                                        <th>Price</th>
-                                                        <th>Total</th>
+                                                        <th>Giá</th>
+                                                        <th>Tổng tiền</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td>1</td>
-                                                        <td>
-                                                            <img class="img-fluid img-details"
-                                                                src="/img/gallery/image10.jpg">
-                                                        </td>
-                                                        <td>Đường đen sữa đá</td>
-                                                        <td>1</td>
-                                                        <td>45,000 đ</td>
-                                                        <td>45,000 đ</td>
+                                                    <tr ng-repeat="orderDetail in listOrder">
+                                                        <td>{{$index + 1}}</td>
+                                                        <td><img ng-src="{{'/img/gallery/' + orderDetail.product_image}}"
+                                                                class="img-fluid img-details"></td>
+                                                        <td>{{orderDetail.product_name}}</td>
+                                                        <td>{{orderDetail.quantity}}</td>
+                                                        <td ng-if="orderDetail.id_size === 1">S</td>
+                                                        <td ng-if="orderDetail.id_size === 2">M</td>
+                                                        <td ng-if="orderDetail.id_size === 3">L</td>
+                                                        <td>{{orderDetail.price | number : 0}} đ</td>
+                                                        <td>{{orderDetail.quantity * orderDetail.price | number :0}} đ</td>
                                                     </tr>
                                                     <tr>
                                                         <td colspan="5" class="text-end"><strong>Tạm
@@ -672,13 +667,14 @@
                                                         <td>{{getSubTotal() | number : 0}} đ</td>
                                                     </tr>
                                                     <tr>
-                                                        <td colspan="5" class="text-end">
-                                                            <strong>Shipping Fee:</strong>
+                                                        <td colspan="5" class="text-end"><strong>Chi phí vận
+                                                                chuyển:</strong>
                                                         </td>
-                                                        <td>20,000 VND</td>
+                                                        <td>20.000 đ</td>
                                                     </tr>
                                                     <tr>
-                                                        <td colspan="5" class="text-end"><strong>Total Payment:</strong></td>
+                                                        <td colspan="5" class="text-end"><strong>Tổng thanh
+                                                                toán:</strong></td>
                                                         <th class="text-success">{{getTotal() | number : 0}} đ</th>
                                                     </tr>
                                                 </tbody>
@@ -689,7 +685,7 @@
                                 <div class="mt-2" style="font-size: 20px;">
                                     <label for="shippingOrderStatus" class="form-label fw-bold mb-3">
                                         Order Status:</label>
-                                    <span class="fw-bold text-primary ps-1">On delivery</span>
+                                    <span class="fw-bold text-primary ps-1">Đang giao hàng</span>
                                 </div>
                                 <!-- Add more input fields here based on your table columns -->
                             </div>
@@ -709,10 +705,10 @@
                         <div class="table-responsive">
                             <table class="table table-hover table-bordered text-center order-datatable">
                                 <thead class="table-dark">
-                                    <th>Number</th>
+                                    <th>No</th>
                                     <th>ID</th>
                                     <th>CreateDate</th>
-                                    <th style="text-align: left;">Fullname</th>
+                                    <th>Fullname</th>
                                     <th>Address</th>
                                     <th>Total Amount</th>
                                     <th>Status</th>
@@ -723,12 +719,12 @@
                                         <td>{{$index + 1}}</td>
                                         <td>{{order.id}}</td>
                                         <td>{{order.createDate | date: 'dd-MM-yyyy'}}</td>
-                                        <td style="text-align: left;">{{order.fullname}}</td>
+                                        <td>{{order.fullname}}</td>
                                         <td>{{order.address}}</td>
                                         <td>{{order.totalAmount | number : 0}} đ</td>
-                                        <td ng-if="order.status === 4"> Delivered</td>
+                                        <td ng-if="order.status === 4"> Đã giao hàng</td>
                                         <td>
-                                            <button class="btn btn-dark" data-bs-toggle="modal" ng-click="selectOrder(order.id)"
+                                            <button class="btn btn-dark" data-bs-toggle="modal" ng-click="selectOrder(order.id,4)"
                                                 data-bs-target="#successModal">
                                                 <i class="bi bi-eye-fill"></i>
                                             </button>
@@ -916,10 +912,10 @@
                         <div class="table-responsive">
                             <table class="table table-hover table-bordered text-center order-datatable">
                                 <thead class="table-dark">
-                                    <th>Number</th>
+                                    <th>No</th>
                                     <th>ID</th>
                                     <th>CreateDate</th>
-                                    <th style="text-align: left;">Fullname</th>
+                                    <th>Fullname</th>
                                     <th>Address</th>
                                     <th>Total Amount</th>
                                     <th>Status</th>
@@ -930,13 +926,13 @@
                                         <td>{{$index + 1 }}</td>
                                         <td>{{order.id}}</td>
                                         <td>{{order.createDate | date: 'dd-MM-yyyy'}}</td>
-                                        <td style="text-align: left;">{{order.fullname}}</td>
+                                        <td>{{order.fullname}}</td>
                                         <td>{{order.address}}</td>
                                         <td>{{order.totalAmount | number : 0}} đ</td>
-                                        <td ng-if="order.status === 5"> Cancelled</td>
+                                        <td ng-if="order.status === 5"> Đã hủy</td>
                                         <td>
-                                            <button class="btn btn-danger" ng-click="updateOrder.resetOrder(order.id)">
-                                                <i class="bi bi-arrow-clockwise"></i>
+                                            <button class="btn btn-danger" ng-click="updateOrder.resetOrder(order.id,2)">
+                                                Reset
                                             </button>
                                             <button class="btn btn-dark" data-bs-toggle="modal" ng-click="selectOrder(order.id)"
                                                 data-bs-target="#cancelModal">
@@ -995,7 +991,7 @@
                             </div>
                             <div class="modal-body">
                                 <div class="container hs-hd mx-auto">
-                                    <h5 class="title-hs col-md-12">Invoice</h5>
+                                    <h5 class="title-hs col-md-12">Hóa đơn</h5>
                                     <div class="row">
                                         <div class="col-md-6 cnt-hd border-right">
                                             <div class="info-pair">
@@ -1006,50 +1002,50 @@
                                                 <h6>Order Date:</h6>
                                                 <p>{{listOrder[0].order_createDate | date :'dd-MM-yyyy'}}</p>
                                             </div>
-                                            <!-- Add additional information if needed -->
+                                            <!-- Thêm thông tin khác nếu cần -->
                                         </div>
                                         <div class="col-md-6 cnt-hd">
                                             <div class="info-pair">
-                                                <h6>Payment:</h6>
-                                                <p>Cash</p>
+                                                <h6>Thanh toán:</h6>
+                                                <p>Tiền mặt</p>
                                             </div>
                                             <div class="info-pair">
-                                                <h6>Shipping:</h6>
+                                                <h6>Vận chuyển:</h6>
                                                 <p>Shipper</p>
                                             </div>
-                                            <!-- Add additional information if needed -->
+                                            <!-- Thêm thông tin khác nếu cần -->
                                         </div>
                                     </div>
                                 </div>
                                 <div class="container hs-hd mx-auto" style="margin-top: 30px;">
-                                    <h5 class="title-hs col-md-12">Delivery Address</h5>
+                                    <h5 class="title-hs col-md-12">Địa chỉ giao hàng</h5>
                                     <div class="row">
                                         <div class="col-md-6 cnt-hd border-right">
                                             <div class="info-pair">
-                                                <h6>Full Name:</h6>
+                                                <h6>Họ và tên:</h6>
                                                 <p>{{listOrder[0].account_fullname}}</p>
                                             </div>
                                             <div class="info-pair">
-                                                <h6>Phone Number:</h6>
+                                                <h6>Số điện thoại:</h6>
                                                 <p>{{listOrder[0].account_phone}}</p>
                                             </div>
                                             <div class="info-pair">
-                                                <h6>Address:</h6>
+                                                <h6>Địa chỉ:</h6>
                                                 <p>{{listOrder[0].order_address}}</p>
                                             </div>
                                         </div>
                                         <div class="col-md-6 cnt-hd">
                                             <div class="info-pair">
-                                                <h6>Province:</h6>
-                                                <p>Ho Chi Minh</p>
+                                                <h6>Tỉnh/Thành phố:</h6>
+                                                <p>Hồ Chí Minh</p>
                                             </div>
                                             <div class="info-pair">
-                                                <h6>District:</h6>
-                                                <p>Thu Duc</p>
+                                                <h6>Quận/Huyện:</h6>
+                                                <p>Thủ Đức</p>
                                             </div>
                                             <div class="info-pair">
-                                                <h6>Ward:</h6>
-                                                <p>Hiep Binh Phuoc</p>
+                                                <h6>Phường/Xã:</h6>
+                                                <p>Hiệp Bình Phước</p>
                                             </div>
                                         </div>
                                     </div>
@@ -1060,13 +1056,13 @@
                                             <table class="table table-bordered table-details">
                                                 <thead class="table-dark">
                                                     <tr>
-                                                        <th>Number</th>
-                                                        <th>Image</th>
-                                                        <th>Product Name</th>
-                                                        <th>Quantity</th>
+                                                        <th>No.</th>
+                                                        <th>Hình ảnh</th>
+                                                        <th>Tên sản phẩm</th>
+                                                        <th>Số lượng</th>
                                                         <th>Size</th>
-                                                        <th>Price</th>
-                                                        <th>Total</th>
+                                                        <th>Giá</th>
+                                                        <th>Tổng tiền</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -1088,13 +1084,14 @@
                                                         <td>{{getSubTotal() | number : 0}} đ</td>
                                                     </tr>
                                                     <tr>
-                                                        <td colspan="5" class="text-end">
-                                                            <strong>Shipping Fee:</strong>
+                                                        <td colspan="5" class="text-end"><strong>Chi phí vận
+                                                                chuyển:</strong>
                                                         </td>
-                                                        <td>20,000 VND</td>
+                                                        <td>20.000 đ</td>
                                                     </tr>
                                                     <tr>
-                                                        <td colspan="5" class="text-end"><strong>Total Payment:</strong></td>
+                                                        <td colspan="5" class="text-end"><strong>Tổng 
+                                                                toán:</strong></td>
                                                         <th class="text-success">{{getTotal() | number : 0}} đ</th>
                                                     </tr>
                                                 </tbody>
@@ -1105,7 +1102,7 @@
                                 <div class="mt-2" style="font-size: 20px;">
                                     <label for="cancelOrderStatus" class="form-label fw-bold mb-3">
                                         Order Status:</label>
-                                    <span class="fw-bold text-danger ps-1">Cancelled</span>
+                                    <span class="fw-bold text-danger ps-1">Đã hủy</span>
                                 </div>
                                 <!-- Add more input fields here based on your table columns -->
                             </div>

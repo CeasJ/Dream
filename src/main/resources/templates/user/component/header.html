@@ -1,5 +1,5 @@
 <!-- Navbar Start -->
-<div class="container-fluid bg-white sticky-top">
+<div class="container-fluid bg-white sticky-top" xmlns:th="http://www.thymeleaf.org">
     <div class="container">
         <nav class="navbar navbar-expand-lg bg-white navbar-light py-2 py-lg-0">
             <a th:href="@{|/home|}" class="navbar-brand">
@@ -15,7 +15,7 @@
                     <a th:href="@{|/store|}" class="nav-item nav-link" th:text="#{navbar.store}"></a>
                     <!--When customer not login-->
                     <th:block th:unless="${isAuthenticated}">
-                        <a th:href="@{|/login/form|}" class="nav-item nav-link" th:text="#{navbar.login}"></a>
+                        <a th:href="@{|/login|}" class="nav-item nav-link" th:text="#{navbar.login}"></a>
                         <a th:href="@{|/register|}" class="nav-item nav-link" th:text="#{navbar.register}"></a>
                     </th:block>
 
