@@ -263,7 +263,7 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
   function totalPrice() {
     let totalPrice = 0;
     angular.forEach($scope.cart.items, function (item) {
-      totalPrice += item.priceProduct_Size * item.qty;
+      totalPrice += item.price * item.qty;
     });
     return totalPrice;
   }
