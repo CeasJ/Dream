@@ -50,6 +50,11 @@ public class SecurityConfig {
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/login/form"))
+                .oauth2Login(oauth -> {
+                    oauth.loginPage("/login/form").permitAll();
+                    oauth.defaultSuccessUrl("/home");
+                    oauth.failureUrl("/login/error").permitAll();
+                })
                 // .rememberMe(remember->remember.tokenValiditySeconds(86400))
                 .build();
     }
