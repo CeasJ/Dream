@@ -200,5 +200,23 @@ public class ProductServiceImp implements ProductService {
     }
 
 
+    @Override
+    public Page<ProductDTO> findByTopRated(Long categoryId, Pageable pageable) {
+        Page<Product> productPage = productRepository.findByTopRating(categoryId, pageable);
+        return productPage.map(product -> {
+            ProductDTO productDTO = productMapper.productToProductDTO(product);
+            productDTO.setAverageRating(feedbackService.getAverageRating(product.getId()));
+            return productDTO;
+        });
+    }
 
+    @Override
+    public Page<ProductDTO> findByBestSeller(Long categoryId, Pageable pageable) {
+        Page<Product> productPage = productRepository.findByBestseller(categoryId, pageable);
+        return productPage.map(product -> {
+            ProductDTO productDTO = productMapper.productToProductDTO(product);
+            productDTO.setAverageRating(feedbackService.getAverageRating(product.getId()));
+            return productDTO;
+        });
+    }
 }

@@ -37,6 +37,8 @@ public class Voucher implements Serializable {
 
     private Double condition;
 
+    private String icon;
+
     @ManyToOne
     @JoinColumn(name = "idaccount")
     @JsonIgnore

@@ -415,6 +415,7 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
   };
   //Order End
 
+
     $http.get('/api/vouchers/applicable')
     .then(function(response) {
         $scope.vouchers = response.data; // Gán dữ liệu từ API vào biến vouchers trong $scope
@@ -449,7 +450,7 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
 
    $scope.applyVoucher = function() {
        if ($scope.selectedVoucher) {
-           const discountAmount = $scope.selectedVoucher.percent * $scope.cart.amount;
+           const discountAmount = $scope.selectedVoucher.percent;
            $scope.cart.totalDiscount = discountAmount;
        }
    };

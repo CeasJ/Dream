@@ -20,6 +20,8 @@ public class VoucherDTO {
 
     private Double condition;
 
+    private String icon;
+
     // will update later
     private Long id_account;
 

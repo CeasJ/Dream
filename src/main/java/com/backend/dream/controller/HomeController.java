@@ -30,9 +30,7 @@ public class HomeController {
     }
 
     @RequestMapping("/cart")
-    public String cart(Model model) {
-        List<VoucherDTO> applicableVouchers = voucherService.getApplicableVouchers();
-        model.addAttribute("applicableVouchers", applicableVouchers);
+    public String cart() {
         return "/user/cart/cart";
     }
 

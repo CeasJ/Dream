@@ -5,5 +5,5 @@ import com.backend.dream.dto.VoucherDTO;
 import java.util.List;
 
 public interface VoucherService {
-    List<VoucherDTO> getApplicableVouchers();
+    List<VoucherDTO> getApplicableVouchers(String username);
 }
