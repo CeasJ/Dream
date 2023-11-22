@@ -415,6 +415,51 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
     }
   };
   //Order End
+
+
+    $http.get('/api/vouchers/applicable')
+    .then(function(response) {
+        $scope.vouchers = response.data; // Gán dữ liệu từ API vào biến vouchers trong $scope
+    }, function(error) {
+        console.log('Error fetching data:', error);
+    });
+
+    console.log('Vouchers:', $scope.vouchers);
+    $scope.getRemainingTime = function(expireDate) {
+        const oneDay = 24 * 60 * 60 * 1000;
+        const today = new Date();
+        const expiration = new Date(expireDate);
+
+        const difference = expiration - today;
+        const daysRemaining = Math.floor(difference / oneDay);
+
+        if (daysRemaining > 0) {
+            return "Còn " + daysRemaining + " ngày";
+        } else {
+            const hoursRemaining = Math.floor((difference % oneDay) / (60 * 60 * 1000));
+            const minutesRemaining = Math.floor(((difference % oneDay) % (60 * 60 * 1000)) / (60 * 1000));
+            return "Còn " + hoursRemaining + " giờ " + minutesRemaining + " phút";
+        }
+    };
+
+    // selected voucher listener
+   $scope.selectedVoucher = null;
+
+   $scope.selectVoucher = function(voucher) {
+       $scope.selectedVoucher = voucher;
+   };
+
+   $scope.applyVoucher = function() {
+       if ($scope.selectedVoucher) {
+           const discountAmount = $scope.selectedVoucher.percent;
+           $scope.cart.totalDiscount = discountAmount;
+       }
+   };
+
+
+
 });
+
 //Cart Control End
+
 

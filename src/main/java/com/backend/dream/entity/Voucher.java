@@ -25,15 +25,19 @@ public class Voucher implements Serializable {
 
     private String number;
 
+    @Column(name = "createdate")
     @Temporal(TemporalType.DATE)
     private Date createDate = new Date();
 
+    @Column(name = "expireddate")
     @Temporal(TemporalType.DATE)
-    private Date expiredDate;
+    private Date expireddate;
 
     private Double percent;
 
     private Double condition;
+
+    private String icon;
 
     @ManyToOne
     @JoinColumn(name = "idaccount")

@@ -154,9 +154,8 @@
                 <span class="title-prc" th:text="#{cart.shippingCost}"></span>
                 <span style="float: right; font-weight: bold; font-size: 16px;"> 30,000 VNĐ</span>
               </p>
-              <p>
-                <span class="title-prc" th:text="#{cart.applyVoucher}"></span>
-                <span class="text-danger" style="float: right; font-weight: bold; font-size: 16px;">- 12,000 VNĐ</span>
+              <p class="title-prc" ng-if="cart.totalDiscount >= 0">Áp dụng Voucher
+                <span class="text-danger" style="float: right; font-weight: bold; font-size: 16px;">- {{ cart.totalDiscount | number:0 }} VNĐ</span>
               </p>
               <div class="input-group mb-4 mt-3 d-flex justify-content-between align-items-center">
                 <label class="mb-0 me-2 ps-2">Dream Voucher</label>
@@ -174,72 +173,43 @@
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                      <p class="text-muted ps-3" style="font-size: 18px;"><span th:text="#{modal.title}"></span></p>
+                      <p class="text-muted ps-3" style="font-size: 18px;" th:text="#{modal.title}"></p>
                       <div class="container mx-auto">
                         <!-- Voucher 1 -->
-                        <div class="row custom-shadow" style="margin-bottom: 30px;">
-                          <div class="col-md-3 content-sale text-center">
-                            <div class="icon-container">
-                              <i class="bi bi-truck text-white"></i>
-                            </div>
-                            <h6 class="text-white">Mã vận chuyển</h6>
-                          </div>
-                          <div class="col-md-9">
-                            <div class="discount-info" style="margin-left: 5px; padding: 10px 0;">
-                              <p style="margin-bottom: 5px; font-weight: bold; font-size: 24px;">
-                                Giảm tối đa 25k</p>
-                              <div class="form-check float-end">
-                                <input class="form-check-input" type="radio" id="customRadio" name="customRadio">
+                        <div class="row custom-shadow" style="margin-bottom: 30px;" ng-repeat="voucher in vouchers" ng-if="voucher.condition <= cart.amount">
+                            <div class="col-md-3 content-sale text-center">
+                              <div class="icon-container">
+                                <i class="{{ voucher.icon }} text-white"></i>
                               </div>
-                              <p style="font-size: 15px; margin-bottom: 10px;">Đơn tối thiểu 50k</p>
-                              <div class="expiry-info text-danger" style="display: flex; font-size: 14px;">
-                                <i class="far fa-clock" style="padding-top: 3px; padding-right: 5px;"></i>
-                                <p style="margin-bottom: 0px;">Có hiệu lực: Còn 1 ngày</p>
-                              </div>
+                              <h6 class="text-white">{{ voucher.name }}</h6>
                             </div>
+                            <div class="col-md-9">
+                              <div class="discount-info" style="margin-left: 5px; padding: 10px 0;">
+                                <p style="margin-bottom: 5px; font-weight: bold; font-size: 24px;">
+                                  Giảm {{ voucher.percent | number : 0 }}₫</p>
+                                <div class="form-check float-end">
+                                  <input class="form-check-input" type="radio" id="customRadio" name="customRadio" ng-click="selectVoucher(voucher)">
+                                </div>
+                                <p style="font-size: 15px; margin-bottom: 10px;">Đơn tối thiểu {{ voucher.condition | number : 0}} ₫</p>
+                                <div class="expiry-info text-danger" style="display: flex; font-size: 14px;">
+                                  <i class="far fa-clock" style="padding-top: 3px; padding-right: 5px;"></i>
+                                  <p style="margin-bottom: 0px;">Có hiệu lực: {{ getRemainingTime(voucher.expireddate) }}</p>
+                                </div>
+                              </div>
                           </div>
                         </div>
                         <!-- Voucher 1 -->
-                        <!-- Voucher 2 -->
-                        <div class="row custom-shadow" style="margin-bottom: 30px;">
-                          <div class="col-md-3 content-sale text-center">
-                            <div class="icon-container">
-                              <i class="bi bi-truck text-white"></i>
-                            </div>
-                            <h6 class="text-white">Mã vận chuyển</h6>
-                          </div>
-                          <div class="col-md-9">
-                            <div class="discount-info" style="margin-left: 5px; padding: 10px 0;">
-                              <p style="margin-bottom: 5px; font-weight: bold; font-size: 24px;">
-                                Giảm tối đa 25k</p>
-                              <div class="form-check float-end">
-                                <input class="form-check-input" type="radio" id="customRadio" name="customRadio">
-                              </div>
-                              <p style="font-size: 15px; margin-bottom: 10px;">Đơn tối thiểu 50k</p>
-                              <div class="expiry-info text-danger" style="display: flex; font-size: 14px;">
-                                <i class="far fa-clock" style="padding-top: 3px; padding-right: 5px;"></i>
-                                <p style="margin-bottom: 0px;">Có hiệu lực: Còn 1 ngày</p>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <!-- Voucher 2 -->
                       </div>
                     </div>
                     <div class="modal-footer">
-                      <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
-                        <span th:text="#{modal.button}"></span>
-                      </button>
+                      <button type="button" class="btn btn-primary" data-bs-dismiss="modal" ng-click="applyVoucher()">Áp dụng</button>
                     </div>
                   </div>
                 </div>
               </div>
 
               <hr>
-              <p class="title-prc">
-                <span class="title-prc" th:text="#{cart.totalAmount}"></span>
-                <span class="price">{{cart.amount | number : 0}} VND</span>
-              </p>
+              <p class="title-prc">Tổng tiền <span class="price" style="float: right;">{{ (cart.amount - cart.totalDiscount + 30000) | number : 0 }} VND</span></p>
               <hr>
               <div class="text-center"><button class="btn btn-danger btn-buy" id="buyButton"
                   ng-disabled="cart.count === 0"><span th:text="#{cart.buyButton}"></span> {{cart.count}}</button>

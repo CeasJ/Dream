@@ -58,10 +58,14 @@
                 </div>
                 <div class="language">
                     <a th:class="${#locale.language == 'vi' ? 'language-link active' : 'language-link'}"
-                        href="?lang=vi">VN</a>
+                        href="?lang=vi">
+                        <img src="/img/vietnam.png" alt="Vietnamese Flag" class="language-icon" />
+                    </a>
                     <span>|</span>
                     <a th:class="${#locale.language == 'en' ? 'language-link active' : 'language-link'}"
-                        href="?lang=en">EN</a>
+                        href="?lang=en">
+                        <img src="/img/united-kingdom.png" alt="Vietnamese Flag" class="language-icon" />
+                    </a>
                 </div>
 
                 <div class="border-start ps-4 d-none d-lg-block icons">
@@ -71,36 +75,23 @@
                         <i class="bi bi-brightness-high-fill sun"></i>
                         <span class="mode-toggle"></span>
                     </label>
-                    <button style="font-size: 24px;" type="button" class="btn btn-sm p-0 notification-icon">
+                    <button th:if="${isAuthenticated}" style="font-size: 24px;" type="button" class="btn btn-sm p-0 notification-icon">
                         <i class="bi bi-bell-fill"></i>
                         <div class="notification-dropdown">
                             <p class="notification-title"> Thông báo mới nhận được </p>
-                            <div class="notification-content" style="margin-bottom: 0px;">
-                                <img src="/img/gallery/image2.jpg" class="notification-image">
-                                <div class="notification-text">
-                                    <p
-                                        style="font-size: 17px; font-weight: bold; padding-top: 10px; margin-bottom: 3px;">
-                                        Đơn hàng đã được thêm thành công
-                                    </p>
-                                    <p style="font-size: 15px; display: flex; margin-bottom: 3px;">
-                                        Trà Hạt Sen Đá - SL: 1 - 39.000đ
-                                    </p>
-                                    <p style="font-size: 14px; display: flex;">08:15 29-10-2023</p>
-                                    <!-- Thêm các thông báo khác nếu cần -->
-                                </div>
-                            </div>
-                            <div class="notification-content" style="margin-bottom: 0px;">
-                                <img src="/img/gallery/image11.jpg" class="notification-image">
-                                <div class="notification-text">
-                                    <p
-                                        style="font-size: 17px; font-weight: bold; padding-top: 10px; margin-bottom: 3px;">
-                                        Đơn hàng đã được thêm thành công
-                                    </p>
-                                    <p style="font-size: 15px; display: flex; margin-bottom: 3px;">
-                                        Cà Phê Đen Đá - SL: 1 - 29.000đ
-                                    </p>
-                                    <p style="font-size: 14px; display: flex;">08:20 29-10-2023</p>
-                                    <!-- Thêm các thông báo khác nếu cần -->
+                            <div th:each="notification : ${notifications}">
+                                <div class="notification-content" style="margin-bottom: 0px;">
+                                    <img src="/img/gallery/image2.jpg" class="notification-image">
+                                    <div class="notification-text" >
+                                        <p th:text="${notification.notificationText}"
+                                                style="font-size: 17px; font-weight: bold; padding-top: 10px; margin-bottom: 3px;">
+                                        </p>
+<!--                                        <p style="font-size: 15px; display: flex; margin-bottom: 3px;">-->
+<!--                                            Tổng giá trị đơn hàng:  39.000đ-->
+<!--                                        </p>-->
+                                        <p style="font-size: 14px; display: flex;" th:text="${notification.createdTime}"></p>
+                                        <!-- Thêm các thông báo khác nếu cần -->
+                                    </div>
                                 </div>
                             </div>
                         </div>

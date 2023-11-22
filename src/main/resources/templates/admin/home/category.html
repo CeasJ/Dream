@@ -42,7 +42,7 @@
                                 <div class="text-center" style="font-size: 16px;">ID</div>
                             </th>
                             <th>
-                                <div class="text-center" style="font-size: 16px;">Name</div>
+                                <div class="text-center" style="font-size: 16px; text-align: left;">Name</div>
                             </th>
                             <th></th>
                         </tr>
@@ -50,7 +50,7 @@
                         <tbody class="no-border-x" ng-repeat="cate in cates">
                         <td>{{cate.id}}</td>
                         <td>
-                            <p class="fw-semibold">{{cate.name}}</p>
+                            <p class="fw-semibold" style="text-align: left;">{{cate.name}}</p>
                         </td>
                         <td>
                             <button class="btn btn-primary" ng-click="edit(cate)" data-bs-toggle="modal"

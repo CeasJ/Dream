@@ -41,7 +41,7 @@
                             <!-- Combobox Category ở góc trái -->
                             <div class="d-flex col-md-3">
                                 <div class="form-group mb-0 me-3">
-                                    <label for="categoryFilter" class="fw-bold pt-2" style="font-size: 16px;">
+                                    <label for="categoryFilter" class="fw-bold pt-2" style="font-size: 13px;">
                                         Filter by Category:
                                     </label>
                                 </div>
@@ -57,7 +57,7 @@
                             <div class="col-md-3">
                                 <div class="d-flex">
                                     <div class="form-group mb-0 me-3">
-                                        <label for="activeFilter" class="fw-bold pt-2" style="font-size: 16px;">
+                                        <label for="activeFilter" class="fw-bold pt-2" style="font-size: 13px;">
                                             Filter by Active:
                                         </label>
                                     </div>
@@ -86,7 +86,7 @@
                                         <th>STT</th>
                                         <th>ID</th>
                                         <th>Image</th>
-                                        <th>Name</th>
+                                        <th style="text-align: left;">Name</th>
                                         <th>Price</th>
                                         <th>Describe</th>
                                         <th>Category</th>
@@ -101,7 +101,7 @@
                                         <td>{{item.id}}</td>
                                         <td><img class="img-fluid" ng-src="{{'/img/gallery/' + item.image}}"
                                                 style="width: 90px; height: 90px; border: none;"></td>
-                                        <td>{{item.name}}</td>
+                                        <td style="text-align: left;">{{item.name}}</td>
                                         <td>{{item.price}}</td>
                                         <td>
                                             <div style="text-align: justify; padding: 0 10px;">{{item.describe}}</div>
@@ -190,7 +190,7 @@
                                         <div class="row mb-3">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label class="fw-bold mb-3">Ngày tạo</label>
+                                                    <label class="fw-bold mb-3">Create Date</label>
                                                     <input ng-model="form.createDate" class="form-control" type="date"
                                                         name="day" required>
                                                 </div>

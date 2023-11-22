@@ -42,5 +42,8 @@ public interface ProductService {
 
     double getDiscountPercentByProductId(Long productId);
 
+    // Sort products by star rating
+    Page<ProductDTO> findByTopRated(Long categoryId, Pageable pageable);
 
+    Page<ProductDTO> findByBestSeller(Long categoryId, Pageable pageable);
 }

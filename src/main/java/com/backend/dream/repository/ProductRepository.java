@@ -39,6 +39,22 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
     @Query("SELECT ps.price FROM ProductSize ps WHERE ps.product.id = :productId AND ps.size.id = :sizeId")
     Double findProductPriceBySize(@Param("productId") Long productId, @Param("sizeId") Long sizeId);
 
+    // Sort by average rating
+    @Query("SELECT p " +
+            "FROM Product p " +
+            "JOIN p.feedback f " +
+            "WHERE p.category.id = ?1 " +
+            "GROUP BY p.id " +
+            "ORDER BY AVG(f.rating) DESC")
+    Page<Product> findByTopRating(@Param("categoryId") Long categoryId, Pageable pageable);
 
-
+//     Sort by best-seller
+@Query(value = "SELECT p "
+        + "FROM OrderDetails od "
+        + "JOIN od.product p "
+        + "JOIN od.orders o "
+        + "WHERE o.status.id = ?1 and p.category.id = ?1"
+        + "GROUP BY p.id, p.name "
+        + "ORDER BY SUM(od.quantity) DESC")
+    Page<Product> findByBestseller(@Param("categoryId") Long categoryId, Pageable pageable);
 }

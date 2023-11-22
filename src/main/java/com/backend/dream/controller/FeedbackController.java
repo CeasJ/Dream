@@ -64,7 +64,7 @@ public class FeedbackController {
                 feedbackService.createFeedback(productId, accountId, comment, rating);
                 return "redirect:/product/" + encodedName;
             } catch (UnsupportedEncodingException e) {
-                return "error";
+                return "/user/home/404";
             }
         }
     }
@@ -73,7 +73,13 @@ public class FeedbackController {
     @GetMapping("/deleteComment/{id}")
     public String deleteComment(@PathVariable Long id, @RequestParam String name) {
         feedbackService.deleteFeedback(id);
-        return "redirect:/product/" + name;
+        try {
+            String decodedName = URLDecoder.decode(name, "UTF-8");
+            String encodedName = URLEncoder.encode(decodedName, "UTF-8");
+            return "redirect:/product/" + encodedName;
+        } catch (UnsupportedEncodingException e) {
+            return "/user/home/404";
+        }
     }
 
 
