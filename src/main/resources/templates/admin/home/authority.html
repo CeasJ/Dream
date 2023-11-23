@@ -15,6 +15,11 @@
     <!-- Angular -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.js"></script>
+   <!-- jQuery -->
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
 </head>
 
@@ -59,7 +64,7 @@
                                 <thead class="table-dark">
                                     <tr>
                                         <th>STT</th>
-                                        <th>Họ và tên</th>
+                                        <th style="text-align: left;">Họ và tên</th>
                                         <th ng-repeat="role in roles">{{role.name}}</th>
                                         <th></th>
                                     </tr>
@@ -67,7 +72,7 @@
                                 <tbody>
                                     <tr ng-repeat-start="acc in admins">
                                         <td>{{$index + 1}}</td>
-                                        <td>{{acc.fullname}}</td>
+                                        <td style="text-align: left;">{{acc.fullname}}</td>
                                         <td ng-repeat="role in roles">
                                             <input ng-checked="authority_of(acc, role)"
                                                 ng-click="authority_changed(acc, role)" type="checkbox">

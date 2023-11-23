@@ -517,6 +517,33 @@ body {
     overflow-y: auto;
 }
 
+/* CSS riêng cho delete-modal */
+.delete-modal .modal-dialog {
+    width: 100%; /* Điều chỉnh chiều rộng của modal */
+    max-width: 500px; /* Điều chỉnh chiều rộng tối đa của modal */
+    margin: auto; /* Để modal nằm giữa màn hình */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.delete-modal .modal-header .btn-close {
+    position: absolute;
+    left: 15px;
+    top: 30px;
+}
+.delete-modal .modal-header {
+    text-align: center;
+    border: none;
+}
+.delete-modal .modal-title {
+    margin: 0 auto;
+}
+
+.delete-modal .modal-content {
+    height: 22%; /* Điều chỉnh chiều rộng tối đa của modal */
+}
+
 .custom-shadow {
     border: 1px solid #d3d3d3;
     border-radius: 0 5px 5px 0;
@@ -675,6 +702,11 @@ body {
     border-radius: 3.5rem;
     background-color: var(--dark);
     border: 15px solid var(--dark);
+}
+
+.text-carousel {
+    width: 100%;
+    font-size: 55px;
 }
 
 @media (max-width: 768px) {
@@ -1485,4 +1517,103 @@ body {
 .language-link.active {
     color: var(--primary);
     font-weight: bold;
+}
+.popup-wrapper {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.discountModal .modal-dialog {
+    width: 100%; /* Điều chỉnh chiều rộng của modal */
+    max-width: 900px; /* Điều chỉnh chiều rộng tối đa của modal */
+    margin: auto; /* Để modal nằm giữa màn hình */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.discountModal .modal-content {
+    height: 52%; /* Điều chỉnh chiều rộng tối đa của modal */
+}
+
+.discountModal .modal-body {
+    position: relative;
+    overflow: hidden;
+}
+
+.discountModal .custom-close-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 15px;
+    font-size: 1.3em;
+    color: white;
+    background-color: transparent;
+    border: none;
+    z-index: 3;
+}
+
+.discountModal .custom-close-btn:hover {
+    color: #ccc; /* Màu khi rê chuột qua */
+}
+
+.discountModal img {
+    width: 100%; /* Chiều rộng 100% của viewport */
+    height: 52vh; /* Chiều cao 100% của viewport */
+    object-fit: cover; /* Giữ tỷ lệ khung hình và không bị vỡ */
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1; /* Đặt ảnh xuống lớp dưới cùng */
+}
+
+.discountModal .content-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2; /* Đặt nó lên trên ảnh */
+    padding: 20px; /* Thêm padding nếu cần thiết */
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column; /* Các phần tử con sẽ được xếp theo chiều dọc */
+    margin-left: 80px;
+}
+
+.discount-text {
+    margin-right: 8px;
+    font-size: 35px;
+}
+
+.discountModal span {
+    display: inline-block; /* Để có thể sử dụng margin trên inline element */
+}
+
+.link-discount {
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.link-discount a {
+    color: white;
+    padding: 10px 25px;
 }
