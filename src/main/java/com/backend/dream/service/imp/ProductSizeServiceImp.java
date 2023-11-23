@@ -1,9 +1,7 @@
 package com.backend.dream.service.imp;
 
-import com.backend.dream.dto.ProductDTO;
 import com.backend.dream.dto.ProductSizeDTO;
 import com.backend.dream.dto.SizeDTO;
-import com.backend.dream.entity.Product;
 import com.backend.dream.entity.ProductSize;
 import com.backend.dream.mapper.ProductSizeMapper;
 import com.backend.dream.mapper.SizeMapper;
@@ -14,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.OptionalInt;
 import java.util.stream.Collectors;
 
 @Service
@@ -57,6 +58,15 @@ public class ProductSizeServiceImp implements ProductSizeService {
     @Override
     public void delete(Long id) {
         productSizeRepository.deleteById(id);
+    }
+
+    @Override
+    public ProductSizeDTO getProductSizeByProductIdAndSizeId(Long id_product, Long id_size) throws NoSuchElementException {
+        ProductSize productSize = productSizeRepository.findProductSizeById(id_product,id_size);
+
+        ProductSizeDTO productSizeDTO = productSizeMapper.productSizeToProductSizeDTO(productSize);
+
+        return productSizeDTO;
     }
 
 }

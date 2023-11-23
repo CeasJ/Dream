@@ -1,5 +1,6 @@
 package com.backend.dream.dto;
 
+import com.backend.dream.entity.Discount;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,9 +17,10 @@ public class DiscountDTO {
 
     private Double percent;
 
-    private Date activeDate;
-
-    private Date expiredDate;
+    private Date activeDate=new Date();
+    private Date expiredDate = new Date();
 
     private Long id_product;
+
+
 }

@@ -113,7 +113,7 @@ var urlParams = new URLSearchParams(window.location.search);
 var sortOption = urlParams.get("sortOption");
 var isSearchPage = window.location.pathname === "/search"; // Check if this is the search page
 
-if (isSearchPage) {
+if(isSearchPage){
     var selectElement = document.getElementById("sortByPrice");
     selectElement.value = "0";
 }
@@ -125,23 +125,57 @@ if (sortOption !== null) {
     }
 }
 
+var comboBoxValueFromURL = urlParams.get("selectedOption");
+var comboBoxSelect = document.getElementById("comboBox");
+
+if (comboBoxValueFromURL !== null) {
+    comboBoxSelect.value = comboBoxValueFromURL;
+}
+
 
 
 document.addEventListener("DOMContentLoaded", function () {
     var productGroupSelect = document.getElementById("productGroup");
     var sortByPriceSelect = document.getElementById("sortByPrice");
     var productNameSearch = document.getElementsByName("productName");
+    var comboBoxSelect = document.getElementById("comboBox");
+
+
     // Handle change events for the category and sort option dropdowns
     productGroupSelect.addEventListener("change", updateURLAndReload);
-    sortByPriceSelect.addEventListener("change", updateURLAndReload);
 
     // Handle search button click event
     var searchButton = document.getElementById("searchButton");
 
-        searchButton.addEventListener("click", function () {
+    searchButton.addEventListener("click", function () {
 
-            updateURLAndReload();
-        });
+        updateURLAndReload();
+    });
+
+    // Thêm sự kiện change cho combobox SortByPrice
+    sortByPriceSelect.addEventListener("change", function() {
+        var selectedSortByPriceValue = this.value;
+        var comboBoxValue = document.getElementById("comboBox").value;
+
+        if (selectedSortByPriceValue !== 'none') {
+            document.getElementById("comboBox").value = 'none';
+        }
+
+
+        updateURLAndReload();
+    });
+
+    // Thêm sự kiện change cho combobox ComboBox
+    comboBoxSelect.addEventListener("change", function() {
+        var selectedComboBoxValue = this.value;
+        var sortByPriceValue = document.getElementById("sortByPrice").value;
+
+        if (selectedComboBoxValue !== 'none') {
+            document.getElementById("sortByPrice").value = 'none';
+        }
+
+        updateURLAndReload();
+    });
 
     // Get the current URL and parse the query parameters
     var urlParams = new URLSearchParams(window.location.search);
@@ -184,7 +218,7 @@ document.addEventListener("DOMContentLoaded", function () {
 var urlParams = new URLSearchParams(window.location.search);
 var categoryId = urlParams.get("categoryId");
 var productGroupSelect = document.getElementById("productGroup");
-if (isSearchPage) {
+if(isSearchPage){
     productGroupSelect.value = "0";
 }
 
@@ -193,7 +227,7 @@ if (categoryId) {
     productGroupSelect.value = categoryId;
 }
 
-productGroupSelect.addEventListener("change", function () {
+productGroupSelect.addEventListener("change", function() {
     var selectedCategoryId = this.value;
     localStorage.setItem("selectedCategoryId", selectedCategoryId);
     updateURLAndReload();
@@ -203,6 +237,7 @@ productGroupSelect.addEventListener("change", function () {
 function updateURLAndReload() {
     var selectedCategoryId = document.getElementById("productGroup").value;
     var selectedSortOption = document.getElementById("sortByPrice").value;
+    var selectedComboBoxValue = document.getElementById("comboBox").value;
     var searchValue = localStorage.getItem("searchValue");
 
     var isSearchPage = window.location.pathname === "/search";
@@ -210,17 +245,23 @@ function updateURLAndReload() {
 
     localStorage.setItem("selectedCategoryId", selectedCategoryId);
     localStorage.setItem("sortOption", selectedSortOption);
+    localStorage.setItem("selectedOption", selectedComboBoxValue);
 
 
     var newUrl = "/store?categoryId=" + selectedCategoryId;
     if(selectedSortOption === 'sale') {
-        selectedCategoryId == '0';
+        selectedCategoryId = '0';
         newUrl = "/store?categoryId=0";
     }
 
+
     if (selectedSortOption !== 'none') {
         newUrl += "&sortOption=" + selectedSortOption;
+    }
 
+
+    if (selectedComboBoxValue !== 'none') {
+        newUrl += "&selectedOption=" + selectedComboBoxValue;
     }
 
 
@@ -236,35 +277,32 @@ function updateURLAndReload() {
 
 // Pagination features
 document.addEventListener("DOMContentLoaded", function () {
-    // Get the current URL and parse the query parameters
-    var urlParams = new URLSearchParams(window.location.search);
-    var currentPage = urlParams.get("page");
+        // Get the current URL and parse the query parameters
+        var urlParams = new URLSearchParams(window.location.search);
+        var currentPage = urlParams.get("page");
 
-    // Find all pagination links
-    var paginationLinks = document.querySelectorAll(".pagination a");
+        // Find all pagination links
+        var paginationLinks = document.querySelectorAll(".pagination a");
 
-    // Add a click event listener to each pagination link
-    paginationLinks.forEach(function (link) {
-        link.addEventListener("click", function (event) {
-            event.preventDefault();
+        // Add a click event listener to each pagination link
+        paginationLinks.forEach(function (link) {
+            link.addEventListener("click", function (event) {
+                event.preventDefault();
 
-            // Get the target page from the pagination link
-            var targetPage = link.getAttribute("data-page");
+                // Get the target page from the pagination link
+                var targetPage = link.getAttribute("data-page");
 
-            // Update the 'page' parameter in the URL
-            urlParams.set("page", targetPage);
+                urlParams.set("page", targetPage);
 
-            // Replace the current URL with the updated URL
-            window.location.href = window.location.pathname + "?" + urlParams.toString();
+                window.location.href = window.location.pathname + "?" + urlParams.toString();
+            });
+        });
+
+        // Set the active class to the current page
+        paginationLinks.forEach(function (link) {
+            var linkPage = link.getAttribute("data-page");
+            if (linkPage === currentPage) {
+                link.classList.add("active");
+            }
         });
     });
-
-    // Set the active class to the current page
-    paginationLinks.forEach(function (link) {
-        var linkPage = link.getAttribute("data-page");
-        if (linkPage === currentPage) {
-            link.classList.add("active");
-        }
-    });
-});
-

@@ -4,7 +4,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Tea House - Profile</title>
+  <title>Dream - The Coffee and Tea</title>
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <meta content="" name="keywords">
   <meta content="" name="description">
@@ -35,9 +35,13 @@
 
   <!-- jQuery -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
 </head>
 
-<body ng-app="cart_app" ng-controller="ctrl" style="background-color: whitesmoke;">
+<body ng-app="profile" ng-controller="profile_ctrl" style="background-color: whitesmoke;">
 
   <!-- Navbar Start -->
   <div th:replace="~{/user/component/header.html}"></div>
@@ -47,16 +51,17 @@
     <!-- Page Header Start -->
     <div class="container-fluid page-header py-5 wow fadeIn" data-wow-delay="0.1s">
       <div class="container text-center py-5">
-        <h1 class="display-2 text-dark mb-4 animated slideInDown">My Profile</h1>
-        <nav aria-label="breadcrumb animated slideInDown">
+        <h1 class="display-2 text-dark mb-4 animated slideInDown" th:text="#{page.header.title}"></h1>
+        <nav aria-label="breadcrumb" class="animated slideInDown">
           <ol class="breadcrumb justify-content-center mb-0">
-            <li class="breadcrumb-item"><a th:href="@{|/home|}">Home</a></li>
-            <li class="breadcrumb-item text-dark" aria-current="page">Profile</li>
+            <li class="breadcrumb-item"><a th:href="@{|/home|}" th:text="#{breadcrumb.home}"></a></li>
+            <li class="breadcrumb-item text-dark" aria-current="page" th:text="#{breadcrumb.profile}"></li>
           </ol>
         </nav>
       </div>
     </div>
     <!-- Page Header End -->
+
 
     <!--Profile Start  -->
     <div class="container profile">
@@ -70,91 +75,136 @@
         <div class="left-column">
           <div class="form-group row">
             <div class="col-md-3">
-              <label for="username" class="col-form-label">Username:</label>
+              <label for="username" class="col-form-label fw-bold" th:text="#{profile.username}"></label>
             </div>
             <div class="col-md-8">
-              <input type="text" class="form-control" id="username">
+              <input type="text" class="form-control" id="username" ng-model="account.username">
             </div>
           </div>
           <div class="form-group row align-items-center">
             <div class="col-md-3">
-              <label for="name" class="col-form-label">Name:</label>
+              <label for="firstname" class="col-form-label fw-bold" th:text="#{profile.firstname}"></label>
             </div>
             <div class="col-md-8">
-              <input type="text" class="form-control" id="name">
+              <input type="text" class="form-control" id="firstname" ng-model="account.firstname">
+            </div>
+          </div>
+          <div class="form-group row align-items-center">
+            <div class="col-md-3">
+              <label for="lastname" class="col-form-label fw-bold" th:text="#{profile.lastname}"></label>
+            </div>
+            <div class="col-md-8">
+              <input type="text" class="form-control" id="lastname" ng-model="account.lastname">
+            </div>
+          </div>
+          <div class="form-group row align-items-center">
+            <div class="col-md-3">
+              <label for="email" class="col-form-label fw-bold" th:text="#{profile.email}"></label>
+            </div>
+            <div class="col-md-8">
+              <input type="email" class="form-control" id="email" ng-model="account.email">
             </div>
           </div>
 
           <div class="form-group row align-items-center">
             <div class="col-md-3">
-              <label for="email" class="col-form-label">Email:</label>
+              <label for="phone" class="col-form-label fw-bold" th:text="#{profile.phone}"></label>
             </div>
             <div class="col-md-8">
-              <input type="email" class="form-control" id="email">
+              <input type="text" class="form-control" id="phone" ng-model="account.phone">
             </div>
-          </div>
 
-          <div class="form-group row align-items-center">
+          </div>
+          <div class="form-group row align-items-center" style="margin-bottom: 20px;">
             <div class="col-md-3">
-              <label for="phone" class="col-form-label">Phone Number:</label>
+              <label for="address" class="col-form-label fw-bold" th:text="#{profile.address}"></label>
             </div>
             <div class="col-md-8">
-              <input type="number" class="form-control" id="phone">
+              <span class="addressSpan">
+                {{ account.address || 'Chưa có địa chỉ' }}
+              </span>
+              <a href="#" class="change-address-link" data-bs-toggle="modal" data-bs-target="#addressModal"
+                th:text="#{profile.changeAddressLink}">
+              </a>
             </div>
           </div>
-          <div class="form-group row align-items-center">
-            <label class="col-md-3">Gender:</label>
-            <div class="col-md-8">
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="gender" id="male" value="Male">
-                <label class="form-check-label" for="male">Male</label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="gender" id="female" value="Female">
-                <label class="form-check-label" for="female">Female</label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="gender" id="other" value="Other">
-                <label class="form-check-label" for="other">Other</label>
-              </div>
-            </div>
-          </div>
-          <div class="form-group row align-items-center">
-            <label for="dob" class="col-md-3">Date of Birth:</label>
-            <div class="col-md-9 row">
-              <div class="col">
-                <select class="form-select" id="day" style="width: 106px;">
-                  <!-- Options for days -->
-                </select>
-              </div>
-              <div class="col">
-                <select class="form-select" id="month" style="width: 106px;">
-                  <!-- Options for months -->
-                </select>
-              </div>
-              <div class="col">
-                <select class="form-select" id="year" style="width: 106px;">
-                  <!-- Options for years -->
-                </select>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3 offset-sm-6">
-            <button type="button" class="btn btn-primary" style="width: 115px;">Save</button>
+          <div class="col-sm-2 offset-sm-5 mb-2">
+            <button type="button" class="btn btn-primary" style="width: 115px;" ng-click="updateAccount()"
+              th:text="#{profile.button.save}">
+            </button>
           </div>
         </div>
 
         <div class="right-column">
-          <img src="/img/gallery/testimonial-0.jpg" alt="Profile Image" class="profile-image">
+          <img ng-src="{{'/img/avatar/' + account.avatar}}" alt="Profile Image" class="profile-image">
           <br>
-          <button type="button" class="btn btn-outline-secondary" style="margin-bottom: 20px;">Select Image</button>
+          <button type="button" class="btn btn-outline-secondary" style="margin-bottom: 20px;" ng-click="selectImage()"
+            th:text="#{profile.image}"></button>
+          <input type="file" id="image" name="image" onchange="angular.element(this).scope().imageChanged(this.files)"
+            class="btn btn-outline-secondary" style="margin-bottom: 20px;display: none;">
           <p style="font-size: 16px; margin-bottom: 3px; color: grey;">File size: maximum 1 MB</p>
           <p style="font-size: 16px; color: grey;">File extension: .JPEG, .PNG</p>
         </div>
       </div>
     </div>
     <!--Profile End  -->
+    <!--    modal address-->
+    <div class="modal fade" id="addressModal" tabindex="-1" aria-labelledby="orderModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+          <div class="modal-header d-flex justify-content-center">
+            <h3 class="modal-title" th:text="#{profile.address}"></h3>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <!-- Nội dung modal -->
+            <div class="col-md-8 offset-sm-2">
+              <form class="form-infor" style="padding: 20px 20px; font-size: 16px;">
 
+                <div class="mb-3">
+                  <label for="provinces" class="form-label label pb-2 pt-2" th:text="#{profile.address}"></label>
+                  <select ng-model="selectedProvince" class="form-control" name="provinces" id="provinces"
+                    ng-change="getDistricts()">
+                    <option value="" disabled selected th:text="#{profile.province}"></option>
+                    <option ng-repeat="province in provinces" value="{{province.code}}">{{province.name}}</option>
+                  </select>
+                </div>
+                <div class="mb-3 mt-3">
+                  <label for="district" class="form-label label pb-2 pt-2" th:text="#{profile.district}"></label>
+                  <select ng-model="selectedDistrict" class="form-control" name="district" id="district"
+                    ng-change="getWards()">
+                    <option value="" disabled selected th:text="#{profile.district}"></option>
+                    <option ng-repeat="district in districts" value="{{district.code}}">{{district.name}}</option>
+                  </select>
+                </div>
+                <div class="mb-3 mt-3">
+                  <label for="ward" class="form-label label pb-2 pt-2" th:text="#{profile.ward}"></label>
+                  <select ng-model="selectedWard" class="form-control" name="ward" id="ward">
+                    <option value="" disabled selected th:text="#{profile.ward}"></option>
+                    <option ng-repeat="ward in wards" value="{{ward.code}}">{{ward.name}}</option>
+                  </select>
+                </div>
+                <div class="mb-3 mt-3">
+                  <label for="number" class="form-label label pb-2 pt-2" th:text="#{profile.streetNumber}"></label>
+                  <input type="text" class="form-control" id="number" required ng-model="number"
+                    ng-change="printResult()">
+                </div>
+                <div class="mb-3 mt-3">
+                  <label for="result" class="form-label label pb-2">Địa chỉ</label>
+                  <input type="text" class="form-control" id="result" required value="{{account.address}}"
+                         ng-model="account.address" readonly>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-dark" data-bs-dismiss="modal" th:text="#{profile.close}"></button>
+            <button type="button" class="btn btn-success" th:text="#{profile.change}"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--    modal address end-->
     <!-- Back to Top -->
     <!-- Footer Start -->
     <div th:replace="~{/user/component/footer.html}"></div>
@@ -177,8 +227,7 @@
   <script src="/lib/waypoints/waypoints.min.js"></script>
   <script src="/lib/owlcarousel/owl.carousel.min.js"></script>
 
-  <!-- Cart Control -->
-  <script src="/js/cart.js"></script>
+  <script src="/js/account.js"></script>
 
 </body>
 

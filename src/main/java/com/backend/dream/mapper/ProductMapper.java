@@ -12,7 +12,7 @@ import java.util.List;
 public interface ProductMapper {
     ProductMapper INSTANCE = Mappers.getMapper(ProductMapper.class);
 
-    @Mapping(source = "category.name", target = "category")
+    @Mapping(source = "category.name", target = "name_category")
     @Mapping(source = "category.id", target = "id_category")
     ProductDTO productToProductDTO(Product product);
 
@@ -21,4 +21,5 @@ public interface ProductMapper {
 
     @Mapping(source = "id_category", target = "category.id")
     Product productDTOToProduct(ProductDTO product);
+
 }

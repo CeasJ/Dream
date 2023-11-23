@@ -16,12 +16,11 @@
   // Sticky Navbar
   $(window).scroll(function () {
     if ($(this).scrollTop() > 300) {
-      $('.sticky-top').addClass('shadow-sm').css('top', '0px');
+      $(".sticky-top").addClass("shadow-sm").css("top", "0px");
     } else {
-      $('.sticky-top').removeClass('shadow-sm').css('top', '-150px');
+      $(".sticky-top").removeClass("shadow-sm").css("top", "-150px");
     }
   });
-
 
   // Back to top button
   $(window).scroll(function () {
@@ -33,15 +32,15 @@
   });
 
   // Show .cart-0 if cartCount is less than or equal to 0, otherwise show .cart-1
-   var cartCount = parseInt($("#cartCount").text());
+  var cartCount = parseInt($("#cartCount").text());
 
-   if (cartCount <= 0) {
-     $(".cart-0").show();
-     $(".cart-1").hide();
-   } else {
-     $(".cart-0").hide();
-     $(".cart-1").show();
-   }
+  if (cartCount <= 0) {
+    $(".cart-0").show();
+    $(".cart-1").hide();
+  } else {
+    $(".cart-0").hide();
+    $(".cart-1").show();
+  }
 
   $("#step-1").addClass("active-stext");
   // Show infor-cart and hide cart-0, cart-1 on Buy button click
@@ -83,13 +82,38 @@
     }
   });
 
-  
- 
+  // let isSuccess = true;
+
+  // $("#completeButton").click(function () {
+  //     if(isSuccess) {
+  //       $("#completeButton").click(function () {
+  //         $(".cart-3").show();
+  //         $(".cart-0, .cart-1, .form-buy, .infor-cart").hide();
+  //         $("#number-3").addClass("active");
+  //         $("#line-2").addClass("active-line");
+  //         $("#step-3").addClass("active-stext");
+  //       });
+  //   } else {
+
+  //   }
+  // });
 
   $(document).ready(function () {
     $("#applyDiscountBtn").click(function () {
-      var toast = new bootstrap.Toast(document.getElementById('successToast'));
+      var toast = new bootstrap.Toast(document.getElementById("successToast"));
       toast.show();
+    });
+  });
+
+  $(document).ready(function () {
+    $(".theme-mode input").change(function () {
+      if (this.checked) {
+        // Chuyển sang dark mode
+        $("body").removeClass("light-mode").addClass("dark-mode");
+      } else {
+        // Chuyển sang light mode
+        $("body").removeClass("dark-mode").addClass("light-mode");
+      }
     });
   });
 
@@ -108,28 +132,30 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
   $scope.result = "";
   $scope.orderDetails = {};
   $scope.listOrder = [];
+  $scope.selectedSizeID = "";
 
-  $scope.selectOrder = function(orderID){
+  $scope.selectOrder = function (orderID) {
     this.selectedOrderId = orderID;
-    $http.get("/detail/" + this.selectedOrderId).then(response => {
-      if (response.data) {
-        $scope.listOrder = response.data;
-        console.log(this.listOrder);
-      } 
-   }).catch(error => {
-    console.log(error);
-   });
+    $http
+      .get("/detail/" + this.selectedOrderId)
+      .then((response) => {
+        if (response.data) {
+          $scope.listOrder = response.data;
+        }
+      })
+      .catch((error) => {
+      });
   };
-  
-  $scope.getSubTotal = function(){
+
+  $scope.getSubTotal = function () {
     let subTotal = 0;
-    angular.forEach($scope.listOrder,function(orderDetail){
-      subTotal+= orderDetail.quantity * orderDetail.price;
+    angular.forEach($scope.listOrder, function (orderDetail) {
+      subTotal += orderDetail.quantity * orderDetail.price;
     });
     return subTotal;
   };
 
-  $scope.getTotal = function(){
+  $scope.getTotal = function () {
     let subTotal = $scope.getSubTotal();
     let shippingCost = 20000;
     return subTotal + shippingCost;
@@ -200,11 +226,18 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
   };
 
   $scope.printResult = function () {
-    if ($scope.selectedProvince && $scope.selectedDistrict && $scope.selectedWard) {
+    if (
+      $scope.selectedProvince &&
+      $scope.selectedDistrict &&
+      $scope.selectedWard
+    ) {
       $scope.order.address =
-        $scope.number + "," +
-        $scope.getSelectedWards($scope.selectedWard) + "," +
-        $scope.getSelectedDistricts($scope.selectedDistrict) + "," +
+        $scope.number +
+        "," + " " +
+        $scope.getSelectedWards($scope.selectedWard) +
+        "," + " " +
+        $scope.getSelectedDistricts($scope.selectedDistrict) +
+        "," + " " +
         $scope.getSelectedProvinces($scope.selectedProvince);
     }
   };
@@ -218,13 +251,13 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
         username: username,
         items: [],
       };
-  };
+  }
 
   function saveCart(username, cart) {
     let cartKey = `cart_${username}`;
     let json = JSON.stringify(cart);
     localStorage.setItem(cartKey, json);
-  };
+  }
 
   function totalPrice() {
     let totalPrice = 0;
@@ -232,25 +265,33 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
       totalPrice += item.price * item.qty;
     });
     return totalPrice;
-  };
+  }
 
   $scope.cart = {
     username: "",
 
     items: [],
 
-    add(id) {
+    add(id, size_id) {
       if (!this.items) {
         this.items = [];
       }
 
-      let item = this.items.find((item) => item.id == id);
+
+      let sizeID = parseInt(size_id);
+
+      if (sizeID === null || sizeID === undefined || isNaN(sizeID)) {
+        sizeID = 1;
+      }
+
+      let item = this.items.find((item) => item.id_product === id && item.id_size === sizeID);
+
 
       if (item) {
         item.qty++;
         saveCart(this.username, this);
       } else {
-        $http.get(`/rest/products/${id}`).then((resp) => {
+        $http.get(`/rest/products/${id}/${sizeID}`).then((resp) => {
           let newItem = resp.data;
           newItem.qty = 1;
           this.items.push(newItem);
@@ -259,7 +300,7 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
       }
     },
     remove(id) {
-      let index = this.items.findIndex((item) => item.id === id);
+      let index = this.items.findIndex((item) => item.id_product === id);
       this.items.splice(index, 1);
       saveCart(this.username, this);
     },
@@ -269,7 +310,9 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
     },
     get count() {
       if (this.items && this.items.length > 0) {
-        return this.items.map((item) => item.qty).reduce((total, qty) => (total += qty), 0);
+        return this.items
+          .map((item) => item.qty)
+          .reduce((total, qty) => (total += qty), 0);
       } else {
         return 0;
       }
@@ -299,6 +342,11 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
   $scope.cart.username = username;
   $scope.cart.loadFromLocalStorage();
 
+  function getCurrentTime() {
+    const currentTime = new Date();
+    const formattedTime = currentTime.toTimeString().slice(0, 8);
+    return formattedTime;
+  }
 
   //Order Begin
   $scope.order = {
@@ -307,31 +355,33 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
     id_account: parseInt($("#id_account").text()),
     note: "",
     status: 1,
-
+    totalAmount: $scope.cart.amount,
+    createTime: getCurrentTime(),
 
     get orderDetails() {
       return $scope.cart.items.map((item) => {
         return {
-          id_product: parseInt(item.id),
+          id_product: parseInt(item.id_product),
           price: item.price,
           quantity: item.qty,
+          id_size:parseInt(item.id_size),
         };
       });
     },
 
     purchaseOrder() {
       let order = angular.copy(this);
+      console.log($scope.cart.totalDiscount);
       $http
         .post(`/rest/order`, order)
         .then((resp) => {
           $scope.cart.clear();
+          toastr.success('Order Success');
           // location.href = "/order/detail/" + resp.data.id;
         })
-        .catch((error) => {
-        });
+        .catch((error) => { });
     },
   };
-
 
   $scope.selectedPaymentMethod = "";
 
@@ -340,7 +390,7 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
       $scope.order.purchaseOrder();
       $scope.completeButtonClicked();
     } else if ($scope.selectedPaymentMethod === "vnpay") {
-      $scope.order.purchaseOrder();  
+      $scope.order.purchaseOrder();
       location.href = "/vnpay";
     } else if ($scope.selectedPaymentMethod === "paypal") {
       location.href = "/paypal";
@@ -348,7 +398,10 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
     }
   };
 
+
   let isSuccess = true;
+
+
 
   $scope.completeButtonClicked = function () {
     if (isSuccess) {
@@ -362,5 +415,50 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
     }
   };
   //Order End
+
+
+    $http.get('/api/vouchers/applicable')
+    .then(function(response) {
+        $scope.vouchers = response.data; 
+    }, function(error) {
+        console.log('Error fetching data:', error);
+    });
+
+    $scope.getRemainingTime = function(expireDate) {
+        const oneDay = 24 * 60 * 60 * 1000;
+        const today = new Date();
+        const expiration = new Date(expireDate);
+
+        const difference = expiration - today;
+        const daysRemaining = Math.floor(difference / oneDay);
+
+        if (daysRemaining > 0) {
+            return "Còn " + daysRemaining + " ngày";
+        } else {
+            const hoursRemaining = Math.floor((difference % oneDay) / (60 * 60 * 1000));
+            const minutesRemaining = Math.floor(((difference % oneDay) % (60 * 60 * 1000)) / (60 * 1000));
+            return "Còn " + hoursRemaining + " giờ " + minutesRemaining + " phút";
+        }
+    };
+
+    // selected voucher listener
+   $scope.selectedVoucher = null;
+
+   $scope.selectVoucher = function(voucher) {
+       $scope.selectedVoucher = voucher;
+   };
+
+   $scope.applyVoucher = function() {
+       if ($scope.selectedVoucher) {
+           const discountAmount = $scope.selectedVoucher.percent;
+           $scope.cart.totalDiscount = discountAmount;
+       }
+   };
+
+
+
 });
+
 //Cart Control End
+
+

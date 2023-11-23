@@ -2,6 +2,7 @@ package com.backend.dream.repository;
 
 import com.backend.dream.dto.AccountDTO;
 import com.backend.dream.entity.Account;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -25,8 +26,13 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     @Query("SELECT a.fullname FROM Account a WHERE a.username = :username")
     String findFullNameByUsername(@Param("username") String username);
 
+    @Query("SELECT a.avatar FROM Account a WHERE a.username = :username")
+    String getImageByUsername(@Param("username") String username);
+
     Account findByUsernameAndEmail(String username, String email);
+//    Account checkUsernameExists(String username);
 
     @Query("SELECT DISTINCT ar.account FROM Authority ar WHERE ar.role.id IN (1 ,2)")
     List<Account> getStaff();
+
 }

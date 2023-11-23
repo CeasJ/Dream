@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -29,4 +30,21 @@ public interface Report extends JpaRepository<OrderDetails,Long> {
             + "WHERE o.status.id = ?1 "
             + "GROUP BY o.createDate")
     List<Object[]> getTotalRevenue(int orderStatus);
+
+    @Query(value = "SELECT o.createDate, sum(od.quantity * od.price) "
+            + "FROM OrderDetails od "
+            + "JOIN od.orders o "
+            + "WHERE o.status.id = ?1 "
+            + "AND o.createDate BETWEEN ?2 AND ?3 "
+            + "GROUP BY o.createDate")
+    List<Object[]> getTotalRevenueByDateAndStatus(int orderStatus, Date startDate, Date endDate);
+
+    @Query(value = "SELECT cate.name, sum(od.quantity * od.price) "
+            + "FROM OrderDetails od "
+            + "JOIN od.orders o "
+            + "JOIN od.product p "
+            + "JOIN od.product.category cate "
+            + "WHERE o.status.id = ?1 "
+            + "GROUP BY cate.name")
+    List<Object[]> getProductHasSoldByCategory(int orderStatus);
 }
