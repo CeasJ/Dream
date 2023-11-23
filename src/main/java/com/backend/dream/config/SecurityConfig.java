@@ -49,7 +49,7 @@ public class SecurityConfig {
                         .failureUrl("/login/error"))
                 .logout(logout -> logout
                         .logoutUrl("/logout")
-                        .logoutSuccessUrl("/login/form"))
+                        .logoutSuccessUrl("/login"))
                 .oauth2Login(oauth -> {
                     oauth.loginPage("/login").permitAll();
                     oauth.defaultSuccessUrl("/home");

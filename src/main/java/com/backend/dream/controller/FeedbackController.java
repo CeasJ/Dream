@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -47,7 +48,8 @@ public class FeedbackController {
     @PostMapping("/feedback/{name}")
     public String postFeedback(@PathVariable String name,
                                @RequestParam String comment,
-                               @RequestParam int rating) {
+                               @RequestParam int rating,
+                               @RequestParam("file") MultipartFile file) {
         // Check if there is a logged-in user
         String remoteUser = request.getRemoteUser();
         if (remoteUser == null) {

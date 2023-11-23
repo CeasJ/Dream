@@ -263,7 +263,7 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
   function totalPrice() {
     let totalPrice = 0;
     angular.forEach($scope.cart.items, function (item) {
-      totalPrice += item.priceProduct_Size * item.qty;
+      totalPrice += item.price * item.qty;
     });
     return totalPrice;
   }
@@ -363,7 +363,7 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
       return $scope.cart.items.map((item) => {
         return {
           id_product: parseInt(item.id_product),
-          price: item.priceProduct_Size,
+          price: item.price,
           quantity: item.qty,
           id_size:parseInt(item.id_size),
         };

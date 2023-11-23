@@ -40,13 +40,33 @@
 
 <body ng-app="cart_app" ng-controller="ctrl">
 <div th:if="${activeDiscounts != null and activeDiscounts.size() > 0}">
-    <div class="popup-wrapper" id="popupWrapper">
-        <div class="popup-content">
-            <h2 th:text="${activeDiscounts[0].name}"></h2>
-            <p th:text="'Giảm giá ' + ${activeDiscounts[0].percent} + '% một vài sản phẩm. Sự kiện diễn ra từ ' + ${#dates.format(activeDiscounts[0].activeDate, 'dd/MM/yyyy')} + ' đến ' + ${#dates.format(activeDiscounts[0].expiredDate, 'dd/MM/yyyy')}"></p>
-            <a th:href="@{|/store|}" target="_blank">Mua ngay</a>
-<!--            <img class="img-fluid" id="imageDiscount" ng-src="{{'/img/gallery/'+ activeDiscounts[0].img}}">-->
-            <button onclick="closePopup()">Đóng</button>
+    <div class="modal fade discountModal" id="discountModal" tabindex="-1" aria-labelledby="discountModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <img src="/img/gallery/christmas.png" class="img-fluid">
+                    <div class="custom-close-btn" data-bs-dismiss="modal" aria-label="Close"><i
+                            class="bi bi-x-lg"></i></div>
+                    <div class="content-overlay">
+                        <p style="font-size: 40px; margin-bottom: 5px;" class="modal-title fw-bold"
+                           id="discountModalLabel" th:text="${activeDiscounts[0].name}"></p>
+                        <p style="text-align: center;">
+                            <span class="discount-text">Giảm đến </span>
+                            <span style="font-size: 70px;" th:text="${#numbers.formatDecimal(activeDiscounts[0].percent*100, 0, 'COMMA', 0, 'POINT')}"></span>
+                            <span style="font-size: 70px;">% </span>
+                            <span class="ms-2" style="font-size: 30px;">tất cả sản phẩm</span>
+                            <br style="margin-bottom: 20px;" />
+                            <span style="font-size: 18px;"
+                                  th:text="'Sự kiện diễn ra từ ' + ${#dates.format(activeDiscounts[0].activeDate, 'dd/MM/yyyy')} + ' đến ' + ${#dates.format(activeDiscounts[0].expiredDate, 'dd/MM/yyyy')}"></span>
+                        </p>
+
+                        <div class="link-discount">
+                            <a class="btn btn-outline-light" th:href="@{|/store|}" target="_blank">Mua ngay!</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -79,19 +99,13 @@
     <script src="/js/cart.js"></script>
 </body>
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-  openPopup();
-});
+    document.addEventListener("DOMContentLoaded", function () {
+        openPopup();
+    });
 
-function openPopup() {
-  var popup = document.getElementById("popupWrapper");
-  popup.style.display = "flex";
-}
-
-function closePopup() {
-  var popup = document.getElementById("popupWrapper");
-  popup.style.display = "none";
-}
-
+    function openPopup() {
+        var myModal = new bootstrap.Modal(document.getElementById('discountModal'));
+        myModal.show();
+    }
 </script>
 </html>
