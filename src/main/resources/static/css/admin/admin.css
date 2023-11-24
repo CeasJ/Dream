@@ -11640,6 +11640,8 @@ body {
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   display: none;
   width: 400px;
+  max-height: 400px; /* Đặt chiều cao tối đa để thanh cuộn xuất hiện nếu nội dung quá dài */
+  overflow: auto;
 }
 
 .notification-icon:hover .notification-dropdown {
@@ -11769,4 +11771,33 @@ body {
 
 .size-modal .modal-body {
   overflow-y: auto;
+}
+
+.price-modal .modal-dialog {
+  width: 100%; /* Điều chỉnh chiều rộng của modal */
+  max-width: 500px; /* Điều chỉnh chiều rộng tối đa của modal */
+  margin: auto; /* Để modal nằm giữa màn hình */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.price-modal .modal-content {
+  height: 22%; /* Điều chỉnh chiều rộng tối đa của modal */
+}
+
+.price-modal .modal-body {
+  overflow-y: auto;
+}
+
+.custom-radio {
+  display: flex;
+  align-items: center;
+  margin-right: 25px;
+}
+
+.custom-radio i {
+  font-size: 28px;
+  margin-left: 10px;
+  font-weight: bold;
 }

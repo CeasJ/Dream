@@ -106,7 +106,7 @@
                 </button>
               </a>
             </div> -->
-            <div class="container-fluid cart-1">
+            <div class="container-fluid cart-1" style="display: none;">
               <div class="row product-row my-3" ng-repeat="product in cart.items">
                 <div class="col-md-2">
                   <img ng-src="{{'/img/gallery/' + product.image}}" class="img-fluid img-product">
@@ -244,43 +244,62 @@
             <div class="row justify-content-center">
               <div class="col-md-6">
                 <form class="form-infor" style="padding: 20px 20px; font-size: 16px;">
-                  <div class="mb-3">
-                    <label for="provinces" class="form-label label pb-2"><span
-                        th:text="#{label.province}"></span></label>
-                    <select ng-model="selectedProvince" class="form-control" name="provinces" id="provinces"
-                      ng-change="getDistricts()">
-                      <option value="" disabled selected><span th:text="#{label.province}"></span></option>
-                      <option ng-repeat="province in provinces" value="{{province.code}}">{{province.name}}</option>
-                    </select>
+                  <div class="choose-address">
+                    <div class="mb-3">
+                      <input type="radio" id="currentAddress" name="addressType" checked>
+                      <label class="ps-1" for="currentAddress">Địa chỉ hiện tại</label>
+                    </div>
+                    <div class="mb-3">
+                      <input type="radio" id="newAddress" name="addressType">
+                      <label class="ps-1" for="newAddress">Địa chỉ mới</label>
+                    </div>
                   </div>
-                  <div class="mb-3">
-                    <label for="district" class="form-label label pb-2"><span
-                        th:text="#{label.district}"></span></label>
-                    <select ng-model="selectedDistrict" class="form-control" name="district" id="district"
-                      ng-change="getWards()">
-                      <option value="" disabled selected><span th:text="#{label.district}"></span></option>
-                      <option ng-repeat="district in districts" value="{{district.code}}">{{district.name}}</option>
-                    </select>
-                  </div>
-                  <div class="mb-3">
-                    <label for="ward" class="form-label label pb-2"><span th:text="#{label.ward}"></span></label>
-                    <select ng-model="selectedWard" class="form-control" name="ward" id="ward">
-                      <option value="" disabled selected><span th:text="#{label.ward}"></span></option>
-                      <option ng-repeat="ward in wards" value="{{ward.code}}">{{ward.name}}</option>
-                    </select>
-                  </div>
-                  <div class="mb-3">
-                    <label for="number" class="form-label label pb-2">
-                      <span th:text="#{label.streetNumber}"></span>
-                    </label>
-                    <input type="text" class="form-control" id="number" required ng-model="number"
-                      ng-change="printResult()">
-                  </div>
-                  <div class="mb-3">
+
+                  <div class="current-address mb-3 mt-3">
                     <label for="result" class="form-label label pb-2"><span th:text="#{label.address}"></span></label>
-                    <input type="text" class="form-control" id="result" required value="{{order.address}}"
-                      ng-model="order.address" readonly>
+                    <input type="text" class="form-control" id="currentAddressInput" readonly>
                   </div>
+
+                  <div class="address-order mb-1" style="display: none;">
+                    <div class="mb-3">
+                      <label for="provinces" class="form-label label pb-2"><span
+                          th:text="#{label.province}"></span></label>
+                      <select ng-model="selectedProvince" class="form-control" name="provinces" id="provinces"
+                        ng-change="getDistricts()">
+                        <option value="" disabled selected><span th:text="#{label.province}"></span></option>
+                        <option ng-repeat="province in provinces" value="{{province.code}}">{{province.name}}</option>
+                      </select>
+                    </div>
+                    <div class="mb-3">
+                      <label for="district" class="form-label label pb-2"><span
+                          th:text="#{label.district}"></span></label>
+                      <select ng-model="selectedDistrict" class="form-control" name="district" id="district"
+                        ng-change="getWards()">
+                        <option value="" disabled selected><span th:text="#{label.district}"></span></option>
+                        <option ng-repeat="district in districts" value="{{district.code}}">{{district.name}}</option>
+                      </select>
+                    </div>
+                    <div class="mb-3">
+                      <label for="ward" class="form-label label pb-2"><span th:text="#{label.ward}"></span></label>
+                      <select ng-model="selectedWard" class="form-control" name="ward" id="ward">
+                        <option value="" disabled selected><span th:text="#{label.ward}"></span></option>
+                        <option ng-repeat="ward in wards" value="{{ward.code}}">{{ward.name}}</option>
+                      </select>
+                    </div>
+                    <div class="mb-3">
+                      <label for="number" class="form-label label pb-2">
+                        <span th:text="#{label.streetNumber}"></span>
+                      </label>
+                      <input type="text" class="form-control" id="number" required ng-model="number"
+                        ng-change="printResult()">
+                    </div>
+                    <div class="mb-3">
+                      <label for="result" class="form-label label pb-2"><span th:text="#{label.address}"></span></label>
+                      <input type="text" class="form-control" id="result" required value="{{order.address}}"
+                        ng-model="order.address" readonly>
+                    </div>
+                  </div>
+
                   <div class="mb-3">
                     <label for="note" class="form-label label pb-2"><span th:text="#{label.note}"></span></label>
                     <textarea type="text" class="form-control" id="note" required ng-model="order.note"></textarea>
@@ -308,7 +327,7 @@
                   <div class="text-center">
                     <button type="button" class="btn btn-secondary btn-infor" id="backButton"><span
                         th:text="#{button.back}"></span></button>
-                    <button class="btn btn-danger btn-infor" id="completeButton"
+                    <button class="btn btn-success btn-infor" id="completeButton"
                       ng-click="handlePaymentMethodChange()"><span th:text="#{button.complete}"></span></button>
                   </div>
                 </form>
@@ -354,6 +373,36 @@
   <script src="/lib/owlcarousel/owl.carousel.min.js"></script>
   <!-- Cart Control -->
   <script src="/js/cart.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var newAddressRadio = document.getElementById('newAddress');
+      var addressOrderSection = document.querySelector('.address-order');
+
+      newAddressRadio.addEventListener('change', function () {
+        if (newAddressRadio.checked) {
+          addressOrderSection.style.display = 'block';
+        } else {
+          addressOrderSection.style.display = 'none';
+        }
+      });
+    });
+
+    $(document).ready(function () {
+      // Khi radio button thay đổi
+      $('input[name="addressType"]').change(function () {
+        // Nếu là radio button "Địa chỉ mới"
+        if ($('#newAddress').is(':checked')) {
+          // Hiển thị phần địa chỉ mới và ẩn thanh input của Địa chỉ hiện tại
+          $('.address-order').show();
+          $('.current-address').hide();
+        } else {
+          // Hiển thị thanh input của Địa chỉ hiện tại và ẩn phần địa chỉ mới
+          $('.current-address').show();
+          $('.address-order').hide();
+        }
+      });
+    });
+  </script>
 
 </body>
 
