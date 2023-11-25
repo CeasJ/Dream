@@ -5,18 +5,27 @@ import com.backend.dream.mapper.FeedBackMapper;
 import com.backend.dream.service.AccountService;
 import com.backend.dream.service.FeedbackService;
 import com.backend.dream.service.ProductService;
+import com.backend.dream.service.UploadService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @Controller
 public class FeedbackController {
@@ -38,6 +47,9 @@ public class FeedbackController {
     private HttpServletRequest request;
 
     @Autowired
+    private UploadService uploadService;
+
+    @Autowired
     public FeedbackController(FeedbackService feedbackService, AccountService accountService) {
         this.feedbackService = feedbackService;
         this.accountService = accountService;
@@ -47,7 +59,8 @@ public class FeedbackController {
     @PostMapping("/feedback/{name}")
     public String postFeedback(@PathVariable String name,
                                @RequestParam String comment,
-                               @RequestParam int rating) {
+                               @RequestParam int rating,
+                               @RequestParam("file") MultipartFile file) throws IOException {
         // Check if there is a logged-in user
         String remoteUser = request.getRemoteUser();
         if (remoteUser == null) {
@@ -59,9 +72,17 @@ public class FeedbackController {
                 String encodedName = URLEncoder.encode(decodedName, StandardCharsets.UTF_8);
                 ProductDTO product = productService.findByNamePaged(decodedName, PageRequest.of(0, 1)).getContent().get(0);
                 Long productId = product.getId();
-
                 Long accountId = accountService.findIDByUsername(remoteUser);
-                feedbackService.createFeedback(productId, accountId, comment, rating);
+                String imagePath = null;
+                if (!file.isEmpty()) {
+                    String fileName = file.getOriginalFilename();
+                    Path path = Paths.get("src/main/resources/static/img/feedback/" + fileName);
+                    Files.write(path, file.getBytes());
+
+                    imagePath = fileName;
+                }
+
+                feedbackService.createFeedback(productId, accountId, comment, rating, imagePath);
                 return "redirect:/product/" + encodedName;
             } catch (UnsupportedEncodingException e) {
                 return "/user/home/404";

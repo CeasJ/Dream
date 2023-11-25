@@ -10,7 +10,7 @@ public interface FeedbackService {
     List<FeedBackDTO> getFeedbacksForProduct(Long productId);
 //    Account findAccountByFeedBackId(Long feedbackId);
 
-    void createFeedback(Long productId, Long accountId, String comment, int rating);
+    void createFeedback(Long productId, Long accountId, String comment, int rating, String imageFileName);
 
     // Calculate average rating feedbacks
     double getAverageRating(Long productId);

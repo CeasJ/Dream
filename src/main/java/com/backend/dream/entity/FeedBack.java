@@ -1,5 +1,6 @@
 package com.backend.dream.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,6 +25,8 @@ public class FeedBack implements Serializable {
     private String note;
 
     private int rating;
+
+    private String image;
 
     @ManyToOne
     @JoinColumn(name = "idaccount")

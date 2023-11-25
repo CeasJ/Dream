@@ -16,6 +16,8 @@ public class FeedBackDTO {
 
     private int rating;
 
+    private String image;
+
     private Long id_account;
 
     private Long id_product;

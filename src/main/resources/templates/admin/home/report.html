@@ -42,7 +42,7 @@
                                 <tbody>
                                     <tr>
                                         <td>Revenue</td>
-                                        <td th:text="${revenue}"></td>
+                                        <td th:text="${#numbers.formatDecimal(revenue,2,'COMMA',0,'POINT')} + 'đ'"></td>
                                     </tr>
                                     <tr>
                                         <td>Total Order</td>

@@ -89,7 +89,7 @@
 <!--                                        <p style="font-size: 15px; display: flex; margin-bottom: 3px;">-->
 <!--                                            Tổng giá trị đơn hàng:  39.000đ-->
 <!--                                        </p>-->
-                                        <p style="font-size: 14px; display: flex;" th:text="${notification.createdTime}"></p>
+                                        <p style="font-size: 14px; display: flex;" th:text="${#dates.format(notification.createdTime, 'HH:mm dd-MM-yyyy')}"></p>
                                         <!-- Thêm các thông báo khác nếu cần -->
                                     </div>
                                 </div>
