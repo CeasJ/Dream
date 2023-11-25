@@ -117,6 +117,7 @@
     });
   });
 
+
 })(jQuery);
 
 //Cart Control Begin
@@ -141,6 +142,7 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
       .then((response) => {
         if (response.data) {
           $scope.listOrder = response.data;
+          console.log($scope.listOrder);
         }
       })
       .catch((error) => {
@@ -411,7 +413,7 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
       $("#line-2").addClass("active-line");
       $("#step-3").addClass("active-stext");
     } else {
-      alert("Hoàn thành thất bại. Vui lòng thử lại.");
+      alert("Đặt hàng thất bại. Vui lòng thử lại.");
     }
   };
   //Order End
