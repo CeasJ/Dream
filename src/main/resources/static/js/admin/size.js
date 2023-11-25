@@ -45,10 +45,8 @@ app.controller("size-ctrl", function ($scope, $http, $location) {
 
   $scope.grant_size = function (productSize) {
     $scope.id_product = productSize.id_product;
-    console.log($scope.id_product);
 
     $scope.id_size = productSize.id_size;
-    console.log($scope.id_size);
 
     $("#priceModal").modal("show");
 
@@ -64,9 +62,6 @@ app.controller("size-ctrl", function ($scope, $http, $location) {
       id_size: id_size,
       price: price,
     };
-
-   
-    console.log(productSize);
     $http
       .post(`/rest/productsizes`, productSize)
       .then((resp) => {
@@ -75,9 +70,41 @@ app.controller("size-ctrl", function ($scope, $http, $location) {
         toastr.success("Add size success");
         setTimeout(() => {
           location.reload();
-        }, 2000);
+        }, 1000);
       })
       .catch((error) => {});
+  };
+
+  $scope.showModal = function(id_product){
+    $scope.id_product = id_product;
+    $("#priceModal").modal("show");
+  };
+
+  $scope.updatePriceSize = function(){
+    let id_product = $scope.id_product;
+    let id_size = $scope.id_size;
+    let price = $scope.updateProductSizePrice();
+
+    let productSize = {
+      id_product: id_product,
+      id_size: id_size,
+      price: price,
+    };
+    $http.put(`/rest/productsizes/${id_product}`,productSize)
+    .then((resp) => {
+      let index = $scope.productSize.findIndex((product) => product.id === product.id_product);
+      $scope.productSize[index] = productSize;
+      $("#priceModal").modal("hide");
+      toastr.success("Update price size success");
+      setTimeout(() => {
+        location.reload();
+      }, 1000);
+    })
+    .catch((error) => {});
+  };
+
+  $scope.selectSizeProduct = function(id_size){
+    return $scope.id_size = id_size;
   };
 
   $scope.revoke_size = function (productSize) {
@@ -91,7 +118,7 @@ app.controller("size-ctrl", function ($scope, $http, $location) {
         toastr.success("Delete success");
         setTimeout(() => {
           location.reload();
-        }, 2000);
+        }, 1000);
       })
       .catch((error) => {});
   };

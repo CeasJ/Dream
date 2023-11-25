@@ -23,9 +23,12 @@ public class ProductSizeRestController {
     public ProductSize productSize(@RequestBody ProductSizeDTO productSizeDTO) {
         return productSizeService.create(productSizeDTO);
     }
-
     @DeleteMapping("{id}")
     public void delete(@PathVariable("id") Long id) {
         productSizeService.delete(id);
+    }
+    @PutMapping("{id}")
+    public ProductSizeDTO productSizeDTO(@RequestBody ProductSizeDTO productSizeDTO,@PathVariable("id") Long id){
+        return productSizeService.update(productSizeDTO,id);
     }
 }
