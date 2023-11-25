@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.mail.MessagingException;
+
 @Controller
 public class RegisterController {
 
@@ -30,7 +32,7 @@ public class RegisterController {
     @PostMapping("/register")
     public String registerAccount(@RequestParam("password") String password,
             @RequestParam("confirmPassword") String confirmPassword,
-            @Valid AccountDTO accountDTO, BindingResult bindingResult, Model model) {
+            @Valid AccountDTO accountDTO, BindingResult bindingResult, Model model) throws MessagingException {
         String username = accountDTO.getUsername();
         String email = accountDTO.getEmail();
         if (accountService.isUsernameExists(username)) {
@@ -48,7 +50,6 @@ public class RegisterController {
         }
         if (password.equals(confirmPassword)) {
             accountService.registerAccount(accountDTO);
-            emailService.sendWelcomeEmail(email, accountDTO.getFullname());
             return "redirect:/login/form";
         } else {
             model.addAttribute("error", "Wrong Password");
