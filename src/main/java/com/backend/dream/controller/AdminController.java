@@ -37,12 +37,19 @@ public class AdminController {
     public String staff() {
         return "/admin/home/staff";
     }
+
     @RequestMapping("/admin/category")
     public String Cates() {
         return "/admin/home/category";
     }
+
     @RequestMapping("/admin/discount")
     public String discount() {
         return "/admin/home/discount";
+    }
+
+    @RequestMapping("/admin/voucher")
+    public String voucher() {
+        return "/admin/home/voucher";
     }
 }

@@ -35,6 +35,10 @@
 
   <!-- jQuery -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
 </head>
 
 <body ng-app="profile" ng-controller="profile_ctrl" style="background-color: whitesmoke;">
@@ -184,6 +188,11 @@
                   <label for="number" class="form-label label pb-2 pt-2" th:text="#{profile.streetNumber}"></label>
                   <input type="text" class="form-control" id="number" required ng-model="number"
                     ng-change="printResult()">
+                </div>
+                <div class="mb-3 mt-3">
+                  <label for="result" class="form-label label pb-2">Địa chỉ</label>
+                  <input type="text" class="form-control" id="result" required value="{{account.address}}"
+                         ng-model="account.address" readonly>
                 </div>
               </form>
             </div>

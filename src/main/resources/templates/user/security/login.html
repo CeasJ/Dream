@@ -36,17 +36,13 @@
                     <form th:action="@{|/login|}" method="post">
                         <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
                             <p class="lead fw-normal mb-0 me-3">Sign in with</p>
-                            <button type="button" class="btn btn-primary btn-floating mx-1">
+                            <a type="button" class="btn btn-primary btn-floating mx-1" href="/oauth2/authorization/facebook">
                                 <i class="fab fa-facebook-f"></i>
-                            </button>
+                            </a>
 
-                            <button type="button" class="btn btn-primary btn-floating mx-1">
-                                <i class="fab fa-twitter"></i>
-                            </button>
-
-                            <button type="button" class="btn btn-primary btn-floating mx-1">
-                                <i class="fab fa-linkedin-in"></i>
-                            </button>
+                            <a type="button" class="btn btn-primary btn-floating mx-1" href="/oauth2/authorization/google">
+                                <i class="fab fa-google"></i>
+                            </a>
                         </div>
 
                         <div class="divider d-flex align-items-center my-4">

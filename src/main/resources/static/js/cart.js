@@ -117,6 +117,7 @@
     });
   });
 
+
 })(jQuery);
 
 //Cart Control Begin
@@ -141,6 +142,7 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
       .then((response) => {
         if (response.data) {
           $scope.listOrder = response.data;
+          console.log($scope.listOrder);
         }
       })
       .catch((error) => {
@@ -233,11 +235,11 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
     ) {
       $scope.order.address =
         $scope.number +
-        "," +
+        "," + " " +
         $scope.getSelectedWards($scope.selectedWard) +
-        "," +
+        "," + " " +
         $scope.getSelectedDistricts($scope.selectedDistrict) +
-        "," +
+        "," + " " +
         $scope.getSelectedProvinces($scope.selectedProvince);
     }
   };
@@ -364,13 +366,12 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
           id_product: parseInt(item.id_product),
           price: item.priceProduct_Size,
           quantity: item.qty,
+          id_size: parseInt(item.id_size),
         };
       });
     },
 
     purchaseOrder() {
-      console.log($scope.cart.amount);
-      console.log(getCurrentTime());
       let order = angular.copy(this);
       $http
         .post(`/rest/order`, order)
@@ -410,7 +411,7 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
       $("#line-2").addClass("active-line");
       $("#step-3").addClass("active-stext");
     } else {
-      alert("Hoàn thành thất bại. Vui lòng thử lại.");
+      alert("Đặt hàng thất bại. Vui lòng thử lại.");
     }
   };
   //Order End

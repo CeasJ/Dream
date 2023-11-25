@@ -1,7 +1,6 @@
 package com.backend.dream.rest;
 
 import com.backend.dream.dto.DiscountDTO;
-import com.backend.dream.dto.ProductDTO;
 import com.backend.dream.mapper.DiscountMapper;
 import com.backend.dream.service.DiscountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,7 @@ import java.util.List;
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/rest/discount")
-public class DiscountController {
+public class DiscountRestController {
     @Autowired
     private DiscountService discountService;
     @Autowired

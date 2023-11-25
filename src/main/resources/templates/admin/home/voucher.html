@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Discounts - Dream Admin</title>
+    <title>Vouchers - Dream Admin</title>
     <link type="text/css" href="/css/admin/admin.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <!-- Angular -->
@@ -25,7 +25,7 @@
             <main>
                 <div class="card mb-4" style="border: none;">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <h4 class="mb-0"> <i class="fas fa-table me-1"></i> Discounts</h4>
+                        <h4 class="mb-0"> <i class="fas fa-table me-1"></i> Vouchers</h4>
                         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
                             <i class="bi bi-plus-lg"></i>
                         </button>
@@ -36,10 +36,14 @@
                                 <div class="d-flex">
                                     <div class="form-group mb-0 me-3">
                                         <label for="dateFilter" class="fw-bold pt-1" style="font-size: 18px;">
-                                            Filter by Date:</label>
+                                            Filter by Status:</label>
                                     </div>
                                     <div class="form-group mb-0" style="width: 200px;">
-                                        <input type="date" class="form-control" id="dateFilter" ng-model="selectedDate">
+                                        <select class="form-select">
+                                            <option>All Status</option>
+                                            <option>Đang kích hoạt</option>
+                                            <option>Đã hết hạn</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -56,22 +60,28 @@
                                 <thead class="table-dark">
                                     <tr>
                                         <th>Number</th>
-                                        <th style="text-align: left;">DiscountName</th>
-                                        <th>DiscountNumber</th>
-                                        <th>DiscountPercent</th>
+                                        <th>Icon</th>
+                                        <th style="text-align: left;">Name</th>
+                                        <th>VoucherNumber</th>
+                                        <th>Percent</th>
+                                        <th>Condition</th>
                                         <th>ActiveDate</th>
-                                        <th>Expiredate</th>
+                                        <th>Status</th>
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tbody class="no-border-x">
-                                    <tr ng-repeat-start="count in discounts">
+                                    <tr>
                                         <td>{{$index + 1}}</td>
-                                        <td style="text-align: left;">{{count.name}}</td>
-                                        <td>{{count.number}}</td>
-                                        <td>{{count.percent}}</td>
-                                        <td>{{count.activeDate | date: 'dd-MM-yyyy'}}</td>
-                                        <td>{{count.expiredDate | date: 'dd-MM-yyyy'}}</td>
+                                        <th style="font-size: 35px; font-weight: bold;">
+                                            <i class="bi bi-truck"></i>
+                                        </th>
+                                        <td style="text-align: left;">Voucher 1</td>
+                                        <td>VCH001</td>
+                                        <td>50000</td>
+                                        <td>Đơn hàng tối thiểu 300k</td>
+                                        <td>24/11/2023</td>
+                                        <td>Đang kích hoạt</td>
                                         <td>
                                             <button class="btn btn-dark" ng-click="edit(count)" data-bs-toggle="modal"
                                                 data-bs-target="#myModal">
@@ -82,7 +92,6 @@
                                             </button>
                                         </td>
                                     </tr>
-                                    <tr ng-repeat-end></tr>
                                 </tbody>
                             </table>
                         </div>
@@ -117,7 +126,7 @@
                             <div class="modal-header">
                                 <h5 class="modal-title" id="exampleModalLabel">
                                     <i class="bi bi-pencil-square pe-2"></i>
-                                    Edit Product
+                                    Edit Voucher
                                 </h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
@@ -128,27 +137,63 @@
                                         <div class="row mb-3">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label for="name" class="fw-bold mb-3">DiscountName</label>
-                                                    <input type="text" class="form-control" id="name"
-                                                        ng-model="form.name" name="name" placeholder="Product Name" />
+                                                    <label for="name" class="fw-bold mb-3">Icon Voucher</label>
+
+                                                    <div class="input-group">
+                                                        <div class="custom-radio">
+                                                            <input class="form-check-input" type="radio"
+                                                                name="iconVoucher" id="iconCup" value="cup">
+                                                            <label class="form-check-label" for="iconCup"><i
+                                                                    class="bi bi-cup-straw"></i></label>
+                                                        </div>
+
+                                                        <div class="custom-radio">
+                                                            <input class="form-check-input" type="radio"
+                                                                name="iconVoucher" id="iconCake" value="cake">
+                                                            <label class="form-check-label" for="iconCake"><i
+                                                                    class="bi bi-cake2"></i></label>
+                                                        </div>
+
+                                                        <div class="custom-radio">
+                                                            <input class="form-check-input" type="radio"
+                                                                name="iconVoucher" id="iconTruck" value="truck">
+                                                            <label class="form-check-label" for="iconTruck"><i
+                                                                    class="bi bi-truck"></i></label>
+                                                        </div>
+                                                    </div>
                                                 </div>
+
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label for="name" class="fw-bold mb-3">DiscountNumber</label>
-                                                    <input type="text" class="form-control" id="discountNumber"
-                                                        ng-model="form.number" name="number"
-                                                        placeholder="DiscountNumber" />
+                                                    <label for="name" class="fw-bold mb-3">Name</label>
+                                                    <input type="text" class="form-control" id="name" name="name"
+                                                        placeholder="Voucher Name" />
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="row mb-3">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label for="name" class="fw-bold mb-3">DiscountPercent</label>
-                                                    <input type="text" class="form-control" id="DiscountPercent"
-                                                        ng-model="form.percent" name="number"
-                                                        placeholder="DiscountPercent" />
+                                                    <label for="name" class="fw-bold mb-3">Number</label>
+                                                    <input type="text" class="form-control" id="number" name="number"
+                                                        min="0" placeholder="Voucher" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="name" class="fw-bold mb-3">Percent</label>
+                                                    <input type="text" class="form-control" id="voucherPercent"
+                                                        name="number" min="0" placeholder="Vocuher Percent" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="name" class="fw-bold mb-3">Condition</label>
+                                                    <textarea type="text" class="form-control" id="describe" name="name"
+                                                        placeholder="Describe" style="height: 80px;"></textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -156,15 +201,16 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label class="fw-bold mb-3">ActiveDate</label>
-                                                    <input ng-model="form.activeDate" class="form-control" type="date"
-                                                        name="day" required>
+                                                    <input class="form-control" type="date" name="day" required>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label class="fw-bold mb-3">Expiredate</label>
-                                                    <input ng-model="form.expiredDate" class="form-control" type="date"
-                                                        name="day" required>
+                                                    <label for="name" class="fw-bold mb-3">Status</label>
+                                                    <select class="form-select" id="status" name="status">
+                                                        <option>Kích hoạt</option>
+                                                        <option>Hết hạn</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
@@ -173,7 +219,6 @@
                             </div>
                             <div class="modal-footer">
                                 <button ng-click="create()" class="btn btn-primary" type="button">Create</button>
-                                <button ng-click="delete(form)" class="btn btn-danger" type="button">Delete</button>
                                 <button ng-click="update()" class="btn btn-success" type="button">Update</button>
                                 <button ng-click="reset()" class="btn btn-secondary" type="button">New</button>
                             </div>
