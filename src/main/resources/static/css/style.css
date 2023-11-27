@@ -241,6 +241,8 @@ body {
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     display: none;
     width: 400px;
+    max-height: 300px;
+    overflow: auto;
 }
 .notification-dropdown .notification-title {
     font-size: 17px;
@@ -1518,6 +1520,7 @@ body {
     color: var(--primary);
     font-weight: bold;
 }
+
 .popup-wrapper {
     display: none;
     position: fixed;
