@@ -60,6 +60,7 @@
                                         <td ng-repeat="size in sizes">
                                             <input ng-checked="size_of(product.id, size.id)" ng-click="size_changed(product.id, size.id)"
                                                 type="checkbox">
+                                            <p ng-if="getPrice(product.id, size.id) !== null">{{getPrice(product.id, size.id) | number : 0}}đ</p>
                                         </td>
 
                                         <td> <button class="btn btn-dark" data-bs-toggle="modal" 

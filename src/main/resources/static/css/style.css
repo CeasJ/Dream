@@ -543,7 +543,7 @@ body {
 }
 
 .delete-modal .modal-content {
-    height: 22%; /* Điều chỉnh chiều rộng tối đa của modal */
+    height: 27%; /* Điều chỉnh chiều rộng tối đa của modal */
 }
 
 .custom-shadow {
