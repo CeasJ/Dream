@@ -4,19 +4,13 @@ import com.backend.dream.dto.AccountDTO;
 import com.backend.dream.entity.Account;
 import com.backend.dream.entity.Authority;
 import com.backend.dream.entity.Role;
-import com.backend.dream.entity.Product;
 import com.backend.dream.mapper.AccountMapper;
 import com.backend.dream.repository.AccountRepository;
 import com.backend.dream.repository.AuthorityRepository;
 import com.backend.dream.service.AccountService;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -110,28 +104,24 @@ public class AccountServiceImp implements AccountService {
     }
 
     @Override
-    public boolean checkUsernameExists(String username) {
-        return accountRepository.findByUsername("username").isPresent();
-    }
-
-    @Override
     public Account updateStaff(Account staffToUpdate) {
         return accountRepository.save(staffToUpdate);
     }
 
     @Override
-    public Account createStaff(JsonNode account) {
-        ObjectMapper mapper = new ObjectMapper();
-        Account newAccount = mapper.convertValue(account, Account.class);
+    public Account createStaff(AccountDTO accountDTO) {
+        String password = passwordEncoder.encode(accountDTO.getPassword());
+        System.out.println(accountDTO.getPassword());
+        Account newAccount = accountMapper.accountDTOToAccount(accountDTO);
 
-        String password = account.get("password").asText();
-        newAccount.setPassword(passwordEncoder.encode(password));
+        newAccount.setPassword(password);
 
         Role role = new Role();
-        role.setId(2L);
+        role.setId(Long.valueOf(2));
 
         Authority authority = new Authority();
         authority.setRole(role);
+
         newAccount.setFullname(newAccount.getFirstname() + " " + newAccount.getLastname());
         Account savedAccount = accountRepository.save(newAccount);
 
