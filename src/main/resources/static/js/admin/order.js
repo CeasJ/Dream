@@ -171,7 +171,13 @@ app.controller("order_ctrl", function ($scope, $http) {
     });
 
   };
+    $http.get(`/rest/order/ship`).then((resp) => {
+      $scope.listOrderIsShipping = resp.data;
+    });
 
+  };
+
+  $scope.initialize();
   $scope.initialize();
 
   $scope.updateOrder = {

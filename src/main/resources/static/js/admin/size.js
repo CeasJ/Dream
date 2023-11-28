@@ -24,6 +24,12 @@ app.controller("size-ctrl", function ($scope, $http, $location) {
   };
   $scope.intialize();
 
+$scope.getPrice = function(productId, sizeId) {
+       const productSize = $scope.productSize.find(ps => ps.id_product === productId && ps.id_size === sizeId);
+
+       return productSize ? productSize.price : null;
+   };
+
   $scope.size_of = function (id_product, id_size) {
     if ($scope.productSize) {
       return $scope.productSize.find(

@@ -1,12 +1,13 @@
 package com.backend.dream.rest;
 
 import com.backend.dream.dto.VoucherDTO;
+import com.backend.dream.dto.VoucherStatusDTO;
 import com.backend.dream.service.VoucherService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,9 +24,46 @@ public class VoucherRestController {
         this.voucherService = voucherService;
     }
 
+    // Get voucher for user
     @GetMapping("/applicable")
     public List<VoucherDTO> getApplicableVouchers(){
         String user = request.getRemoteUser();
         return voucherService.getApplicableVouchers(user);
     }
+
+    @GetMapping("/all")
+    public List<VoucherDTO> getAllVouchers(){
+        return voucherService.getAllVouchers();
+    }
+
+    @GetMapping("/voucherstatus/all")
+    public List<VoucherStatusDTO> getAllVoucherStatus() {
+        return voucherService.getAllVoucherStatus();
+    }
+
+    @GetMapping("/filterByStatus/{statusId}")
+    public List<VoucherDTO> getVouchersByStatus(@PathVariable Long statusId) {
+        return voucherService.getVouchersByStatusId(statusId);
+    }
+
+    // Searching features
+    @GetMapping("/search")
+    public List<VoucherDTO> searchVouchersByName(@RequestParam String name) {
+        return voucherService.searchVouchersByName(name);
+    }
+
+    @DeleteMapping("/{voucherId}")
+    public ResponseEntity<String> deleteVoucher(@PathVariable Long voucherId) {
+        try {
+            voucherService.delete(voucherId);
+            return ResponseEntity.ok("Voucher has been deleted successfully!");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error deleting voucher: " + e.getMessage());
+        }
+    }
+
+
+
+
 }

@@ -331,6 +331,7 @@
 <!--                                        <img th:src="@{'img/feedback/' + ${feedback.image}}" width="400px">-->
                                         <p style="font-size: 19px; margin-bottom: 0px;" class="mt-3"
                                             th:text="${feedback.note}"></p>
+                                        <img class="img-fluid" th:src="@{'/img/feedback/' + ${feedback.image}}" style="max-width: 500px; max-height: 400px; border: 1px black;" alt="">
                                     </div>
                                 </div>
                             </div>
