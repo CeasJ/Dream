@@ -74,22 +74,5 @@ public class AccountRestController {
         return new ResponseEntity<>(accountDTO, HttpStatus.OK);
     }
 
-    @GetMapping("/admin")
-    public List<Account> getAccounts(@RequestParam("admin") Optional<Boolean> admin) {
-        if (admin.orElse(false)) {
-            return accountService.getStaff();
-        } else {
-            return accountService.findALL();
-        }
-    }
-    @PostMapping("/add")
-    public Account createStaff(@RequestBody JsonNode account, Model model) {
-        String username = account.get("username").asText();
-        return accountService.checkUsernameExists(username) ? null : accountService.createStaff(account);
-    }
 
-    @PutMapping("/update/{id}")
-    public Account updateStaff(@RequestBody Account staffToUpdate, @PathVariable("id") Long id) {
-        return accountService.updateStaff(staffToUpdate);
-    }
 }

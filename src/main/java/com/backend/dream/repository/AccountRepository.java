@@ -30,7 +30,6 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     String getImageByUsername(@Param("username") String username);
 
     Account findByUsernameAndEmail(String username, String email);
-//    Account checkUsernameExists(String username);
 
     @Query("SELECT DISTINCT ar.account FROM Authority ar WHERE ar.role.id IN (1 ,2)")
     List<Account> getStaff();

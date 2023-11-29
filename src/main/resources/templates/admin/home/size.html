@@ -13,9 +13,9 @@
     <!-- Angular -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.js"></script>
-       <!-- jQuery -->
+    <!-- jQuery -->
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-
+    <!-- toastr -->
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 </head>
@@ -62,7 +62,6 @@
                                                 type="checkbox">
                                             <p ng-if="getPrice(product.id, size.id) !== null">{{getPrice(product.id, size.id) | number : 0}}đ</p>
                                         </td>
-
                                         <td> <button class="btn btn-dark" data-bs-toggle="modal" 
                                                 data-bs-target="#priceModal" ng-click="showModal(product.id)">
                                                 <i class="bi bi-pencil-square"></i>
