@@ -41,4 +41,5 @@ public interface AccountService {
 
     Account updateStaff(Account staffToUpdate);
 
+    String getAddressByUsername(String remoteUser);
 }

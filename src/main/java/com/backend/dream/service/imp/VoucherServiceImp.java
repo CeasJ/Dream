@@ -77,4 +77,26 @@ public class VoucherServiceImp implements VoucherService {
     public void delete(Long id) {
         voucherRepository.deleteById(id);
     }
+
+    @Override
+    public Voucher createVoucher(VoucherDTO voucherDTO) {
+        Voucher voucher = voucherMapper.voucherDTOToVoucher(voucherDTO);
+        return voucherRepository.save(voucher);
+    }
+
+    @Override
+    public VoucherDTO updateVoucher(VoucherDTO voucherDTO, Long id) {
+        Voucher voucher = voucherRepository.findById(id).get();
+
+        voucher.setName(voucherDTO.getName());
+        voucher.setNumber(voucherDTO.getNumber());
+        voucher.setIcon(voucherDTO.getIcon());
+        voucher.setCondition(voucherDTO.getCondition());
+        voucher.setPercent(voucherDTO.getPercent());
+        voucher.setExpiredDate(voucherDTO.getExpiredDate());
+
+        Voucher voucherUpdate = voucherRepository.save(voucher);
+
+        return voucherMapper.voucherToVoucherDTO(voucherUpdate);
+    }
 }

@@ -109,6 +109,11 @@ public class AccountServiceImp implements AccountService {
     }
 
     @Override
+    public String getAddressByUsername(String remoteUser) {
+        return accountRepository.getAddressByUsername(remoteUser);
+    }
+
+    @Override
     public Account createStaff(AccountDTO accountDTO) {
         String password = passwordEncoder.encode(accountDTO.getPassword());
         System.out.println(accountDTO.getPassword());
@@ -118,7 +123,7 @@ public class AccountServiceImp implements AccountService {
 
         Role role = new Role();
         role.setId(Long.valueOf(2));
-z
+
         Authority authority = new Authority();
         authority.setRole(role);
 

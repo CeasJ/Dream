@@ -21,7 +21,6 @@ import javax.mail.internet.MimeMessage;
 public class EmailService {
         @Autowired
         private JavaMailSender mailSender;
-
         @Autowired
         private TokenService tokenService;
         @Autowired

@@ -85,9 +85,10 @@
                                         <td> {{ voucher.number }}</td>
                                         <td> {{ voucher.percent | number: 0 }}đ </td>
                                         <td>Tối thiểu {{ voucher.condition | number: 0}}đ</td>
-                                        <td>{{ voucher.createDate | date:'dd/MM/yyyy' }}</td>
-                                        <td>{{ voucher.expireddate | date:'dd/MM/yyyy' }}</td>
-                                        <td>{{ voucher.status }}</td>
+                                        <td>{{ voucher.createDate | date:'dd-MM-yyyy' }}</td>
+                                        <td>{{ voucher.expiredDate | date:'dd-MM-yyyy' }}</td>
+                                        <td ng-if="voucher.status === 1">Active</td>
+                                        <td ng-if="voucher.status === 2">InActive</td>
                                         <td>
                                             <button class="btn btn-dark" ng-click="editVoucher(voucher)" data-bs-toggle="modal"
                                                 data-bs-target="#myModal">
@@ -148,21 +149,21 @@
                                                     <div class="input-group">
                                                         <div class="custom-radio">
                                                             <input class="form-check-input" type="radio"
-                                                                name="iconVoucher" id="iconCup" value="cup">
+                                                                name="iconVoucher" id="iconCup" value="cup" ng-model="select" ng-change="updateSelectedIcon()">
                                                             <label class="form-check-label" for="iconCup"><i
                                                                     class="bi bi-cup-straw"></i></label>
                                                         </div>
 
                                                         <div class="custom-radio">
                                                             <input class="form-check-input" type="radio"
-                                                                name="iconVoucher" id="iconCake" value="cake">
+                                                                name="iconVoucher" id="iconCake" value="cake" ng-model="select" ng-change="updateSelectedIcon()">
                                                             <label class="form-check-label" for="iconCake"><i
                                                                     class="bi bi-cake2"></i></label>
                                                         </div>
 
                                                         <div class="custom-radio">
                                                             <input class="form-check-input" type="radio"
-                                                                name="iconVoucher" id="iconTruck" value="truck">
+                                                                name="iconVoucher" id="iconTruck" value="truck" ng-model="select" ng-change="updateSelectedIcon()">
                                                             <label class="form-check-label" for="iconTruck"><i
                                                                     class="bi bi-truck"></i></label>
                                                         </div>
@@ -173,7 +174,7 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="name" class="fw-bold mb-3">Name</label>
-                                                    <input type="text" class="form-control" id="name" name="name"
+                                                    <input type="text" class="form-control" id="name" name="name" ng-model="name"
                                                         placeholder="Voucher Name" />
                                                 </div>
                                             </div>
@@ -182,14 +183,14 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="name" class="fw-bold mb-3">Number</label>
-                                                    <input type="text" class="form-control" id="number" name="number"
+                                                    <input type="text" class="form-control" id="number" name="number" ng-model="number"
                                                         min="0" placeholder="Voucher" />
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="name" class="fw-bold mb-3">Percent</label>
-                                                    <input type="text" class="form-control" id="voucherPercent"
+                                                    <input type="number" class="form-control" id="voucherPercent" ng-model="percent"
                                                         name="number" min="0" placeholder="Vocuher Percent" />
                                                 </div>
                                             </div>
@@ -198,7 +199,7 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label for="name" class="fw-bold mb-3">Condition</label>
-                                                    <textarea type="text" class="form-control" id="describe" name="name"
+                                                    <textarea type="number" class="form-control" id="describe" name="name" ng-model="condition"
                                                         placeholder="Describe" style="height: 80px;"></textarea>
                                                 </div>
                                             </div>
@@ -206,17 +207,8 @@
                                         <div class="row mb-3">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label class="fw-bold mb-3">ActiveDate</label>
-                                                    <input class="form-control" type="date" name="day" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="name" class="fw-bold mb-3">Status</label>
-                                                    <select class="form-select" id="status" name="status">
-                                                        <option>Kích hoạt</option>
-                                                        <option>Hết hạn</option>
-                                                    </select>
+                                                    <label class="fw-bold mb-3">ExpireDate</label>
+                                                    <input class="form-control" type="date" name="day" required ng-model="expiredDate">
                                                 </div>
                                             </div>
                                         </div>
@@ -224,8 +216,8 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button ng-click="create()" class="btn btn-primary" type="button">Create</button>
-                                <button ng-click="update()" class="btn btn-success" type="button">Update</button>
+                                <button ng-click="createVoucher()" class="btn btn-primary" type="button">Create</button>
+                                <button ng-click="updateVoucher()" class="btn btn-success" type="button">Update</button>
                                 <button ng-click="reset()" class="btn btn-secondary" type="button">New</button>
                             </div>
                         </div>
