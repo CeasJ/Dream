@@ -90,5 +90,26 @@ $scope.setVoucherToDelete = function(voucher) {
          }
      };
 
+    // Pagination
+    $scope.currentPageVoucher = 1;
+    $scope.pageSizeVoucher = 5;
+
+    $scope.totalPagesVoucher = function () {
+      return Math.ceil($scope.vouchers.length / $scope.pageSizeVoucher);
+    };
+
+    $scope.setPageVoucher = function (page) {
+      if (page >= 1 && page <= $scope.totalPagesVoucher()) {
+        $scope.currentPageVoucher = page;
+      }
+    };
+
+    $scope.paginatedListVoucher = function () {
+      const begin = ($scope.currentPageVoucher - 1) * $scope.pageSizeVoucher;
+      const end = begin + $scope.pageSizeVoucher;
+
+      return $scope.vouchers.slice(begin, end);
+    };
+
 
 });

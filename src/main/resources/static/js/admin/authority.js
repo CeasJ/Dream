@@ -138,4 +138,47 @@ app.controller("authority-ctrl", function ($scope, $http, $location) {
       });
   };
 
+  // Staff Pagination
+    $scope.currentPage = 1;
+    $scope.pageSize = 5; // Số nhân viên hiển thị mỗi trang
+
+    $scope.totalPages = function () {
+      return Math.ceil($scope.listStaff.length / $scope.pageSize);
+    };
+
+    $scope.setPage = function (page) {
+      if (page >= 1 && page <= $scope.totalPages()) {
+        $scope.currentPage = page;
+      }
+    };
+
+$scope.paginatedList = function () {
+  const begin = ($scope.currentPage - 1) * $scope.pageSize;
+  const end = begin + $scope.pageSize;
+
+  return $scope.listStaff.slice(begin, end);
+};
+
+// Pagination Authorization
+$scope.currentPageAuth = 1;
+$scope.pageSizeAuth = 5; // Số quyền hiển thị mỗi trang
+
+$scope.totalPagesAuth = function () {
+  return Math.ceil($scope.listStaff.length / $scope.pageSizeAuth);
+};
+
+$scope.setPageAuth = function (page) {
+  if (page >= 1 && page <= $scope.totalPagesAuth()) {
+    $scope.currentPageAuth = page;
+  }
+};
+
+$scope.paginatedListAuth = function () {
+  const begin = ($scope.currentPageAuth - 1) * $scope.pageSizeAuth;
+  const end = begin + $scope.pageSizeAuth;
+
+  return $scope.listStaff.slice(begin, end);
+};
+
+
 });

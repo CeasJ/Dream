@@ -76,7 +76,7 @@
                                     </tr>
                                 </thead>
                                 <tbody class="no-border-x">
-                                    <tr ng-repeat="voucher in vouchers">
+                                    <tr ng-repeat="voucher in paginatedListVoucher()">
                                         <td>{{$index + 1}}</td>
                                         <th style="font-size: 35px; font-weight: bold;">
                                             <i class="{{ voucher.icon }}"></i>
@@ -103,20 +103,22 @@
                         </div>
                         <div class="d-flex justify-content-between align-items-center pt-2 pb-0">
                             <div class="fw-normal" style="font-size: 18px;">
-                                Showing 1 to 5 of 15 entries
+                                Showing {{ (currentPageVoucher - 1) * pageSizeVoucher + 1 }} to
+                                {{ currentPageVoucher * pageSizeVoucher > vouchers.length ? vouchers.length : currentPageVoucher * pageSizeVoucher }}
+                                of {{ vouchers.length }} entries
                             </div>
                             <nav aria-label="Page navigation">
                                 <ul class="pagination justify-content-end">
-                                    <li class="page-item disabled">
-                                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                                    <li class="page-item" ng-class="{ 'disabled': currentPageVoucher === 1 }">
+                                        <a class="page-link" href="#" tabindex="-1" ng-click="setPageVoucher(currentPageVoucher - 1)" aria-disabled="true">
                                             <i class="bi bi-caret-left-fill"></i>
                                         </a>
                                     </li>
-                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#">
+                                    <li class="page-item" ng-repeat="page in totalPagesVoucher()">
+                                        <a class="page-link" href="#" ng-click="setPageVoucher($index + 1)">{{ $index + 1 }}</a>
+                                    </li>
+                                    <li class="page-item" ng-class="{ 'disabled': currentPageVoucher === totalPagesVoucher() }">
+                                        <a class="page-link" href="#" ng-click="setPageVoucher(currentPageVoucher + 1)">
                                             <i class="bi bi-caret-right-fill"></i>
                                         </a>
                                     </li>

@@ -67,4 +67,26 @@ app.controller("discount-ctrl", function ($scope, $http, $location) {
             toastr.error("Create Fail");
           })
         };
+
+        // Pagination
+        $scope.currentPageDiscount = 1;
+        $scope.pageSizeDiscount = 5; // Số discount hiển thị mỗi trang
+
+        $scope.totalPagesDiscount = function () {
+          return Math.ceil($scope.discounts.length / $scope.pageSizeDiscount);
+        };
+
+        $scope.setPageDiscount = function (page) {
+          if (page >= 1 && page <= $scope.totalPagesDiscount()) {
+            $scope.currentPageDiscount = page;
+          }
+        };
+
+        $scope.paginatedListDiscount = function () {
+          const begin = ($scope.currentPageDiscount - 1) * $scope.pageSizeDiscount;
+          const end = begin + $scope.pageSizeDiscount;
+
+          return $scope.discounts.slice(begin, end);
+        };
+
 });
