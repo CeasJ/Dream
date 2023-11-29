@@ -31,7 +31,7 @@ public class Voucher implements Serializable {
 
     @Column(name = "expireddate")
     @Temporal(TemporalType.DATE)
-    private Date expireddate;
+    private Date expiredDate;
 
     private Double percent;
 

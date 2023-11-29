@@ -11,12 +11,11 @@ public interface VoucherMapper {
     VoucherMapper INSTANCE = Mappers.getMapper(VoucherMapper.class);
 
     @Mapping(source = "account.id",target = "id_account")
-    @Mapping(source = "status.name", target = "status")
+    @Mapping(source = "status.id", target = "status")
     VoucherDTO voucherToVoucherDTO(Voucher voucher);
 
     @Mapping(source = "id_account",target = "account.id")
-    // something wrong here check again
-    @Mapping(source = "status",target = "status.name")
+    @Mapping(source = "status",target = "status.id")
     Voucher voucherDTOToVoucher(VoucherDTO voucherDTO);
 
 

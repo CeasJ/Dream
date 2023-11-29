@@ -2,6 +2,7 @@ package com.backend.dream.rest;
 
 import com.backend.dream.dto.VoucherDTO;
 import com.backend.dream.dto.VoucherStatusDTO;
+import com.backend.dream.entity.Voucher;
 import com.backend.dream.service.VoucherService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/vouchers")
+@RequestMapping("/rest/vouchers")
 public class VoucherRestController {
     private final VoucherService voucherService;
 
@@ -50,6 +51,15 @@ public class VoucherRestController {
     @GetMapping("/search")
     public List<VoucherDTO> searchVouchersByName(@RequestParam String name) {
         return voucherService.searchVouchersByName(name);
+    }
+
+    @PostMapping()
+    public Voucher createVoucher(@RequestBody VoucherDTO voucherDTO){
+        return voucherService.createVoucher(voucherDTO);
+    }
+    @PutMapping("{id}")
+    public VoucherDTO updateVoucher(@RequestBody VoucherDTO voucherDTO,@PathVariable Long id){
+        return voucherService.updateVoucher(voucherDTO,id);
     }
 
     @DeleteMapping("/{voucherId}")
