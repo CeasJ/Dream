@@ -366,13 +366,14 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
           id_product: parseInt(item.id_product),
           price: item.price,
           quantity: item.qty,
-          id_size: parseInt(item.id_size),
+          id_size:parseInt(item.id_size),
         };
       });
     },
 
     purchaseOrder() {
       let order = angular.copy(this);
+      console.log($scope.cart.totalDiscount);
       $http
         .post(`/rest/order`, order)
         .then((resp) => {
@@ -420,12 +421,11 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
 
     $http.get('/api/vouchers/applicable')
     .then(function(response) {
-        $scope.vouchers = response.data; // Gán dữ liệu từ API vào biến vouchers trong $scope
+        $scope.vouchers = response.data; 
     }, function(error) {
         console.log('Error fetching data:', error);
     });
 
-    console.log('Vouchers:', $scope.vouchers);
     $scope.getRemainingTime = function(expireDate) {
         const oneDay = 24 * 60 * 60 * 1000;
         const today = new Date();

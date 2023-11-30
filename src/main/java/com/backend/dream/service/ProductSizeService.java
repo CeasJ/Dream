@@ -18,4 +18,5 @@ public interface ProductSizeService {
 
     ProductSizeDTO getProductSizeByProductIdAndSizeId(Long id_product, Long id_size) throws NoSuchElementException;
 
+    ProductSizeDTO update(ProductSizeDTO productSizeDTO,Long id_product);
 }

@@ -12,6 +12,8 @@ public class VoucherDTO {
 
     private String name;
 
+    private String number;
+
     private Date createDate;
 
     private Date expireddate;

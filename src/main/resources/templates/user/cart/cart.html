@@ -131,7 +131,7 @@
                     ng-change="cart.saveToLocalStorage()">
                 </div>
                 <div class="col-md-2 pt-4">
-                  <p> {{product.qty * product.price| number:0}} VND</p>
+                  <p> {{product.qty * product.price | number:0}} VND</p>
                 </div>
                 <div class="col-md-2 pt-3">
                   <button ng-click="cart.remove(product.id)" class="btn">
@@ -209,7 +209,7 @@
               </div>
 
               <hr>
-              <p class="title-prc">Tổng tiền <span class="price" style="float: right;">{{ (cart.amount - cart.totalDiscount + 30000) | number : 0 }} VND</span></p>
+              <p class="title-prc">Tổng tiền <span class="price" style="float: right;">{{ (cart.amount - cart.totalDiscount ) | number : 0 }} VND</span></p>
               <hr>
               <div class="text-center"><button class="btn btn-danger btn-buy" id="buyButton"
                   ng-disabled="cart.count === 0"><span th:text="#{cart.buyButton}"></span> {{cart.count}}</button>

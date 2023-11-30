@@ -51,14 +51,14 @@ public class FeedbackServiceImp implements FeedbackService {
 //    }
 
     @Override
-    public void createFeedback(Long productId, Long accountId, String comment, int rating) {
+    public void createFeedback(Long productId, Long accountId, String comment, int rating, String imageFileName) {
         FeedBack feedback = new FeedBack();
         feedback.setProduct(productRepository.findById(productId).orElse(null));
         feedback.setAccount(accountService.findById(String.valueOf(accountId)));
 
         feedback.setNote(comment);
         feedback.setRating(rating);
-
+        feedback.setImage(imageFileName);
         // Lấy thời gian hiện tại
         Date currentDate = new Date(System.currentTimeMillis());
         Time currentTime = new Time(System.currentTimeMillis());

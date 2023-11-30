@@ -217,7 +217,6 @@ public class ProductController {
                 List<FeedBackDTO> pagedFeedbackList = feedbackList.subList(start, end);
                 model.addAttribute("feedbackList", pagedFeedbackList);
             }
-
             // Check if user has logged in yet
             String remoteUser = request.getRemoteUser();
 

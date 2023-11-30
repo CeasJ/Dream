@@ -1,5 +1,6 @@
 package com.backend.dream.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,6 +26,7 @@ public class FeedBack implements Serializable {
 
     private int rating;
 
+    @Column(name = "image")
     private String image;
 
     @ManyToOne
