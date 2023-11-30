@@ -112,8 +112,9 @@
                                 th:text="#{label.sortBy}"></label>
                             <select class="form-select cb-sort" id="comboBox" name="comboBox"
                                 style="width: 270px; height: 36px;">
+                                <option value="none" th:text="#{product.none}" th:selected="${sortOption == 'none'}"></option>
                                 <option value="bestSelling" th:text="#{option.bestSelling}"></option>
-                                <option value="topRated" th:text="#{option.topRated}"></option>
+                                <option value="topRated" th:selected="${sortOption == 'topRated'}" th:text="#{option.topRated}"></option>
                             </select>
                         </div>
                     </div>
@@ -247,10 +248,10 @@
     <script src="lib/owlcarousel/owl.carousel.min.js"></script>
 
     <!-- Cart AngularJS -->
-    <script src="js/cart.js"></script>
+    <script src="/js/cart.js"></script>
 
 
-    <script src="js/main.js"></script>
+    <script src="/js/main.js"></script>
 </body>
 
 </html>

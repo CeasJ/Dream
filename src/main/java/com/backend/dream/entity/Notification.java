@@ -8,22 +8,25 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.List;
+import java.sql.Timestamp;
 
-@NoArgsConstructor
+@Entity
+@Table
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
-@Entity
-@Table(name = "voucherstatus")
-public class VoucherStatus implements Serializable {
+public class Notification implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idaccount")
+    private Account account;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "status")
-    private List<Voucher> voucher;
+    private String notificationText;
+
+    @Column(name = "created_at")
+    private Timestamp createdTime;
 }

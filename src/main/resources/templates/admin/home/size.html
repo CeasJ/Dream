@@ -13,6 +13,11 @@
     <!-- Angular -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.js"></script>
+       <!-- jQuery -->
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 </head>
 
 <body class="sb-nav-fixed" ng-app="size-app" ng-controller="size-ctrl">
@@ -49,11 +54,11 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat-start="name in products">
+                                    <tr ng-repeat-start="product in products">
                                         <td>{{$index + 1}}</td>
-                                        <td style="text-align: left;">{{name.name}}</td>
+                                        <td>{{product.name}}</td>
                                         <td ng-repeat="size in sizes">
-                                            <input ng-checked="size_of(name, size)" ng-click="size_changed(name, size)"
+                                            <input ng-checked="size_of(product.id, size.id)" ng-click="size_changed(product.id, size.id)"
                                                 type="checkbox">
                                         </td>
                                         <td>
@@ -95,7 +100,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal fade size-modal" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                <div class="modal fade size-modal" id="priceModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                     aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered modal-xl">
                         <div class="modal-content">
@@ -114,8 +119,8 @@
                                         <div class="row mb-4">
                                             <div class="form-group d-flex align-items-center">
                                                 <label for="price" class="fw-bold me-3">Price</label>
-                                                <input type="text" class="form-control" id="price" ng-model="form.price"
-                                                    name="price" placeholder="Product Price" />
+                                                <input type="number" class="form-control" id="price" ng-model="price"
+                                                    name="price" placeholder="Product Price" ng-change="updateProductSizePrice()"/>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -124,15 +129,15 @@
                                                 <div>
                                                     <label class="form-check-label me-3">
                                                         <input class="form-check-input" type="radio" name="size"
-                                                            ng-model="form.size" value="s"> S
+                                                        ng-model="selectedSize" value="S" ng-change="selectedSize(1)" ng-disabled="radioBlocked.S"> S
                                                     </label>
                                                     <label class="form-check-label me-3">
                                                         <input class="form-check-input" type="radio" name="size"
-                                                            ng-model="form.size" value="m"> M
+                                                        ng-model="selectedSize" value="M" ng-change="selectedSize(2)" ng-disabled="radioBlocked.M"> M
                                                     </label>
                                                     <label class="form-check-label">
                                                         <input class="form-check-input" type="radio" name="size"
-                                                            ng-model="form.size" value="l"> L
+                                                        ng-model="selectedSize" value="L" ng-change="selectedSize(3)" ng-disabled="radioBlocked.L"> L
                                                     </label>
                                                 </div>
                                             </div>
@@ -141,7 +146,7 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button ng-click="reset()" class="btn btn-secondary" type="button">New</button>
+                                <button ng-click="add()" class="btn btn-secondary" type="button">Add</button>
                                 <button ng-click="update()" class="btn btn-success" type="button">Update</button>
                             </div>
                         </div>

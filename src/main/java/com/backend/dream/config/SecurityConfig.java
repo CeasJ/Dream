@@ -43,8 +43,8 @@ public class SecurityConfig {
                         .requestMatchers("/staff/index").hasAuthority("STAFF")
                         .anyRequest().permitAll())
                 .formLogin(login -> login
-                        .loginPage("/login/form")
-                        .loginProcessingUrl("/login")
+                        .loginPage("/login")
+                        .loginProcessingUrl("/login/process")
                         .defaultSuccessUrl("/home", false)
                         .failureUrl("/login/error"))
                 .logout(logout -> logout
@@ -52,6 +52,12 @@ public class SecurityConfig {
                         .logoutSuccessUrl("/login/form"))
                 .oauth2Login(oauth -> {
                     oauth.loginPage("/login/form").permitAll();
+                    oauth.defaultSuccessUrl("/home");
+                    oauth.failureUrl("/login/error").permitAll();
+                })
+                        .logoutSuccessUrl("/login"))
+                .oauth2Login(oauth -> {
+                    oauth.loginPage("/login").permitAll();
                     oauth.defaultSuccessUrl("/home");
                     oauth.failureUrl("/login/error").permitAll();
                 })

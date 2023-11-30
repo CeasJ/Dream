@@ -105,4 +105,10 @@ public class FeedbackServiceImp implements FeedbackService {
             throw new EntityNotFoundException("Feedback not found: " + id);
         }
     }
+
+
+    @Override
+    public Long countFeedback(Long productId) {
+        return feedBackRepository.countByProductId(productId);
+    }
 }

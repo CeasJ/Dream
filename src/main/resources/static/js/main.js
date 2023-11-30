@@ -125,23 +125,57 @@ if (sortOption !== null) {
     }
 }
 
+var comboBoxValueFromURL = urlParams.get("selectedOption");
+var comboBoxSelect = document.getElementById("comboBox");
+
+if (comboBoxValueFromURL !== null) {
+    comboBoxSelect.value = comboBoxValueFromURL;
+}
+
 
 
 document.addEventListener("DOMContentLoaded", function () {
     var productGroupSelect = document.getElementById("productGroup");
     var sortByPriceSelect = document.getElementById("sortByPrice");
     var productNameSearch = document.getElementsByName("productName");
+    var comboBoxSelect = document.getElementById("comboBox");
+
+
     // Handle change events for the category and sort option dropdowns
     productGroupSelect.addEventListener("change", updateURLAndReload);
-    sortByPriceSelect.addEventListener("change", updateURLAndReload);
 
     // Handle search button click event
     var searchButton = document.getElementById("searchButton");
 
-        searchButton.addEventListener("click", function () {
+    searchButton.addEventListener("click", function () {
 
-            updateURLAndReload();
-        });
+        updateURLAndReload();
+    });
+
+    // Thêm sự kiện change cho combobox SortByPrice
+    sortByPriceSelect.addEventListener("change", function() {
+        var selectedSortByPriceValue = this.value;
+        var comboBoxValue = document.getElementById("comboBox").value;
+
+        if (selectedSortByPriceValue !== 'none') {
+            document.getElementById("comboBox").value = 'none';
+        }
+
+
+        updateURLAndReload();
+    });
+
+    // Thêm sự kiện change cho combobox ComboBox
+    comboBoxSelect.addEventListener("change", function() {
+        var selectedComboBoxValue = this.value;
+        var sortByPriceValue = document.getElementById("sortByPrice").value;
+
+        if (selectedComboBoxValue !== 'none') {
+            document.getElementById("sortByPrice").value = 'none';
+        }
+
+        updateURLAndReload();
+    });
 
     // Get the current URL and parse the query parameters
     var urlParams = new URLSearchParams(window.location.search);
@@ -203,6 +237,7 @@ productGroupSelect.addEventListener("change", function() {
 function updateURLAndReload() {
     var selectedCategoryId = document.getElementById("productGroup").value;
     var selectedSortOption = document.getElementById("sortByPrice").value;
+    var selectedComboBoxValue = document.getElementById("comboBox").value;
     var searchValue = localStorage.getItem("searchValue");
 
     var isSearchPage = window.location.pathname === "/search";
@@ -210,17 +245,23 @@ function updateURLAndReload() {
 
     localStorage.setItem("selectedCategoryId", selectedCategoryId);
     localStorage.setItem("sortOption", selectedSortOption);
+    localStorage.setItem("selectedOption", selectedComboBoxValue);
 
 
     var newUrl = "/store?categoryId=" + selectedCategoryId;
     if(selectedSortOption === 'sale') {
-        selectedCategoryId == '0';
+        selectedCategoryId = '0';
         newUrl = "/store?categoryId=0";
     }
 
+
     if (selectedSortOption !== 'none') {
         newUrl += "&sortOption=" + selectedSortOption;
+    }
 
+
+    if (selectedComboBoxValue !== 'none') {
+        newUrl += "&selectedOption=" + selectedComboBoxValue;
     }
 
 

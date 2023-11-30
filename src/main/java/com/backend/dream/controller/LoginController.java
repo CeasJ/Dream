@@ -19,12 +19,12 @@ public class LoginController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @GetMapping("/login/form")
+    @GetMapping("/login")
     public String getLoginForm() {
         return "/user/security/login";
     }
 
-    @PostMapping("/login")
+    @PostMapping("/login/process")
     public String loginProcess(Model model, @RequestParam("username") String username,
             @RequestParam("password") String password) {
         Optional<Account> account = accountService.findByUsername(username);

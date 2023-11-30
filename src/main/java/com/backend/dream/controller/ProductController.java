@@ -82,6 +82,7 @@ public class ProductController {
     @GetMapping("/store")
     public String showListProducts(
             @RequestParam(required = false) String sortOption,
+            @RequestParam(required = false) String selectedOption,
             @RequestParam(name = "categoryId", required = false) String categoryIdString,
             @RequestParam(value = "starRating", required = false, defaultValue = "0") int starRating,
             @RequestParam(defaultValue = "0") int page,
@@ -97,6 +98,7 @@ public class ProductController {
             categoryIdValue = defaultCategoryId;
         }
 
+
         if ("asc".equals(sortOption)) {
             // Sắp xếp theo giá tăng dần
             productPage = productService.sortByPriceAsc(categoryIdValue, pageable);
@@ -105,10 +107,17 @@ public class ProductController {
             productPage = productService.sortByPriceDesc(categoryIdValue, pageable);
         } else if ("sale".equals(sortOption)) {
             productPage = productService.findSaleProducts(pageable);
+        } else if("topRated".equals(selectedOption)){
+            productPage = productService.findByTopRated(categoryIdValue, pageable);
+        } else if("bestSelling".equals(selectedOption)){
+            productPage = productService.findByBestSeller(categoryIdValue, pageable);
         } else {
             // Mặc định
             productPage = productService.findByCategory(categoryIdValue, pageable);
         }
+
+
+
 
         List<ProductDTO> products = productPage.getContent();
         for (ProductDTO product : products) {
@@ -212,6 +221,9 @@ public class ProductController {
             // Check if user has logged in yet
             String remoteUser = request.getRemoteUser();
 
+            // Count number of comments
+            Long totalComments = feedbackService.countFeedback(product.getId());
+
             model.addAttribute("discountPercent", discountPercent);
             model.addAttribute("product", product);
             model.addAttribute("availableSizes", availableSizes);
@@ -220,6 +232,8 @@ public class ProductController {
             model.addAttribute("currentPage", page);
             model.addAttribute("totalPages", totalPages);
             model.addAttribute("remoteUser", remoteUser);
+            model.addAttribute("totalComments", totalComments);
+
 
             return "user/product/detail";
         } catch (UnsupportedEncodingException e) {

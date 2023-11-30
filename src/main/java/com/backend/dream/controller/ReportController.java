@@ -63,7 +63,6 @@ public class ReportController {
     Date startDate = calendar.getTime();
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-
     List<Object[]> getRevenueByDateAndStatus = report.getTotalRevenueByDateAndStatus(orderStatus,startDate,endDate);
     model.addAttribute("totalRevenue", getRevenueByDateAndStatus);
 

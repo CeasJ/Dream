@@ -11747,7 +11747,7 @@ body {
 
 .product-datatable th:nth-child(6) {
   /* Định dạng cột Describe */
-  width: 500px;
+  width: 300px;
 }
 
 .order-datatable td {

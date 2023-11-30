@@ -44,9 +44,11 @@ app.controller("product_ctrl", function ($scope, $http) {
         resp.data.createDate = new Date(resp.data.createDate);
         $scope.items.push(resp.data);
         $scope.reset();
-        alert("Create Success");
+        toastr.success("Create Success");
       })
-      .catch((err) => { });
+      .catch((err) => { 
+        toastr.error("Create Fail");
+      });
   };
 
   $scope.update = function () {
@@ -55,8 +57,9 @@ app.controller("product_ctrl", function ($scope, $http) {
       let index = $scope.items.findIndex(p => p.id == item.id);
       $scope.items[index] = item;
       $scope.reset();
-      alert("Update Success");
+      toastr.success("Update Success");
     }).catch(err => {
+      toastr.error("Update Fail");
     })
   };
 
@@ -65,8 +68,9 @@ app.controller("product_ctrl", function ($scope, $http) {
       let index = $scope.items.findIndex(p => p.id == item.id);
       $scope.items.splice(index, 1);
       $scope.reset();
-      alert("Delete Success")
+      toastr.success("Delete Success");
     }).catch(err => {
+      toastr.error("Delete Fail");
     })
   };
   $scope.selectedImage = null;
@@ -85,7 +89,9 @@ app.controller("product_ctrl", function ($scope, $http) {
       .then((resp) => {
         $scope.form.image = resp.data.name;
       })
-      .catch((err) => { });
+      .catch((err) => { 
+        toastr.error("Select Image Fail");
+      });
   };
 
 });

@@ -14,11 +14,13 @@ public class VoucherDTO {
 
     private Date createDate;
 
-    private Date expiredDate;
+    private Date expireddate;
 
     private Double percent;
 
     private Double condition;
+
+    private String icon;
 
     // will update later
     private Long id_account;

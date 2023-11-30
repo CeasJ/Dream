@@ -25,6 +25,8 @@ public class FeedBack implements Serializable {
 
     private int rating;
 
+    private String image;
+
     @ManyToOne
     @JoinColumn(name = "idaccount")
     private Account account;
