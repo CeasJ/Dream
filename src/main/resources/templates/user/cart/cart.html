@@ -233,7 +233,7 @@
 
                   <div class="current-address mb-3 mt-3">
                     <label for="result" class="form-label label pb-2"><span th:text="#{label.address}"></span></label>
-                    <input type="text" class="form-control" id="currentAddressInput" readonly>
+                    <input type="text" class="form-control" id="currentAddressInput" readonly th:value="${address}">
                   </div>
 
                   <div class="address-order mb-1" style="display: none;">

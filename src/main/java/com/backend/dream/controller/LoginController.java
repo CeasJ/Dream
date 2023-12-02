@@ -49,7 +49,7 @@ public class LoginController {
 
     @GetMapping("/login/unauthorized")
     public String unauthorizedLogin(Model model) {
-        model.addAttribute("message", "You dont have role ");
+        model.addAttribute("message", "You don't have role ");
         return "/user/security/login";
     }
 
