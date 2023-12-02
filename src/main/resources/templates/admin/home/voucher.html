@@ -44,7 +44,8 @@
                                             Filter by Status:</label>
                                     </div>
                                     <div class="form-group mb-0" style="width: 200px;">
-                                        <select class="form-select" ng-model="selectedStatus" ng-change="filterVouchers()">
+                                        <select class="form-select" ng-model="selectedStatus"
+                                            ng-change="filterVouchers()">
                                             <option value="">All Status</option>
                                             <option ng-repeat="s in status" value="{{ s.id }}">{{ s.name }}</option>
                                         </select>
@@ -55,7 +56,8 @@
                             <div class="col-md-2 ms-auto">
                                 <div class="input-group">
                                     <input type="text" class="form-control" placeholder="Search..." aria-label="Search"
-                                           aria-describedby="basic-addon2" ng-model="searchText" ng-change="searchVouchers()">
+                                        aria-describedby="basic-addon2" ng-model="searchText"
+                                        ng-change="searchVouchers()">
                                 </div>
                             </div>
                         </div>
@@ -90,8 +92,8 @@
                                         <td ng-if="voucher.status === 1">Active</td>
                                         <td ng-if="voucher.status === 2">InActive</td>
                                         <td>
-                                            <button class="btn btn-dark" ng-click="editVoucher(voucher)" data-bs-toggle="modal"
-                                                data-bs-target="#myModal">
+                                            <button class="btn btn-dark" ng-click="editVoucher(voucher)"
+                                                data-bs-toggle="modal" data-bs-target="#myModal">
                                                 <i class="bi bi-pencil-square"></i>
                                             </button>
                                             <button class="btn btn-danger" ng-click="deleteVoucher(voucher.id)">
@@ -149,21 +151,24 @@
                                                     <div class="input-group">
                                                         <div class="custom-radio">
                                                             <input class="form-check-input" type="radio"
-                                                                name="iconVoucher" id="iconCup" value="cup" ng-model="select" ng-change="updateSelectedIcon()">
+                                                                name="iconVoucher" id="iconCup" value="bi bi-cup-straw"
+                                                                ng-model="voucher.icon">
                                                             <label class="form-check-label" for="iconCup"><i
                                                                     class="bi bi-cup-straw"></i></label>
                                                         </div>
 
                                                         <div class="custom-radio">
                                                             <input class="form-check-input" type="radio"
-                                                                name="iconVoucher" id="iconCake" value="cake" ng-model="select" ng-change="updateSelectedIcon()">
+                                                                name="iconVoucher" id="iconCake" value="bi bi-cake2"
+                                                                ng-model="voucher.icon">
                                                             <label class="form-check-label" for="iconCake"><i
                                                                     class="bi bi-cake2"></i></label>
                                                         </div>
 
                                                         <div class="custom-radio">
                                                             <input class="form-check-input" type="radio"
-                                                                name="iconVoucher" id="iconTruck" value="truck" ng-model="select" ng-change="updateSelectedIcon()">
+                                                                name="iconVoucher" id="iconTruck" value="bi bi-truck"
+                                                                ng-model="voucher.icon">
                                                             <label class="form-check-label" for="iconTruck"><i
                                                                     class="bi bi-truck"></i></label>
                                                         </div>
@@ -174,8 +179,8 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="name" class="fw-bold mb-3">Name</label>
-                                                    <input type="text" class="form-control" id="name" name="name" ng-model="name"
-                                                        placeholder="Voucher Name" />
+                                                    <input type="text" class="form-control" id="name" name="name"
+                                                        ng-model="voucher.name" placeholder="Voucher Name" />
                                                 </div>
                                             </div>
                                         </div>
@@ -183,15 +188,16 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="name" class="fw-bold mb-3">Number</label>
-                                                    <input type="text" class="form-control" id="number" name="number" ng-model="number"
-                                                        min="0" placeholder="Voucher" />
+                                                    <input type="text" class="form-control" id="number" name="number"
+                                                        ng-model="voucher.number" min="0" placeholder="Voucher" />
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="name" class="fw-bold mb-3">Percent</label>
-                                                    <input type="number" class="form-control" id="voucherPercent" ng-model="percent"
-                                                        name="number" min="0" placeholder="Vocuher Percent" />
+                                                    <input type="number" class="form-control" id="voucherPercent"
+                                                        ng-model="voucher.percent" name="number" min="0"
+                                                        placeholder="Vocuher Percent" />
                                                 </div>
                                             </div>
                                         </div>
@@ -199,8 +205,9 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label for="name" class="fw-bold mb-3">Condition</label>
-                                                    <textarea type="number" class="form-control" id="describe" name="name" ng-model="condition"
-                                                        placeholder="Describe" style="height: 80px;"></textarea>
+                                                    <textarea type="number" class="form-control" id="describe"
+                                                        name="name" ng-model="voucher.condition" placeholder="Describe"
+                                                        style="height: 80px;"></textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -208,7 +215,28 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label class="fw-bold mb-3">ExpireDate</label>
-                                                    <input class="form-control" type="date" name="day" required ng-model="expiredDate">
+                                                    <input class="form-control" type="date" name="day" required
+                                                        ng-model="voucher.expiredDate">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="fw-bold mb-3">Choose role</label>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio"
+                                                            ng-model="voucher.status" id="radio1" name="partner"
+                                                            value="1" ng-required  />
+                                                        <label class="form-check-label" for="radio1">Active</label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio"
+                                                            ng-model="voucher.status" name="all" value="2"
+                                                            ng-required />
+                                                        <label class="form-check-label" >InActive
+                                                            </label>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -216,7 +244,7 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button ng-click="createVoucher()" class="btn btn-primary" type="button">Create</button>
+                                <button ng-click="voucher.createVoucher()" class="btn btn-primary" type="button">Create</button>
                                 <button ng-click="updateVoucher()" class="btn btn-success" type="button">Update</button>
                                 <button ng-click="reset()" class="btn btn-secondary" type="button">New</button>
                             </div>

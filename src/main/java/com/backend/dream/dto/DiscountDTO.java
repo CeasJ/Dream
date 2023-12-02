@@ -18,9 +18,12 @@ public class DiscountDTO {
     private Double percent;
 
     private Date activeDate=new Date();
+
     private Date expiredDate = new Date();
 
-    private Long id_product;
+    private Long idcategory;
+
+    private boolean active;
 
 
 }

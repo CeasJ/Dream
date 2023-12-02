@@ -1,9 +1,12 @@
 package com.backend.dream.rest;
 
+import com.backend.dream.dto.AccountDTO;
 import com.backend.dream.dto.VoucherDTO;
 import com.backend.dream.dto.VoucherStatusDTO;
 import com.backend.dream.entity.Voucher;
+import com.backend.dream.service.AccountService;
 import com.backend.dream.service.VoucherService;
+import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,7 +18,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/rest/vouchers")
 public class VoucherRestController {
-    private final VoucherService voucherService;
+
+    @Autowired
+    private VoucherService voucherService;
+    @Autowired
+    private AccountService accountService;
 
     @Autowired
     private HttpServletRequest request;
@@ -30,6 +37,10 @@ public class VoucherRestController {
     public List<VoucherDTO> getApplicableVouchers(){
         String user = request.getRemoteUser();
         return voucherService.getApplicableVouchers(user);
+    }
+    @GetMapping("/account")
+    public List<AccountDTO> getAllAccount(){
+        return accountService.getAllAccounts();
     }
 
     @GetMapping("/all")
@@ -54,8 +65,8 @@ public class VoucherRestController {
     }
 
     @PostMapping()
-    public Voucher createVoucher(@RequestBody VoucherDTO voucherDTO){
-        return voucherService.createVoucher(voucherDTO);
+    public List<Voucher> createVoucher(@RequestBody JsonNode voucherData){
+        return voucherService.createVoucher(voucherData);
     }
     @PutMapping("{id}")
     public VoucherDTO updateVoucher(@RequestBody VoucherDTO voucherDTO,@PathVariable Long id){

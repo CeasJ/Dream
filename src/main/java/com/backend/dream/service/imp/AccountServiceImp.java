@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class AccountServiceImp implements AccountService {
@@ -114,6 +115,18 @@ public class AccountServiceImp implements AccountService {
     }
 
     @Override
+    public List<AccountDTO> getAllAccounts() {
+        List<AccountDTO> list = accountMapper.listAccountToListAccountDTO(accountRepository.findAll());
+        return list;
+    }
+
+//    @Override
+//    public Account createAccountWhenDontHaveAccount(Account account) {
+//        account.setPassword(passwordEncoder.encode(account.getPassword()));
+//        return accountRepository.save(account);
+//    }
+
+    @Override
     public Account createStaff(AccountDTO accountDTO) {
         String password = passwordEncoder.encode(accountDTO.getPassword());
         System.out.println(accountDTO.getPassword());
@@ -136,15 +149,6 @@ public class AccountServiceImp implements AccountService {
         return savedAccount;
     }
 
-//    @Override
-//    public Account updateStaff(JsonNode staffToUpdate) {
-//        return accountRepository.update(staffToUpdate);
-//    }
-//    @Override
-//    public Account updateStaff(JsonNode staffToUpdate) {
-////        return accountRepository.udate(staffToUpdate);
-//        return null;
-//    }
 
     @Override
     public Account findById(String username) {

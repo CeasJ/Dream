@@ -8,14 +8,10 @@ import java.util.List;
 
 public interface DiscountService {
     DiscountDTO createDiscount(DiscountDTO discount);
-    DiscountDTO getDiscountByProductId(Long id);
-
+    DiscountDTO getDiscountByCategoryId(Long id);
     Double getDiscountPercentByProductId(Long idProduct);
-
 //    void deleteDiscount(Long discountId);
     List<DiscountDTO> findAll();
-
     DiscountDTO update(DiscountDTO discountDTO);
-
     void delete(Long id);
 }

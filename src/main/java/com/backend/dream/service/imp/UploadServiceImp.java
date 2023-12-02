@@ -9,7 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 
 @Service
-public class UploadServiceImpl implements UploadService {
+public class UploadServiceImp implements UploadService {
 	@Autowired
 	ServletContext context;
 	

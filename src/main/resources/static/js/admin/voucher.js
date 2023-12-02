@@ -6,7 +6,6 @@ voucherApp.controller("voucher_ctrl", function ($scope, $http, $window) {
   $scope.defaultStatus = "";
   $scope.selectedStatus = $scope.defaultStatus;
   $scope.searchText = "";
-
   // Display all vouchers
   $http.get("/rest/vouchers/all").then(
     function (response) {
@@ -69,83 +68,57 @@ voucherApp.controller("voucher_ctrl", function ($scope, $http, $window) {
   };
 
   $scope.reset = function () {
-    $scope.name = "";
-    $scope.number = "";
-    $scope.expiredDate = new Date();
-    $scope.percent = "";
-    $scope.condition = "";
+    $scope.form = {
+      icon:"bi bi-cup-straw"
+    };
     $("#myModal").show("hide");
     // $scope.selectedIconClass
   };
 
-  $scope.updateSelectedIcon = function () {
-    console.log($scope.selectedIcon);
-    if ($scope.select === "cup") {
-      $scope.selectedIconClass = "bi bi-cup-straw";
-      console.log($scope.selectedIconClass);
-    } else if ($scope.select === "cake") {
-      $scope.selectedIconClass = "bi bi-cake2";
-      console.log($scope.selectedIconClass);
-    } else if ($scope.select === "truck") {
-      $scope.selectedIconClass = "bi bi-truck";
-      console.log($scope.selectedIconClass);
-    }
-  };
 
-  $scope.createVoucher = function () {
-    let voucher = {
-      name: $scope.name,
-      number: $scope.number,
-      createDate: new Date(),
-      expiredDate: $scope.expiredDate,
-      percent: $scope.percent,
-      condition: $scope.condition,
-      icon: $scope.selectedIconClass,
-      id_account: parseInt(1),
-      status: parseInt(1),
-    };
-    $http
+  $scope.voucher = {
+    name:"",
+    number:"",
+    createDate: new Date(),
+    expiredDate:"",
+    percent:"",
+    condition:"",
+    icon:"",
+    status:"",
+    id_account: null,
+    type:parseInt(1),
+
+    createVoucher() {
+    if (parseInt($scope.voucher.id_account) === 1) {
+        this.id_account = parseInt(1);  
+    } else {
+        this.id_account = parseInt(2);
+    }
+
+      let voucher = angular.copy(this);
+      console.log(voucher);
+      $http
       .post(`/rest/vouchers`, voucher)
       .then((resp) => {
         $scope.vouchers.push(resp.data);
         $scope.reset();
         toastr.success("Create Success");
-        setTimeout(() => {
-          location.reload();
-        }, 1000);
-      })
-      .catch((err) => {
-        toastr.error("Create Fail");
-      });
+        // setTimeout(() => {
+          //   location.reload();
+          // }, 1000);
+        })
+        .catch((err) => {
+          toastr.error("Create Fail");
+        });
+      }
   };
 
   $scope.editVoucher = function (voucher) {
-    $scope.voucher = angular.copy(voucher);
-    if ($scope.voucher.icon === "bi bi-cup-straw") {
-      $scope.select = "cup";
-    } else if ($scope.voucher.icon === "bi bi-cake2") {
-      $scope.select = "cake";
-    } else if ($scope.voucher.icon === "bi bi-truck") {
-      $scope.select = "truck";
-    }
-    $scope.name = $scope.voucher.name;
-    $scope.number = $scope.voucher.number;
-    $scope.expiredDate = new Date($scope.voucher.expiredDate);
-    $scope.percent = $scope.voucher.percent;
-    $scope.condition = $scope.voucher.condition;
-    $scope.id = $scope.voucher.id;
+  
   };
 
   $scope.updateVoucher = function () {
-    let voucher = {
-      id:$scope.id,
-      name: $scope.name,
-      number: $scope.number,
-      expiredDate: $scope.expiredDate,
-      percent: $scope.percent,
-      condition: $scope.condition,
-      icon: $scope.selectedIconClass,
-    };
+   
     console.log(voucher.id);
     $http
       .put(`/rest/vouchers/${voucher.id}`, voucher)

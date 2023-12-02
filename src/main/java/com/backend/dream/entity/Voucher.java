@@ -39,7 +39,7 @@ public class Voucher implements Serializable {
 
     private String icon;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idaccount")
     @JsonIgnore
     private Account account;
@@ -47,4 +47,8 @@ public class Voucher implements Serializable {
     @ManyToOne
     @JoinColumn(name = "idvoucherstatus")
     private VoucherStatus status;
+
+    @ManyToOne
+    @JoinColumn(name = "idvouchertype")
+    private VoucherType type;
 }
