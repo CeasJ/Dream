@@ -88,10 +88,10 @@ app.controller("authority-ctrl", function ($scope, $http, $location) {
         .post(`/rest/account/add`, account)
         .then(function (response) {
           $scope.clearForm();
-          location.href("/admin/authority")          
+          location.href("/admin/authority")
           toastr.success("Create Successful");
         })
-        .catch(function (err) { 
+        .catch(function (err) {
           toastr.error("Create Fail");
         });
     }
@@ -114,7 +114,7 @@ app.controller("authority-ctrl", function ($scope, $http, $location) {
       })
       .catch((err) => {
         toastr.error("Select image Fail");
-       });
+      });
   };
 
   $scope.update = function () {

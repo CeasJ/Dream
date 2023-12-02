@@ -49,12 +49,6 @@ public class SecurityConfig {
                         .failureUrl("/login/error"))
                 .logout(logout -> logout
                         .logoutUrl("/logout")
-                        .logoutSuccessUrl("/login/form"))
-                .oauth2Login(oauth -> {
-                    oauth.loginPage("/login/form").permitAll();
-                    oauth.defaultSuccessUrl("/home");
-                    oauth.failureUrl("/login/error").permitAll();
-                })
                         .logoutSuccessUrl("/login"))
                 .oauth2Login(oauth -> {
                     oauth.loginPage("/login").permitAll();
@@ -74,4 +68,3 @@ public class SecurityConfig {
     }
 
 }
-
