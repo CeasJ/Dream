@@ -58,4 +58,5 @@ public class HomeController {
     public String errorPage() {
         return "/error";
     }
+
 }
