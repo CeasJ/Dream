@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class AuthorityServiceImpl implements AuthorityService {
+public class AuthorityServiceImp implements AuthorityService {
 
 	@Autowired
 	AuthorityRepository authorityRepository;

@@ -74,9 +74,14 @@
                                         <td>{{$index + 1}}</td>
                                         <td style="text-align: left;">{{count.name}}</td>
                                         <td>{{count.number}}</td>
-                                        <td>{{count.percent}}</td>
+                                        <td>{{count.percent}} %</td>
                                         <td>{{count.activeDate | date: 'dd-MM-yyyy'}}</td>
                                         <td>{{count.expiredDate | date: 'dd-MM-yyyy'}}</td>
+                                        <td ng-if="count.idcategory === 1">Cà phê</td>
+                                        <td ng-if="count.idcategory === 2">Trà</td>
+                                        <td ng-if="count.idcategory === 3">Tráng miệng</td>
+                                        <td ng-if="count.active === true">Đang hoạt động</td>
+                                        <td ng-if="count.active === false">Đã ngưng hoạt động</td>
                                         <td>
                                             <button class="btn btn-dark" ng-click="edit(count)" data-bs-toggle="modal"
                                                 data-bs-target="#discountModal">
@@ -172,6 +177,35 @@
                                                     <label class="fw-bold mb-3">Expiredate</label>
                                                     <input ng-model="form.expiredDate" class="form-control" type="date"
                                                         name="day" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="fw-bold mb-3">Active</label>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" ng-model="form.active"
+                                                            id="radio1" name="active" ng-value="true" ng-required />
+                                                        <label class="form-check-label" for="radio1">Yes</label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" ng-model="form.active"
+                                                            id="radio2" name="active" ng-value="false" ng-required />
+                                                        <label class="form-check-label" for="radio2">No</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="fw-bold mb-3">Category</label>
+                                                    <select ng-model="form.idcategory" class="form-control"
+                                                    name="category" id="category">
+                                                    <option value="" selected disabled>Select a category
+                                                    </option>
+                                                    <option ng-repeat="c in cates" ng-value="c.id">{{c.name}}
+                                                    </option>
+                                                </select>
                                                 </div>
                                             </div>
                                         </div>

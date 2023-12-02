@@ -11,8 +11,8 @@ import java.util.Optional;
 
 @Repository
 public interface DiscountRepository extends JpaRepository<Discount,Long> {
-    @Query("SELECT d FROM Discount d WHERE d.product.id = :idProduct and current_date >= d.activeDate and current_date <= d.expiredDate")
-    Optional<Discount> findByIDProduct(Long idProduct);
+    @Query("SELECT d FROM Discount d WHERE d.category.id = :idCategory and current_date >= d.activeDate and current_date <= d.expiredDate")
+    Optional<Discount> findByIDProduct(Long idCategory);
 
 
     List<Discount> findByActiveDateBeforeAndExpiredDateAfter(Date currentDate, Date currentDate1);

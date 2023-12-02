@@ -1,8 +1,10 @@
 const app = angular.module("discount-app", []);
-app.controller("discount-ctrl", function ($scope, $http, $location) {
+app.controller("discount-ctrl", function ($scope, $http) {
 
   $scope.discounts = [];
-  $scope.intialize = function () {
+  $scope.cates = [];
+
+  $scope.initialize = function () {
     $http.get(`/rest/discount`).then((resp) => {
       $scope.discounts = resp.data;
          $scope.discounts.forEach((count) => {
@@ -10,10 +12,21 @@ app.controller("discount-ctrl", function ($scope, $http, $location) {
                 count.expiredDate = new Date(count.expiredDate);
          });
     });
+    $http.get(`/rest/category`).then((resp) => {
+      $scope.cates = resp.data;
+    });
+
+    $scope.form = {
+      active:true,
+      activeDate: new Date()
+     };
   };
-  $scope.intialize();
+
+  $scope.initialize();
+
     $scope.reset = function () {
        $scope.form = {
+        active:true,
        };
      };
      $scope.edit = function (count) {
@@ -21,6 +34,7 @@ app.controller("discount-ctrl", function ($scope, $http, $location) {
      };
    $scope.create = function () {
        let discount = angular.copy($scope.form);
+       console.log(discount);
        $http
          .post(`/rest/discount`, discount)
          .then((resp) => {
