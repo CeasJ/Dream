@@ -105,13 +105,14 @@ app.controller("authority-ctrl", function ($scope, $http, $location) {
         .then(function (response) {
           $scope.listStaff.push(response.data);
           $scope.clearForm();
+          location.href("/admin/authority")
           toastr.success("Create Successful");
           setTimeout(()=>{
             location.reload();
           },1000);
         
         })
-        .catch(function (err) { 
+        .catch(function (err) {
           toastr.error("Create Fail");
         });
     }
@@ -134,6 +135,23 @@ app.controller("authority-ctrl", function ($scope, $http, $location) {
       })
       .catch((err) => {
         toastr.error("Select image Fail");
+      });
+  };
+
+  $scope.update = function () {
+    let account = angular.copy($scope.form);
+    $http
+      .put(`/rest/profile/update/${account.id}`, account)
+      .then((resp) => {
+        let index = $scope.admins.findIndex(
+          (a) => a.username === account.username
+        );
+        $scope.admins[index] = account;
+        toastr.success("Update Successful");
+        $scope.clearForm();
+      })
+      .catch((err) => {
+        toastr.error("Update Successful");
         console.log(err);
       });
   };

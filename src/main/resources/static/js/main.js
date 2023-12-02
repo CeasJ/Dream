@@ -1,110 +1,112 @@
 (function ($) {
     "use strict";
+    try {
+        // Spinner
+        var spinner = function () {
+            setTimeout(function () {
+                if ($('#spinner').length > 0) {
+                    $('#spinner').removeClass('show');
+                }
+            }, 1);
+        };
+        spinner();
 
-    // Spinner
-    var spinner = function () {
-        setTimeout(function () {
-            if ($('#spinner').length > 0) {
-                $('#spinner').removeClass('show');
+
+        // Initiate the wowjs
+        new WOW().init();
+
+
+        // Sticky Navbar
+        $(window).scroll(function () {
+            if ($(this).scrollTop() > 300) {
+                $('.sticky-top').addClass('shadow-sm').css('top', '0px');
+            } else {
+                $('.sticky-top').removeClass('shadow-sm').css('top', '-150px');
             }
-        }, 1);
-    };
-    spinner();
+        });
 
 
-    // Initiate the wowjs
-    new WOW().init();
-
-
-    // Sticky Navbar
-    $(window).scroll(function () {
-        if ($(this).scrollTop() > 300) {
-            $('.sticky-top').addClass('shadow-sm').css('top', '0px');
-        } else {
-            $('.sticky-top').removeClass('shadow-sm').css('top', '-150px');
-        }
-    });
-
-
-    // Back to top button
-    $(window).scroll(function () {
-        if ($(this).scrollTop() > 300) {
-            $('.back-to-top').fadeIn('slow');
-        } else {
-            $('.back-to-top').fadeOut('slow');
-        }
-    });
-    $('.back-to-top').click(function () {
-        $('html, body').animate({ scrollTop: 0 }, 1500, 'easeInOutExpo');
-        return false;
-    });
-
-
-    // Modal Video
-    var $videoSrc;
-    $('.btn-play').click(function () {
-        $videoSrc = $(this).data("src");
-    });
-    console.log($videoSrc);
-    $('#videoModal').on('shown.bs.modal', function (e) {
-        $("#video").attr('src', $videoSrc + "?autoplay=1&amp;modestbranding=1&amp;showinfo=0");
-    })
-    $('#videoModal').on('hide.bs.modal', function (e) {
-        $("#video").attr('src', $videoSrc);
-    })
-
-
-    // Product carousel
-    $(".product-carousel").owlCarousel({
-        autoplay: true,
-        smartSpeed: 1000,
-        margin: 25,
-        loop: true,
-        center: true,
-        dots: false,
-        nav: true,
-        navText: [
-            '<i class="bi bi-chevron-left"></i>',
-            '<i class="bi bi-chevron-right"></i>'
-        ],
-        responsive: {
-            0: {
-                items: 1
-            },
-            576: {
-                items: 1
-            },
-            768: {
-                items: 2
-            },
-            992: {
-                items: 3
+        // Back to top button
+        $(window).scroll(function () {
+            if ($(this).scrollTop() > 300) {
+                $('.back-to-top').fadeIn('slow');
+            } else {
+                $('.back-to-top').fadeOut('slow');
             }
+        });
+        $('.back-to-top').click(function () {
+            $('html, body').animate({ scrollTop: 0 }, 1500, 'easeInOutExpo');
+            return false;
+        });
+
+
+        // Modal Video
+        var $videoSrc;
+        $('.btn-play').click(function () {
+            $videoSrc = $(this).data("src");
+        });
+        console.log($videoSrc);
+        $('#videoModal').on('shown.bs.modal', function (e) {
+            $("#video").attr('src', $videoSrc + "?autoplay=1&amp;modestbranding=1&amp;showinfo=0");
+        })
+        $('#videoModal').on('hide.bs.modal', function (e) {
+            $("#video").attr('src', $videoSrc);
+        })
+
+
+        // Product carousel
+        $(".product-carousel").owlCarousel({
+            autoplay: true,
+            smartSpeed: 1000,
+            margin: 25,
+            loop: true,
+            center: true,
+            dots: false,
+            nav: true,
+            navText: [
+                '<i class="bi bi-chevron-left"></i>',
+                '<i class="bi bi-chevron-right"></i>'
+            ],
+            responsive: {
+                0: {
+                    items: 1
+                },
+                576: {
+                    items: 1
+                },
+                768: {
+                    items: 2
+                },
+                992: {
+                    items: 3
+                }
+            }
+        });
+
+
+        // Testimonial carousel
+        $(".testimonial-carousel").owlCarousel({
+            autoplay: true,
+            smartSpeed: 1000,
+            items: 1,
+            loop: true,
+            dots: true,
+            nav: false,
+        });
+
+        // Lấy giá trị của cartCount và chuyển đổi thành số nguyên
+        var cartCountValue = parseInt($('#cartCount').text());
+
+        // Kiểm tra nếu giá trị cartCount nhỏ hơn hoặc bằng 0, ẩn phần tử span
+        if (cartCountValue <= 0) {
+            $('#cartCount').hide();
+        } else {
+            $('#cartCount').show();
         }
-    });
 
-
-    // Testimonial carousel
-    $(".testimonial-carousel").owlCarousel({
-        autoplay: true,
-        smartSpeed: 1000,
-        items: 1,
-        loop: true,
-        dots: true,
-        nav: false,
-    });
-
-    // Lấy giá trị của cartCount và chuyển đổi thành số nguyên
-    var cartCountValue = parseInt($('#cartCount').text());
-
-    // Kiểm tra nếu giá trị cartCount nhỏ hơn hoặc bằng 0, ẩn phần tử span
-    if (cartCountValue <= 0) {
-        $('#cartCount').hide();
-    } else {
-        $('#cartCount').show();
+    } catch (error) {
+        window.location.href = "/error-page";
     }
-
-
 })(jQuery);
 
 
@@ -113,7 +115,7 @@ var urlParams = new URLSearchParams(window.location.search);
 var sortOption = urlParams.get("sortOption");
 var isSearchPage = window.location.pathname === "/search"; // Check if this is the search page
 
-if(isSearchPage){
+if (isSearchPage) {
     var selectElement = document.getElementById("sortByPrice");
     selectElement.value = "0";
 }
@@ -153,7 +155,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // Thêm sự kiện change cho combobox SortByPrice
-    sortByPriceSelect.addEventListener("change", function() {
+    sortByPriceSelect.addEventListener("change", function () {
         var selectedSortByPriceValue = this.value;
         var comboBoxValue = document.getElementById("comboBox").value;
 
@@ -166,7 +168,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // Thêm sự kiện change cho combobox ComboBox
-    comboBoxSelect.addEventListener("change", function() {
+    comboBoxSelect.addEventListener("change", function () {
         var selectedComboBoxValue = this.value;
         var sortByPriceValue = document.getElementById("sortByPrice").value;
 
@@ -209,16 +211,11 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-
-
-
-
-
 // Category combobox listener event
 var urlParams = new URLSearchParams(window.location.search);
 var categoryId = urlParams.get("categoryId");
 var productGroupSelect = document.getElementById("productGroup");
-if(isSearchPage){
+if (isSearchPage) {
     productGroupSelect.value = "0";
 }
 
@@ -227,7 +224,7 @@ if (categoryId) {
     productGroupSelect.value = categoryId;
 }
 
-productGroupSelect.addEventListener("change", function() {
+productGroupSelect.addEventListener("change", function () {
     var selectedCategoryId = this.value;
     localStorage.setItem("selectedCategoryId", selectedCategoryId);
     updateURLAndReload();
@@ -249,7 +246,7 @@ function updateURLAndReload() {
 
 
     var newUrl = "/store?categoryId=" + selectedCategoryId;
-    if(selectedSortOption === 'sale') {
+    if (selectedSortOption === 'sale') {
         selectedCategoryId = '0';
         newUrl = "/store?categoryId=0";
     }
@@ -272,37 +269,37 @@ function updateURLAndReload() {
     }
 
     window.location.href = newUrl;
- }
+}
 
 
 // Pagination features
 document.addEventListener("DOMContentLoaded", function () {
-        // Get the current URL and parse the query parameters
-        var urlParams = new URLSearchParams(window.location.search);
-        var currentPage = urlParams.get("page");
+    // Get the current URL and parse the query parameters
+    var urlParams = new URLSearchParams(window.location.search);
+    var currentPage = urlParams.get("page");
 
-        // Find all pagination links
-        var paginationLinks = document.querySelectorAll(".pagination a");
+    // Find all pagination links
+    var paginationLinks = document.querySelectorAll(".pagination a");
 
-        // Add a click event listener to each pagination link
-        paginationLinks.forEach(function (link) {
-            link.addEventListener("click", function (event) {
-                event.preventDefault();
+    // Add a click event listener to each pagination link
+    paginationLinks.forEach(function (link) {
+        link.addEventListener("click", function (event) {
+            event.preventDefault();
 
-                // Get the target page from the pagination link
-                var targetPage = link.getAttribute("data-page");
+            // Get the target page from the pagination link
+            var targetPage = link.getAttribute("data-page");
 
-                urlParams.set("page", targetPage);
+            urlParams.set("page", targetPage);
 
-                window.location.href = window.location.pathname + "?" + urlParams.toString();
-            });
-        });
-
-        // Set the active class to the current page
-        paginationLinks.forEach(function (link) {
-            var linkPage = link.getAttribute("data-page");
-            if (linkPage === currentPage) {
-                link.classList.add("active");
-            }
+            window.location.href = window.location.pathname + "?" + urlParams.toString();
         });
     });
+
+    // Set the active class to the current page
+    paginationLinks.forEach(function (link) {
+        var linkPage = link.getAttribute("data-page");
+        if (linkPage === currentPage) {
+            link.classList.add("active");
+        }
+    });
+});
