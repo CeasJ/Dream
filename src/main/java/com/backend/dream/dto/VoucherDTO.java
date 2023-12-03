@@ -1,5 +1,6 @@
 package com.backend.dream.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,6 +8,7 @@ import java.util.Date;
 
 @Getter
 @Setter
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class VoucherDTO {
     private Long id;
 
@@ -14,9 +16,9 @@ public class VoucherDTO {
 
     private String number;
 
-    private Date createDate;
+    private Date createDate = new Date();
 
-    private Date expireddate;
+    private Date expiredDate;
 
     private Double percent;
 
@@ -27,5 +29,7 @@ public class VoucherDTO {
     // will update later
     private Long id_account;
 
-    private String status;
+    private Long status;
+
+    private Long type;
 }

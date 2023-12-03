@@ -1,31 +1,34 @@
 const app = angular.module("authority-app", []);
 app.controller("authority-ctrl", function ($scope, $http, $location) {
   $scope.roles = [];
-  $scope.admins = [];
-  $scope.authories = [];
+  $scope.listStaff = [];
+  $scope.authorities = [];
 
-  $scope.intialize = function () {
+  $scope.initialize = function () {
     $http.get(`/rest/roles`).then((resp) => {
       $scope.roles = resp.data;
     });
 
 
-    $http.get(`/rest/profile/admin?admin=true`).then((resp) => {
-      $scope.admins = resp.data;
+    $http.get(`/rest/staff/admin?admin=true`).then((resp) => {
+      $scope.listStaff = resp.data;
     });
 
     $http.get(`/rest/authorities?admin=true`).then((resp) => {
-      $scope.authories = resp.data;
+      $scope.authorities = resp.data;
     })
       .catch((error) => {
         $location.path(`/security/login/unauthoried`);
       });
+
+
+      $scope.avatar = "default.png";
   };
-  $scope.intialize();
+  $scope.initialize();
 
   $scope.authority_of = function (acc, role) {
-    if ($scope.authories) {
-      return $scope.authories.find(
+    if ($scope.authorities) {
+      return $scope.authorities.find(
         (ur) => ur.account.username == acc.username && ur.role.id == role.id
       );
     }
@@ -45,7 +48,7 @@ app.controller("authority-ctrl", function ($scope, $http, $location) {
     $http
       .post(`/rest/authorities`, authority)
       .then((resp) => {
-        $scope.authories.push(resp.data);
+        $scope.authorities.push(resp.data);
         toastr.success("Authorization successful");
       })
       .catch((error) => {
@@ -57,8 +60,8 @@ app.controller("authority-ctrl", function ($scope, $http, $location) {
     $http
       .delete(`/rest/authorities/${authority.id}`, authority)
       .then((resp) => {
-        let index = $scope.authories.findIndex((a) => a.id == authority.id);
-        $scope.authories.splice(index, 1);
+        let index = $scope.authorities.findIndex((a) => a.id == authority.id);
+        $scope.authorities.splice(index, 1);
         toastr.success("Permissions revoked successfully");
       })
       .catch((err) => {
@@ -68,28 +71,45 @@ app.controller("authority-ctrl", function ($scope, $http, $location) {
   };
 
 
-  $scope.edit = function (acc) {
-    $scope.form = angular.copy(acc);
-  };
-
   $scope.clearForm = function () {
-    $scope.form = {}
+     $scope.username = "";
+     $scope.firstname = "" ;
+     $scope.lastname = "";
+     $scope.password =""; 
+     $scope.email =""; 
+     $scope.phone ="";
+     $scope.avatar = "default.png";
+     $scope.address ="";
   };
 
   $scope.saveAccount = function () {
-    let account = angular.copy($scope.form);
-    let existUsername = $scope.admins.find(function (admin) {
-      return admin.username === account.username;
+    let account = {
+      username: $scope.username,
+      fullname: $scope.firstname + ' ' +$scope.lastname,
+      password: $scope.password,
+      email: $scope.email,
+      phone: $scope.phone,
+      firstname: $scope.firstname,
+      lastname: $scope.lastname,
+      avatar: $scope.avatar,
+      address: $scope.address
+    };
+    let existUsername = $scope.listStaff.find(function (staff) {
+      return staff.username === account.username;
     });
     if (existUsername) {
       alert("Username is exist");
     } else {
       $http
-        .post(`/rest/account/add`, account)
+        .post(`/rest/staff/add`, account)
         .then(function (response) {
+          $scope.listStaff.push(response.data);
           $scope.clearForm();
-          location.href("/admin/authority")
           toastr.success("Create Successful");
+          setTimeout(()=>{
+            location.reload();
+          },1000);
+        
         })
         .catch(function (err) {
           toastr.error("Create Fail");
@@ -105,33 +125,17 @@ app.controller("authority-ctrl", function ($scope, $http, $location) {
     let data = new FormData();
     data.append("file", files[0]);
     $http
-      .post(`/rest/upload/img/gallery`, data, {
+      .post(`/rest/upload/img/avatar`, data, {
         transformRequest: angular.identity,
         headers: { "Content-Type": undefined },
       })
       .then((resp) => {
-        $scope.form.avatar = resp.data.name;
+        $scope.avatar = resp.data.name;
       })
       .catch((err) => {
         toastr.error("Select image Fail");
+        console.log(err);
       });
   };
 
-  $scope.update = function () {
-    let account = angular.copy($scope.form);
-    $http
-      .put(`/rest/profile/update/${account.id}`, account)
-      .then((resp) => {
-        let index = $scope.admins.findIndex(
-          (a) => a.username === account.username
-        );
-        $scope.admins[index] = account;
-        toastr.success("Update Successful");
-        $scope.clearForm();
-      })
-      .catch((err) => {
-        toastr.error("Update Successful");
-        console.log(err);
-      });
-  }
 });

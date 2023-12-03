@@ -182,7 +182,7 @@ public class ProductController {
             }
 
             // Get the discount percent
-            DiscountDTO discount = discountService.getDiscountByProductId(product.getId());
+            DiscountDTO discount = discountService.getDiscountByCategoryId(product.getId_category());
             Double discountPercent = (discount != null) ? discount.getPercent() : 0.0;
             // Get reviews list
             List<FeedBackDTO> feedbackList;

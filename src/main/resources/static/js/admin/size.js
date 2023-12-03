@@ -38,6 +38,12 @@ $scope.getPrice = function(productId, sizeId) {
     }
   };
 
+   $scope.getPrice = function(productId, sizeId) {
+       const productSize = $scope.productSize.find(ps => ps.id_product === productId && ps.id_size === sizeId);
+
+       return productSize ? productSize.price : null;
+   };
+
   $scope.size_changed = function (id_product, id_size) {
     let productSize = $scope.size_of(id_product, id_size);
     if (productSize) {

@@ -20,7 +20,9 @@ public class Account implements Serializable {
     private Long id;
     @Column(unique = true)
     private String username;
+
     private String email;
+
     private String password;
 
     @Column(unique = false)
@@ -41,7 +43,7 @@ public class Account implements Serializable {
     private List<Authority> authority;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "account")
+    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
     private List<Voucher> voucher;
 
     @JsonIgnore

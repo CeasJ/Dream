@@ -2,6 +2,7 @@ package com.backend.dream.service;
 
 import com.backend.dream.dto.AccountDTO;
 import com.backend.dream.entity.Account;
+import com.backend.dream.repository.AccountRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import java.util.List;
@@ -37,11 +38,13 @@ public interface AccountService {
 
     String getImageByUserName(String remoteUser) throws NoSuchElementException;
 
-    Account createStaff(JsonNode account);
+    Account createStaff(AccountDTO accountDTO);
 
-
-    boolean checkUsernameExists(String username);
-    
     Account updateStaff(Account staffToUpdate);
 
+    String getAddressByUsername(String remoteUser);
+
+    List<AccountDTO> getAllAccounts();
+
+//    Account createAccountWhenDontHaveAccount(Account account);
 }

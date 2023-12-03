@@ -34,6 +34,7 @@ public class GlobalInterceptor implements HandlerInterceptor {
         Long id_account = accountService.findIDByUsername(remoteUser);
         String fullname = accountService.findFullNameByUsername(remoteUser);
         String avatar = accountService.getImageByUserName(remoteUser);
+        String address = accountService.getAddressByUsername(remoteUser);
         List<NotificationDTO> notifications = notificationService.getNotificationsByAccountId(id_account);
         if (modelAndView != null) {
             if (remoteUser != null && (request.isUserInRole("ADMIN") || request.isUserInRole("STAFF"))) {
@@ -44,6 +45,7 @@ public class GlobalInterceptor implements HandlerInterceptor {
                 modelAndView.addObject("id_account", id_account);
                 modelAndView.addObject("avatar", avatar);
                 modelAndView.addObject("notifications", notifications);
+                modelAndView.addObject("address", address);
             } else if (remoteUser != null) {
                 modelAndView.addObject("username", remoteUser);
                 modelAndView.addObject("fullname", fullname);
@@ -51,6 +53,7 @@ public class GlobalInterceptor implements HandlerInterceptor {
                 modelAndView.addObject("avatar", avatar);
                 modelAndView.addObject("isAuthenticated", true);
                 modelAndView.addObject("notifications", notifications);
+                modelAndView.addObject("address", address);
             } else {
                 modelAndView.addObject("isAuthenticated", false);
                 modelAndView.addObject("isAdminOrStaff", false);

@@ -1,7 +1,7 @@
 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
     <div class="sb-sidenav-menu">
         <div class="nav">
-            <div class="sb-sidenav-menu-heading">Core</div>
+            <div class="sb-sidenav-menu-heading">Chart</div>
             <a class="nav-link" th:href="@{|/admin|}">
                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                 Dashboard
@@ -19,35 +19,38 @@
                 </div>
                 Add Product
             </a>
-            <a class="nav-link" th:href="@{|/admin/staff|}">
+            <a class="nav-link" th:href="@{|/admin/size|}">
                 <div class="sb-nav-link-icon">
-                    <i style="font-size: 18px;" class="bi bi-person-fill-add pe-1"></i>
+                    <i style="font-size: 18px;" class="bi bi-arrows-vertical"></i>
                 </div>
-                Add Staff
+                Select Size
             </a>
+            <div class="sb-sidenav-menu-heading">Discount</div>
             <a class="nav-link" th:href="@{|/admin/discount|}">
                 <div class="sb-nav-link-icon">
                     <i style="font-size: 18px;" class="bi bi-strava pe-1"></i>
                 </div>
                 Add Discount
             </a>
+            <div class="sb-sidenav-menu-heading">Voucher</div>
             <a class="nav-link" th:href="@{|/admin/voucher|}">
                 <div class="sb-nav-link-icon">
                     <i style="font-size: 18px;" class="bi bi-ticket-fill pe-1"></i>
                 </div>
                 Add Vouchers
             </a>
+            <div class="sb-sidenav-menu-heading">Administrator</div>
             <a class="nav-link" th:href="@{|/admin/authority|}">
                 <div class="sb-nav-link-icon">
                     <i style="font-size: 18px;" class="bi bi-shield-fill-check pe-1"></i>
                 </div>
                 Authorization
             </a>
-            <a class="nav-link" th:href="@{|/admin/size|}">
+            <a class="nav-link" th:href="@{|/admin/staff|}">
                 <div class="sb-nav-link-icon">
-                    <i style="font-size: 18px;" class="bi bi-arrows-vertical"></i>
+                    <i style="font-size: 18px;" class="bi bi-person-fill-add pe-1"></i>
                 </div>
-                Select Size
+                Add Staff
             </a>
             <div class="sb-sidenav-menu-heading">Addons</div>
             <a class="nav-link" th:href="@{|/admin/order|}">

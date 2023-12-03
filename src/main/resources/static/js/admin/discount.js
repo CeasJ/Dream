@@ -1,8 +1,10 @@
 const app = angular.module("discount-app", []);
-app.controller("discount-ctrl", function ($scope, $http, $location) {
+app.controller("discount-ctrl", function ($scope, $http) {
 
   $scope.discounts = [];
-  $scope.intialize = function () {
+  $scope.cates = [];
+
+  $scope.initialize = function () {
     $http.get(`/rest/discount`).then((resp) => {
       $scope.discounts = resp.data;
          $scope.discounts.forEach((count) => {
@@ -10,10 +12,21 @@ app.controller("discount-ctrl", function ($scope, $http, $location) {
                 count.expiredDate = new Date(count.expiredDate);
          });
     });
+    $http.get(`/rest/category`).then((resp) => {
+      $scope.cates = resp.data;
+    });
+
+    $scope.form = {
+      active:true,
+      activeDate: new Date()
+     };
   };
-  $scope.intialize();
+
+  $scope.initialize();
+
     $scope.reset = function () {
        $scope.form = {
+        active:true,
        };
      };
      $scope.edit = function (count) {
@@ -21,16 +34,23 @@ app.controller("discount-ctrl", function ($scope, $http, $location) {
      };
    $scope.create = function () {
        let discount = angular.copy($scope.form);
+       console.log(discount);
        $http
          .post(`/rest/discount`, discount)
          .then((resp) => {
            resp.data.activeDate = new Date(resp.data.activeDate);
-            resp.data.expiredDate = new Date(resp.data.expiredDate);
+           resp.data.expiredDate = new Date(resp.data.expiredDate);
            $scope.discounts.push(resp.data);
            $scope.reset();
-           alert("Create Success");
+           $("#discountModal").modal("hide");
+           toastr.success("Create Success");
+           setTimeout(()=>{
+            location.reload();
+           },1000);
          })
-         .catch((err) => { });
+         .catch((err) => { 
+          toastr.error("Create Fail");
+         });
      };
       $scope.update = function () {
         let discount = angular.copy($scope.form);
@@ -38,8 +58,13 @@ app.controller("discount-ctrl", function ($scope, $http, $location) {
           let index = $scope.discounts.findIndex(p => p.id == discount.id);
           $scope.discounts[index] = discount;
           $scope.reset();
-          alert("Update Success");
+          $("#discountModal").modal("hide");
+          toastr.success("Update Success");
+          setTimeout(()=>{
+           location.reload();
+          },1000);
         }).catch(err => {
+          toastr.error("Create Fail");
         })
       };
        $scope.delete = function (count) {
@@ -47,8 +72,13 @@ app.controller("discount-ctrl", function ($scope, $http, $location) {
             let index = $scope.discounts.findIndex(p => p.id == count.id);
             $scope.discounts.splice(index, 1);
             $scope.reset();
-            alert("Delete Success")
+            $("#discountModal").modal("hide");
+            toastr.success("Delete Success");
+            setTimeout(()=>{
+           location.reload();
+          },1000);
           }).catch(err => {
+            toastr.error("Create Fail");
           })
         };
 });

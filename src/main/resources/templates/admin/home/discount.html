@@ -13,6 +13,11 @@
     <!-- Angular -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.js"></script>
+    <!-- jQuery -->
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <!-- toastr -->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 </head>
 
 <body class="sb-nav-fixed" ng-app="discount-app" ng-controller="discount-ctrl">
@@ -26,7 +31,7 @@
                 <div class="card mb-4" style="border: none;">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h4 class="mb-0"> <i class="fas fa-table me-1"></i> Discounts</h4>
-                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#discountModal">
                             <i class="bi bi-plus-lg"></i>
                         </button>
                     </div>
@@ -69,12 +74,17 @@
                                         <td>{{$index + 1}}</td>
                                         <td style="text-align: left;">{{count.name}}</td>
                                         <td>{{count.number}}</td>
-                                        <td>{{count.percent}}</td>
+                                        <td>{{count.percent}} %</td>
                                         <td>{{count.activeDate | date: 'dd-MM-yyyy'}}</td>
                                         <td>{{count.expiredDate | date: 'dd-MM-yyyy'}}</td>
+                                        <td ng-if="count.idcategory === 1">Cà phê</td>
+                                        <td ng-if="count.idcategory === 2">Trà</td>
+                                        <td ng-if="count.idcategory === 3">Tráng miệng</td>
+                                        <td ng-if="count.active === true">Đang hoạt động</td>
+                                        <td ng-if="count.active === false">Đã ngưng hoạt động</td>
                                         <td>
                                             <button class="btn btn-dark" ng-click="edit(count)" data-bs-toggle="modal"
-                                                data-bs-target="#myModal">
+                                                data-bs-target="#discountModal">
                                                 <i class="bi bi-pencil-square"></i>
                                             </button>
                                             <button class="btn btn-danger" ng-click="delete(count)">
@@ -110,14 +120,14 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                <div class="modal fade" id="discountModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                     aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered modal-xl">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="exampleModalLabel">
                                     <i class="bi bi-pencil-square pe-2"></i>
-                                    Edit Product
+                                    Edit Discount
                                 </h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
@@ -130,7 +140,7 @@
                                                 <div class="form-group">
                                                     <label for="name" class="fw-bold mb-3">DiscountName</label>
                                                     <input type="text" class="form-control" id="name"
-                                                        ng-model="form.name" name="name" placeholder="Product Name" />
+                                                        ng-model="form.name" name="name" placeholder="Discount Name" />
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -138,7 +148,7 @@
                                                     <label for="name" class="fw-bold mb-3">DiscountNumber</label>
                                                     <input type="text" class="form-control" id="discountNumber"
                                                         ng-model="form.number" name="number"
-                                                        placeholder="DiscountNumber" />
+                                                        placeholder="Discount Number" />
                                                 </div>
                                             </div>
                                         </div>
@@ -148,7 +158,7 @@
                                                     <label for="name" class="fw-bold mb-3">DiscountPercent</label>
                                                     <input type="text" class="form-control" id="DiscountPercent"
                                                         ng-model="form.percent" name="number"
-                                                        placeholder="DiscountPercent" />
+                                                        placeholder="Discount Percent" />
                                                 </div>
                                             </div>
                                         </div>
@@ -165,6 +175,35 @@
                                                     <label class="fw-bold mb-3">Expiredate</label>
                                                     <input ng-model="form.expiredDate" class="form-control" type="date"
                                                         name="day" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="fw-bold mb-3">Active</label>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" ng-model="form.active"
+                                                            id="radio1" name="active" ng-value="true" ng-required />
+                                                        <label class="form-check-label" for="radio1">Yes</label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" ng-model="form.active"
+                                                            id="radio2" name="active" ng-value="false" ng-required />
+                                                        <label class="form-check-label" for="radio2">No</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="fw-bold mb-3">Category</label>
+                                                    <select ng-model="form.idcategory" class="form-control"
+                                                    name="category" id="category">
+                                                    <option value="" selected disabled>Select a category
+                                                    </option>
+                                                    <option ng-repeat="c in cates" ng-value="c.id">{{c.name}}
+                                                    </option>
+                                                </select>
                                                 </div>
                                             </div>
                                         </div>

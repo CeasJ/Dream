@@ -82,21 +82,21 @@
       }
     });
 
-    // let isSuccess = true;
+  // let isSuccess = true;
 
-    // $("#completeButton").click(function () {
-    //     if(isSuccess) {
-    //       $("#completeButton").click(function () {
-    //         $(".cart-3").show();
-    //         $(".cart-0, .cart-1, .form-buy, .infor-cart").hide();
-    //         $("#number-3").addClass("active");
-    //         $("#line-2").addClass("active-line");
-    //         $("#step-3").addClass("active-stext");
-    //       });
-    //   } else {
+  // $("#completeButton").click(function () {
+  //     if(isSuccess) {
+  //       $("#completeButton").click(function () {
+  //         $(".cart-3").show();
+  //         $(".cart-0, .cart-1, .form-buy, .infor-cart").hide();
+  //         $("#number-3").addClass("active");
+  //         $("#line-2").addClass("active-line");
+  //         $("#step-3").addClass("active-stext");
+  //       });
+  //   } else {
 
-    //   }
-    // });
+  //   }
+  // });
 
     $(document).ready(function () {
       $("#applyDiscountBtn").click(function () {
@@ -427,11 +427,11 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
   //Order End
 
 
-  $http.get('/api/vouchers/applicable')
-    .then(function (response) {
-      $scope.vouchers = response.data;
-    }, function (error) {
-      console.log('Error fetching data:', error);
+    $http.get('/rest/vouchers/applicable')
+    .then(function(response) {
+        $scope.vouchers = response.data; 
+    }, function(error) {
+        console.log('Error fetching data:', error);
     });
 
   $scope.getRemainingTime = function (expireDate) {
@@ -468,5 +468,3 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
 });
 
 //Cart Control End
-
-
