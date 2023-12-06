@@ -21,6 +21,7 @@ public interface OrderMapper {
     @Mapping(source = "account.fullname", target = "fullname")
     @Mapping(source = "orders.detail", target = "orderDetailsDTO")
     @Mapping(source = "voucher.id", target = "id_voucher")
+    @Mapping(source = "voucher.name", target = "name_voucher")
     OrderDTO orderToOrderDTO(Orders orders);
 
     @Mapping(source = "status", target = "status.id")
@@ -33,6 +34,7 @@ public interface OrderMapper {
     @Mapping(source = "account.fullname", target = "fullname")
     @Mapping(source = "orders.detail", target = "orderDetailsDTO")
     @Mapping(source = "voucher.id", target = "id_voucher")
+    @Mapping(source = "voucher.name", target = "name_voucher")
     List<OrderDTO> listOrderToListOrderDTO(List<Orders> orders);
 
     List<OrderDetailDTO> map(List<OrderDetails> orderDetails);
