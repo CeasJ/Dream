@@ -203,11 +203,11 @@
                             </div>
                             <div class="store-overlay">
                                 <a th:href="@{/product/{name}(name=${product.name})}"
-                                    class="btn btn-primary rounded-pill py-2 px-4 m-2" style="width: 154px;">
+                                    class="btn btn-primary rounded-pill py-2 px-4 m-2" style="width: 154px;" th:id="'moreDetail_' + ${product.id}">
                                     <span th:text="#{button.moreDetail}"></span> <i class="fa fa-arrow-right ms-2"></i>
                                 </a>
                                 <button th:attr="ng-click=@{|cart.add(${product.id})|}"
-                                    class="btn btn-dark rounded-pill py-2 px-4 m-2">
+                                    class="btn btn-dark rounded-pill py-2 px-4 m-2" th:id="'addToCart_' + ${product.id}">
                                     <span th:text="#{button.addToCart}"></span> <i class="fa fa-cart-plus ms-2"></i>
                                 </button>
                             </div>

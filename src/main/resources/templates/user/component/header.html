@@ -12,10 +12,10 @@
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav ms-auto">
                     <a th:href="@{|/home|}" class="nav-item nav-link" th:text="#{navbar.home}"></a>
-                    <a th:href="@{|/store|}" class="nav-item nav-link" th:text="#{navbar.store}"></a>
+                    <a th:href="@{|/store|}" class="nav-item nav-link" id="link-store" th:text="#{navbar.store}"></a>
                     <!--When customer not login-->
                     <th:block th:unless="${isAuthenticated}">
-                        <a th:href="@{|/login|}" class="nav-item nav-link" th:text="#{navbar.login}"></a>
+                        <a th:href="@{|/login|}" class="nav-item nav-link" id="link-login" th:text="#{navbar.login}"></a>
                         <a th:href="@{|/register|}" class="nav-item nav-link" th:text="#{navbar.register}"></a>
                     </th:block>
 
@@ -97,7 +97,7 @@
 
                         </div>
                     </button>
-                    <a th:href="@{|/cart|}" class="btn btn-sm ps-3 pb-2 cart-icon">
+                    <a th:href="@{|/cart|}" class="btn btn-sm ps-3 pb-2 cart-icon" id="link-cart">
                         <i class="bi bi-bag-fill"></i>
                         <span style="font-size: 12px;" id="cartCount" class="cart-count">{{cart.count}}</span>
                     </a>
