@@ -93,5 +93,20 @@ app.controller("product_ctrl", function ($scope, $http) {
         toastr.error("Select Image Fail");
       });
   };
+// Thêm phương thức để xuất dữ liệu sang Excel
+$scope.exportToExcel = function () {
+  $http.get('/export/excel')
+    .then(function(response) {
+    let blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+          let downloadLink = document.createElement('a');
+          downloadLink.href = window.URL.createObjectURL(blob);
+          downloadLink.download = 'product.xlsx';
+          downloadLink.click();
+        toastr.success("Download Success");
+    })
+    .catch(function(error) {
+        console.error('Error exporting to Excel:', error);
+    });
+};
 
 });
