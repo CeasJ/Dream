@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -38,6 +39,10 @@ public class Voucher implements Serializable {
     private Double condition;
 
     private String icon;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "voucher")
+    private List<Orders> orders;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idaccount")

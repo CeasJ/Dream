@@ -95,18 +95,6 @@ app.controller("order_ctrl", function ($scope, $http) {
 
   $scope.initialize();
 
-//   $scope.showOrderSection = function(sectionId) {
-//     document.getElementById("order").style.display = "none";
-//     document.getElementById("order-confirm").style.display = "none";
-//     document.getElementById("order-shipping").style.display = "none";
-//     document.getElementById("order-cancel").style.display = "none";
-//     document.getElementById("order-success").style.display = "none";
-
-//     if (sectionId) {
-//         document.getElementById(sectionId).style.display = "block";
-//     }
-// };
-
 
   $scope.updateOrder = {
     confirmOrder(orderID) {

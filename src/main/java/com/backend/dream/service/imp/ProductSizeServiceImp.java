@@ -15,6 +15,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -36,7 +37,7 @@ public class ProductSizeServiceImp implements ProductSizeService {
     public List<SizeDTO> getSizesByProductId(Long productId) {
         List<ProductSize> productSizes = productSizeRepository.findAllByProductId(productId);
         List<SizeDTO> sizeDTOs = productSizes.stream()
-                .map(productSize -> SizeMapper.INSTANCE.sizeToSizeDTO(productSize.getSize()))
+                .map(productSize -> SizeMapper.INSTANCE.sizeToSizeDTO(productSize.getSize())).sorted(Comparator.comparing(SizeDTO::getName).reversed())
                 .collect(Collectors.toList());
 
         return sizeDTOs;

@@ -193,7 +193,7 @@
                                 <p style="font-size: 15px; margin-bottom: 10px;">Đơn tối thiểu {{ voucher.condition | number : 0}} ₫</p>
                                 <div class="expiry-info text-danger" style="display: flex; font-size: 14px;">
                                   <i class="far fa-clock" style="padding-top: 3px; padding-right: 5px;"></i>
-                                  <p style="margin-bottom: 0px;">Có hiệu lực: {{ getRemainingTime(voucher.expireddate) }}</p>
+                                  <p style="margin-bottom: 0px;">Có hiệu lực: {{ getRemainingTime(voucher.expiredDate) }}</p>
                                 </div>
                               </div>
                           </div>
@@ -222,18 +222,18 @@
                 <form class="form-infor" style="padding: 20px 20px; font-size: 16px;">
                   <div class="choose-address">
                     <div class="mb-3">
-                      <input type="radio" id="currentAddress" name="addressType" checked>
+                      <input type="radio" id="currentAddress" name="addressType" ng-checked="true" ng-value="1" ng-model="userAddress" ng-change="changeAddress()">
                       <label class="ps-1" for="currentAddress">Địa chỉ hiện tại</label>
                     </div>
                     <div class="mb-3">
-                      <input type="radio" id="newAddress" name="addressType">
+                      <input type="radio" id="newAddress" name="addressType" ng-value="2" ng-model="userAddress" ng-change="changeAddress()">
                       <label class="ps-1" for="newAddress">Địa chỉ mới</label>
                     </div>
                   </div>
 
                   <div class="current-address mb-3 mt-3">
                     <label for="result" class="form-label label pb-2"><span th:text="#{label.address}"></span></label>
-                    <input type="text" class="form-control" id="currentAddressInput" readonly>
+                    <input type="text" class="form-control" id="currentAddressInput" readonly ng-model="userAddressDB" value="{{ address }}">
                   </div>
 
                   <div class="address-order mb-1" style="display: none;">
@@ -266,13 +266,13 @@
                       <label for="number" class="form-label label pb-2">
                         <span th:text="#{label.streetNumber}"></span>
                       </label>
-                      <input type="text" class="form-control" id="number" required ng-model="number"
+                      <input type="text" class="form-control" id="numberHouse" ng-model="numberHouse" 
                         ng-change="printResult()">
                     </div>
                     <div class="mb-3">
                       <label for="result" class="form-label label pb-2"><span th:text="#{label.address}"></span></label>
-                      <input type="text" class="form-control" id="result" required value="{{order.address}}"
-                        ng-model="order.address" readonly>
+                      <input type="text" class="form-control" id="result" value="{{ userAddressWeb }}"
+                        ng-model="userAddressWeb" readonly>
                     </div>
                   </div>
 
@@ -285,17 +285,17 @@
                       <span th:text="#{label.paymentMethod}"></span>:</label><br>
                     <div class="form-check form-check-inline">
                       <input type="radio" class="form-check-input" id="paymentMethod" name="paymentMethod"
-                        ng-model="selectedPaymentMethod" value="cash" checked>
+                        ng-model="payment" ng-value="1" ng-checked="true">
                       <label class="form-check-label" for="paymentMethod"><span th:text="#{label.cash}"></span></label>
                     </div>
                     <div class="form-check form-check-inline">
                       <input type="radio" class="form-check-input" id="vnpay" name="paymentMethod"
-                        ng-model="selectedPaymentMethod" value="vnpay">
+                        ng-model="payment" ng-value="2" >
                       <label class="form-check-label pb-2" for="vnpay">VN Pay</label>
                     </div>
                     <div class="form-check form-check-inline">
                       <input type="radio" class="form-check-input" id="paypal" name="paymentMethod"
-                        ng-model="selectedPaymentMethod" value="paypal">
+                        ng-model="payment" ng-value="3" >
                       <label class="form-check-label pb-2" for="paypal">PayPal</label>
                     </div>
                   </div>

@@ -3,9 +3,11 @@ package com.backend.dream.rest;
 import com.backend.dream.dto.OrderDTO;
 import com.backend.dream.dto.OrderStatusDTO;
 import com.backend.dream.entity.Orders;
+import com.backend.dream.service.AccountService;
 import com.backend.dream.service.OrderService;
 import com.backend.dream.service.OrderStatusService;
 import com.fasterxml.jackson.databind.JsonNode;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,11 +24,19 @@ public class OrderRestController {
     private OrderService orderService;
     @Autowired
     private OrderStatusService orderStatusService;
-
+    @Autowired
+    private AccountService accountService;
     @PostMapping
     public Orders create(@RequestBody JsonNode orderData) throws ParseException {
         return orderService.create(orderData);
     }
+    @GetMapping("/address")
+    @ResponseBody
+    public String getUserAddress(HttpServletRequest request) {
+        String address = accountService.getAddressByUsername(request.getRemoteUser());
+        return "{\"address\": \"" + address + "\"}";
+    }
+
 
     @GetMapping("/status")
     public List<OrderStatusDTO> getAll() {
