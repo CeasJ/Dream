@@ -93,6 +93,7 @@
                 <td th:text="${order.createDate}"></td>
                 <td th:text="${order.createTime}"></td>
                 <td th:text="${order.formattedPrice}"></td>
+                <td th:text="${order.name_voucher}"></td>
                 <th:block th:if="${order.status == 1}">
                     <td><span class="order-status status-info">Đã đặt hàng</span></td>
                 </th:block>
@@ -231,13 +232,19 @@
                                                 <td colspan="5" class="text-end">
                                                     <strong th:text="#{modal.orderDetail.table.shippingCost}"></strong>
                                                 </td>
-                                                <td>20.000 đ</td>
+                                                <td>30.000 đ</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="5" class="text-end">
+                                                    <strong  th:text="#{modal.orderDetail.table.discountVoucher}"> </strong>
+                                                </td>
+                                                <td>{{listOrder[0].discount | number : 0}} đ</td>
                                             </tr>
                                             <tr>
                                                 <td colspan="5" class="text-end">
                                                     <strong th:text="#{modal.orderDetail.table.total}"></strong>
                                                 </td>
-                                                <th class="text-success">{{getTotal() | number : 0}} đ</th>
+                                                <th class="text-success">{{getTotal() - listOrder[0].discount   | number : 0}} đ</th>
                                             </tr>
                                         </tbody>
                                     </table>

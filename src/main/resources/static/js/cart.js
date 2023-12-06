@@ -130,6 +130,7 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
       .then((response) => {
         if (response.data) {
           $scope.listOrder = response.data;
+          console.log(response.data);
         }
       })
       .catch((error) => {
@@ -146,8 +147,7 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
 
   $scope.getTotal = function () {
     let subTotal = $scope.getSubTotal();
-    let shippingCost = 20000;
-    return subTotal + shippingCost;
+    return subTotal ;
   };
 
   $http
@@ -455,7 +455,7 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
    $scope.changeAddress = function() {
     if(parseInt($scope.userAddress) === 1){
       $scope.order.address = $scope.userAddressDB;
-    } else {
+    } else if(parseInt($scope.userAddress) === 2){
       $scope.order.address = $scope.userAddressWeb;
     }
    };
