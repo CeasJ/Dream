@@ -29,6 +29,8 @@ public class OrderDTO {
 
     private String fullname;
 
+    private Long id_voucher;
+
     private List<OrderDetailDTO> orderDetailsDTO;
 
     private Double totalAmount;

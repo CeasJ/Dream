@@ -3,10 +3,10 @@ let voucherApp = angular.module("voucher_app", []);
 voucherApp.controller("voucher_ctrl", function ($scope, $http, $window) {
   $scope.vouchers = [];
   $scope.status = [];
+  $scope.types = [];
   $scope.defaultStatus = "";
   $scope.selectedStatus = $scope.defaultStatus;
   $scope.searchText = "";
-  // Display all vouchers
   $http.get("/rest/vouchers/all").then(
     function (response) {
       $scope.vouchers = response.data;
@@ -16,7 +16,6 @@ voucherApp.controller("voucher_ctrl", function ($scope, $http, $window) {
     }
   );
 
-  // Display voucher status on combobox
   $http.get("/rest/vouchers/voucherstatus/all").then(
     function (response) {
       $scope.status = response.data;
@@ -26,7 +25,15 @@ voucherApp.controller("voucher_ctrl", function ($scope, $http, $window) {
     }
   );
 
-  // Filter voucher based on status
+  $http.get("/rest/vouchers/type/all").then(
+    function (response) {
+      $scope.types = response.data;
+    },
+    function (error) {
+      console.error("Error fetching voucher status:", error);
+    }
+  );
+
   $scope.filterVouchers = function () {
     if ($scope.selectedStatus === "") {
       $http.get("/rest/vouchers/all").then(
@@ -49,7 +56,6 @@ voucherApp.controller("voucher_ctrl", function ($scope, $http, $window) {
     }
   };
 
-  // Searching features
   $scope.searchVouchers = function () {
     // Gọi API để lấy danh sách vouchers dựa trên giá trị tìm kiếm (searchText)
     $http.get("/rest/vouchers/search?name=" + $scope.searchText).then(
@@ -62,7 +68,6 @@ voucherApp.controller("voucher_ctrl", function ($scope, $http, $window) {
     );
   };
 
-  //   Delete voucher
   $scope.setVoucherToDelete = function (voucher) {
     $scope.voucherToDelete = voucher;
   };
@@ -85,15 +90,10 @@ voucherApp.controller("voucher_ctrl", function ($scope, $http, $window) {
     condition:"",
     icon:"",
     status:"",
-    id_account: null,
-    type:parseInt(1),
+    id_account: "",
+    type:"",
 
     createVoucher() {
-    if (parseInt($scope.voucher.id_account) === 1) {
-        this.id_account = parseInt(1);  
-    } else {
-        this.id_account = parseInt(2);
-    }
 
       let voucher = angular.copy(this);
       console.log(voucher);
@@ -103,9 +103,9 @@ voucherApp.controller("voucher_ctrl", function ($scope, $http, $window) {
         $scope.vouchers.push(resp.data);
         $scope.reset();
         toastr.success("Create Success");
-        // setTimeout(() => {
-          //   location.reload();
-          // }, 1000);
+        setTimeout(() => {
+            location.reload();
+          }, 1000);
         })
         .catch((err) => {
           toastr.error("Create Fail");
@@ -114,16 +114,35 @@ voucherApp.controller("voucher_ctrl", function ($scope, $http, $window) {
   };
 
   $scope.editVoucher = function (voucher) {
-  
+    console.log(voucher);
+    $scope.voucher = angular.copy(voucher);
+    $scope.voucher.expiredDate  = new Date(voucher.expiredDate);
   };
 
   $scope.updateVoucher = function () {
-   
-    console.log(voucher.id);
+   let voucher= angular.copy($scope.voucher);
     $http
       .put(`/rest/vouchers/${voucher.id}`, voucher)
       .then((resp) => {
         let index = $scope.vouchers.findIndex((v) => v.id == voucher.id);
+        $scope.vouchers[index] = voucher;
+        $scope.reset();
+        toastr.success("Update Success");
+        setTimeout(()=>{
+            location.reload();
+        },1000);
+      })
+      .catch((err) => {
+        toastr.error("Update Fail");
+      });
+  };
+
+  $scope.updateListVoucher = function () {
+   let voucher= angular.copy($scope.voucher);
+    $http
+      .put(`/rest/vouchers/${voucher.name}/${voucher.type}`, voucher)
+      .then((resp) => {
+        let index = $scope.vouchers.findIndex((v) => v.name === voucher.name && v.type === voucher.type);
         $scope.vouchers[index] = voucher;
         $scope.reset();
         toastr.success("Update Success");
@@ -162,35 +181,28 @@ voucherApp.controller("voucher_ctrl", function ($scope, $http, $window) {
 
           toastr.success("Xóa voucher thành công");
 
-                     setTimeout(() => {
-                       location.reload();
-                     }, 1000);
+          setTimeout(() => {
+            location.reload();
+          }, 1000);
+        })
+        .catch((error) => {});
+    }
+  };
 
-                 })
-                 .catch((error) => {});
-         }
-     };
+  $scope.deleteListVoucherByNameAndIdType = function (name, idType) {
+      $http
+        .delete("/rest/vouchers/" + name + "/" + idType)
+        .then(function (response) {
+          $scope.vouchers = $scope.vouchers.filter(function (voucher) {
+            return voucher.name !== name && voucher.type !== type;
+          });
 
-    // Pagination
-    $scope.currentPageVoucher = 1;
-    $scope.pageSizeVoucher = 5;
+          toastr.success("Xóa voucher thành công");
 
-    $scope.totalPagesVoucher = function () {
-      return Math.ceil($scope.vouchers.length / $scope.pageSizeVoucher);
-    };
-
-    $scope.setPageVoucher = function (page) {
-      if (page >= 1 && page <= $scope.totalPagesVoucher()) {
-        $scope.currentPageVoucher = page;
-      }
-    };
-
-    $scope.paginatedListVoucher = function () {
-      const begin = ($scope.currentPageVoucher - 1) * $scope.pageSizeVoucher;
-      const end = begin + $scope.pageSizeVoucher;
-
-      return $scope.vouchers.slice(begin, end);
-    };
-
-
+          setTimeout(() => {
+            location.reload();
+          }, 1000);
+        })
+        .catch((error) => {});
+  };
 });

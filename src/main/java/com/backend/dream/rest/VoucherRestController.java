@@ -3,9 +3,11 @@ package com.backend.dream.rest;
 import com.backend.dream.dto.AccountDTO;
 import com.backend.dream.dto.VoucherDTO;
 import com.backend.dream.dto.VoucherStatusDTO;
+import com.backend.dream.dto.VoucherTypeDTO;
 import com.backend.dream.entity.Voucher;
 import com.backend.dream.service.AccountService;
 import com.backend.dream.service.VoucherService;
+import com.backend.dream.service.VoucherTypeService;
 import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,19 +30,13 @@ public class VoucherRestController {
     private HttpServletRequest request;
 
     @Autowired
-    public VoucherRestController(VoucherService voucherService) {
-        this.voucherService = voucherService;
-    }
+    private VoucherTypeService voucherTypeService;
 
     // Get voucher for user
     @GetMapping("/applicable")
     public List<VoucherDTO> getApplicableVouchers(){
         String user = request.getRemoteUser();
         return voucherService.getApplicableVouchers(user);
-    }
-    @GetMapping("/account")
-    public List<AccountDTO> getAllAccount(){
-        return accountService.getAllAccounts();
     }
 
     @GetMapping("/all")
@@ -51,6 +47,10 @@ public class VoucherRestController {
     @GetMapping("/voucherstatus/all")
     public List<VoucherStatusDTO> getAllVoucherStatus() {
         return voucherService.getAllVoucherStatus();
+    }
+    @GetMapping("/type/all")
+    public List<VoucherTypeDTO> getAllVoucherTypes() {
+        return voucherTypeService.getAllVoucherTypes();
     }
 
     @GetMapping("/filterByStatus/{statusId}")
@@ -72,6 +72,11 @@ public class VoucherRestController {
     public VoucherDTO updateVoucher(@RequestBody VoucherDTO voucherDTO,@PathVariable Long id){
         return voucherService.updateVoucher(voucherDTO,id);
     }
+    @PutMapping("/{name}/{idType}")
+    public List<VoucherDTO> updateVoucher(@RequestBody VoucherDTO voucherDTO,@PathVariable String name ,@PathVariable Long idType){
+        return voucherService.updateListVoucherByNameAndIdType(voucherDTO,name,idType);
+    }
+
 
     @DeleteMapping("/{voucherId}")
     public ResponseEntity<String> deleteVoucher(@PathVariable Long voucherId) {
@@ -83,7 +88,16 @@ public class VoucherRestController {
                     .body("Error deleting voucher: " + e.getMessage());
         }
     }
-
+    @DeleteMapping("/{name}/{idType}")
+    public ResponseEntity<String> deleteListVoucher(@PathVariable String name, @PathVariable Long idType) {
+        try {
+            voucherService.deleteByNameAndType(name,idType);
+            return ResponseEntity.ok("Voucher has been deleted successfully!");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error deleting voucher: " + e.getMessage());
+        }
+    }
 
 
 

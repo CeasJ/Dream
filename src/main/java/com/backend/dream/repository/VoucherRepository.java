@@ -1,12 +1,13 @@
 package com.backend.dream.repository;
 
-import com.backend.dream.dto.VoucherDTO;
 import com.backend.dream.entity.Voucher;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -21,9 +22,13 @@ public interface VoucherRepository extends JpaRepository<Voucher, Long> {
     // Display vouchers based on chosen status
     List<Voucher> findByStatusId(Long statusId);
 
-    // Searching voucher bu name
+    // Searching voucher by name
     @Query("SELECT v FROM Voucher v WHERE LOWER(v.name) LIKE LOWER(CONCAT('%', :name, '%'))")
     List<Voucher> searchByName(@Param("name") String name);
 
+    List<Voucher> findByExpiredDateBefore(Date currentDate);
 
+    @Query("SELECT v FROM Voucher v WHERE v.name = %:name%  " +
+            "AND v.type.id = :idType ")
+    List<Voucher> findListVouchersByNameAndIDType(@Param("name") String name, @Param("idType") Long id);
 }

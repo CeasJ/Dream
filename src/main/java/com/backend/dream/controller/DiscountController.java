@@ -14,7 +14,7 @@ import java.util.List;
 public class DiscountController {
 
     @Autowired
-    private DiscountRepository discountRepository; // Giả sử bạn đã có một repository để tương tác với cơ sở dữ liệu
+    private DiscountRepository discountRepository;
 
     @GetMapping("/home")
     public String index(Model model) {

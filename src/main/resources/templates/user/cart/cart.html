@@ -149,156 +149,156 @@
               <span style="float: right; font-weight: bold; font-size: 16px;">
                   {{cart.count}}
                 </span>
-            </p>
-            <p>
-              <span class="title-prc" th:text="#{cart.shippingCost}"></span>
-              <span style="float: right; font-weight: bold; font-size: 16px;"> 30,000 VNĐ</span>
-            </p>
-            <p class="title-prc" ng-if="cart.totalDiscount >= 0">Áp dụng Voucher
-              <span class="text-danger" style="float: right; font-weight: bold; font-size: 16px;">- {{ cart.totalDiscount | number:0 }} VNĐ</span>
-            </p>
-            <div class="input-group mb-4 mt-3 d-flex justify-content-between align-items-center">
-              <label class="mb-0 me-2 ps-2">Dream Voucher</label>
-              <a href="#" class="change-voucher-link pt-1" id="applyDiscountBtn" data-bs-toggle="modal"
-                 data-bs-target="#voucherModal" th:text="#{cart.selectDiscountCode}">
-              </a>
-            </div>
-            <!-- Modal -->
-            <div class="modal fade voucher-modal" id="voucherModal" tabindex="-1" aria-labelledby="voucherModalLabel"
-                 aria-hidden="true">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h3 class="modal-title" id="voucherModalLabel">Dream Voucher</h3>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div class="modal-body">
-                    <p class="text-muted ps-3" style="font-size: 18px;" th:text="#{modal.title}"></p>
-                    <div class="container mx-auto">
-                      <!-- Voucher 1 -->
-                      <div class="row custom-shadow" style="margin-bottom: 30px;" ng-repeat="voucher in vouchers" ng-if="voucher.condition <= cart.amount">
-                        <div class="col-md-3 content-sale text-center">
-                          <div class="icon-container">
-                            <i class="{{ voucher.icon }} text-white"></i>
-                          </div>
-                          <h6 class="text-white">{{ voucher.name }}</h6>
-                        </div>
-                        <div class="col-md-9">
-                          <div class="discount-info" style="margin-left: 5px; padding: 10px 0;">
-                            <p style="margin-bottom: 5px; font-weight: bold; font-size: 24px;">
-                              Giảm {{ voucher.percent | number : 0 }}₫</p>
-                            <div class="form-check float-end">
-                              <input class="form-check-input" type="radio" id="customRadio" name="customRadio" ng-click="selectVoucher(voucher)">
-                            </div>
-                            <p style="font-size: 15px; margin-bottom: 10px;">Đơn tối thiểu {{ voucher.condition | number : 0}} ₫</p>
-                            <div class="expiry-info text-danger" style="display: flex; font-size: 14px;">
-                              <i class="far fa-clock" style="padding-top: 3px; padding-right: 5px;"></i>
-                              <p style="margin-bottom: 0px;">Có hiệu lực: {{ getRemainingTime(voucher.expireddate) }}</p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <!-- Voucher 1 -->
+              </p>
+              <p>
+                <span class="title-prc" th:text="#{cart.shippingCost}"></span>
+                <span style="float: right; font-weight: bold; font-size: 16px;"> 30,000 VNĐ</span>
+              </p>
+              <p class="title-prc" ng-if="cart.totalDiscount >= 0">Áp dụng Voucher
+                <span class="text-danger" style="float: right; font-weight: bold; font-size: 16px;">- {{ cart.totalDiscount | number:0 }} VNĐ</span>
+              </p>
+              <div class="input-group mb-4 mt-3 d-flex justify-content-between align-items-center">
+                <label class="mb-0 me-2 ps-2">Dream Voucher</label>
+                <a href="#" class="change-voucher-link pt-1" id="applyDiscountBtn" data-bs-toggle="modal"
+                  data-bs-target="#voucherModal" th:text="#{cart.selectDiscountCode}">
+                </a>
+              </div>
+              <!-- Modal -->
+              <div class="modal fade voucher-modal" id="voucherModal" tabindex="-1" aria-labelledby="voucherModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h3 class="modal-title" id="voucherModalLabel">Dream Voucher</h3>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" ng-click="applyVoucher()">Áp dụng</button>
+                    <div class="modal-body">
+                      <p class="text-muted ps-3" style="font-size: 18px;" th:text="#{modal.title}"></p>
+                      <div class="container mx-auto">
+                        <!-- Voucher 1 -->
+                        <div class="row custom-shadow" style="margin-bottom: 30px;" ng-repeat="voucher in vouchers" ng-if="voucher.condition <= cart.amount">
+                            <div class="col-md-3 content-sale text-center">
+                              <div class="icon-container">
+                                <i class="{{ voucher.icon }} text-white"></i>
+                              </div>
+                              <h6 class="text-white">{{ voucher.name }}</h6>
+                            </div>
+                            <div class="col-md-9">
+                              <div class="discount-info" style="margin-left: 5px; padding: 10px 0;">
+                                <p style="margin-bottom: 5px; font-weight: bold; font-size: 24px;">
+                                  Giảm {{ voucher.percent | number : 0 }}₫</p>
+                                <div class="form-check float-end">
+                                  <input class="form-check-input" type="radio" id="customRadio" name="customRadio" ng-click="selectVoucher(voucher)">
+                                </div>
+                                <p style="font-size: 15px; margin-bottom: 10px;">Đơn tối thiểu {{ voucher.condition | number : 0}} ₫</p>
+                                <div class="expiry-info text-danger" style="display: flex; font-size: 14px;">
+                                  <i class="far fa-clock" style="padding-top: 3px; padding-right: 5px;"></i>
+                                  <p style="margin-bottom: 0px;">Có hiệu lực: {{ getRemainingTime(voucher.expiredDate) }}</p>
+                                </div>
+                              </div>
+                          </div>
+                        </div>
+                        <!-- Voucher 1 -->
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-primary" data-bs-dismiss="modal" ng-click="applyVoucher()">Áp dụng</button>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            <hr>
-            <p class="title-prc">Tổng tiền <span class="price" style="float: right;">{{ (cart.amount - cart.totalDiscount ) | number : 0 }} VND</span></p>
-            <hr>
-            <div class="text-center"><button class="btn btn-danger btn-buy" id="buyButton"
-                                             ng-disabled="cart.count === 0"><span th:text="#{cart.buyButton}"></span> {{cart.count}}</button>
+              <hr>
+              <p class="title-prc">Tổng tiền <span class="price" style="float: right;">{{ (cart.amount - cart.totalDiscount ) | number : 0 }} VND</span></p>
+              <hr>
+              <div class="text-center"><button class="btn btn-danger btn-buy" id="buyButton"
+                  ng-disabled="cart.count === 0"><span th:text="#{cart.buyButton}"></span> {{cart.count}}</button>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="container-fluid infor-cart mx-auto" style="display: none;">
-          <div class="row justify-content-center">
-            <div class="col-md-6">
-              <form class="form-infor" style="padding: 20px 20px; font-size: 16px;">
-                <div class="choose-address">
-                  <div class="mb-3">
-                    <input type="radio" id="currentAddress" name="addressType" checked>
-                    <label class="ps-1" for="currentAddress">Địa chỉ hiện tại</label>
+          <div class="container-fluid infor-cart mx-auto" style="display: none;">
+            <div class="row justify-content-center">
+              <div class="col-md-6">
+                <form class="form-infor" style="padding: 20px 20px; font-size: 16px;">
+                  <div class="choose-address">
+                    <div class="mb-3">
+                      <input type="radio" id="currentAddress" name="addressType" ng-checked="true" ng-value="1" ng-model="userAddress" ng-change="changeAddress()">
+                      <label class="ps-1" for="currentAddress">Địa chỉ hiện tại</label>
+                    </div>
+                    <div class="mb-3">
+                      <input type="radio" id="newAddress" name="addressType" ng-value="2" ng-model="userAddress" ng-change="changeAddress()">
+                      <label class="ps-1" for="newAddress">Địa chỉ mới</label>
+                    </div>
                   </div>
-                  <div class="mb-3">
-                    <input type="radio" id="newAddress" name="addressType">
-                    <label class="ps-1" for="newAddress">Địa chỉ mới</label>
-                  </div>
-                </div>
 
-                <div class="current-address mb-3 mt-3">
-                  <label for="result" class="form-label label pb-2"><span th:text="#{label.address}"></span></label>
-                  <input type="text" class="form-control" id="currentAddressInput" readonly>
-                </div>
-
-                <div class="address-order mb-1" style="display: none;">
-                  <div class="mb-3">
-                    <label for="provinces" class="form-label label pb-2"><span
-                            th:text="#{label.province}"></span></label>
-                    <select ng-model="selectedProvince" class="form-control" name="provinces" id="provinces"
-                            ng-change="getDistricts()">
-                      <option value="" disabled selected><span th:text="#{label.province}"></span></option>
-                      <option ng-repeat="province in provinces" value="{{province.code}}">{{province.name}}</option>
-                    </select>
-                  </div>
-                  <div class="mb-3">
-                    <label for="district" class="form-label label pb-2"><span
-                            th:text="#{label.district}"></span></label>
-                    <select ng-model="selectedDistrict" class="form-control" name="district" id="district"
-                            ng-change="getWards()">
-                      <option value="" disabled selected><span th:text="#{label.district}"></span></option>
-                      <option ng-repeat="district in districts" value="{{district.code}}">{{district.name}}</option>
-                    </select>
-                  </div>
-                  <div class="mb-3">
-                    <label for="ward" class="form-label label pb-2"><span th:text="#{label.ward}"></span></label>
-                    <select ng-model="selectedWard" class="form-control" name="ward" id="ward">
-                      <option value="" disabled selected><span th:text="#{label.ward}"></span></option>
-                      <option ng-repeat="ward in wards" value="{{ward.code}}">{{ward.name}}</option>
-                    </select>
-                  </div>
-                  <div class="mb-3">
-                    <label for="number" class="form-label label pb-2">
-                      <span th:text="#{label.streetNumber}"></span>
-                    </label>
-                    <input type="text" class="form-control" id="number" required ng-model="number"
-                           ng-change="printResult()">
-                  </div>
-                  <div class="mb-3">
+                  <div class="current-address mb-3 mt-3">
                     <label for="result" class="form-label label pb-2"><span th:text="#{label.address}"></span></label>
-                    <input type="text" class="form-control" id="result" required value="{{order.address}}"
-                           ng-model="order.address" readonly>
+                    <input type="text" class="form-control" id="currentAddressInput" readonly ng-model="userAddressDB" value="{{ address }}">
                   </div>
-                </div>
 
-                <div class="mb-3">
-                  <label for="note" class="form-label label pb-2"><span th:text="#{label.note}"></span></label>
-                  <textarea type="text" class="form-control" id="note" required ng-model="order.note"></textarea>
-                </div>
-                <div class="mb-3">
-                  <label for="paymentMethod" class="form-label label pb-2">
-                    <span th:text="#{label.paymentMethod}"></span>:</label><br>
-                  <div class="form-check form-check-inline">
-                    <input type="radio" class="form-check-input" id="paymentMethod" name="paymentMethod"
-                           ng-model="selectedPaymentMethod" value="cash" checked>
-                    <label class="form-check-label" for="paymentMethod"><span th:text="#{label.cash}"></span></label>
+                  <div class="address-order mb-1" style="display: none;">
+                    <div class="mb-3">
+                      <label for="provinces" class="form-label label pb-2"><span
+                          th:text="#{label.province}"></span></label>
+                      <select ng-model="selectedProvince" class="form-control" name="provinces" id="provinces"
+                        ng-change="getDistricts()">
+                        <option value="" disabled selected><span th:text="#{label.province}"></span></option>
+                        <option ng-repeat="province in provinces" value="{{province.code}}">{{province.name}}</option>
+                      </select>
+                    </div>
+                    <div class="mb-3">
+                      <label for="district" class="form-label label pb-2"><span
+                          th:text="#{label.district}"></span></label>
+                      <select ng-model="selectedDistrict" class="form-control" name="district" id="district"
+                        ng-change="getWards()">
+                        <option value="" disabled selected><span th:text="#{label.district}"></span></option>
+                        <option ng-repeat="district in districts" value="{{district.code}}">{{district.name}}</option>
+                      </select>
+                    </div>
+                    <div class="mb-3">
+                      <label for="ward" class="form-label label pb-2"><span th:text="#{label.ward}"></span></label>
+                      <select ng-model="selectedWard" class="form-control" name="ward" id="ward">
+                        <option value="" disabled selected><span th:text="#{label.ward}"></span></option>
+                        <option ng-repeat="ward in wards" value="{{ward.code}}">{{ward.name}}</option>
+                      </select>
+                    </div>
+                    <div class="mb-3">
+                      <label for="number" class="form-label label pb-2">
+                        <span th:text="#{label.streetNumber}"></span>
+                      </label>
+                      <input type="text" class="form-control" id="numberHouse" ng-model="numberHouse" 
+                        ng-change="printResult()">
+                    </div>
+                    <div class="mb-3">
+                      <label for="result" class="form-label label pb-2"><span th:text="#{label.address}"></span></label>
+                      <input type="text" class="form-control" id="result" value="{{ userAddressWeb }}"
+                        ng-model="userAddressWeb" readonly>
+                    </div>
                   </div>
-                  <div class="form-check form-check-inline">
-                    <input type="radio" class="form-check-input" id="vnpay" name="paymentMethod"
-                           ng-model="selectedPaymentMethod" value="vnpay">
-                    <label class="form-check-label pb-2" for="vnpay">VN Pay</label>
+
+                  <div class="mb-3">
+                    <label for="note" class="form-label label pb-2"><span th:text="#{label.note}"></span></label>
+                    <textarea type="text" class="form-control" id="note" required ng-model="order.note"></textarea>
                   </div>
-                  <div class="form-check form-check-inline">
-                    <input type="radio" class="form-check-input" id="paypal" name="paymentMethod"
-                           ng-model="selectedPaymentMethod" value="paypal">
-                    <label class="form-check-label pb-2" for="paypal">PayPal</label>
+                  <div class="mb-3">
+                    <label for="paymentMethod" class="form-label label pb-2">
+                      <span th:text="#{label.paymentMethod}"></span>:</label><br>
+                    <div class="form-check form-check-inline">
+                      <input type="radio" class="form-check-input" id="paymentMethod" name="paymentMethod"
+                        ng-model="payment" ng-value="1" ng-checked="true">
+                      <label class="form-check-label" for="paymentMethod"><span th:text="#{label.cash}"></span></label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input type="radio" class="form-check-input" id="vnpay" name="paymentMethod"
+                        ng-model="payment" ng-value="2" >
+                      <label class="form-check-label pb-2" for="vnpay">VN Pay</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input type="radio" class="form-check-input" id="paypal" name="paymentMethod"
+                        ng-model="payment" ng-value="3" >
+                      <label class="form-check-label pb-2" for="paypal">PayPal</label>
+                    </div>
                   </div>
-                </div>
 
                 <div class="text-center">
                   <button type="button" class="btn btn-secondary btn-infor" id="backButton"><span

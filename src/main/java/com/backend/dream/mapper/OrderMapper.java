@@ -20,15 +20,19 @@ public interface OrderMapper {
     @Mapping(source = "account.id", target = "id_account")
     @Mapping(source = "account.fullname", target = "fullname")
     @Mapping(source = "orders.detail", target = "orderDetailsDTO")
+    @Mapping(source = "voucher.id", target = "id_voucher")
     OrderDTO orderToOrderDTO(Orders orders);
 
     @Mapping(source = "status", target = "status.id")
     @Mapping(source = "id_account", target = "account.id")
+    @Mapping(source = "id_voucher", target = "voucher.id")
     Orders orderDTOToOrder(OrderDTO orderDTO);
 
     @Mapping(source = "status.id", target = "status")
     @Mapping(source = "account.id", target = "id_account")
     @Mapping(source = "account.fullname", target = "fullname")
+    @Mapping(source = "orders.detail", target = "orderDetailsDTO")
+    @Mapping(source = "voucher.id", target = "id_voucher")
     List<OrderDTO> listOrderToListOrderDTO(List<Orders> orders);
 
     List<OrderDetailDTO> map(List<OrderDetails> orderDetails);

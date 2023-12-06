@@ -47,8 +47,12 @@ public class Orders implements Serializable {
     @JoinColumn(name = "idstatus")
     private OrderStatus status;
 
+    @ManyToOne
+    @JoinColumn(name = "idvoucher")
+    private Voucher voucher;
+
     @JsonIgnore
-    @OneToMany(mappedBy = "orders", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "orders")
     private List<OrderDetails> detail;
 
 }
