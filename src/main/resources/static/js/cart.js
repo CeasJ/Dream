@@ -420,7 +420,7 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
   //Order End
 
 
-    $http.get('/api/vouchers/applicable')
+    $http.get('/rest/vouchers/applicable')
     .then(function(response) {
         $scope.vouchers = response.data;
     }, function(error) {

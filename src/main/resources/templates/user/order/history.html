@@ -80,6 +80,7 @@
                         <th class="table-header">Tên người đặt</th>
                         <th class="table-header">Ngày đặt</th>
                         <th class="table-header">Thời gian</th>
+                        <th class="table-header">Mã giảm giá</th>
                         <th class="table-header">Tổng số tiền</th>
                         <th class="table-header">Trạng thái</th>
                         <th class="table-header">Chi tiết</th>
@@ -92,6 +93,7 @@
                         <td th:text="${order.fullname}"></td>
                         <td th:text="${order.createDate}"></td>
                         <td th:text="${order.createTime}"></td>
+                        <td th:text="${order.id_voucher}"></td>
                         <td th:text="${order.formattedPrice}"></td>
                         <th:block th:if="${order.status == 1}">
                             <td><span class="order-status status-info">Đã đặt hàng</span></td>
