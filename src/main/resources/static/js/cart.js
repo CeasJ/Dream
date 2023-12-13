@@ -119,6 +119,9 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
   $scope.orderDetails = {};
   $scope.listOrder = [];
   $scope.selectedSizeID = "";
+  $scope.userAddressDB= "";
+  $scope.selectedVoucher = null;
+  $scope.numberHouse = "";
 
   $scope.selectOrder = function (orderID) {
     this.selectedOrderId = orderID;
@@ -127,7 +130,7 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
       .then((response) => {
         if (response.data) {
           $scope.listOrder = response.data;
-          console.log($scope.listOrder);
+          console.log(response.data);
         }
       })
       .catch((error) => {
@@ -144,8 +147,7 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
 
   $scope.getTotal = function () {
     let subTotal = $scope.getSubTotal();
-    let shippingCost = 20000;
-    return subTotal + shippingCost;
+    return subTotal ;
   };
 
   $http
@@ -218,8 +220,8 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
       $scope.selectedDistrict &&
       $scope.selectedWard
     ) {
-      $scope.order.address =
-        $scope.number +
+      $scope.userAddressWeb =
+        $scope.numberHouse +
         "," + " " +
         $scope.getSelectedWards($scope.selectedWard) +
         "," + " " +
@@ -344,6 +346,7 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
     status: 1,
     totalAmount: $scope.cart.amount,
     createTime: getCurrentTime(),
+    id_voucher:"",
 
     get orderDetails() {
       return $scope.cart.items.map((item) => {
@@ -358,28 +361,26 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
 
     purchaseOrder() {
       let order = angular.copy(this);
-      console.log($scope.cart.totalDiscount);
       $http
         .post(`/rest/order`, order)
         .then((resp) => {
           $scope.cart.clear();
           toastr.success('Order Success');
-          // location.href = "/order/detail/" + resp.data.id;
         })
         .catch((error) => { });
-    },
+    }
   };
 
-  $scope.selectedPaymentMethod = "";
 
   $scope.handlePaymentMethodChange = function () {
-    if ($scope.selectedPaymentMethod === "cash") {
+    console.log($scope.payment)
+    if ($scope.payment === 1) {
       $scope.order.purchaseOrder();
       $scope.completeButtonClicked();
-    } else if ($scope.selectedPaymentMethod === "vnpay") {
+    } else if ($scope.payment === 2) {
       $scope.order.purchaseOrder();
       location.href = "/vnpay";
-    } else if ($scope.selectedPaymentMethod === "paypal") {
+    } else if ($scope.payment=== 3) {
       location.href = "/paypal";
       $scope.completeButtonClicked();
     }
@@ -411,6 +412,13 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
         console.log('Error fetching data:', error);
     });
 
+    $http.get('/rest/order/address')
+    .then(function(response) {
+        $scope.userAddressDB = response.data.address; 
+    }, function(error) {
+        console.log('Error fetching data:', error);
+    });
+
     $scope.getRemainingTime = function(expireDate) {
         const oneDay = 24 * 60 * 60 * 1000;
         const today = new Date();
@@ -428,22 +436,31 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
         }
     };
 
-    // selected voucher listener
-   $scope.selectedVoucher = null;
-
    $scope.selectVoucher = function(voucher) {
        $scope.selectedVoucher = voucher;
+       console.log(voucher);
    };
 
    $scope.applyVoucher = function() {
-       if ($scope.selectedVoucher) {
-           const discountAmount = $scope.selectedVoucher.percent;
-           $scope.cart.totalDiscount = discountAmount;
-       }
+      if ($scope.selectedVoucher) {
+        const discountAmount = $scope.selectedVoucher.percent;
+        $scope.cart.totalDiscount = discountAmount;
+        $scope.order.id_voucher = parseInt($scope.selectedVoucher.id);
+        $scope.order.totalAmount = $scope.order.totalAmount - $scope.cart.totalDiscount;
+        console.log( $scope.order.totalAmount);
+      }
    };
 
 
+   $scope.changeAddress = function() {
+    if(parseInt($scope.userAddress) === 1){
+      $scope.order.address = $scope.userAddressDB;
+    } else if(parseInt($scope.userAddress) === 2){
+      $scope.order.address = $scope.userAddressWeb;
+    }
+   };
 
 });
 
 //Cart Control End
+

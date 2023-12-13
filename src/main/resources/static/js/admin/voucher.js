@@ -3,11 +3,10 @@ let voucherApp = angular.module("voucher_app", []);
 voucherApp.controller("voucher_ctrl", function ($scope, $http, $window) {
   $scope.vouchers = [];
   $scope.status = [];
+  $scope.types = [];
   $scope.defaultStatus = "";
   $scope.selectedStatus = $scope.defaultStatus;
   $scope.searchText = "";
-
-  // Display all vouchers
   $http.get("/rest/vouchers/all").then(
     function (response) {
       $scope.vouchers = response.data;
@@ -17,7 +16,6 @@ voucherApp.controller("voucher_ctrl", function ($scope, $http, $window) {
     }
   );
 
-  // Display voucher status on combobox
   $http.get("/rest/vouchers/voucherstatus/all").then(
     function (response) {
       $scope.status = response.data;
@@ -27,7 +25,15 @@ voucherApp.controller("voucher_ctrl", function ($scope, $http, $window) {
     }
   );
 
-  // Filter voucher based on status
+  $http.get("/rest/vouchers/type/all").then(
+    function (response) {
+      $scope.types = response.data;
+    },
+    function (error) {
+      console.error("Error fetching voucher status:", error);
+    }
+  );
+
   $scope.filterVouchers = function () {
     if ($scope.selectedStatus === "") {
       $http.get("/rest/vouchers/all").then(
@@ -50,7 +56,6 @@ voucherApp.controller("voucher_ctrl", function ($scope, $http, $window) {
     }
   };
 
-  // Searching features
   $scope.searchVouchers = function () {
     // Gọi API để lấy danh sách vouchers dựa trên giá trị tìm kiếm (searchText)
     $http.get("/rest/vouchers/search?name=" + $scope.searchText).then(
@@ -63,94 +68,81 @@ voucherApp.controller("voucher_ctrl", function ($scope, $http, $window) {
     );
   };
 
-  //   Delete voucher
   $scope.setVoucherToDelete = function (voucher) {
     $scope.voucherToDelete = voucher;
   };
 
   $scope.reset = function () {
-    $scope.name = "";
-    $scope.number = "";
-    $scope.expiredDate = new Date();
-    $scope.percent = "";
-    $scope.condition = "";
+    $scope.form = {
+      icon:"bi bi-cup-straw"
+    };
     $("#myModal").show("hide");
     // $scope.selectedIconClass
   };
 
-  $scope.updateSelectedIcon = function () {
-    console.log($scope.selectedIcon);
-    if ($scope.select === "cup") {
-      $scope.selectedIconClass = "bi bi-cup-straw";
-      console.log($scope.selectedIconClass);
-    } else if ($scope.select === "cake") {
-      $scope.selectedIconClass = "bi bi-cake2";
-      console.log($scope.selectedIconClass);
-    } else if ($scope.select === "truck") {
-      $scope.selectedIconClass = "bi bi-truck";
-      console.log($scope.selectedIconClass);
-    }
-  };
 
-  $scope.createVoucher = function () {
-    let voucher = {
-      name: $scope.name,
-      number: $scope.number,
-      createDate: new Date(),
-      expiredDate: $scope.expiredDate,
-      percent: $scope.percent,
-      condition: $scope.condition,
-      icon: $scope.selectedIconClass,
-      id_account: parseInt(1),
-      status: parseInt(1),
-    };
-    $http
+  $scope.voucher = {
+    name:"",
+    number:"",
+    createDate: new Date(),
+    expiredDate:"",
+    percent:"",
+    condition:"",
+    icon:"",
+    status:"",
+    id_account: "",
+    type:"",
+
+    createVoucher() {
+
+      let voucher = angular.copy(this);
+      console.log(voucher);
+      $http
       .post(`/rest/vouchers`, voucher)
       .then((resp) => {
         $scope.vouchers.push(resp.data);
         $scope.reset();
         toastr.success("Create Success");
         setTimeout(() => {
-          location.reload();
-        }, 1000);
-      })
-      .catch((err) => {
-        toastr.error("Create Fail");
-      });
+            location.reload();
+          }, 1000);
+        })
+        .catch((err) => {
+          toastr.error("Create Fail");
+        });
+      }
   };
 
   $scope.editVoucher = function (voucher) {
+    console.log(voucher);
     $scope.voucher = angular.copy(voucher);
-    if ($scope.voucher.icon === "bi bi-cup-straw") {
-      $scope.select = "cup";
-    } else if ($scope.voucher.icon === "bi bi-cake2") {
-      $scope.select = "cake";
-    } else if ($scope.voucher.icon === "bi bi-truck") {
-      $scope.select = "truck";
-    }
-    $scope.name = $scope.voucher.name;
-    $scope.number = $scope.voucher.number;
-    $scope.expiredDate = new Date($scope.voucher.expiredDate);
-    $scope.percent = $scope.voucher.percent;
-    $scope.condition = $scope.voucher.condition;
-    $scope.id = $scope.voucher.id;
+    $scope.voucher.expiredDate  = new Date(voucher.expiredDate);
   };
 
   $scope.updateVoucher = function () {
-    let voucher = {
-      id:$scope.id,
-      name: $scope.name,
-      number: $scope.number,
-      expiredDate: $scope.expiredDate,
-      percent: $scope.percent,
-      condition: $scope.condition,
-      icon: $scope.selectedIconClass,
-    };
-    console.log(voucher.id);
+   let voucher= angular.copy($scope.voucher);
     $http
       .put(`/rest/vouchers/${voucher.id}`, voucher)
       .then((resp) => {
         let index = $scope.vouchers.findIndex((v) => v.id == voucher.id);
+        $scope.vouchers[index] = voucher;
+        $scope.reset();
+        toastr.success("Update Success");
+        setTimeout(()=>{
+            location.reload();
+        },1000);
+      })
+      .catch((err) => {
+        toastr.error("Update Fail");
+      });
+  };
+
+  $scope.updateListVoucher = function () {
+   let voucher= angular.copy($scope.voucher);
+    $http
+      .put(`/rest/vouchers/${voucher.name}/${voucher.type}`, voucher)
+      .then((resp) => {
+        let index = $scope.vouchers.findIndex((v) => v.name === voucher.name && v.type === voucher.type);
         $scope.vouchers[index] = voucher;
         $scope.reset();
         toastr.success("Update Success");
@@ -195,5 +187,22 @@ voucherApp.controller("voucher_ctrl", function ($scope, $http, $window) {
         })
         .catch((error) => {});
     }
+  };
+
+  $scope.deleteListVoucherByNameAndIdType = function (name, idType) {
+      $http
+        .delete("/rest/vouchers/" + name + "/" + idType)
+        .then(function (response) {
+          $scope.vouchers = $scope.vouchers.filter(function (voucher) {
+            return voucher.name !== name && voucher.type !== type;
+          });
+
+          toastr.success("Xóa voucher thành công");
+
+          setTimeout(() => {
+            location.reload();
+          }, 1000);
+        })
+        .catch((error) => {});
   };
 });

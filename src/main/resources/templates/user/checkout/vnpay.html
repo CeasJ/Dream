@@ -60,7 +60,7 @@
                             <label for="orderInfo">Thông tin đơn hàng:</label>
                             <input th:value="${orderInfo}" type="text" class="form-control" id="orderInfo" name="orderInfo" required readonly>
                         </div>
-                        <button type="submit" class="btn btn-primary">Thanh toán</button>
+                        <button type="submit" class="btn btn-primary" ng-click="order.purchaseOrder()">Thanh toán</button>
                     </form>
                 </div>
             </div>

@@ -32,7 +32,7 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
     Page<Product> findByNameContainingIgnoreCase(String productName, Pageable pageable);
 
     // Discount products
-    @Query("SELECT p FROM Product p JOIN Discount d ON p.id = d.product.id WHERE d.activeDate <= current_date AND d.expiredDate >= current_date")
+    @Query("SELECT p FROM Product p JOIN Discount d ON p.category.id = d.category.id WHERE d.activeDate <= current_date AND d.expiredDate >= current_date")
     Page<Product> findSaleProducts(Pageable pageable);
 
     // Change price of product according to the chosen size

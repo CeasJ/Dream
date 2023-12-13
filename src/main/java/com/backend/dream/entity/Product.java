@@ -45,9 +45,9 @@ public class Product implements Serializable {
     @OneToMany(mappedBy= "product")
     private List<ProductSize> size;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "product")
-    private List<Discount> discount;
+//    @JsonIgnore
+//    @OneToMany(mappedBy = "product")
+//    private List<Discount> discount;
 
     @JsonIgnore
     @OneToMany(mappedBy = "product")

@@ -16,7 +16,7 @@ public class VoucherDTO {
 
     private String number;
 
-    private Date createDate;
+    private Date createDate = new Date();
 
     private Date expiredDate;
 
@@ -30,4 +30,6 @@ public class VoucherDTO {
     private Long id_account;
 
     private Long status;
+
+    private Long type;
 }

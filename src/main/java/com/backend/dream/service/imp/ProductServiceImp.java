@@ -11,6 +11,7 @@ import com.backend.dream.service.DiscountService;
 import com.backend.dream.service.FeedbackService;
 import com.backend.dream.service.ProductService;
 import com.backend.dream.service.ProductSizeService;
+import com.backend.dream.util.ExcelUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +19,8 @@ import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -145,9 +148,9 @@ public class ProductServiceImp implements ProductService {
 
 
     @Override
-    public double getDiscountedPrice(Long productId) {
-        DiscountDTO discount = discountService.getDiscountByProductId(productId);
-        double originalPrice = getOriginalProductPrice(productId);
+    public double getDiscountedPrice(Long categoryID) {
+        DiscountDTO discount = discountService.getDiscountByCategoryId(categoryID);
+        double originalPrice = getOriginalProductPrice(categoryID);
 
         if (discount != null) {
             double discountPercent = discount.getPercent();
@@ -169,15 +172,15 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
-    public double getProductPriceBySize(Long productId, Long sizeId) {
-        double originalPrice = getOriginalProductPrice(productId);
+    public double getProductPriceBySize(Long categoryID, Long sizeId) {
+        double originalPrice = getOriginalProductPrice(categoryID);
 
         // Fetch the size-specific price from the repository
-        Optional<ProductSize> productSize = productSizeRepository.findByProductIdAndSizeId(productId, sizeId);
+        Optional<ProductSize> productSize = productSizeRepository.findByProductIdAndSizeId(categoryID, sizeId);
 
         if (productSize.isPresent()) {
             double sizeSpecificPrice = productSize.get().getPrice();
-            DiscountDTO discount = discountService.getDiscountByProductId(productId);
+            DiscountDTO discount = discountService.getDiscountByCategoryId(categoryID);
 
             if (discount != null) {
                 double discountPercent = discount.getPercent();
@@ -191,8 +194,8 @@ public class ProductServiceImp implements ProductService {
         }
     }
 
-    public double getDiscountPercentByProductId(Long productId) {
-        DiscountDTO discountDTO = discountService.getDiscountByProductId(productId);
+    public double getDiscountPercentByProductId(Long categoryID) {
+        DiscountDTO discountDTO = discountService.getDiscountByCategoryId(categoryID);
         if (discountDTO != null) {
             return discountDTO.getPercent();
         }
@@ -218,5 +221,12 @@ public class ProductServiceImp implements ProductService {
             productDTO.setAverageRating(feedbackService.getAverageRating(product.getId()));
             return productDTO;
         });
+    }
+
+    @Override
+    public ByteArrayInputStream getdataProduct() throws IOException {
+        List<Product> products = productRepository.findAll();
+        ByteArrayInputStream data = ExcelUtil.dataToExcel(products);
+        return data;
     }
 }

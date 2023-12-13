@@ -78,85 +78,6 @@ app.controller("order_ctrl", function ($scope, $http) {
     $http.get(`/rest/order/confirm`).then((resp) => {
       $scope.listOrdersConfirmed = resp.data;
     });
-app.controller("order_ctrl", function ($scope, $http) {
-  $scope.listOrders = [];
-  $scope.listOrdersConfirmed = [];
-  $scope.listOrdersCancelled = [];
-  $scope.listOrdersSuccessful = [];
-  $scope.listOrderIsShipping = [];
-  $scope.orderDetails = {};
-  $scope.listOrder = [];
-  $scope.status = [];
-
-  $scope.selectedStatusChanged = function () {
-    const statusMappings = {
-      1: "order",
-      2: "order-confirm",
-      3: "order-shipping",
-      4: "order-success",
-      5: "order-cancel",
-    };
-
-    Object.values(statusMappings).forEach((id) => {
-      document.getElementById(id).style.display = "none";
-    });
-
-    const selectedID = statusMappings[$scope.selectedStatus];
-    if (selectedID) {
-      document.getElementById(selectedID).style.display = "block";
-    }
-  };
-
-  $scope.selectOrder = function (orderID) {
-    this.selectedOrderId = orderID;
-    $http
-      .get("/detail/" + this.selectedOrderId)
-      .then((response) => {
-        if (response.data) {
-          $scope.listOrder = response.data;
-        }
-      })
-      .catch((error) => {});
-  };
-
-  $scope.getSubTotal = function () {
-	  let subTotal = 0;
-	  angular.forEach($scope.listOrder, function (orderDetail) {
-		  subTotal += orderDetail.quantity * orderDetail.price;
-		});
-		return subTotal;
-	};
-	
-	$scope.getTotal = function () {
-		let subTotal = $scope.getSubTotal();
-		return subTotal;
-	};
-	
-	$scope.initialize = function () {
-	  if (
-		$scope.selectedStatus === null ||
-		$scope.selectedStatus === undefined ||
-		isNaN($scope.selectedStatus) ||
-		$scope.selectedStatus === ""
-	  ) {
-		document.getElementById("order").style.display = "block";
-		document.getElementById("order-confirm").style.display = "none";
-		document.getElementById("order-shipping").style.display = "none";
-		document.getElementById("order-cancel").style.display = "none";
-		document.getElementById("order-success").style.display = "none";
-	}
-
-    $http.get(`/rest/order`).then((resp) => {
-      $scope.listOrders = resp.data;
-    });
-	
-    $http.get(`/rest/order/status`).then((resp) => {
-      $scope.status = resp.data;
-    });
-
-    $http.get(`/rest/order/confirm`).then((resp) => {
-      $scope.listOrdersConfirmed = resp.data;
-    });
 
     $http.get(`/rest/order/cancel`).then((resp) => {
       $scope.listOrdersCancelled = resp.data;
@@ -171,17 +92,12 @@ app.controller("order_ctrl", function ($scope, $http) {
     });
 
   };
-    $http.get(`/rest/order/ship`).then((resp) => {
-      $scope.listOrderIsShipping = resp.data;
-    });
-
-  };
 
   $scope.initialize();
-  $scope.initialize();
+
 
   $scope.updateOrder = {
-    confirmOrder(orderID, newStatus) {
+    confirmOrder(orderID) {
       let orderToUpdate = $scope.listOrders.find(function (order) {
         return order.id === orderID;
       });
@@ -191,41 +107,69 @@ app.controller("order_ctrl", function ($scope, $http) {
         $http
           .put(`/rest/order/${orderToUpdate.id}`, updateOrder)
           .then((resp) => {
-            toastr.success('Confirm Order Success');
-            setTimeout(()=>{
-              $scope.initialize();
-              $scope.selectedStatusChanged(newStatus);
-            },2000);
+            $scope.initialize();
+            $scope.selectedStatusChanged(2);
           })
-          .catch((err) => {
-            toastr.error('Confirm Order Fail');
-          });
+          .catch((err) => {});
       }
     },
 
-    cancelOrder(orderID, newStatus) {
+    cancelOrder(orderID) {
+      let orderToUpdateWhenOrderConfirm = $scope.listOrdersConfirmed.find(
+        function (order) {
+          return order.id === orderID;
+        }
+      );
+
       let orderUpdateWhenOrder = $scope.listOrders.find(function (order) {
         return order.id === orderID;
       });
 
-      if (orderUpdateWhenOrder) {
+      let orderUpdateWhenOrderIsShipping = $scope.listOrderIsShipping.find(
+        function (order) {
+          return order.id === orderID;
+        }
+      );
+
+      if (orderToUpdateWhenOrderConfirm) {
+        let orderCancel = angular.copy(orderToUpdateWhenOrderConfirm);
+        orderCancel.status = 5;
+        $http
+          .put(
+            `/rest/order/cancel/${orderToUpdateWhenOrderConfirm.id}`,
+            orderCancel
+          )
+          .then((resp) => {
+            $scope.initialize();
+            $scope.selectedStatusChanged(5);
+          })
+          .catch((err) => {});
+        } else if (orderUpdateWhenOrder) {
           let orderCancel = angular.copy(orderUpdateWhenOrder);
           orderCancel.status = 5;
           $http
           .put(`/rest/order/cancel/${orderUpdateWhenOrder.id}`, orderCancel)
           .then((resp) => {
-            toastr.warning('Cancel Order Success');
-            setTimeout(()=>{
+            $scope.initialize();
+            $scope.selectedStatusChanged(5);
+          })
+          .catch((err) => {});
+        } else if (orderUpdateWhenOrderIsShipping) {
+          let orderCancel = angular.copy(orderUpdateWhenOrderIsShipping);
+          orderCancel.status = 5;
+          $http
+          .put(
+            `/rest/order/cancel/${orderUpdateWhenOrderIsShipping.id}`,
+            orderCancel
+            )
+            .then((resp) => {
               $scope.initialize();
-              $scope.selectedStatusChanged(newStatus);
-            },2000);
+              $scope.selectedStatusChanged(5);
             })
-          .catch((err) => {
-            toastr.error('Cancel Order Fail');
-          });
-        } 
+            .catch((err) => {});
+          }
     },
-    resetOrder(orderID, newStatus) {
+    resetOrder(orderID) {
       let orderToUpdate = $scope.listOrdersCancelled.find(function (order) {
         return order.id === orderID;
       });
@@ -235,18 +179,13 @@ app.controller("order_ctrl", function ($scope, $http) {
         $http
           .put(`/rest/order/reset/${orderToUpdate.id}`, orderReset)
           .then((resp) => {
-            toastr.success('Reset Order Success');
-            setTimeout(()=>{
-              $scope.initialize();
-              $scope.selectedStatusChanged(newStatus);
-            },2000);
+            $scope.initialize();
+            $scope.selectedStatusChanged(2);
           })
-          .catch((err) => {
-            toastr.error('Reset Order Fail');
-          });
+          .catch((err) => {});
         }
       },
-      successOrder(orderID, newStatus) {
+      successOrder(orderID) {
         let orderToUpdate = $scope.listOrdersConfirmed.find(function (order) {
         return order.id === orderID;
       });
@@ -263,15 +202,10 @@ app.controller("order_ctrl", function ($scope, $http) {
           $http
           .put(`/rest/order/success/${orderToUpdate.id}`, orderSuccess)
           .then((resp) => {
-            toastr.success('Order Success');
-            setTimeout(()=>{
-              $scope.initialize();
-              $scope.selectedStatusChanged(newStatus);
-            },2000);
+            $scope.initialize();
+            $scope.selectedStatusChanged(4);
           })
-          .catch((err) => {
-            toastr.error('Order Fail');
-          });
+          .catch((err) => {});
         } else if (orderUpdateWhenOrderIsShipping) {
           let orderSuccess = angular.copy(orderUpdateWhenOrderIsShipping);
           orderSuccess.status = 4;
@@ -281,18 +215,13 @@ app.controller("order_ctrl", function ($scope, $http) {
             orderSuccess
             )
             .then((resp) => {
-            toastr.success('Order Success');
-            setTimeout(()=>{
               $scope.initialize();
-              $scope.selectedStatusChanged(newStatus);
-            },2000);
+              $scope.selectedStatusChanged(4);
             })
-            .catch((err) => {
-            toastr.error('Order Fail');
-            });
+            .catch((err) => {});
           }
         },
-        shippingOrder(orderID,newStatus) {
+        shippingOrder(orderID) {
           let orderToUpdate = $scope.listOrdersConfirmed.find(function (order) {
             return order.id === orderID;
           });
@@ -303,16 +232,10 @@ app.controller("order_ctrl", function ($scope, $http) {
         $http
         .put(`/rest/order/ship/${orderToUpdate.id}`, orderIsShipping)
         .then((resp) => {
-          toastr.success('Change Status Order Success');
-          setTimeout(()=>{
-            $scope.initialize();
-            $scope.selectedStatusChanged(newStatus);
-          },2000);
+          $scope.initialize();
+          $scope.selectedStatusChanged(3);
           })
-          .catch((err) => {
-          toastr.error('Change Status Order Fail');
-
-          });
+          .catch((err) => {});
       }
     },
   };

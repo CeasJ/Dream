@@ -3,6 +3,7 @@ package com.backend.dream.service.imp;
 import com.backend.dream.dto.OrderDTO;
 import com.backend.dream.dto.OrderDetailDTO;
 import com.backend.dream.entity.Orders;
+import com.backend.dream.entity.Voucher;
 import com.backend.dream.mapper.OrderDetailMapper;
 import com.backend.dream.mapper.OrderMapper;
 import com.backend.dream.repository.OrderDetailRepository;
@@ -49,6 +50,9 @@ public class OrderServiceImp implements OrderService {
 
 
         Orders orders = orderMapper.orderDTOToOrder(orderDTO);
+        if (orderDTO.getId_voucher() == null){
+            orders.setVoucher(null);
+        }
 
         orderRepository.save(orders);
 
