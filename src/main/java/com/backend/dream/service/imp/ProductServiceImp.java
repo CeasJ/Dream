@@ -11,6 +11,7 @@ import com.backend.dream.service.DiscountService;
 import com.backend.dream.service.FeedbackService;
 import com.backend.dream.service.ProductService;
 import com.backend.dream.service.ProductSizeService;
+import com.backend.dream.util.ExcelUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +19,8 @@ import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -218,5 +221,12 @@ public class ProductServiceImp implements ProductService {
             productDTO.setAverageRating(feedbackService.getAverageRating(product.getId()));
             return productDTO;
         });
+    }
+
+    @Override
+    public ByteArrayInputStream getdataProduct() throws IOException {
+        List<Product> products = productRepository.findAll();
+        ByteArrayInputStream data = ExcelUtil.dataToExcel(products);
+        return data;
     }
 }
