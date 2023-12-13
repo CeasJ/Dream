@@ -11646,6 +11646,7 @@ body {
 
 .notification-icon:hover .notification-dropdown {
   display: block;
+  max-width: 400px;
 }
 
 .notification-dropdown .notification-title {
@@ -11800,4 +11801,17 @@ body {
   font-size: 28px;
   margin-left: 10px;
   font-weight: bold;
+}
+
+.sb-sidenav .sb-sidenav-menu::-webkit-scrollbar {
+  width: 10px !important;
+}
+
+/* Optionally, you can style the scrollbar */
+.sb-sidenav .sb-sidenav-menu::-webkit-scrollbar-thumb {
+  background-color: #c0c0c0; /* Scrollbar thumb color */
+}
+
+.sb-sidenav .sb-sidenav-menu::-webkit-scrollbar-track {
+  background-color: #f8f8ff; /* Scrollbar track color */
 }

@@ -74,7 +74,7 @@
             <table class="table table-hs text-center table-hover table-responsive">
                 <thead class="table-dark">
                     <tr>
-                        <th class="table-header">No.</th>
+                        <th class="table-header">STT.</th>
                         <th class="table-header">Mã đơn hàng</th>
                         <th class="table-header">Tên người đặt</th>
                         <th class="table-header">Ngày đặt</th>
@@ -203,6 +203,7 @@
                                                 <th th:text="#{modal.orderDetail.table.heading.image}"></th>
                                                 <th th:text="#{modal.orderDetail.table.heading.productName}"></th>
                                                 <th th:text="#{modal.orderDetail.table.heading.quantity}"></th>
+                                                <th>Kích cỡ</th>
                                                 <th th:text="#{modal.orderDetail.table.heading.price}"></th>
                                                 <th th:text="#{modal.orderDetail.table.heading.total}"></th>
                                             </tr>
@@ -221,19 +222,19 @@
                                                 <td>{{orderDetail.quantity * orderDetail.price | number :0}} đ</td>
                                             </tr>
                                             <tr>
-                                                <td colspan="5" class="text-end">
+                                                <td colspan="6" class="text-end">
                                                     <strong th:text="#{modal.orderDetail.table.subtotal}"></strong>
                                                 </td>
                                                 <td>{{getSubTotal() | number : 0}} đ</td>
                                             </tr>
                                             <tr>
-                                                <td colspan="5" class="text-end">
+                                                <td colspan="6" class="text-end">
                                                     <strong th:text="#{modal.orderDetail.table.shippingCost}"></strong>
                                                 </td>
                                                 <td>20.000 đ</td>
                                             </tr>
                                             <tr>
-                                                <td colspan="5" class="text-end">
+                                                <td colspan="6" class="text-end">
                                                     <strong th:text="#{modal.orderDetail.table.total}"></strong>
                                                 </td>
                                                 <th class="text-success">{{getTotal() | number : 0}} đ</th>

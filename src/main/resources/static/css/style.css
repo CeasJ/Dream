@@ -235,13 +235,12 @@ body {
 .notification-dropdown {
     position: absolute;
     top: 154%;
-    left: 50%;
+    left: -120%;
     transform: translateX(-50%);
     background-color: #ffffff;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     display: none;
     width: 400px;
-    max-height: 300px;
     overflow: auto;
 }
 .notification-dropdown .notification-title {
@@ -255,6 +254,7 @@ body {
 }
 .notification-icon:hover .notification-dropdown {
     display: block;
+    max-width: 400px;
 }
 
 .notification-dropdown .notification-content {
