@@ -29,8 +29,6 @@ public class StaffRestController {
     @PostMapping("/add")
     public Account createStaff(@RequestBody AccountDTO accountDTO, Model model) {
         String username = accountDTO.getUsername();
-        System.out.println(accountDTO.getUsername());
-        System.out.println(accountDTO.getPassword());
         return accountService.isUsernameExists(username) ? null : accountService.createStaff(accountDTO);
     }
 

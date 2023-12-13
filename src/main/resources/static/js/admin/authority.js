@@ -1,28 +1,31 @@
 const app = angular.module("authority-app", []);
-app.controller("authority-ctrl", function ($scope, $http, $location) {
+app.controller("authority-ctrl", function ($scope, $http, $location,$timeout) {
   $scope.roles = [];
   $scope.listStaff = [];
   $scope.authorities = [];
+  $scope.staff = [];
+
+  var timeout;
 
   $scope.initialize = function () {
     $http.get(`/rest/roles`).then((resp) => {
       $scope.roles = resp.data;
     });
 
-
     $http.get(`/rest/staff/admin?admin=true`).then((resp) => {
       $scope.listStaff = resp.data;
     });
 
-    $http.get(`/rest/authorities?admin=true`).then((resp) => {
-      $scope.authorities = resp.data;
-    })
+    $http
+      .get(`/rest/authorities?admin=true`)
+      .then((resp) => {
+        $scope.authorities = resp.data;
+      })
       .catch((error) => {
-        $location.path(`/security/login/unauthoried`);
+        $location.path(`/login/unauthorized`);
       });
 
-
-      $scope.avatar = "default.png";
+    $scope.avatar = "default.png";
   };
   $scope.initialize();
 
@@ -52,7 +55,7 @@ app.controller("authority-ctrl", function ($scope, $http, $location) {
         toastr.success("Authorization successful");
       })
       .catch((error) => {
-        toastr.error('Authorization Fail');
+        toastr.error("Authorization Fail");
       });
   };
 
@@ -65,34 +68,32 @@ app.controller("authority-ctrl", function ($scope, $http, $location) {
         toastr.success("Permissions revoked successfully");
       })
       .catch((err) => {
-        toastr.error('Permissions revoked Fail');
-
+        toastr.error("Permissions revoked Fail");
       });
   };
 
-
   $scope.clearForm = function () {
-     $scope.username = "";
-     $scope.firstname = "" ;
-     $scope.lastname = "";
-     $scope.password =""; 
-     $scope.email =""; 
-     $scope.phone ="";
-     $scope.avatar = "default.png";
-     $scope.address ="";
+    $scope.username = "";
+    $scope.firstname = "";
+    $scope.lastname = "";
+    $scope.password = "";
+    $scope.email = "";
+    $scope.phone = "";
+    $scope.avatar = "default.png";
+    $scope.address = "";
   };
 
   $scope.saveAccount = function () {
     let account = {
       username: $scope.username,
-      fullname: $scope.firstname + ' ' +$scope.lastname,
+      fullname: $scope.firstname + " " + $scope.lastname,
       password: $scope.password,
       email: $scope.email,
       phone: $scope.phone,
       firstname: $scope.firstname,
       lastname: $scope.lastname,
       avatar: $scope.avatar,
-      address: $scope.address
+      address: $scope.address,
     };
     let existUsername = $scope.listStaff.find(function (staff) {
       return staff.username === account.username;
@@ -106,12 +107,11 @@ app.controller("authority-ctrl", function ($scope, $http, $location) {
           $scope.listStaff.push(response.data);
           $scope.clearForm();
           toastr.success("Create Successful");
-          setTimeout(()=>{
+          setTimeout(() => {
             location.reload();
-          },1000);
-        
+          }, 1000);
         })
-        .catch(function (err) { 
+        .catch(function (err) {
           toastr.error("Create Fail");
         });
     }
@@ -138,4 +138,20 @@ app.controller("authority-ctrl", function ($scope, $http, $location) {
       });
   };
 
+  $scope.getInformation = function(account) {
+    $scope.form = angular.copy(account);
+  };
+
+  $scope.autoCompleteAddress = function () {
+    if(timeout){
+      $timeout.cancel(timeout);
+    }
+
+    timeout = $timeout(function(){
+        $http.get(`https://rsapi.goong.io/Place/AutoComplete?api_key=GXxEBBNR5xvIezVsTctnwdM9MznM7HB8bzjCXBvh&input=` + encodeURIComponent($scope.address)).then((resp) => {
+          $scope.address = resp.data.predictions[0].description;
+        });
+    },2000);
+  };
+  
 });

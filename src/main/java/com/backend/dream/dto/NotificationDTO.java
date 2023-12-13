@@ -9,8 +9,12 @@ import java.sql.Timestamp;
 @Setter
 public class NotificationDTO {
     private Long id;
+
     private Long idAccount;
+
     private String notificationText;
+
     private Timestamp createdTime;
 
+    private Long id_role;
 }

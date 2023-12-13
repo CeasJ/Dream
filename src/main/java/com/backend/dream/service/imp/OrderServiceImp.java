@@ -3,24 +3,19 @@ package com.backend.dream.service.imp;
 import com.backend.dream.dto.OrderDTO;
 import com.backend.dream.dto.OrderDetailDTO;
 import com.backend.dream.entity.Orders;
-import com.backend.dream.entity.Voucher;
 import com.backend.dream.mapper.OrderDetailMapper;
 import com.backend.dream.mapper.OrderMapper;
 import com.backend.dream.repository.OrderDetailRepository;
 import com.backend.dream.repository.OrderRepository;
 import com.backend.dream.service.OrderService;
+import com.backend.dream.service.QrCodeService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Time;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -41,6 +36,8 @@ public class OrderServiceImp implements OrderService {
     private OrderDetailRepository orderDetailRepository;
     @Autowired
     private OrderDetailMapper orderDetailMapper;
+    @Autowired
+    private QrCodeService qrCodeService;
 
     @Override
     public Orders create(JsonNode orderData) throws NoSuchElementException, NullPointerException, ParseException {
@@ -56,13 +53,14 @@ public class OrderServiceImp implements OrderService {
 
         orderRepository.save(orders);
 
+        qrCodeService.generateQrCode("Your order number " + String.valueOf(orders.getId()) + " " + "has been paid successfully");
         TypeReference<List<OrderDetailDTO>> type = new TypeReference<List<OrderDetailDTO>>() {
         };
 
         List<OrderDetailDTO> details = mapper.convertValue(orderData.get("orderDetails"), type)
                 .stream().peek(d -> d.setId_order(orders.getId())).collect(Collectors.toList());
 
-        orderDetailRepository.saveAll(orderDetailMapper.listOrderDetaiDTOlToListOrderDetail(details));
+        orderDetailRepository.saveAll(orderDetailMapper.listOrderDetailDTOlToListOrderDetail(details));
 
         return orders;
     }
@@ -106,6 +104,9 @@ public class OrderServiceImp implements OrderService {
     @Override
     public OrderDTO updateOrder(OrderDTO orderDTO) throws ClassNotFoundException, NoSuchElementException {
         Orders orders = orderMapper.orderDTOToOrder(orderDTO);
+        if (orderDTO.getId_voucher() == null){
+            orders.setVoucher(null);
+        }
         Orders updateOrder = orderRepository.save(orders);
         return orderMapper.orderToOrderDTO(updateOrder);
     }

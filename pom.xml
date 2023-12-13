@@ -20,8 +20,20 @@
 		<org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
 		<org.projectlombok.version>1.18.30</org.projectlombok.version>
 		<lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
+		<com.google.zxing>3.5.2</com.google.zxing>
+		<com.google.zxing.javase>3.5.2</com.google.zxing.javase>
 	</properties>
 	<dependencies>
+		<dependency>
+			<groupId>com.google.zxing</groupId>
+			<artifactId>javase</artifactId>
+			<version>${com.google.zxing.javase}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.zxing</groupId>
+			<artifactId>core</artifactId>
+			<version>${com.google.zxing}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.thymeleaf.extras</groupId>
 			<artifactId>thymeleaf-extras-java8time</artifactId>
