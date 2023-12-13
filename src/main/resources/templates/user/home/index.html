@@ -39,37 +39,39 @@
 </head>
 
 <body ng-app="cart_app" ng-controller="ctrl">
-<div th:if="${activeDiscounts != null and activeDiscounts.size() > 0}">
-    <div class="modal fade discountModal" id="discountModal" tabindex="-1" aria-labelledby="discountModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <img src="/img/gallery/christmas.png" class="img-fluid">
-                    <div class="custom-close-btn" data-bs-dismiss="modal" aria-label="Close"><i
-                            class="bi bi-x-lg"></i></div>
-                    <div class="content-overlay">
-                        <p style="font-size: 40px; margin-bottom: 5px;" class="modal-title fw-bold"
-                           id="discountModalLabel" th:text="${activeDiscounts[0].name}"></p>
-                        <p style="text-align: center;">
-                            <span class="discount-text">Giảm đến </span>
-                            <span style="font-size: 70px;" th:text="${#numbers.formatDecimal(activeDiscounts[0].percent*100, 0, 'COMMA', 0, 'POINT')}"></span>
-                            <span style="font-size: 70px;">% </span>
-                            <span class="ms-2" style="font-size: 30px;">tất cả sản phẩm</span>
-                            <br style="margin-bottom: 20px;" />
-                            <span style="font-size: 18px;"
-                                  th:text="'Sự kiện diễn ra từ ' + ${#dates.format(activeDiscounts[0].activeDate, 'dd/MM/yyyy')} + ' đến ' + ${#dates.format(activeDiscounts[0].expiredDate, 'dd/MM/yyyy')}"></span>
-                        </p>
+    <div th:if="${activeDiscounts != null and activeDiscounts.size() > 0}">
+        <div class="modal fade discountModal" id="discountModal" tabindex="-1" aria-labelledby="discountModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <img src="/img/gallery/christmas.png" class="img-fluid">
+                        <div class="custom-close-btn" data-bs-dismiss="modal" aria-label="Close"><i
+                                class="bi bi-x-lg"></i></div>
+                        <div class="content-overlay">
+                            <p style="font-size: 40px; margin-bottom: 5px;" class="modal-title fw-bold"
+                                id="discountModalLabel" th:text="${activeDiscounts[0].name}"></p>
+                            <p style="text-align: center;">
+                                <span class="discount-text">Giảm đến </span>
+                                <span style="font-size: 70px;" th:text="${activeDiscounts[0].percent}"></span>
+                                <span style="font-size: 70px;">% </span>
+                                <span class="ms-2" style="font-size: 30px;">tất cả sản phẩm</span>
+                                <br style="margin-bottom: 20px;" />
+                                <span style="font-size: 18px;"
+                                    th:text="'Sự kiện diễn ra từ ' + ${#dates.format(activeDiscounts[0].activeDate, 'dd/MM/yyyy')} + ' đến ' + ${#dates.format(activeDiscounts[0].expiredDate, 'dd/MM/yyyy')}"></span>
+                            </p>
 
-                        <div class="link-discount">
-                            <a class="btn btn-outline-light" th:href="@{|/store|}" target="_blank">Mua ngay!</a>
+                            <div class="link-discount">
+                                <a class="btn btn-outline-light" th:href="@{|/store|}" target="_blank">Mua ngay!</a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+
+
     <!-- Navbar Start -->
     <div th:replace="~{/user/component/header.html}"></div>
     <!-- Navbar End -->
@@ -108,4 +110,5 @@
         myModal.show();
     }
 </script>
+
 </html>
