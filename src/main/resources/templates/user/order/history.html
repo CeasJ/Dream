@@ -70,53 +70,51 @@
         </div>
         <!-- Page Header End -->
 
-    <!-- History Start -->
-    <div class="container" style="margin-top: 30px;">
-        <table class="table table-hs text-center table-hover table-responsive">
-            <thead class="table-dark">
-            <tr>
-                <th class="table-header">No.</th>
-                <th class="table-header">Mã đơn hàng</th>
-                <th class="table-header">Tên người đặt</th>
-                <th class="table-header">Ngày đặt</th>
-                <th class="table-header">Thời gian</th>
-                <th class="table-header">Tổng số tiền</th>
-                <th class="table-header">Mã giảm giá</th>
-                <th class="table-header">Trạng thái</th>
-                <th class="table-header">Chi tiết</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="order,state : ${listOrder}">
-                <td th:text="${state.index + 1}"></td>
-                <td th:text="${order.id}"></td>
-                <td th:text="${order.fullname}"></td>
-                <td th:text="${order.createDate}"></td>
-                <td th:text="${order.createTime}"></td>
-                <td th:text="${order.formattedPrice}"></td>
-                <td th:text="${order.name_voucher}"></td>
-                <th:block th:if="${order.status == 1}">
-                    <td><span class="order-status status-info">Đã đặt hàng</span></td>
-                </th:block>
-                <th:block th:if="${order.status == 2}">
-                    <td><span class="order-status status-blue">Đã xác nhận</span></td>
-                </th:block>
-                <th:block th:if="${order.status == 3}">
-                    <td><span class="order-status status-warning">Đang giao</span></td>
-                </th:block>
-                <th:block th:if="${order.status == 4}">
-                    <td><span class="order-status status-success">Đã giao hàng</span></td>
-                </th:block>
-                <th:block th:if="${order.status == 5}">
-                    <td><span class="order-status status-failed">Đã hủy</span></td>
-                </th:block>
-                <td>
-                    <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#orderModal"
-                            th:attr="ng-click=@{|selectOrder(${order.id})|}">
-                        <i class="fas fa-eye"></i>
-                    </button>
-                </td>
-            </tr>
+        <!-- History Start -->
+        <div class="container" style="margin-top: 30px;">
+            <table class="table table-hs text-center table-hover table-responsive">
+                <thead class="table-dark">
+                    <tr>
+                        <th class="table-header">STT.</th>
+                        <th class="table-header">Mã đơn hàng</th>
+                        <th class="table-header">Tên người đặt</th>
+                        <th class="table-header">Ngày đặt</th>
+                        <th class="table-header">Thời gian</th>
+                        <th class="table-header">Tổng số tiền</th>
+                        <th class="table-header">Trạng thái</th>
+                        <th class="table-header">Chi tiết</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="order,state : ${listOrder}">
+                        <td th:text="${state.index + 1}"></td>
+                        <td th:text="${order.id}"></td>
+                        <td th:text="${order.fullname}"></td>
+                        <td th:text="${order.createDate}"></td>
+                        <td th:text="${order.createTime}"></td>
+                        <td th:text="${order.formattedPrice}"></td>
+                        <th:block th:if="${order.status == 1}">
+                            <td><span class="order-status status-info">Đã đặt hàng</span></td>
+                        </th:block>
+                        <th:block th:if="${order.status == 2}">
+                            <td><span class="order-status status-blue">Đã xác nhận</span></td>
+                        </th:block>
+                        <th:block th:if="${order.status == 3}">
+                            <td><span class="order-status status-warning">Đang giao</span></td>
+                        </th:block>
+                        <th:block th:if="${order.status == 4}">
+                            <td><span class="order-status status-success">Đã giao hàng</span></td>
+                        </th:block>
+                        <th:block th:if="${order.status == 5}">
+                            <td><span class="order-status status-failed">Đã hủy</span></td>
+                        </th:block>
+                        <td>
+                            <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#orderModal"
+                                th:attr="ng-click=@{|selectOrder(${order.id})|}">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </td>
+                    </tr>
 
                     <!-- Thêm các dòng dữ liệu khác tại đây -->
                 </tbody>
@@ -206,6 +204,7 @@
                                                 <th th:text="#{modal.orderDetail.table.heading.image}"></th>
                                                 <th th:text="#{modal.orderDetail.table.heading.productName}"></th>
                                                 <th th:text="#{modal.orderDetail.table.heading.quantity}"></th>
+                                                <th>Kích cỡ</th>
                                                 <th th:text="#{modal.orderDetail.table.heading.price}"></th>
                                                 <th th:text="#{modal.orderDetail.table.heading.total}"></th>
                                             </tr>
@@ -224,22 +223,16 @@
                                                 <td>{{orderDetail.quantity * orderDetail.price | number :0}} đ</td>
                                             </tr>
                                             <tr>
-                                                <td colspan="5" class="text-end">
+                                                <td colspan="6" class="text-end">
                                                     <strong th:text="#{modal.orderDetail.table.subtotal}"></strong>
                                                 </td>
                                                 <td>{{getSubTotal() | number : 0}} đ</td>
                                             </tr>
                                             <tr>
-                                                <td colspan="5" class="text-end">
+                                                <td colspan="6" class="text-end">
                                                     <strong th:text="#{modal.orderDetail.table.shippingCost}"></strong>
                                                 </td>
-                                                <td>30.000 đ</td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="5" class="text-end">
-                                                    <strong  th:text="#{modal.orderDetail.table.discountVoucher}"> </strong>
-                                                </td>
-                                                <td>{{listOrder[0].discount | number : 0}} đ</td>
+                                                <td>20.000 đ</td>
                                             </tr>
                                             <tr>
                                                 <td colspan="5" class="text-end">
@@ -293,7 +286,7 @@
         <!-- Copyright End -->
 
         <!-- Back to Top -->
-        <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top">
+        <a href="#" class="btn btn-lg btn-dark btn-lg-square rounded-circle back-to-top">
             <i class="bi bi-arrow-up"></i>
         </a>
 

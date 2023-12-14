@@ -52,4 +52,9 @@ public class AdminController {
     public String voucher() {
         return "/admin/home/voucher";
     }
+
+    @RequestMapping("/admin/blockaccount")
+    public String blockaccount() {
+        return "/admin/home/blockaccount";
+    }
 }

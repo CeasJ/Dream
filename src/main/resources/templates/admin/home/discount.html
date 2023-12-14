@@ -14,10 +14,10 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.js"></script>
     <!-- jQuery -->
-   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <!-- toastr -->
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 </head>
 
 <body class="sb-nav-fixed" ng-app="discount-app" ng-controller="discount-ctrl">
@@ -66,6 +66,7 @@
                                         <th>DiscountPercent</th>
                                         <th>ActiveDate</th>
                                         <th>Expiredate</th>
+                                        <th>Status</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -163,8 +164,20 @@
                                                         placeholder="Discount Percent" />
                                                 </div>
                                             </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="fw-bold mb-3">Category</label>
+                                                    <select ng-model="form.idcategory" class="form-control"
+                                                        name="category" id="category">
+                                                        <option value="" selected disabled>Select a category
+                                                        </option>
+                                                        <option ng-repeat="c in cates" ng-value="c.id">{{c.name}}
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="row mb-3">
+                                        <div class="row mb-4">
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label class="fw-bold mb-3">ActiveDate</label>
@@ -183,29 +196,19 @@
                                         <div class="row mb-3">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label class="fw-bold mb-3">Active</label>
+                                                    <label class="fw-bold mb-3 me-3">Active</label>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" ng-model="form.active"
-                                                            id="radio1" name="active" ng-value="true" ng-required />
+                                                        <input class="form-check-input" type="radio"
+                                                            ng-model="form.active" id="radio1" name="active"
+                                                            ng-value="true" ng-required />
                                                         <label class="form-check-label" for="radio1">Yes</label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" ng-model="form.active"
-                                                            id="radio2" name="active" ng-value="false" ng-required />
+                                                        <input class="form-check-input" type="radio"
+                                                            ng-model="form.active" id="radio2" name="active"
+                                                            ng-value="false" ng-required />
                                                         <label class="form-check-label" for="radio2">No</label>
                                                     </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="fw-bold mb-3">Category</label>
-                                                    <select ng-model="form.idcategory" class="form-control"
-                                                    name="category" id="category">
-                                                    <option value="" selected disabled>Select a category
-                                                    </option>
-                                                    <option ng-repeat="c in cates" ng-value="c.id">{{c.name}}
-                                                    </option>
-                                                </select>
                                                 </div>
                                             </div>
                                         </div>

@@ -42,23 +42,23 @@
     $(".cart-1").show();
   }
 
-  $("#step-1").addClass("active-stext");
-  // Show infor-cart and hide cart-0, cart-1 on Buy button click
-  $("#buyButton").click(function () {
-    $(".infor-cart").show();
-    $(".cart-0, .cart-1, .form-buy").hide();
+    $("#step-1").addClass("active-stext");
+    // Show infor-cart and hide cart-0, cart-1 on Buy button click
+    $("#buyButton").click(function () {
+      $(".infor-cart").show();
+      $(".cart-0, .cart-1, .form-buy").hide();
 
     // Add active class to number-2 and apply animation
     $("#number-2").addClass("active");
     $("#line-1").addClass("active-line");
     $("#step-2").addClass("active-stext");
 
-    // Change color of number-2 to match .step-button.active
-    $("#number-2").css({
-      "background-color": "var(--primary)", // Màu xanh lá của bạn
-      color: "white",
+      // Change color of number-2 to match .step-button.active
+      $("#number-2").css({
+        "background-color": "var(--primary)", // Màu xanh lá của bạn
+        color: "white",
+      });
     });
-  });
 
   $("#backButton").click(function () {
     $(".cart-0, .cart-1, .form-buy").show();
