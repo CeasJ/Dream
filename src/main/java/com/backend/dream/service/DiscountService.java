@@ -14,4 +14,6 @@ public interface DiscountService {
     List<DiscountDTO> findAll();
     DiscountDTO update(DiscountDTO discountDTO);
     void delete(Long id);
+
+    DiscountDTO getDiscountByID(Long id);
 }

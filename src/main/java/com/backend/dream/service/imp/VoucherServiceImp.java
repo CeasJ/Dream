@@ -180,4 +180,19 @@ public class VoucherServiceImp implements VoucherService {
         List<VoucherDTO> vouchers = voucherRepository.findListVouchersByNameAndIDType(name,idType).stream().map(voucherMapper::voucherToVoucherDTO).collect(Collectors.toList());
         voucherRepository.deleteAll(voucherMapper.listVoucherDTOToListVoucher(vouchers));
     }
+
+
+    @Override
+    public VoucherDTO getVoucherByID(Long voucherID) {
+        Voucher voucher = voucherRepository.findById(voucherID).orElse(null);
+        return voucherMapper.voucherToVoucherDTO(voucher);
+    }
+
+    @Override
+    public List<VoucherDTO> getVouchersByNameAndType(String name, Long idType) {
+        List<Voucher> vouchers = voucherRepository.findListVouchersByNameAndIDType(name, idType);
+        return vouchers.stream()
+                .map(voucherMapper::voucherToVoucherDTO)
+                .collect(Collectors.toList());
+    }
 }

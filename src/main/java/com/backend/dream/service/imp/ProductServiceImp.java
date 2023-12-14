@@ -29,7 +29,6 @@ public class ProductServiceImp implements ProductService {
 
     private final ProductSizeRepository productSizeRepository;
 
-
     private final Logger logger = LoggerFactory.getLogger(ProductService.class);
 
     @Autowired

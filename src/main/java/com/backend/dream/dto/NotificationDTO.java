@@ -10,7 +10,9 @@ import java.sql.Timestamp;
 public class NotificationDTO {
     private Long id;
     private Long idAccount;
+    private String notificationTitle;
     private String notificationText;
     private Timestamp createdTime;
-
+    private long id_role;
+    private String image;
 }

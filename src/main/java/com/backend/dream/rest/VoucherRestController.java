@@ -1,11 +1,9 @@
 package com.backend.dream.rest;
 
-import com.backend.dream.dto.AccountDTO;
-import com.backend.dream.dto.VoucherDTO;
-import com.backend.dream.dto.VoucherStatusDTO;
-import com.backend.dream.dto.VoucherTypeDTO;
+import com.backend.dream.dto.*;
 import com.backend.dream.entity.Voucher;
 import com.backend.dream.service.AccountService;
+import com.backend.dream.service.NotificationService;
 import com.backend.dream.service.VoucherService;
 import com.backend.dream.service.VoucherTypeService;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -15,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.List;
 
 @RestController
@@ -31,6 +31,9 @@ public class VoucherRestController {
 
     @Autowired
     private VoucherTypeService voucherTypeService;
+
+    @Autowired
+    private NotificationService notificationService;
 
     // Get voucher for user
     @GetMapping("/applicable")
@@ -65,13 +68,64 @@ public class VoucherRestController {
     }
 
     @PostMapping()
-    public List<Voucher> createVoucher(@RequestBody JsonNode voucherData){
-        return voucherService.createVoucher(voucherData);
+    public List<Voucher> createVoucher(@RequestBody JsonNode voucherData, HttpServletRequest request) {
+        String username = request.getRemoteUser();
+        Long idAccount = accountService.findIDByUsername(username);
+        Long idRole = accountService.findRoleIdByUsername(username);
+
+        if (idRole == 1 || idRole == 2) {
+            List<Voucher> createdVouchers = voucherService.createVoucher(voucherData);
+
+            for (Voucher voucher : createdVouchers) {
+                String voucherName = voucher.getName();
+                String notificationTitle = "Có sự thay đổi trong phiếu giảm";
+                String notificationText = "Phiếu giảm giá '" + voucherName + "' đã được thêm bởi '" + username + "'";
+
+                NotificationDTO notificationDTO = new NotificationDTO();
+                notificationDTO.setIdAccount(idAccount);
+                notificationDTO.setNotificationTitle(notificationTitle);
+                notificationDTO.setNotificationText(notificationText);
+                notificationDTO.setId_role(idRole);
+                notificationDTO.setImage("voucher-change.jpg");
+                notificationDTO.setCreatedTime(Timestamp.from(Instant.now()));
+                notificationService.createNotification(notificationDTO);
+            }
+
+            return createdVouchers;
+        }
+
+        return null;
     }
-    @PutMapping("{id}")
-    public VoucherDTO updateVoucher(@RequestBody VoucherDTO voucherDTO,@PathVariable Long id){
-        return voucherService.updateVoucher(voucherDTO,id);
+
+    @PutMapping("/{id}")
+    public VoucherDTO updateVoucher(@RequestBody VoucherDTO voucherDTO, @PathVariable("id") Long id, HttpServletRequest request) {
+        String username = request.getRemoteUser();
+        Long idAccount = accountService.findIDByUsername(username);
+        Long idRole = accountService.findRoleIdByUsername(username);
+
+        if (idRole == 1 || idRole == 2) {
+            VoucherDTO updatedVoucher = voucherService.updateVoucher(voucherDTO, id);
+
+            String voucherName = updatedVoucher.getName();
+            String notificationTitle = "Có sự thay đổi trong phiếu giảm";
+            String notificationText = "Phiếu giảm giá '" + voucherName + "' đã được cập nhật bởi '" + username + "'";
+
+            NotificationDTO notificationDTO = new NotificationDTO();
+            notificationDTO.setIdAccount(idAccount);
+            notificationDTO.setNotificationTitle(notificationTitle);
+            notificationDTO.setNotificationText(notificationText);
+            notificationDTO.setId_role(idRole);
+            notificationDTO.setImage("voucher-change.jpg");
+            notificationDTO.setCreatedTime(Timestamp.from(Instant.now()));
+            notificationService.createNotification(notificationDTO);
+
+            return updatedVoucher;
+        }
+
+        return null;
     }
+
+
     @PutMapping("/{name}/{idType}")
     public List<VoucherDTO> updateVoucher(@RequestBody VoucherDTO voucherDTO,@PathVariable String name ,@PathVariable Long idType){
         return voucherService.updateListVoucherByNameAndIdType(voucherDTO,name,idType);
@@ -79,25 +133,66 @@ public class VoucherRestController {
 
 
     @DeleteMapping("/{voucherId}")
-    public ResponseEntity<String> deleteVoucher(@PathVariable Long voucherId) {
+    public ResponseEntity<String> deleteVoucher(@PathVariable Long voucherID) {
         try {
-            voucherService.delete(voucherId);
+            String notificationTitle = "Có sự thay đổi trong phiếu giảm";
+            String username = request.getRemoteUser();
+            Long idAccount = accountService.findIDByUsername(username);
+            Long idRole = accountService.findRoleIdByUsername(username);
+
+            VoucherDTO deletedVoucher = voucherService.getVoucherByID(voucherID);
+            String voucherName = deletedVoucher.getName();
+            String notificationText = "Một phiếu giảm giá '" + voucherName + "' đã bị xóa bởi '" + username + "'";
+
+            NotificationDTO notificationDTO = new NotificationDTO();
+            notificationDTO.setIdAccount(idAccount);
+            notificationDTO.setNotificationTitle(notificationTitle);
+            notificationDTO.setNotificationText(notificationText);
+            notificationDTO.setId_role(idRole);
+            notificationDTO.setImage("voucher-change.jpg");
+            notificationDTO.setCreatedTime(Timestamp.from(Instant.now()));
+            notificationService.createNotification(notificationDTO);
+
+            voucherService.delete(voucherID);
             return ResponseEntity.ok("Voucher has been deleted successfully!");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Error deleting voucher: " + e.getMessage());
         }
     }
+
     @DeleteMapping("/{name}/{idType}")
     public ResponseEntity<String> deleteListVoucher(@PathVariable String name, @PathVariable Long idType) {
         try {
-            voucherService.deleteByNameAndType(name,idType);
-            return ResponseEntity.ok("Voucher has been deleted successfully!");
+            String notificationTitle = "Có sự thay đổi trong phiếu giảm";
+            String username = request.getRemoteUser();
+            Long idAccount = accountService.findIDByUsername(username);
+            Long idRole = accountService.findRoleIdByUsername(username);
+
+            List<VoucherDTO> deletedVouchers = voucherService.getVouchersByNameAndType(name, idType);
+
+            for (VoucherDTO voucher : deletedVouchers) {
+                String voucherName = voucher.getName();
+                String notificationText = "Phiếu giảm giá '" + voucherName + "' đã bị xóa bởi '" + username + "'";
+
+                NotificationDTO notificationDTO = new NotificationDTO();
+                notificationDTO.setIdAccount(idAccount);
+                notificationDTO.setNotificationTitle(notificationTitle);
+                notificationDTO.setNotificationText(notificationText);
+                notificationDTO.setId_role(idRole);
+                notificationDTO.setImage("voucher-change.jpg");
+                notificationDTO.setCreatedTime(Timestamp.from(Instant.now()));
+                notificationService.createNotification(notificationDTO);
+            }
+
+            voucherService.deleteByNameAndType(name, idType);
+            return ResponseEntity.ok("Vouchers have been deleted successfully!");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error deleting voucher: " + e.getMessage());
+                    .body("Error deleting vouchers: " + e.getMessage());
         }
     }
+
 
 
 

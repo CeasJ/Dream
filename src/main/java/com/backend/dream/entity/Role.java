@@ -24,4 +24,8 @@ public class Role implements Serializable {
     @JsonIgnore
     @OneToMany(mappedBy = "role")
     List<Authority> authority;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "role")
+    List<Notification> notification;
 }

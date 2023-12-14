@@ -2,6 +2,8 @@ package com.backend.dream.service;
 
 import com.backend.dream.dto.AccountDTO;
 import com.backend.dream.entity.Account;
+import com.backend.dream.entity.Authority;
+import com.backend.dream.entity.Role;
 import com.backend.dream.repository.AccountRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -46,5 +48,8 @@ public interface AccountService {
 
     List<AccountDTO> getAllAccounts();
 
-//    Account createAccountWhenDontHaveAccount(Account account);
+    //    Account createAccountWhenDontHaveAccount(Account account);
+    Long findRoleIdByUsername(String username);
+
+
 }

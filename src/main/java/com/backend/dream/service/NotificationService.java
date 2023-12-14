@@ -6,4 +6,7 @@ import java.util.List;
 
 public interface NotificationService {
     List<NotificationDTO> getNotificationsByAccountId(Long idAccount);
+
+    void createNotification(NotificationDTO notificationDTO);
+
 }

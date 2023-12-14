@@ -74,7 +74,7 @@
                                         <td>{{$index + 1}}</td>
                                         <td style="text-align: left;">{{count.name}}</td>
                                         <td>{{count.number}}</td>
-                                        <td>{{count.percent}} %</td>
+                                        <td>{{count.percent*100}} %</td>
                                         <td>{{count.activeDate | date: 'dd-MM-yyyy'}}</td>
                                         <td>{{count.expiredDate | date: 'dd-MM-yyyy'}}</td>
                                         <td ng-if="count.idcategory === 1">Cà phê</td>

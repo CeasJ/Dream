@@ -37,7 +37,8 @@ public class ProductSizeServiceImp implements ProductSizeService {
     public List<SizeDTO> getSizesByProductId(Long productId) {
         List<ProductSize> productSizes = productSizeRepository.findAllByProductId(productId);
         List<SizeDTO> sizeDTOs = productSizes.stream()
-                .map(productSize -> SizeMapper.INSTANCE.sizeToSizeDTO(productSize.getSize())).sorted(Comparator.comparing(SizeDTO::getName).reversed())
+                .map(productSize -> SizeMapper.INSTANCE.sizeToSizeDTO(productSize.getSize()))
+                .sorted(Comparator.comparing(SizeDTO::getName).reversed())
                 .collect(Collectors.toList());
 
         return sizeDTOs;
@@ -92,5 +93,24 @@ public class ProductSizeServiceImp implements ProductSizeService {
 
         return productSizeMapper.productSizeToProductSizeDTO(updateProductSize);
     }
+
+    @Override
+    public ProductSizeDTO findByID(Long id) {
+        Optional<ProductSize> productSizeOptional = productSizeRepository.findById(id);
+        return productSizeOptional.map(productSizeMapper::productSizeToProductSizeDTO).orElse(null);
+    }
+
+    @Override
+    public String getProductNameByProductSizeID(Long productSizeID) {
+        Optional<ProductSize> productSizeOptional = productSizeRepository.findById(productSizeID);
+        if (productSizeOptional.isPresent()) {
+            ProductSize productSize = productSizeOptional.get();
+            if (productSize.getProduct() != null) {
+                return productSize.getProduct().getName();
+            }
+        }
+        return null;
+    }
+
 
 }

@@ -92,7 +92,7 @@ public class    LoginTest {
     @Test
     public void testLoginWrongUsername() {
         String username = "kiet123";
-        String password = "Kietlai1!";
+        String password = "//Kietlai1!";
 
         when(accountService.findByUsername(username)).thenReturn(Optional.empty());
 

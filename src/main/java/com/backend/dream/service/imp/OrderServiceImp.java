@@ -106,6 +106,9 @@ public class OrderServiceImp implements OrderService {
     @Override
     public OrderDTO updateOrder(OrderDTO orderDTO) throws ClassNotFoundException, NoSuchElementException {
         Orders orders = orderMapper.orderDTOToOrder(orderDTO);
+        if (orderDTO.getId_voucher() == null){
+            orders.setVoucher(null);
+        }
         Orders updateOrder = orderRepository.save(orders);
         return orderMapper.orderToOrderDTO(updateOrder);
     }

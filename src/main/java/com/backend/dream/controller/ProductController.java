@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -105,9 +106,11 @@ public class ProductController {
         } else if ("desc".equals(sortOption)) {
             // Sắp xếp theo giá giảm dần
             productPage = productService.sortByPriceDesc(categoryIdValue, pageable);
-        } else if ("sale".equals(sortOption)) {
-            productPage = productService.findSaleProducts(pageable);
-        } else if("topRated".equals(selectedOption)){
+        }
+//        else if ("sale".equals(sortOption)) {
+//            productPage = productService.findSaleProducts(pageable);
+//        }
+        else if("topRated".equals(selectedOption)){
             productPage = productService.findByTopRated(categoryIdValue, pageable);
         } else if("bestSelling".equals(selectedOption)){
             productPage = productService.findByBestSeller(categoryIdValue, pageable);
@@ -115,9 +118,6 @@ public class ProductController {
             // Mặc định
             productPage = productService.findByCategory(categoryIdValue, pageable);
         }
-
-
-
 
         List<ProductDTO> products = productPage.getContent();
         for (ProductDTO product : products) {
@@ -130,7 +130,25 @@ public class ProductController {
             }
         }
 
-        model.addAttribute("products", products);
+        List<ProductDTO> productsWithSizes = new ArrayList<>();
+
+        for (ProductDTO product : products) {
+            List<SizeDTO> availableSizes = productSizeService.getSizesByProductId(product.getId());
+
+            if (!availableSizes.isEmpty()) {
+                double minPrice = Double.MAX_VALUE;
+                for (SizeDTO size : availableSizes) {
+                    double sizePrice = productService.getProductPriceBySize(product.getId(), size.getId());
+                    if (sizePrice < minPrice) {
+                        minPrice = sizePrice;
+                    }
+                }
+                product.setPrice(minPrice);
+                productsWithSizes.add(product);
+            }
+        }
+
+        model.addAttribute("products", productsWithSizes);
         model.addAttribute("currentPage", page);
         model.addAttribute("categoryId", categoryIdValue);
         model.addAttribute("totalPages", productPage.getTotalPages());
@@ -164,6 +182,13 @@ public class ProductController {
             String decoded = URLDecoder.decode(name, "UTF-8");
             ProductDTO product = productService.findByNamePaged(decoded, PageRequest.of(0, 1)).getContent().get(0);
             List<SizeDTO> availableSizes = productSizeService.getSizesByProductId(product.getId());
+
+            if (!availableSizes.isEmpty()) {
+                SizeDTO firstSize = availableSizes.get(0);
+                double productPriceBySize = productService.getProductPriceBySize(product.getId(), firstSize.getId());
+                product.setSelectedSizeId(firstSize.getId());
+                product.setPrice(productPriceBySize);
+            }
 
             // Set the price based on the selected size
             if (sizeId != null) {
@@ -222,6 +247,9 @@ public class ProductController {
 
             // Count number of comments
             Long totalComments = feedbackService.countFeedback(product.getId());
+
+            // Get the min price
+
 
             model.addAttribute("discountPercent", discountPercent);
             model.addAttribute("product", product);

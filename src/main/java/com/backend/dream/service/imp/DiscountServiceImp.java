@@ -73,8 +73,9 @@ public class DiscountServiceImp implements DiscountService {
         return 0.0;
     }
 
-
-
-
-
+    @Override
+    public DiscountDTO getDiscountByID(Long id) {
+        Optional<Discount> optionalDiscount = discountRepository.findById(id);
+        return optionalDiscount.map(discountMapper::discountToDiscountDTO).orElse(null);
+    }
 }

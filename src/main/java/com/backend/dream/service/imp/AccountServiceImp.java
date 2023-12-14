@@ -7,6 +7,7 @@ import com.backend.dream.entity.Role;
 import com.backend.dream.mapper.AccountMapper;
 import com.backend.dream.repository.AccountRepository;
 import com.backend.dream.repository.AuthorityRepository;
+import com.backend.dream.repository.RoleRepository;
 import com.backend.dream.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,6 +28,9 @@ public class AccountServiceImp implements AccountService {
     private AccountMapper accountMapper;
     @Autowired
     private AuthorityRepository authorityRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
 
     @Override
     public Optional<Account> findByUsername(String username) {
@@ -153,6 +157,11 @@ public class AccountServiceImp implements AccountService {
     @Override
     public Account findById(String username) {
         return accountRepository.findById(Long.valueOf(username)).get();
+    }
+
+    @Override
+    public Long findRoleIdByUsername(String username) {
+        return accountRepository.findRoleIdByUsername(username);
     }
 
 }

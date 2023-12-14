@@ -105,7 +105,7 @@ public class SearchingTest {
             }
         }
 
-        assertEquals(false, found, "Product with name '" + searchProductName + "' should not be found in the list.");
+        assertEquals(false, found);
     }
 
     @Test
@@ -133,9 +133,7 @@ public class SearchingTest {
 
         mockProductList.add(product1);
         mockProductList.add(product2);
-
-        // Sử dụng tên sản phẩm với hai khoảng trắng
-        String searchProductName = "  "; // Hai khoảng trắng
+        String searchProductName = "  ";
         boolean found = false;
 
         for (Product product : mockProductList) {
@@ -145,7 +143,7 @@ public class SearchingTest {
             }
         }
 
-        assertEquals(false, found, "Product with two spaces should not be found in the list.");
+        assertEquals(false, found);
     }
 
 }
