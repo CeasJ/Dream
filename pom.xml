@@ -24,8 +24,20 @@
 		<org.seleniumhq.version>4.1.1</org.seleniumhq.version>
 		<io.github.bonigarcia.version>5.6.2</io.github.bonigarcia.version>
 		<junit.version>4.13.2</junit.version>
+		<com.google.zxing>3.5.2</com.google.zxing>
+		<com.google.zxing.javase>3.5.2</com.google.zxing.javase>
 	</properties>
 	<dependencies>
+		<dependency>
+			<groupId>com.google.zxing</groupId>
+			<artifactId>javase</artifactId>
+			<version>${com.google.zxing.javase}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.zxing</groupId>
+			<artifactId>core</artifactId>
+			<version>${com.google.zxing}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.thymeleaf.extras</groupId>
 			<artifactId>thymeleaf-extras-java8time</artifactId>

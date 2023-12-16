@@ -3,12 +3,12 @@ package com.backend.dream.service.imp;
 import com.backend.dream.dto.OrderDTO;
 import com.backend.dream.dto.OrderDetailDTO;
 import com.backend.dream.entity.Orders;
-import com.backend.dream.entity.Voucher;
 import com.backend.dream.mapper.OrderDetailMapper;
 import com.backend.dream.mapper.OrderMapper;
 import com.backend.dream.repository.OrderDetailRepository;
 import com.backend.dream.repository.OrderRepository;
 import com.backend.dream.service.OrderService;
+import com.backend.dream.service.QrCodeService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -39,6 +39,8 @@ public class OrderServiceImp implements OrderService {
     private OrderDetailRepository orderDetailRepository;
     @Autowired
     private OrderDetailMapper orderDetailMapper;
+    @Autowired
+    private QrCodeService qrCodeService;
 
     @Override
     public Orders create(JsonNode orderData) throws NoSuchElementException, NullPointerException, ParseException {
@@ -54,13 +56,14 @@ public class OrderServiceImp implements OrderService {
 
         orderRepository.save(orders);
 
+        qrCodeService.generateQrCode("Your order number " + String.valueOf(orders.getId()) + " " + "has been paid successfully");
         TypeReference<List<OrderDetailDTO>> type = new TypeReference<List<OrderDetailDTO>>() {
         };
 
         List<OrderDetailDTO> details = mapper.convertValue(orderData.get("orderDetails"), type)
                 .stream().peek(d -> d.setId_order(orders.getId())).collect(Collectors.toList());
 
-        orderDetailRepository.saveAll(orderDetailMapper.listOrderDetaiDTOlToListOrderDetail(details));
+        orderDetailRepository.saveAll(orderDetailMapper.listOrderDetailDTOlToListOrderDetail(details));
 
         return orders;
     }

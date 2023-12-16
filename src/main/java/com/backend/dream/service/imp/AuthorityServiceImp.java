@@ -23,7 +23,7 @@ public class AuthorityServiceImp implements AuthorityService {
 	@Override
 	public List<Authority> getAdmin() {
 		List<Account> accounts = accountRepository.getStaff();
-		return authorityRepository.autoritiesOf(accounts);
+		return authorityRepository.authoritiesOf(accounts);
 	}
 
 	@Override

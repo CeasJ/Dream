@@ -23,6 +23,8 @@ public class OrderDTO {
 
     private Time createTime;
 
+    private Double distance;
+
     private Long status;
 
     private int id_account;

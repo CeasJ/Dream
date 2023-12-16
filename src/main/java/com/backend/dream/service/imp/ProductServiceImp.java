@@ -1,16 +1,13 @@
 package com.backend.dream.service.imp;
 
-import com.backend.dream.dto.DiscountDTO;
+import com.backend.dream.dto.CategoryDTO;
 import com.backend.dream.dto.ProductDTO;
 import com.backend.dream.entity.Product;
 import com.backend.dream.entity.ProductSize;
 import com.backend.dream.mapper.ProductMapper;
 import com.backend.dream.repository.ProductRepository;
 import com.backend.dream.repository.ProductSizeRepository;
-import com.backend.dream.service.DiscountService;
-import com.backend.dream.service.FeedbackService;
-import com.backend.dream.service.ProductService;
-import com.backend.dream.service.ProductSizeService;
+import com.backend.dream.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,15 +21,14 @@ import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImp implements ProductService {
-    private final ProductRepository productRepository;
-    private final ProductMapper productMapper;
-
-    private final ProductSizeRepository productSizeRepository;
-
-    private final Logger logger = LoggerFactory.getLogger(ProductService.class);
-
     @Autowired
-    private DiscountService discountService;
+    private  ProductRepository productRepository;
+    @Autowired
+    private  ProductMapper productMapper;
+    @Autowired
+    private  ProductSizeRepository productSizeRepository;
+    @Autowired
+    private CategoryService categoryService;
 
     @Autowired
     private ProductSizeService productSizeService;
@@ -40,14 +36,6 @@ public class ProductServiceImp implements ProductService {
     @Autowired
     private FeedbackService feedbackService;
 
-
-    @Autowired
-    public ProductServiceImp(ProductRepository productRepository, ProductMapper productMapper, ProductSizeRepository productSizeRepository  ) {
-        this.productRepository = productRepository;
-        this.productMapper = productMapper;
-        this.productSizeRepository = productSizeRepository;
-
-    }
 
     @Override
     public List<ProductDTO> findAll() {
@@ -144,12 +132,11 @@ public class ProductServiceImp implements ProductService {
 
 
     @Override
-    public double getDiscountedPrice(Long categoryID) {
-        DiscountDTO discount = discountService.getDiscountByCategoryId(categoryID);
-        double originalPrice = getOriginalProductPrice(categoryID);
-
-        if (discount != null) {
-            double discountPercent = discount.getPercent();
+    public double getDiscountedPrice(Long productID,Long categoryID) {
+        CategoryDTO categoryDTO = categoryService.getDiscountByCategoryId(categoryID);
+        double originalPrice = getOriginalProductPrice(productID);
+        if (categoryDTO != null) {
+            double discountPercent = categoryDTO.getPercent_discount();
             double discountedPrice = originalPrice - (originalPrice * discountPercent);
             return discountedPrice;
         } else {
@@ -176,10 +163,10 @@ public class ProductServiceImp implements ProductService {
 
         if (productSize.isPresent()) {
             double sizeSpecificPrice = productSize.get().getPrice();
-            DiscountDTO discount = discountService.getDiscountByCategoryId(categoryID);
+            CategoryDTO categoryDTO = categoryService.getDiscountByCategoryId(categoryID);
 
-            if (discount != null) {
-                double discountPercent = discount.getPercent();
+            if (categoryDTO != null) {
+                double discountPercent = categoryDTO.getPercent_discount();
                 double discountedPrice = sizeSpecificPrice - (sizeSpecificPrice * discountPercent);
                 return discountedPrice;
             } else {
@@ -190,10 +177,10 @@ public class ProductServiceImp implements ProductService {
         }
     }
 
-    public double getDiscountPercentByProductId(Long categoryID) {
-        DiscountDTO discountDTO = discountService.getDiscountByCategoryId(categoryID);
-        if (discountDTO != null) {
-            return discountDTO.getPercent();
+    public double getDiscountPercentByCategoryId(Long categoryID) {
+        CategoryDTO categoryDTO = categoryService.getDiscountByCategoryId(categoryID);
+        if (categoryDTO != null) {
+            return categoryDTO.getPercent_discount();
         }
         return 0.0;
     }

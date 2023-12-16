@@ -133,13 +133,12 @@ public class AccountServiceImp implements AccountService {
     @Override
     public Account createStaff(AccountDTO accountDTO) {
         String password = passwordEncoder.encode(accountDTO.getPassword());
-        System.out.println(accountDTO.getPassword());
         Account newAccount = accountMapper.accountDTOToAccount(accountDTO);
 
         newAccount.setPassword(password);
 
         Role role = new Role();
-        role.setId(Long.valueOf(2));
+        role.setId(Long.valueOf(2L));
 
         Authority authority = new Authority();
         authority.setRole(role);

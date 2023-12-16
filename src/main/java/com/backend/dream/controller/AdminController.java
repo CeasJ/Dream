@@ -54,7 +54,7 @@ public class AdminController {
     }
 
     @RequestMapping("/admin/blockaccount")
-    public String blockaccount() {
+    public String block() {
         return "/admin/home/blockaccount";
     }
 }

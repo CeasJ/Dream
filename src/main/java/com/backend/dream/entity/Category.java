@@ -28,7 +28,7 @@ public class Category implements Serializable {
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Product> product;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Discount> discount;
+    @ManyToOne
+    @JoinColumn(name = "iddiscount")
+    private Discount discount;
 }

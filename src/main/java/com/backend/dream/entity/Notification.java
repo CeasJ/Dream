@@ -21,6 +21,11 @@ public class Notification implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String notificationText;
+
+    @Column(name = "created_at")
+    private Timestamp createdTime;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idaccount")
     private Account account;

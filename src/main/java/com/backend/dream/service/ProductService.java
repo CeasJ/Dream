@@ -34,13 +34,13 @@ public interface ProductService {
 
 
     //  Display discounted price and original price in product detail and product list
-    double getDiscountedPrice(Long productId);
+    double getDiscountedPrice(Long productID, Long categoryID);
 
     double getOriginalProductPrice(Long productId);
 
     double getProductPriceBySize(Long productId, Long sizeId);
 
-    double getDiscountPercentByProductId(Long productId);
+    double getDiscountPercentByCategoryId(Long productId);
 
     // Sort products by star rating
     Page<ProductDTO> findByTopRated(Long categoryId, Pageable pageable);

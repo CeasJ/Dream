@@ -100,59 +100,69 @@
     </div>
     <!-- Process Step End -->
 
-    <div class="main-cart">
-      <div class="row">
-        <div class="col-md-9">
-          <!-- <div class="container-fluid cart-0">
-            <img class="img-cart" src="/img/gallery/cart-0.png"></img>
-            <h5>Không có sản phẩm trong giỏ hàng</h5>
-            <a th:href="@{|/store|}">
-              <button class="btn btn-danger mt-3" style="padding: 8px 18px;">
-                <h6 style="color: white;">Tiếp tục mua sắm</h6>
-              </button>
-            </a>
-          </div> -->
-          <div class="container-fluid cart-1" style="display: none;">
-            <div class="row product-row my-3" ng-repeat="product in cart.items">
-              <div class="col-md-2">
-                <img ng-src="{{'/img/gallery/' + product.image}}" class="img-fluid img-product">
-              </div>
-              <div class="col-md-2 pt-4">
-                <h6> {{product.name}} </h6>
-              </div>
-              <div class="col-md-1 pt-4">
-                <h6> {{product.name_size}}</h6>
-              </div>
-              <div class="col-md-2 pt-4">
-                <p>{{product.price | number:0}} VND</p>
-              </div>
-              <div class="col-md-1 pt-4">
-                <input type="number" class="form-control quantity-input" min="1" ng-model="product.qty"
-                       ng-change="cart.saveToLocalStorage()">
-              </div>
-              <div class="col-md-2 pt-4">
-                <p> {{product.qty * product.price | number:0}} VND</p>
-              </div>
-              <div class="col-md-2 pt-3">
-                <button ng-click="cart.remove(product.id)" class="btn">
-                  <i style="font-size: 20px;" class="bi bi-trash text-danger fw-bold"></i>
+      <div class="main-cart">
+        <div class="row">
+          <div class="col-md-9">
+            <!-- <div class="container-fluid cart-0">
+              <img class="img-cart" src="/img/gallery/cart-0.png"></img>
+              <h5>Không có sản phẩm trong giỏ hàng</h5>
+              <a th:href="@{|/store|}">
+                <button class="btn btn-danger mt-3" style="padding: 8px 18px;">
+                  <h6 style="color: white;">Tiếp tục mua sắm</h6>
                 </button>
+              </a>
+            </div> -->
+            <div class="container-fluid cart-1" style="display: none;">
+              <div class="row product-row my-3" ng-repeat="product in cart.items">
+                <div class="col-md-2">
+                  <img ng-src="{{'/img/gallery/' + product.image}}" class="img-fluid img-product">
+                </div>
+                <div class="col-md-2 pt-4">
+                  <h6> {{product.name}} </h6>
+                </div>
+                <div class="col-md-1 pt-4">
+                  <h6> {{product.name_size}}</h6>
+                </div>
+
+                <div class="col-md-2 pt-4" ng-if="product.discount_percent">
+                  <p>{{product.price - (product.discount_percent * product.price) | number:0}} VND</p>
+                </div>
+
+                <div class="col-md-2 pt-4" ng-if="!product.discount_percent">
+                  <p>{{product.price  | number:0}} VND</p>
+                </div>
+
+
+                <div class="col-md-1 pt-4">
+                  <input type="number" class="form-control quantity-input" min="1" ng-model="product.qty"
+                    ng-change="cart.saveToLocalStorage()">
+                </div>
+
+                <div class="col-md-2 pt-4" ng-if="product.discount_percent">
+                  <p> {{product.qty * (product.price-(product.price * product.discount_percent)) | number:0}} VND</p>
+                </div>
+
+                <div class="col-md-2 pt-4" ng-if="!product.discount_percent">
+                  <p> {{product.qty * product.price | number:0}} VND</p>
+                </div>
+
+
+                <div class="col-md-2 pt-3">
+                  <button ng-click="cart.remove(product.id)" class="btn">
+                    <i style="font-size: 20px;" class="bi bi-trash text-danger fw-bold"></i>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="col-md-3 form-buy">
-          <div class="container-fluid"
-               style="background-color: white; height: auto; border-radius: 5px; padding: 20px 10px; position: relative;">
-            <p>
-              <span class="title-prc" th:text="#{cart.totalQuantity}"></span>
-              <span style="float: right; font-weight: bold; font-size: 16px;">
+          <div class="col-md-3 form-buy">
+            <div class="container-fluid"
+              style="background-color: white; height: auto; border-radius: 5px; padding: 20px 10px; position: relative;">
+              <p>
+                <span class="title-prc" th:text="#{cart.totalQuantity}"></span>
+                <span style="float: right; font-weight: bold; font-size: 16px;">
                   {{cart.count}}
                 </span>
-              </p>
-              <p>
-                <span class="title-prc" th:text="#{cart.shippingCost}"></span>
-                <span style="float: right; font-weight: bold; font-size: 16px;"> 30,000 VNĐ</span>
               </p>
               <p class="title-prc" ng-if="cart.totalDiscount >= 0">Áp dụng Voucher
                 <span class="text-danger" style="float: right; font-weight: bold; font-size: 16px;">- {{ cart.totalDiscount | number:0 }} VNĐ</span>
@@ -300,31 +310,31 @@
                     </div>
                   </div>
 
-                <div class="text-center">
-                  <button type="button" class="btn btn-secondary btn-infor" id="backButton"><span
-                          th:text="#{button.back}"></span></button>
-                  <button class="btn btn-success btn-infor" id="completeButton"
-                          ng-click="handlePaymentMethodChange()"><span th:text="#{button.complete}"></span></button>
-                </div>
-              </form>
+                  <div class="text-center">
+                    <button type="button" class="btn btn-secondary btn-infor" id="backButton"><span
+                        th:text="#{button.back}"></span></button>
+                    <button class="btn btn-success btn-infor" id="completeButton"
+                      ng-click="handlePaymentMethodChange()"><span th:text="#{button.complete}"></span></button>
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
+          <!-- Đơn hàng đã xử lý Start -->
+          <div class="container-fluid cart-3 mx-auto" style="display: none;">
+            <!-- <img class="img-cart" ng-src="/img/qrcode/{{ qrCode }}"> -->
+            <h5 th:text="#{message.orderProcessed}"></h5>
+            <a th:href="@{|/store|}">
+              <button class="btn btn-danger mt-3" style="padding: 8px 18px;">
+                <h6 style="color: white;" th:text="#{button.continueShopping}"></h6>
+              </button>
+            </a>
+          </div>
+          <!-- Đơn hàng đã xử lý End -->
         </div>
-        <!-- Đơn hàng đã xử lý Start -->
-        <div class="container-fluid cart-3 mx-auto" style="display: none;">
-          <img class="img-cart" src="/img/gallery/cart-0.png">
-          <h5 th:text="#{message.orderProcessed}"></h5>
-          <a th:href="@{|/store|}">
-            <button class="btn btn-danger mt-3" style="padding: 8px 18px;">
-              <h6 style="color: white;" th:text="#{button.continueShopping}"></h6>
-            </button>
-          </a>
-        </div>
-        <!-- Đơn hàng đã xử lý End -->
       </div>
     </div>
-  </div>
-  <!--Cart End  -->
+    <!--Cart End  -->
 
   <!-- Back to Top -->
   <!-- Footer Start -->

@@ -32,6 +32,8 @@ public class Orders implements Serializable {
 
     private String note;
 
+    private Double distance;
+
     @Temporal(TemporalType.TIME)
     @Column(name = "createtime")
     private Time createTime = Time.valueOf(LocalTime.now());

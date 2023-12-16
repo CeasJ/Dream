@@ -139,6 +139,54 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
   $scope.userAddressDB= "";
   $scope.selectedVoucher = null;
   $scope.numberHouse = "";
+  $scope.qrCode = "";
+  $scope.ipLocation = "";
+  $scope.vehicle = "car";
+  $scope.originLocation = encodeURIComponent("10.853832672000067,106.62833998400004");
+  $scope.apiKey = "GXxEBBNR5xvIezVsTctnwdM9MznM7HB8bzjCXBvh";
+  
+  var timeout;
+
+  $scope.changeNameLocationToIP = function () {
+    var addressToQuery = $scope.userAddressWeb || $scope.userAddressDB;
+
+    if (addressToQuery) {
+    $http
+      .get("https://rsapi.goong.io/geocode?address=" + encodeURIComponent(addressToQuery) + "&api_key=" + $scope.apiKey)
+      .then(function(response) {
+        const location = response.data.results[0].geometry.location;
+        $scope.ipLocation = `${location.lat},${location.lng}`;
+      });
+    }
+    if(timeout){
+      $timeout.cancel(timeout);
+    }
+
+    timeout = $timeout(function(){
+        $scope.getDistanceAndCalculateShippingCost();
+    },2000);
+
+  };
+
+  $scope.getDistanceAndCalculateShippingCost = function (){
+    $http
+    .get("https://rsapi.goong.io/DistanceMatrix?origins="+ $scope.originLocation + "&destinations=" + encodeURIComponent($scope.ipLocation) + "&vehicle=" + $scope.vehicle + "&api_key=" + $scope.apiKey)
+    .then(function (response) {
+      console.log(response);
+      const distance = response.data.rows[0].elements[0].distance;
+      $scope.order.distance = parseInt(distance.value);
+      console.log(parseInt($scope.order.distance));
+    });
+  };
+
+
+  $scope.getQrCode = function(){
+    // $http.get(`/qrcode`).then((resp) => {
+    //   $scope.qrCode = resp.data;
+    //   console.log($scope.qrCode);
+    //   console.log(resp.data);
+    // });
+  };
 
   $scope.selectOrder = function (orderID) {
     this.selectedOrderId = orderID;
@@ -157,13 +205,14 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
   $scope.getSubTotal = function () {
     let subTotal = 0;
     angular.forEach($scope.listOrder, function (orderDetail) {
+      $scope.shipCost = orderDetail.distance * 4;
       subTotal += orderDetail.quantity * orderDetail.price;
     });
     return subTotal;
   };
 
   $scope.getTotal = function () {
-    let subTotal = $scope.getSubTotal();
+    let subTotal = $scope.getSubTotal() + $scope.shipCost;
     return subTotal ;
   };
 
@@ -246,6 +295,15 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
         "," + " " +
         $scope.getSelectedProvinces($scope.selectedProvince);
     }
+
+    if(timeout){
+      $timeout.cancel(timeout);
+    }
+
+    timeout = $timeout(function(){
+        $scope.changeNameLocationToIP();
+    },2000);
+
   };
 
   function getCart(username) {
@@ -268,10 +326,11 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
   function totalPrice() {
     let totalPrice = 0;
     angular.forEach($scope.cart.items, function (item) {
-      totalPrice += item.price * item.qty;
+      totalPrice += item.price * item.qty - (item.discount_percent * item.price);
     });
-    return totalPrice;
+    return totalPrice ;
   }
+
 
   $scope.cart = {
     username: "",
@@ -294,11 +353,13 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
 
 
       if (item) {
+        console.log(item);
         item.qty++;
         saveCart(this.username, this);
       } else {
         $http.get(`/rest/products/${id}/${sizeID}`).then((resp) => {
           let newItem = resp.data;
+          console.log(newItem);
           newItem.qty = 1;
           this.items.push(newItem);
           saveCart(this.username, this);
@@ -364,6 +425,7 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
     totalAmount: $scope.cart.amount,
     createTime: getCurrentTime(),
     id_voucher:"",
+    distance:null,
 
     get orderDetails() {
       return $scope.cart.items.map((item) => {
@@ -403,18 +465,18 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
     }
   };
 
-
   let isSuccess = true;
 
 
 
   $scope.completeButtonClicked = function () {
     if (isSuccess) {
+      $scope.getQrCode();
       $(".cart-3").show();
       $(".cart-0, .cart-1, .form-buy, .infor-cart").hide();
       $("#number-3").addClass("active");
       $("#line-2").addClass("active-line");
-      $("#step-3").addClass("active-stext");
+      $("#step-3").addClass("active-text");
     } else {
       alert("Đặt hàng thất bại. Vui lòng thử lại.");
     }
@@ -464,7 +526,6 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
         $scope.cart.totalDiscount = discountAmount;
         $scope.order.id_voucher = parseInt($scope.selectedVoucher.id);
         $scope.order.totalAmount = $scope.order.totalAmount - $scope.cart.totalDiscount;
-        console.log( $scope.order.totalAmount);
       }
    };
 
@@ -472,6 +533,7 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
    $scope.changeAddress = function() {
     if(parseInt($scope.userAddress) === 1){
       $scope.order.address = $scope.userAddressDB;
+      $scope.changeNameLocationToIP();
     } else if(parseInt($scope.userAddress) === 2){
       $scope.order.address = $scope.userAddressWeb;
     }

@@ -146,9 +146,9 @@ function formatPrice(price) {
     return formattedPrice;
 }
 
-function getDiscountPercent(productId, sizePrice, priceElement, discountedPriceElement) {
+function getDiscountPercent(categoryID, sizePrice, priceElement, discountedPriceElement) {
     // Fetch discountPercent from service
-    fetch(`/getDiscountPercentByProductId?productId=${productId}`)
+    fetch(`/getDiscountPercentByCategoryId?categoryID=${categoryID}`)
         .then(response => response.json())
         .then(data => {
             var discountPercent = parseFloat(data);

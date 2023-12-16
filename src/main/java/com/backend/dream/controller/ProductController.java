@@ -7,10 +7,7 @@ import com.backend.dream.mapper.AccountMapper;
 import com.backend.dream.mapper.ProductMapper;
 import com.backend.dream.repository.FeedBackRepository;
 import com.backend.dream.repository.ProductRepository;
-import com.backend.dream.service.DiscountService;
-import com.backend.dream.service.FeedbackService;
-import com.backend.dream.service.ProductService;
-import com.backend.dream.service.ProductSizeService;
+import com.backend.dream.service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -47,10 +44,13 @@ public class ProductController {
     private ProductRepository productRepository;
 
     @Autowired
-    DiscountService discountService;
+    private DiscountService discountService;
 
     @Autowired
-    FeedbackService feedbackService;
+    private FeedbackService feedbackService;
+
+    @Autowired
+    private CategoryService categoryService;
 
     @Autowired
     private HttpServletRequest request;
@@ -121,7 +121,7 @@ public class ProductController {
 
         List<ProductDTO> products = productPage.getContent();
         for (ProductDTO product : products) {
-            double discountedPrice = productService.getDiscountedPrice(product.getId());
+            double discountedPrice = productService.getDiscountedPrice(product.getId(), product.getId_category());
             if (discountedPrice < product.getPrice()) {
                 product.setIsDiscounted(true);
                 product.setDiscountedPrice(discountedPrice);
@@ -197,7 +197,7 @@ public class ProductController {
                 product.setPrice(productPriceBySize);
             }
 
-            double discountedPrice = productService.getDiscountedPrice(product.getId());
+            double discountedPrice = productService.getDiscountedPrice(product.getId(), product.getId_category());
 
             if (discountedPrice < product.getPrice()) {
                 product.setIsDiscounted(true);
@@ -207,8 +207,8 @@ public class ProductController {
             }
 
             // Get the discount percent
-            DiscountDTO discount = discountService.getDiscountByCategoryId(product.getId_category());
-            Double discountPercent = (discount != null) ? discount.getPercent() : 0.0;
+            CategoryDTO categoryDTO = categoryService.getDiscountByCategoryId(product.getId_category());
+            Double discountPercent = (categoryDTO != null) ? categoryDTO.getPercent_discount() : 0.0;
             // Get reviews list
             List<FeedBackDTO> feedbackList;
 
@@ -280,9 +280,9 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/getDiscountPercentByProductId")
-    public ResponseEntity<Double> getDiscountPercentByProductId(@RequestParam("productId") Long productId) {
-        double discountPercent = productService.getDiscountPercentByProductId(productId);
+    @GetMapping("/getDiscountPercentByCategoryId")
+    public ResponseEntity<Double> getDiscountPercentByProductId(@RequestParam("categoryID") Long categoryID) {
+        double discountPercent = productService.getDiscountPercentByCategoryId(categoryID);
         return ResponseEntity.ok(discountPercent);
     }
 

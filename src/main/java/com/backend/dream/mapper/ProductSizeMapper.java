@@ -18,12 +18,15 @@ public interface ProductSizeMapper {
     @Mapping(source = "product.id",target = "id_product")
     @Mapping(source = "product.image",target = "image")
     @Mapping(source = "product.name",target = "name")
+    @Mapping(source = "product.category.discount.percent",target = "discount_percent")
     @Mapping(source = "size.name",target = "name_size")
     ProductSizeDTO productSizeToProductSizeDTO(ProductSize productSize);
 
     @Mapping(source = "id_size", target = "size.id")
     @Mapping(source = "id_product", target = "product.id")
     ProductSize productSizeDTOToProductSize(ProductSizeDTO productSizeDTO);
+
     ProductDTO map(Product product);
+
     CategoryDTO map(Category category);
 }
