@@ -57,4 +57,9 @@ public class AdminController {
     public String blockaccount() {
         return "/admin/home/blockaccount";
     }
+
+    @RequestMapping("/admin/applydiscount")
+    public String applydiscount() {
+        return "/admin/home/applyDiscount";
+    }
 }
