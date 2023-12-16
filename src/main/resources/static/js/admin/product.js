@@ -136,7 +136,38 @@ app.controller("product_ctrl", function ($scope, $http) {
           pages: []
       };
 
-      // Function để chia trang dữ liệu
+      $scope.firstPage = function () {
+          if ($scope.pagination.currentPage !== 1) {
+              $scope.pagination.currentPage = 1;
+              paginateItems();
+          }
+      };
+
+      $scope.lastPage = function () {
+          if ($scope.pagination.currentPage !== $scope.pagination.totalPages) {
+              $scope.pagination.currentPage = $scope.pagination.totalPages;
+              paginateItems();
+          }
+      };
+
+     $scope.getPagerNumbers = function () {
+         let totalPages = $scope.pagination.totalPages;
+         let currentPage = $scope.pagination.currentPage;
+
+         if (totalPages <= 5) {
+             return Array.from({ length: totalPages }, (_, i) => i + 1);
+         } else {
+             let startPage = Math.max(1, currentPage - 2);
+             let endPage = Math.min(currentPage + 2, totalPages);
+
+             if (endPage - startPage < 4) {
+                 startPage = Math.max(1, endPage - 4);
+             }
+
+             return Array.from({ length: 5 }, (_, i) => startPage + i);
+         }
+     };
+
       function paginateItems() {
           var begin = (($scope.pagination.currentPage - 1) * $scope.pagination.pageSize);
           var end = begin + $scope.pagination.pageSize;
@@ -145,19 +176,14 @@ app.controller("product_ctrl", function ($scope, $http) {
           $scope.pagination.startIndex = begin;
           $scope.pagination.endIndex = end > $scope.items.length ? $scope.items.length : end;
 
-          $scope.pagination.pages = [];
-          for (var i = 1; i <= $scope.pagination.totalPages; i++) {
-              $scope.pagination.pages.push(i);
-          }
+          $scope.pagination.pages = $scope.getPagerNumbers();
       }
 
-      // Cập nhật phân trang khi có sự thay đổi
       $scope.$watch('items', function () {
           $scope.pagination.totalPages = Math.ceil($scope.items.length / $scope.pagination.pageSize);
           paginateItems();
       });
 
-      // Function xử lý chuyển trang
       $scope.setPage = function (page) {
           if (page < 1 || page > $scope.pagination.totalPages) {
               return;
@@ -166,7 +192,6 @@ app.controller("product_ctrl", function ($scope, $http) {
           paginateItems();
       };
 
-      // Function chuyển đến trang tiếp theo
       $scope.nextPage = function () {
           if ($scope.pagination.currentPage < $scope.pagination.totalPages) {
               $scope.pagination.currentPage++;
@@ -174,7 +199,6 @@ app.controller("product_ctrl", function ($scope, $http) {
           }
       };
 
-      // Function chuyển đến trang trước đó
       $scope.prevPage = function () {
           if ($scope.pagination.currentPage > 1) {
               $scope.pagination.currentPage--;

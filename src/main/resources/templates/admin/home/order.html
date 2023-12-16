@@ -39,11 +39,11 @@
                                 <label for="categoryFilter" class="fw-bold pt-1" style="font-size: 16px;">
                                     Filter by Status:
                                 </label>
+                            </label>
                         </div>
                         <div class="form-group mb-0" style="width: 150px;">
                             <select class="form-control" id="statusFilter" ng-model="selectedStatus"
                                 ng-options="s.id as s.name for s in status" ng-change="selectedStatusChanged()">
-                                <option value="">All Status</option>
                             </select>
                         </div>
                     </div>
@@ -113,37 +113,27 @@
                         </div>
                         <div class="d-flex justify-content-between align-items-center pt-2 pb-0">
                             <div class="fw-normal" style="font-size: 18px;">
-                                Showing {{pagerOrder.page + 1}} of {{pagerOrder.count}} entries
+                                Showing {{ pagerOrder.startIndex }} to {{ pagerOrder.endIndex }} of {{ pagerOrder.totalItems }} entries
                             </div>
                             <nav aria-label="Page navigation">
                                 <ul class="pagination justify-content-end">
-                                    <li class="page-item">
-                                        <button class="page-link" tabindex="-1" aria-disabled="true" ng-click="pagerOrder.first()">
-                                            <i class="bi bi-skip-start-circle-fill"></i>
-                                        </button>
-                                    </li>
-                                    <li class="page-item">
-                                        <button class="page-link" tabindex="-1" aria-disabled="true" ng-click="pagerOrder.prev()">
+                                    <li class="page-item" ng-class="{ 'disabled': pagerOrder.currentPage === 1 }">
+                                        <a class="page-link" href="#" ng-click="setPageOrder(1)" aria-disabled="true">
                                             <i class="bi bi-caret-left-fill"></i>
-                                        </button>
+                                        </a>
                                     </li>
-                                    <li class="page-item"><button class="page-link">{{pagerOrder.page + 1}}</button></li>
-                                    <li class="page-item">
-                                        <button class="page-link" ng-click="pagerOrder.next()">
+                                    <li class="page-item" ng-repeat="page in pagerOrder.pages">
+                                        <a class="page-link" href="#" ng-click="setPageOrder(page)" ng-class="{ active: pagerOrder.currentPage === page }">{{ page }}</a>
+                                    </li>
+                                    <li class="page-item" ng-class="{ 'disabled': pagerOrder.currentPage === pagerOrder.totalPages }">
+                                        <a class="page-link" href="#" ng-click="setPageOrder(pagerOrder.totalPages)">
                                             <i class="bi bi-caret-right-fill"></i>
-                                        </button>
-                                    </li>
-                                    <li class="page-item">
-                                        <button class="page-link" ng-click="pagerOrder.last()">
-                                            <i class="bi bi-skip-end-circle-fill"></i>
-                                        </button>
+                                        </a>
                                     </li>
                                 </ul>
                             </nav>
                         </div>
-
-
-                        </div>
+                    </div>
 
                     </div>
                     <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -303,7 +293,7 @@
                                     <th></th>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat-start="order in pagerOrderConfirm.paginatedList">
+                                    <tr ng-repeat-start="order in pagerOrderProcessing.paginatedList">
                                         <td>{{$index + 1 }}</td>
                                         <td>{{order.id}}</td>
                                         <td>{{order.createDate | date: 'dd-MM-yyyy'}}</td>
@@ -324,37 +314,28 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div  class="d-flex justify-content-between align-items-center pt-2 pb-0">
+                        <div class="d-flex justify-content-between align-items-center pt-2 pb-0">
                             <div class="fw-normal" style="font-size: 18px;">
-                                Showing {{pagerOrderConfirm.page + 1}} of {{pagerOrderConfirm.count}} entries
+                                Showing {{ pagerOrderProcessing.startIndex }} to {{ pagerOrderProcessing.endIndex }} of {{ pagerOrderProcessing.totalItems }} entries
                             </div>
                             <nav aria-label="Page navigation">
                                 <ul class="pagination justify-content-end">
-                                    <li class="page-item">
-                                        <button class="page-link" tabindex="-1" aria-disabled="true" ng-click="pagerOrderConfirm.first()">
-                                            <i class="bi bi-skip-start-circle-fill"></i>
-                                        </button>
-                                    </li>
-                                    <li class="page-item">
-                                        <button class="page-link" tabindex="-1" aria-disabled="true" ng-click="pagerOrderConfirm.prev()">
+                                    <li class="page-item" ng-class="{ 'disabled': pagerOrderProcessing.currentPage === 1 }">
+                                        <a class="page-link" href="#" ng-click="setPageOrderProcessing(1)" aria-disabled="true">
                                             <i class="bi bi-caret-left-fill"></i>
-                                        </button>
+                                        </a>
                                     </li>
-                                    <li class="page-item"><button class="page-link">{{pagerOrderConfirm.page + 1}}</button></li>
-                                    <li class="page-item">
-                                        <button class="page-link" ng-click="pagerOrderConfirm.next()">
+                                    <li class="page-item" ng-repeat="page in pagerOrderProcessing.pages">
+                                        <a class="page-link" href="#" ng-click="setPageOrderProcessing(page)" ng-class="{ active: pagerOrderProcessing.currentPage === page }">{{ page }}</a>
+                                    </li>
+                                    <li class="page-item" ng-class="{ 'disabled': pagerOrderProcessing.currentPage === pagerOrderProcessing.totalPages }">
+                                        <a class="page-link" href="#" ng-click="setPageOrderProcessing(pagerOrderProcessing.totalPages)">
                                             <i class="bi bi-caret-right-fill"></i>
-                                        </button>
-                                    </li>
-                                    <li class="page-item">
-                                        <button class="page-link" ng-click="pagerOrderConfirm.last()">
-                                            <i class="bi bi-skip-end-circle-fill"></i>
-                                        </button>
+                                        </a>
                                     </li>
                                 </ul>
                             </nav>
                         </div>
-
                         </div>
                     </div>
                     <div class="modal fade" id="processingModal" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -537,30 +518,22 @@
                         </div>
                         <div class="d-flex justify-content-between align-items-center pt-2 pb-0">
                             <div class="fw-normal" style="font-size: 18px;">
-                                Showing {{pagerOrderShipping.page + 1}} of {{pagerOrderShipping.count}} entries
+                                Showing {{ pagerOrderShipping.startIndex }} to {{ pagerOrderShipping.endIndex }} of {{ pagerOrderShipping.totalItems }} entries
                             </div>
                             <nav aria-label="Page navigation">
                                 <ul class="pagination justify-content-end">
-                                    <li class="page-item">
-                                        <button class="page-link" tabindex="-1" aria-disabled="true" ng-click="pagerOrderShipping.first()">
-                                            <i class="bi bi-skip-start-circle-fill"></i>
-                                        </button>
-                                    </li>
-                                    <li class="page-item">
-                                        <button class="page-link" tabindex="-1" aria-disabled="true" ng-click="pagerOrderShipping.prev()">
+                                    <li class="page-item" ng-class="{ 'disabled': pagerOrderShipping.currentPage === 1 }">
+                                        <a class="page-link" href="#" ng-click="setPageOrderShipping(1)" aria-disabled="true">
                                             <i class="bi bi-caret-left-fill"></i>
-                                        </button>
+                                        </a>
                                     </li>
-                                    <li class="page-item"><button class="page-link">{{pagerOrderShipping.page + 1}}</button></li>
-                                    <li class="page-item">
-                                        <button class="page-link" ng-click="pagerOrderShipping.next()">
+                                    <li class="page-item" ng-repeat="page in pagerOrderShipping.pages">
+                                        <a class="page-link" href="#" ng-click="setPageOrderShipping(page)" ng-class="{ active: pagerOrderShipping.currentPage === page }">{{ page }}</a>
+                                    </li>
+                                    <li class="page-item" ng-class="{ 'disabled': pagerOrderShipping.currentPage === pagerOrderShipping.totalPages }">
+                                        <a class="page-link" href="#" ng-click="setPageOrderShipping(pagerOrderShipping.totalPages)">
                                             <i class="bi bi-caret-right-fill"></i>
-                                        </button>
-                                    </li>
-                                    <li class="page-item">
-                                        <button class="page-link" ng-click="pagerOrderShipping.last()">
-                                            <i class="bi bi-skip-end-circle-fill"></i>
-                                        </button>
+                                        </a>
                                     </li>
                                 </ul>
                             </nav>
@@ -742,37 +715,28 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div  class="d-flex justify-content-between align-items-center pt-2 pb-0">
+                        <div class="d-flex justify-content-between align-items-center pt-2 pb-0">
                             <div class="fw-normal" style="font-size: 18px;">
-                                Showing {{pagerOrderSuccess.page + 1}} of {{pagerOrderSuccess.count}} entries
+                                Showing {{ pagerOrderSuccess.startIndex }} to {{ pagerOrderSuccess.endIndex }} of {{ pagerOrderSuccess.totalItems }} entries
                             </div>
                             <nav aria-label="Page navigation">
                                 <ul class="pagination justify-content-end">
-                                    <li class="page-item">
-                                        <button class="page-link" tabindex="-1" aria-disabled="true" ng-click="pagerOrderSuccess.first()">
-                                            <i class="bi bi-skip-start-circle-fill"></i>
-                                        </button>
-                                    </li>
-                                    <li class="page-item">
-                                        <button class="page-link" tabindex="-1" aria-disabled="true" ng-click="pagerOrderSuccess.prev()">
+                                    <li class="page-item" ng-class="{ 'disabled': pagerOrderSuccess.currentPage === 1 }">
+                                        <a class="page-link" href="#" ng-click="setPageOrderSuccess(1)" aria-disabled="true">
                                             <i class="bi bi-caret-left-fill"></i>
-                                        </button>
+                                        </a>
                                     </li>
-                                    <li class="page-item"><button class="page-link">{{pagerOrderSuccess.page + 1}}</button></li>
-                                    <li class="page-item">
-                                        <button class="page-link" ng-click="pagerOrderSuccess.next()">
+                                    <li class="page-item" ng-repeat="page in pagerOrderSuccess.pages">
+                                        <a class="page-link" href="#" ng-click="setPageOrderSuccess(page)" ng-class="{ active: pagerOrderSuccess.currentPage === page }">{{ page }}</a>
+                                    </li>
+                                    <li class="page-item" ng-class="{ 'disabled': pagerOrderSuccess.currentPage === pagerOrderSuccess.totalPages }">
+                                        <a class="page-link" href="#" ng-click="setPageOrderSuccess(pagerOrderSuccess.totalPages)">
                                             <i class="bi bi-caret-right-fill"></i>
-                                        </button>
-                                    </li>
-                                    <li class="page-item">
-                                        <button class="page-link" ng-click="pagerOrderSuccess.last()">
-                                            <i class="bi bi-skip-end-circle-fill"></i>
-                                        </button>
+                                        </a>
                                     </li>
                                 </ul>
                             </nav>
                         </div>
-
                         </div>
                     </div>
                     <!-- Modal Success -->
@@ -958,30 +922,22 @@
                         </div>
                         <div  class="d-flex justify-content-between align-items-center pt-2 pb-0">
                             <div class="fw-normal" style="font-size: 18px;">
-                                Showing {{pagerOrderCancel.page + 1}} of {{pagerOrderCancel.count}} entries
+                                Showing {{ pagerOrderCancel.startIndex }} to {{ pagerOrderCancel.endIndex }} of {{ pagerOrderCancel.totalItems }} entries
                             </div>
                             <nav aria-label="Page navigation">
                                 <ul class="pagination justify-content-end">
-                                    <li class="page-item">
-                                        <button class="page-link" tabindex="-1" aria-disabled="true" ng-click="pagerOrderCancel.first()">
-                                            <i class="bi bi-skip-start-circle-fill"></i>
-                                        </button>
-                                    </li>
-                                    <li class="page-item">
-                                        <button class="page-link" tabindex="-1" aria-disabled="true" ng-click="pagerOrderCancel.prev()">
+                                    <li class="page-item" ng-class="{ 'disabled': pagerOrderCancel.currentPage === 1 }">
+                                        <a class="page-link" href="#" ng-click="setPageOrderCancel(1)" aria-disabled="true">
                                             <i class="bi bi-caret-left-fill"></i>
-                                        </button>
+                                        </a>
                                     </li>
-                                    <li class="page-item"><button class="page-link">{{pagerOrderCancel.page + 1 }}</button></li>
-                                    <li class="page-item">
-                                        <button class="page-link" ng-click="pagerOrderCancel.next()">
+                                    <li class="page-item" ng-repeat="page in pagerOrderCancel.pages">
+                                        <a class="page-link" href="#" ng-click="setPageOrderCancel(page)" ng-class="{ active: pagerOrderCancel.currentPage === page }">{{ page }}</a>
+                                    </li>
+                                    <li class="page-item" ng-class="{ 'disabled': pagerOrderCancel.currentPage === pagerOrderCancel.totalPages }">
+                                        <a class="page-link" href="#" ng-click="setPageOrderCancel(pagerOrderCancel.totalPages)">
                                             <i class="bi bi-caret-right-fill"></i>
-                                        </button>
-                                    </li>
-                                    <li class="page-item">
-                                        <button class="page-link" ng-click="pagerOrderCancel.last()">
-                                            <i class="bi bi-skip-end-circle-fill"></i>
-                                        </button>
+                                        </a>
                                     </li>
                                 </ul>
                             </nav>
@@ -1014,7 +970,6 @@
                                                 <h6>Order Date:</h6>
                                                 <p>{{listOrder[0].order_createDate | date :'dd-MM-yyyy'}}</p>
                                             </div>
-                                            <!-- Thêm thông tin khác nếu cần -->
                                         </div>
                                         <div class="col-md-6 cnt-hd">
                                             <div class="info-pair">

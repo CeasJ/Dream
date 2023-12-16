@@ -73,6 +73,10 @@ app.controller("order_ctrl", function ($scope, $http) {
 	
     $http.get(`/rest/order/status`).then((resp) => {
       $scope.status = resp.data;
+      if (!$scope.selectedStatus) {
+          $scope.selectedStatus = 1;
+          $scope.selectedStatusChanged(); // Kích hoạt hàm khi giá trị được thay đổi
+      }
     });
 
     $http.get(`/rest/order/confirm`).then((resp) => {
@@ -240,156 +244,226 @@ app.controller("order_ctrl", function ($scope, $http) {
     },
   };
 
-  $scope.pagerOrder = {
-		page: 0,
-		size: 5,
-		get paginatedList() {
-			var start = this.page * this.size;
-			return $scope.listOrders.slice(start, start + this.size);
-		},
-		get count() {
-			return Math.ceil(1.0 * $scope.listOrders.length / this.size);
-		},
-		first() {
-			this.page = 0;
-		},
-		prev() {
-			this.page--;
-			if (this.page < 0) {
-				this.last();
-			}
-		},
-		next() {
-			this.page++;
-			if (this.page >= this.count) {
-				this.first();
-			}
-		},
-		last() {
-			this.page = this.count - 1;
-		}
-	};
 
-  // page confirm
-  $scope.pagerOrderConfirm= {
-		page: 0,
-		size: 5,
-		get paginatedList() {
-			var start = this.page * this.size;
-			return $scope.listOrdersConfirmed.slice(start, start + this.size);
-		},
-		get count() {
-			return Math.ceil(1.0 * $scope.listOrders.length / this.size);
-		},
-		first() {
-			this.page = 0;
-		},
-		prev() {
-			this.page--;
-			if (this.page < 0) {
-				this.last();
-			}
-		},
-		next() {
-			this.page++;
-			if (this.page >= this.count) {
-				this.first();
-			}
-		},
-		last() {
-			this.page = this.count - 1;
-		}
-	};
+ // Pending Pagination
+$scope.pagerOrder = {
+    currentPage: 1,
+    pageSize: 5,
+    totalPages: 0,
+    startIndex: 0,
+    endIndex: 0,
+    totalItems: 0,
+    pages: []
+};
 
-  // page ship
+function setPageNumbers() {
+    $scope.pagerOrder.pages = [];
+    for (var i = 1; i <= $scope.pagerOrder.totalPages; i++) {
+        $scope.pagerOrder.pages.push(i);
+    }
+}
+
+$scope.setPageOrder = function (page) {
+    if (page < 1 || page > $scope.pagerOrder.totalPages) {
+        return;
+    }
+    $scope.pagerOrder.currentPage = page;
+    paginateOrder();
+};
+
+function paginateOrder() {
+    var begin = (($scope.pagerOrder.currentPage - 1) * $scope.pagerOrder.pageSize);
+    var end = begin + $scope.pagerOrder.pageSize;
+    $scope.pagerOrder.paginatedList = $scope.listOrders.slice(begin, end);
+    $scope.pagerOrder.startIndex = begin + 1;
+    $scope.pagerOrder.endIndex = Math.min(end, $scope.listOrders.length);
+    $scope.pagerOrder.totalItems = $scope.listOrders.length;
+    $scope.pagerOrder.totalPages = Math.ceil($scope.pagerOrder.totalItems / $scope.pagerOrder.pageSize);
+    setPageNumbers();
+    $scope.pagerOrder.endIndex = Math.min($scope.pagerOrder.endIndex, $scope.pagerOrder.totalItems);
+}
+
+$scope.$watch('listOrders', function () {
+    paginateOrder();
+});
+
+
+  // Processing pagination
+  $scope.pagerOrderProcessing = {
+      currentPage: 1,
+      pageSize: 5,
+      totalPages: 0,
+      startIndex: 0,
+      endIndex: 0,
+      totalItems: 0,
+      pages: []
+  };
+
+  function setPageNumbersProcessing() {
+      $scope.pagerOrderProcessing.pages = [];
+      for (var i = 1; i <= $scope.pagerOrderProcessing.totalPages; i++) {
+          $scope.pagerOrderProcessing.pages.push(i);
+      }
+  }
+
+  $scope.setPageOrderProcessing = function (page) {
+      if (page < 1 || page > $scope.pagerOrderProcessing.totalPages) {
+          return;
+      }
+      $scope.pagerOrderProcessing.currentPage = page;
+      paginateOrderProcessing();
+  };
+
+  function paginateOrderProcessing() {
+      var begin = (($scope.pagerOrderProcessing.currentPage - 1) * $scope.pagerOrderProcessing.pageSize);
+      var end = begin + $scope.pagerOrderProcessing.pageSize;
+
+      $scope.pagerOrderProcessing.paginatedList = $scope.listOrdersConfirmed.slice(begin, end);
+
+      $scope.pagerOrderProcessing.startIndex = begin + 1;
+      $scope.pagerOrderProcessing.endIndex = Math.min(end, $scope.listOrdersConfirmed.length);
+      $scope.pagerOrderProcessing.totalItems = $scope.listOrdersConfirmed.length;
+
+      $scope.pagerOrderProcessing.totalPages = Math.ceil($scope.pagerOrderProcessing.totalItems / $scope.pagerOrderProcessing.pageSize);
+      setPageNumbersProcessing();
+
+      $scope.pagerOrderProcessing.endIndex = Math.min($scope.pagerOrderProcessing.endIndex, $scope.pagerOrderProcessing.totalItems);
+  }
+
+  $scope.$watch('listOrdersConfirmed', function () {
+      paginateOrderProcessing();
+  });
+
+  // Phân trang cho pagerOrderShipping
   $scope.pagerOrderShipping = {
-		page: 0,
-		size: 5,
-		get paginatedList() {
-			var start = this.page * this.size;
-			return $scope.listOrderIsShipping.slice(start, start + this.size);
-		},
-		get count() {
-			return Math.ceil(1.0 * $scope.listOrders.length / this.size);
-		},
-		first() {
-			this.page = 0;
-		},
-		prev() {
-			this.page--;
-			if (this.page < 0) {
-				this.last();
-			}
-		},
-		next() {
-			this.page++;
-			if (this.page >= this.count) {
-				this.first();
-			}
-		},
-		last() {
-			this.page = this.count - 1;
-		}
-	};
+      currentPage: 1,
+      pageSize: 5,
+      totalPages: 0,
+      startIndex: 0,
+      endIndex: 0,
+      totalItems: 0,
+      pages: []
+  };
+
+  function setPageNumbersShipping() {
+      $scope.pagerOrderShipping.pages = [];
+      for (var i = 1; i <= $scope.pagerOrderShipping.totalPages; i++) {
+          $scope.pagerOrderShipping.pages.push(i);
+      }
+  }
+
+  $scope.setPageOrderShipping = function (page) {
+      if (page < 1 || page > $scope.pagerOrderShipping.totalPages) {
+          return;
+      }
+      $scope.pagerOrderShipping.currentPage = page;
+      paginateOrderShipping();
+  };
+
+  function paginateOrderShipping() {
+      var begin = (($scope.pagerOrderShipping.currentPage - 1) * $scope.pagerOrderShipping.pageSize);
+      var end = begin + $scope.pagerOrderShipping.pageSize;
+
+      $scope.pagerOrderShipping.paginatedList = $scope.listOrderIsShipping.slice(begin, end);
+
+      $scope.pagerOrderShipping.startIndex = begin + 1;
+      $scope.pagerOrderShipping.endIndex = Math.min(end, $scope.listOrderIsShipping.length);
+      $scope.pagerOrderShipping.totalItems = $scope.listOrderIsShipping.length;
+
+      $scope.pagerOrderShipping.totalPages = Math.ceil($scope.pagerOrderShipping.totalItems / $scope.pagerOrderShipping.pageSize);
+      setPageNumbersShipping();
+
+      $scope.pagerOrderShipping.endIndex = Math.min($scope.pagerOrderShipping.endIndex, $scope.pagerOrderShipping.totalItems);
+  }
+
+  $scope.$watch('listOrderIsShipping', function () {
+      paginateOrderShipping();
+  });
+
 
   // page success
   $scope.pagerOrderSuccess = {
-		page: 0,
-		size: 5,
-		get paginatedList() {
-			var start = this.page * this.size;
-			return $scope.listOrdersSuccessful.slice(start, start + this.size);
-		},
-		get count() {
-			return Math.ceil(1.0 * $scope.listOrders.length / this.size);
-		},
-		first() {
-			this.page = 0;
-		},
-		prev() {
-			this.page--;
-			if (this.page < 0) {
-				this.last();
-			}
-		},
-		next() {
-			this.page++;
-			if (this.page >= this.count) {
-				this.first();
-			}
-		},
-		last() {
-			this.page = this.count - 1;
-		}
-	};
-  //page cancel
+      currentPage: 1,
+      pageSize: 5,
+      totalPages: 0,
+      startIndex: 0,
+      endIndex: 0,
+      totalItems: 0,
+      pages: []
+  };
+
+  function setPageNumbersSuccess() {
+      $scope.pagerOrderSuccess.pages = [];
+      for (var i = 1; i <= $scope.pagerOrderSuccess.totalPages; i++) {
+          $scope.pagerOrderSuccess.pages.push(i);
+      }
+  }
+
+  $scope.setPageOrderSuccess = function (page) {
+      if (page < 1 || page > $scope.pagerOrderSuccess.totalPages) {
+          return;
+      }
+      $scope.pagerOrderSuccess.currentPage = page;
+      paginateOrderSuccess();
+  };
+
+  function paginateOrderSuccess() {
+      var begin = (($scope.pagerOrderSuccess.currentPage - 1) * $scope.pagerOrderSuccess.pageSize);
+      var end = begin + $scope.pagerOrderSuccess.pageSize;
+      $scope.pagerOrderSuccess.paginatedList = $scope.listOrdersSuccessful.slice(begin, end);
+      $scope.pagerOrderSuccess.startIndex = begin + 1;
+      $scope.pagerOrderSuccess.endIndex = Math.min(end, $scope.listOrdersSuccessful.length);
+      $scope.pagerOrderSuccess.totalItems = $scope.listOrdersSuccessful.length;
+      $scope.pagerOrderSuccess.totalPages = Math.ceil($scope.pagerOrderSuccess.totalItems / $scope.pagerOrderSuccess.pageSize);
+      setPageNumbersSuccess();
+      $scope.pagerOrderSuccess.endIndex = Math.min($scope.pagerOrderSuccess.endIndex, $scope.pagerOrderSuccess.totalItems);
+  }
+
+  $scope.$watch('listOrdersSuccessful', function () {
+      paginateOrderSuccess();
+  });
+
+
+  // Pagination cancel
   $scope.pagerOrderCancel = {
-		page: 0,
-		size: 5,
-		get paginatedList() {
-			var start = this.page * this.size;
-			return $scope.listOrdersCancelled.slice(start, start + this.size);
-		},
-		get count() {
-			return Math.ceil(1.0 * $scope.listOrders.length / this.size);
-		},
-		first() {
-			this.page = 0;
-		},
-		prev() {
-			this.page--;
-			if (this.page < 0) {
-				this.last();
-			}
-		},
-		next() {
-			this.page++;
-			if (this.page >= this.count) {
-				this.first();
-			}
-		},
-		last() {
-			this.page = this.count - 1;
-		}
-	};
+      currentPage: 1,
+      pageSize: 5,
+      totalPages: 0,
+      startIndex: 0,
+      endIndex: 0,
+      totalItems: 0,
+      pages: []
+  };
+
+  function setPageNumbersCancel() {
+      $scope.pagerOrderCancel.pages = [];
+      for (var i = 1; i <= $scope.pagerOrderCancel.totalPages; i++) {
+          $scope.pagerOrderCancel.pages.push(i);
+      }
+  }
+
+  $scope.setPageOrderCancel = function (page) {
+      if (page < 1 || page > $scope.pagerOrderCancel.totalPages) {
+          return;
+      }
+      $scope.pagerOrderCancel.currentPage = page;
+      paginateOrderCancel();
+  };
+
+  function paginateOrderCancel() {
+      var begin = (($scope.pagerOrderCancel.currentPage - 1) * $scope.pagerOrderCancel.pageSize);
+      var end = begin + $scope.pagerOrderCancel.pageSize;
+      $scope.pagerOrderCancel.paginatedList = $scope.listOrdersCancelled.slice(begin, end);
+      $scope.pagerOrderCancel.startIndex = begin + 1;
+      $scope.pagerOrderCancel.endIndex = Math.min(end, $scope.listOrdersCancelled.length);
+      $scope.pagerOrderCancel.totalItems = $scope.listOrdersCancelled.length;
+      $scope.pagerOrderCancel.totalPages = Math.ceil($scope.pagerOrderCancel.totalItems / $scope.pagerOrderCancel.pageSize);
+      setPageNumbersCancel();
+      $scope.pagerOrderCancel.endIndex = Math.min($scope.pagerOrderCancel.endIndex, $scope.pagerOrderCancel.totalItems);
+  }
+
+  $scope.$watch('listOrdersCancelled', function () {
+      paginateOrderCancel();
+  });
+
 });

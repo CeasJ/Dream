@@ -156,47 +156,159 @@ app.controller("authority-ctrl", function ($scope, $http, $location) {
       });
   };
 
-  // Staff Pagination
-    $scope.currentPage = 1;
-    $scope.pageSize = 5; // Số nhân viên hiển thị mỗi trang
+  // Pagination
 
-    $scope.totalPages = function () {
-      return Math.ceil($scope.listStaff.length / $scope.pageSize);
-    };
+  $scope.currentPageAuth = 1;
+  $scope.pageSizeAuth = 5;
 
-    $scope.setPage = function (page) {
-      if (page >= 1 && page <= $scope.totalPages()) {
-        $scope.currentPage = page;
+  $scope.totalPagesAuth = function () {
+      return Math.ceil($scope.listStaff.length / $scope.pageSizeAuth);
+  };
+
+  $scope.setPageAuth = function (page) {
+      if (page >= 1 && page <= $scope.totalPagesAuth()) {
+          $scope.currentPageAuth = page;
       }
-    };
+  };
 
-$scope.paginatedList = function () {
-  const begin = ($scope.currentPage - 1) * $scope.pageSize;
-  const end = begin + $scope.pageSize;
+  $scope.firstPageAuth = function () {
+      if ($scope.currentPageAuth !== 1) {
+          $scope.currentPageAuth = 1;
+      }
+  };
 
-  return $scope.listStaff.slice(begin, end);
-};
+  $scope.lastPageAuth = function () {
+      if ($scope.currentPageAuth !== $scope.totalPagesAuth()) {
+          $scope.currentPageAuth = $scope.totalPagesAuth();
+      }
+  };
 
-// Pagination Authorization
-$scope.currentPageAuth = 1;
-$scope.pageSizeAuth = 5; // Số quyền hiển thị mỗi trang
+  $scope.getPagerAuth = function () {
+      const totalPages = $scope.totalPagesAuth();
+      const currentPage = $scope.currentPageAuth;
+      const maxPagesToShow = 5;
 
-$scope.totalPagesAuth = function () {
-  return Math.ceil($scope.listStaff.length / $scope.pageSizeAuth);
-};
+      let startPage, endPage;
+      if (totalPages <= maxPagesToShow) {
+          startPage = 1;
+          endPage = totalPages;
+      } else {
+          if (currentPage <= Math.ceil(maxPagesToShow / 2)) {
+              startPage = 1;
+              endPage = maxPagesToShow;
+          } else if (currentPage + Math.floor(maxPagesToShow / 2) >= totalPages) {
+              startPage = totalPages - maxPagesToShow + 1;
+              endPage = totalPages;
+          } else {
+              startPage = currentPage - Math.floor(maxPagesToShow / 2);
+              endPage = currentPage + Math.floor(maxPagesToShow / 2);
+          }
+      }
 
-$scope.setPageAuth = function (page) {
-  if (page >= 1 && page <= $scope.totalPagesAuth()) {
-    $scope.currentPageAuth = page;
-  }
-};
+      const pages = Array.from(Array(endPage + 1 - startPage).keys()).map(i => startPage + i);
+      return pages;
+  };
 
-$scope.paginatedListAuth = function () {
-  const begin = ($scope.currentPageAuth - 1) * $scope.pageSizeAuth;
-  const end = begin + $scope.pageSizeAuth;
+  $scope.paginatedListAuth = function () {
+      const begin = ($scope.currentPageAuth - 1) * $scope.pageSizeAuth;
+      const end = begin + $scope.pageSizeAuth;
 
-  return $scope.listStaff.slice(begin, end);
-};
+      return $scope.listStaff.slice(begin, end);
+  };
 
+  // Trang thứ hai (pagination cho trang nhân viên)
+  $scope.currentPage = 1;
+  $scope.pageSize = 5; // Số nhân viên hiển thị mỗi trang
+
+  $scope.totalPages = function () {
+      return Math.ceil($scope.listStaff.length / $scope.pageSize);
+  };
+
+  $scope.setPage = function (page) {
+      if (page >= 1 && page <= $scope.totalPages()) {
+          $scope.currentPage = page;
+      }
+  };
+
+  $scope.firstPage = function () {
+      if ($scope.currentPage !== 1) {
+          $scope.currentPage = 1;
+      }
+  };
+
+  $scope.lastPage = function () {
+      if ($scope.currentPage !== $scope.totalPages()) {
+          $scope.currentPage = $scope.totalPages();
+      }
+  };
+
+  $scope.getPager = function () {
+      const totalPages = $scope.totalPages();
+      const currentPage = $scope.currentPage;
+      const maxPagesToShow = 5;
+
+      let startPage, endPage;
+      if (totalPages <= maxPagesToShow) {
+          startPage = 1;
+          endPage = totalPages;
+      } else {
+          if (currentPage <= Math.ceil(maxPagesToShow / 2)) {
+              startPage = 1;
+              endPage = maxPagesToShow;
+          } else if (currentPage + Math.floor(maxPagesToShow / 2) >= totalPages) {
+              startPage = totalPages - maxPagesToShow + 1;
+              endPage = totalPages;
+          } else {
+              startPage = currentPage - Math.floor(maxPagesToShow / 2);
+              endPage = currentPage + Math.floor(maxPagesToShow / 2);
+          }
+      }
+
+      const pages = Array.from(Array(endPage + 1 - startPage).keys()).map(i => startPage + i);
+      return pages;
+  };
+
+  $scope.paginatedList = function () {
+      const begin = ($scope.currentPage - 1) * $scope.pageSize;
+      const end = begin + $scope.pageSize;
+
+      return $scope.listStaff.slice(begin, end);
+  };
+
+  // Pagination for user accounts
+  $scope.currentPage = 1;
+  $scope.pageSize = 5; // Số nhân viên hiển thị mỗi trang
+
+  $scope.totalPages = function () {
+      return Math.ceil($scope.listStaff.length / $scope.pageSize);
+  };
+
+  $scope.setPage = function (page) {
+      if (page >= 1 && page <= $scope.totalPages()) {
+          $scope.currentPage = page;
+      }
+  };
+
+  $scope.paginatedList = function () {
+      const begin = ($scope.currentPage - 1) * $scope.pageSize;
+      const end = begin + $scope.pageSize;
+      return $scope.listStaff.slice(begin, end);
+  };
+
+  $scope.nextPage = function () {
+      if ($scope.currentPage < $scope.totalPages()) {
+          $scope.currentPage++;
+      }
+  };
+
+  $scope.prevPage = function () {
+      if ($scope.currentPage > 1) {
+          $scope.currentPage--;
+      }
+  };
+
+
+
+  $scope.initialize();
 
 });

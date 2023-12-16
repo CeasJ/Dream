@@ -156,8 +156,8 @@ public class VoucherServiceImp implements VoucherService {
     }
 
     @Override
-    public List<VoucherDTO> updateListVoucherByNameAndIdType(VoucherDTO voucherDTO, String name, Long idType) {
-        List<Voucher> voucherList = voucherRepository.findListVouchersByNameAndIDType(name,idType);
+    public List<VoucherDTO> updateListVoucherByNameAndIdType(VoucherDTO voucherDTO, String number, Long idType) {
+        List<Voucher> voucherList = voucherRepository.findListVouchersByNumberAndIDType(number, idType);
         VoucherType type = new VoucherType();
         type.setId(voucherDTO.getType());
 
@@ -176,8 +176,8 @@ public class VoucherServiceImp implements VoucherService {
     }
 
     @Override
-    public void deleteByNameAndType(String name, Long idType) {
-        List<VoucherDTO> vouchers = voucherRepository.findListVouchersByNameAndIDType(name,idType).stream().map(voucherMapper::voucherToVoucherDTO).collect(Collectors.toList());
+    public void deleteByNumberAndType(String name, Long idType) {
+        List<VoucherDTO> vouchers = voucherRepository.findListVouchersByNumberAndIDType(name,idType).stream().map(voucherMapper::voucherToVoucherDTO).collect(Collectors.toList());
         voucherRepository.deleteAll(voucherMapper.listVoucherDTOToListVoucher(vouchers));
     }
 
@@ -189,8 +189,8 @@ public class VoucherServiceImp implements VoucherService {
     }
 
     @Override
-    public List<VoucherDTO> getVouchersByNameAndType(String name, Long idType) {
-        List<Voucher> vouchers = voucherRepository.findListVouchersByNameAndIDType(name, idType);
+    public List<VoucherDTO> getVouchersByNameAndType(String number, Long idType) {
+        List<Voucher> vouchers = voucherRepository.findListVouchersByNumberAndIDType(number, idType);
         return vouchers.stream()
                 .map(voucherMapper::voucherToVoucherDTO)
                 .collect(Collectors.toList());

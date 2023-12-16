@@ -161,15 +161,15 @@ public class VoucherRestController {
         }
     }
 
-    @DeleteMapping("/{name}/{idType}")
-    public ResponseEntity<String> deleteListVoucher(@PathVariable String name, @PathVariable Long idType) {
+    @DeleteMapping("/{number}/{idType}")
+    public ResponseEntity<String> deleteListVoucher(@PathVariable String number, @PathVariable Long idType) {
         try {
             String notificationTitle = "Có sự thay đổi trong phiếu giảm";
             String username = request.getRemoteUser();
             Long idAccount = accountService.findIDByUsername(username);
             Long idRole = accountService.findRoleIdByUsername(username);
 
-            List<VoucherDTO> deletedVouchers = voucherService.getVouchersByNameAndType(name, idType);
+            List<VoucherDTO> deletedVouchers = voucherService.getVouchersByNameAndType(number, idType);
 
             for (VoucherDTO voucher : deletedVouchers) {
                 String voucherName = voucher.getName();
@@ -185,7 +185,7 @@ public class VoucherRestController {
                 notificationService.createNotification(notificationDTO);
             }
 
-            voucherService.deleteByNameAndType(name, idType);
+            voucherService.deleteByNumberAndType(number, idType);
             return ResponseEntity.ok("Vouchers have been deleted successfully!");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

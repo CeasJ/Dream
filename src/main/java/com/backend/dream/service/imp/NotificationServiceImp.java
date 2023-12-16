@@ -47,5 +47,11 @@ public class NotificationServiceImp implements NotificationService {
         notificationRepository.save(notification);
     }
 
-
+    @Override
+    public List<NotificationDTO> getAdminNotifications() {
+        List<Notification> notifications = notificationRepository.findAdminNotifications();
+        return notifications.stream()
+                .map(notificationMapper::notificationToNotificationDTO)
+                .collect(Collectors.toList());
+    }
 }

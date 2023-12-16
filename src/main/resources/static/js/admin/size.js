@@ -186,8 +186,12 @@ $scope.getPrice = function(productId, sizeId) {
     }
   };
 
-    $scope.currentPage = 1; // Trang hiện tại
-    $scope.pageSize = 5; // Số lượng sản phẩm mỗi trang
+
+// Pagination
+    $scope.currentPage = 1;
+    $scope.pageSize = 5;
+    $scope.totalPages = 0;
+    $scope.totalPagesArray = [];
 
     $scope.getFilteredProducts = function () {
         var begin = ($scope.currentPage - 1) * $scope.pageSize;
@@ -203,7 +207,42 @@ $scope.getPrice = function(productId, sizeId) {
         }
     };
 
+    $scope.firstPage = function () {
+        if ($scope.currentPage !== 1) {
+            $scope.currentPage = 1;
+            $scope.getFilteredProducts();
+        }
+    };
+
+    $scope.lastPage = function () {
+        if ($scope.currentPage !== $scope.totalPages) {
+            $scope.currentPage = $scope.totalPages;
+            $scope.getFilteredProducts();
+        }
+    };
+
+    $scope.getPagerNumbers = function () {
+        let totalPages = $scope.totalPages;
+        let currentPage = $scope.currentPage;
+
+        if (totalPages <= 5) {
+            return Array.from({ length: totalPages }, (_, i) => i + 1);
+        } else {
+            let startPage = Math.max(1, currentPage - 2);
+            let endPage = Math.min(currentPage + 2, totalPages);
+
+            if (endPage - startPage < 4) {
+                startPage = Math.max(1, endPage - 4);
+            }
+
+            return Array.from({ length: 5 }, (_, i) => startPage + i);
+        }
+    };
+
     $scope.setPage = function (page) {
+        if (page < 1 || page > $scope.totalPages) {
+            return;
+        }
         $scope.currentPage = page;
         $scope.getFilteredProducts();
     };
@@ -227,7 +266,7 @@ $scope.getPrice = function(productId, sizeId) {
         $scope.getFilteredProducts();
     });
 
-    // Khi khởi chạy controller
-    $scope.intialize();
+
+
 
 });

@@ -13,14 +13,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.sql.Time;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -68,10 +66,12 @@ public class OrderServiceImp implements OrderService {
     }
 
     @Override
-    public List<OrderDTO> listOrderByUsername(String username) throws NoSuchElementException {
-        List<OrderDTO> listOrders = orderMapper.listOrderToListOrderDTO(orderRepository.listOrdersByUsername(username));
-        return listOrders;
+    public Page<OrderDTO> listOrderByUsername(String username, Pageable pageable) throws NoSuchElementException {
+        Page<Orders> ordersPage = orderRepository.listOrdersByUsername(username, pageable);
+        List<OrderDTO> listOrders = orderMapper.listOrderToListOrderDTO(ordersPage.getContent());
+        return new PageImpl<>(listOrders, pageable, ordersPage.getTotalElements());
     }
+
 
     @Override
     public List<OrderDTO> getListOrder() throws ClassNotFoundException {

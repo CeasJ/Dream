@@ -159,8 +159,7 @@ voucherApp.controller("voucher_ctrl", function ($scope, $http, $window) {
     if ($scope.voucherToDelete) {
       $http.delete("/rest/vouchers/" + $scope.voucherToDelete.id).then(
         function (response) {
-          // Xóa voucher thành công
-          // Không cần thêm bất kỳ hành động nào ở đây nếu bạn chỉ muốn xóa voucher mà không làm gì khác
+
         },
         function (error) {
           console.error("Error deleting voucher:", error);
@@ -189,12 +188,12 @@ voucherApp.controller("voucher_ctrl", function ($scope, $http, $window) {
     }
   };
 
-  $scope.deleteListVoucherByNameAndIdType = function (name, idType) {
+  $scope.deleteListVoucherByNameAndIdType = function (number, idType) {
       $http
-        .delete("/rest/vouchers/" + name + "/" + idType)
+        .delete("/rest/vouchers/" + number + "/" + idType)
         .then(function (response) {
           $scope.vouchers = $scope.vouchers.filter(function (voucher) {
-            return voucher.name !== name && voucher.type !== type;
+            return voucher.number !== number && voucher.type !== type;
           });
 
           toastr.success("Xóa voucher thành công");
@@ -209,21 +208,60 @@ voucherApp.controller("voucher_ctrl", function ($scope, $http, $window) {
     // Pagination
       $scope.currentPageVoucher = 1;
       $scope.pageSizeVoucher = 5;
+      $scope.maxPagesToShow = 5; // Số trang tối đa được hiển thị
 
       $scope.totalPagesVoucher = function () {
-        return Math.ceil($scope.vouchers.length / $scope.pageSizeVoucher);
+          return Math.ceil($scope.vouchers.length / $scope.pageSizeVoucher);
       };
 
       $scope.setPageVoucher = function (page) {
-        if (page >= 1 && page <= $scope.totalPagesVoucher()) {
-          $scope.currentPageVoucher = page;
-        }
+          if (page >= 1 && page <= $scope.totalPagesVoucher()) {
+              $scope.currentPageVoucher = page;
+          }
       };
 
       $scope.paginatedListVoucher = function () {
-        const begin = ($scope.currentPageVoucher - 1) * $scope.pageSizeVoucher;
-        const end = begin + $scope.pageSizeVoucher;
+          const begin = ($scope.currentPageVoucher - 1) * $scope.pageSizeVoucher;
+          const end = begin + $scope.pageSizeVoucher;
 
-        return $scope.vouchers.slice(begin, end);
+          return $scope.vouchers.slice(begin, end);
       };
+
+      $scope.firstPageVoucher = function () {
+          if ($scope.currentPageVoucher !== 1) {
+              $scope.currentPageVoucher = 1;
+          }
+      };
+
+      $scope.lastPageVoucher = function () {
+          const totalPages = $scope.totalPagesVoucher();
+          if ($scope.currentPageVoucher !== totalPages) {
+              $scope.currentPageVoucher = totalPages;
+          }
+      };
+
+      $scope.getPager = function () {
+          const totalPages = $scope.totalPagesVoucher();
+          let startPage = 1;
+          let endPage = totalPages;
+
+          if (totalPages > $scope.maxPagesToShow) {
+              const maxPagesBeforeCurrentPage = Math.floor($scope.maxPagesToShow / 2);
+              const maxPagesAfterCurrentPage = Math.ceil($scope.maxPagesToShow / 2) - 1;
+
+              if ($scope.currentPageVoucher <= maxPagesBeforeCurrentPage) {
+                  startPage = 1;
+                  endPage = $scope.maxPagesToShow;
+              } else if ($scope.currentPageVoucher + maxPagesAfterCurrentPage >= totalPages) {
+                  startPage = totalPages - $scope.maxPagesToShow + 1;
+                  endPage = totalPages;
+              } else {
+                  startPage = $scope.currentPageVoucher - maxPagesBeforeCurrentPage;
+                  endPage = $scope.currentPageVoucher + maxPagesAfterCurrentPage;
+              }
+          }
+
+          return Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i);
+      };
+
 });

@@ -120,6 +120,8 @@
 
 })(jQuery);
 
+
+
 //Cart Control Begin
 const app = angular.module("cart_app", []);
 
@@ -474,8 +476,9 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
       $scope.order.address = $scope.userAddressWeb;
     }
    };
+   //Cart Control End
+
 
 });
 
-//Cart Control End
 

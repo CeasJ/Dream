@@ -9,4 +9,5 @@ public interface NotificationService {
 
     void createNotification(NotificationDTO notificationDTO);
 
+    List<NotificationDTO> getAdminNotifications();
 }

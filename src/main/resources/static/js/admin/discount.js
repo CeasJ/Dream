@@ -83,24 +83,52 @@ app.controller("discount-ctrl", function ($scope, $http) {
         };
 
         // Pagination
-        $scope.currentPageDiscount = 1;
-        $scope.pageSizeDiscount = 5; // Số discount hiển thị mỗi trang
+        $scope.currentPageDiscount = 1; // Trang hiện tại
+        $scope.pageSizeDiscount = 5; // Số lượng discount mỗi trang
 
         $scope.totalPagesDiscount = function () {
-          return Math.ceil($scope.discounts.length / $scope.pageSizeDiscount);
+            return Math.ceil($scope.discounts.length / $scope.pageSizeDiscount);
         };
 
         $scope.setPageDiscount = function (page) {
-          if (page >= 1 && page <= $scope.totalPagesDiscount()) {
-            $scope.currentPageDiscount = page;
-          }
+            if (page >= 1 && page <= $scope.totalPagesDiscount()) {
+                $scope.currentPageDiscount = page;
+            }
+        };
+
+        $scope.firstPageDiscount = function () {
+            if ($scope.currentPageDiscount !== 1) {
+                $scope.currentPageDiscount = 1;
+            }
+        };
+
+        $scope.lastPageDiscount = function () {
+            if ($scope.currentPageDiscount !== $scope.totalPagesDiscount()) {
+                $scope.currentPageDiscount = $scope.totalPagesDiscount();
+            }
+        };
+
+        $scope.getPagerDiscount = function () {
+            let totalPages = $scope.totalPagesDiscount();
+            let currentPage = $scope.currentPageDiscount;
+            let startPage;
+
+            if (totalPages <= 5 || currentPage <= 3) {
+                startPage = 1;
+            } else if (currentPage + 1 >= totalPages) {
+                startPage = totalPages - 4;
+            } else {
+                startPage = currentPage - 2;
+            }
+
+            return Array.from({ length: 5 }, (_, i) => startPage + i);
         };
 
         $scope.paginatedListDiscount = function () {
-          const begin = ($scope.currentPageDiscount - 1) * $scope.pageSizeDiscount;
-          const end = begin + $scope.pageSizeDiscount;
-
-          return $scope.discounts.slice(begin, end);
+            const begin = ($scope.currentPageDiscount - 1) * $scope.pageSizeDiscount;
+            const end = begin + $scope.pageSizeDiscount;
+            return $scope.discounts.slice(begin, end);
         };
+
 
 });

@@ -17,7 +17,7 @@ public interface VoucherService {
     List<VoucherDTO> searchVouchersByName(String name);
     void delete(Long id);
     List<Voucher> createVoucher(JsonNode voucherData);
-    void deleteByNameAndType(String name, Long idType);
+    void deleteByNumberAndType(String name, Long idType);
     VoucherDTO updateVoucher(VoucherDTO voucherDTO, Long id);
     List<VoucherDTO> updateListVoucherByNameAndIdType(VoucherDTO voucherDTO, String name, Long idType);
     VoucherDTO getVoucherByID(Long voucherID);

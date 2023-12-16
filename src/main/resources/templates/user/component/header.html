@@ -84,8 +84,11 @@
                                 <div class="notification-content" style="margin-bottom: 0px;">
                                     <img src="/img/gallery/image2.jpg" class="notification-image">
                                     <div class="notification-text">
-                                        <p th:text="${notification.notificationText}"
+                                        <p th:text="${notification.notificationTitle}"
                                             style="font-size: 16px; font-weight: bold; padding-top: 10px; margin-bottom: 3px; text-align: justify;">
+                                        </p>
+                                        <p style="font-size: 14px; display: flex;"
+                                           th:text="${notification.notificationText}">
                                         </p>
                                         <p style="font-size: 14px; display: flex;"
                                             th:text="${#dates.format(notification.createdTime, 'HH:mm dd-MM-yyyy')}">
