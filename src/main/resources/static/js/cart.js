@@ -207,7 +207,7 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
   $scope.getSubTotal = function () {
     let subTotal = 0;
     angular.forEach($scope.listOrder, function (orderDetail) {
-      $scope.shipCost = orderDetail.distance *2.5;
+      $scope.shipCost = orderDetail.distance * 4;
       subTotal += orderDetail.quantity * orderDetail.price;
     });
     return subTotal;
@@ -332,10 +332,11 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
   function totalPrice() {
     let totalPrice = 0;
     angular.forEach($scope.cart.items, function (item) {
-      totalPrice += item.price * item.qty;
+      totalPrice += item.price * item.qty - (item.discount_percent * item.price);
     });
-    return totalPrice;
+    return totalPrice ;
   }
+
 
   $scope.cart = {
     username: "",
@@ -358,11 +359,13 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
 
 
       if (item) {
+        console.log(item);
         item.qty++;
         saveCart(this.username, this);
       } else {
         $http.get(`/rest/products/${id}/${sizeID}`).then((resp) => {
           let newItem = resp.data;
+          console.log(newItem);
           newItem.qty = 1;
           this.items.push(newItem);
           saveCart(this.username, this);
@@ -529,7 +532,6 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
         $scope.cart.totalDiscount = discountAmount;
         $scope.order.id_voucher = parseInt($scope.selectedVoucher.id);
         $scope.order.totalAmount = $scope.order.totalAmount - $scope.cart.totalDiscount;
-        console.log( $scope.order.totalAmount);
       }
    };
 

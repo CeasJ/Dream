@@ -122,16 +122,30 @@
                 <div class="col-md-1 pt-4">
                   <h6> {{product.name_size}}</h6>
                 </div>
-                <div class="col-md-2 pt-4">
-                  <p>{{product.price | number:0}} VND</p>
+
+                <div class="col-md-2 pt-4" ng-if="product.discount_percent">
+                  <p>{{product.price - (product.discount_percent * product.price) | number:0}} VND</p>
                 </div>
+
+                <div class="col-md-2 pt-4" ng-if="!product.discount_percent">
+                  <p>{{product.price  | number:0}} VND</p>
+                </div>
+
+
                 <div class="col-md-1 pt-4">
                   <input type="number" class="form-control quantity-input" min="1" ng-model="product.qty"
                     ng-change="cart.saveToLocalStorage()">
                 </div>
-                <div class="col-md-2 pt-4">
+
+                <div class="col-md-2 pt-4" ng-if="product.discount_percent">
+                  <p> {{product.qty * (product.price-(product.price * product.discount_percent)) | number:0}} VND</p>
+                </div>
+
+                <div class="col-md-2 pt-4" ng-if="!product.discount_percent">
                   <p> {{product.qty * product.price | number:0}} VND</p>
                 </div>
+
+
                 <div class="col-md-2 pt-3">
                   <button ng-click="cart.remove(product.id)" class="btn">
                     <i style="font-size: 20px;" class="bi bi-trash text-danger fw-bold"></i>
@@ -148,10 +162,6 @@
                 <span style="float: right; font-weight: bold; font-size: 16px;">
                   {{cart.count}}
                 </span>
-              </p>
-              <p>
-                <span class="title-prc" th:text="#{cart.shippingCost}"></span>
-                <span style="float: right; font-weight: bold; font-size: 16px;"> 30,000 VNĐ</span>
               </p>
               <p class="title-prc" ng-if="cart.totalDiscount >= 0">Áp dụng Voucher
                 <span class="text-danger" style="float: right; font-weight: bold; font-size: 16px;">- {{

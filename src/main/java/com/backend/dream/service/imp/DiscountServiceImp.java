@@ -1,11 +1,16 @@
 package com.backend.dream.service.imp;
 
+import com.backend.dream.dto.CategoryDTO;
 import com.backend.dream.dto.DiscountDTO;
 import com.backend.dream.dto.ProductDTO;
+import com.backend.dream.entity.Category;
 import com.backend.dream.entity.Discount;
 import com.backend.dream.entity.Product;
+import com.backend.dream.mapper.CategoryMapper;
 import com.backend.dream.mapper.DiscountMapper;
+import com.backend.dream.repository.CategoryRepository;
 import com.backend.dream.repository.DiscountRepository;
+import com.backend.dream.service.CategoryService;
 import com.backend.dream.service.DiscountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,16 +21,17 @@ import java.util.stream.Collectors;
 
 @Service
 public class DiscountServiceImp implements DiscountService {
-    private final DiscountRepository discountRepository;
-    private final DiscountMapper discountMapper;
 
     @Autowired
-    public DiscountServiceImp(DiscountRepository discountRepository, DiscountMapper discountMapper) {
-        this.discountRepository = discountRepository;
-        this.discountMapper = discountMapper;
-    }
-
-
+    private DiscountRepository discountRepository;
+    @Autowired
+    private DiscountMapper discountMapper;
+    @Autowired
+    private CategoryRepository categoryRepository;
+    @Autowired
+    private CategoryMapper categoryMapper;
+    @Autowired
+    private CategoryService categoryService;
     @Override
     public DiscountDTO createDiscount(DiscountDTO discountDTO) {
         Discount discount = discountMapper.discountDTOToDiscount(discountDTO);
@@ -57,18 +63,12 @@ public class DiscountServiceImp implements DiscountService {
         discountRepository.deleteById(id);
     }
 
-    @Override
-    public DiscountDTO getDiscountByCategoryId(Long idProduct) {
-        Optional<Discount> optionalDiscount = discountRepository.findByIDProduct(idProduct);
-        return optionalDiscount.map(discountMapper::discountToDiscountDTO).orElse(null);
-    }
-
 
     @Override
     public Double getDiscountPercentByProductId(Long idCategory) {
-        DiscountDTO discountDTO = getDiscountByCategoryId(idCategory);
-        if (discountDTO != null) {
-            return discountDTO.getPercent();
+        CategoryDTO categoryDTO = categoryService.getDiscountByCategoryId(idCategory);
+        if (categoryDTO != null) {
+            return categoryDTO.getPercent_discount();
         }
         return 0.0;
     }

@@ -22,5 +22,6 @@ public class ProductSizeDTO {
 
     private String name;
 
+    private Double discount_percent;
 
 }

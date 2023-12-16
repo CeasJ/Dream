@@ -19,6 +19,8 @@
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long id;
 
+        private Double price;
+
         @ManyToOne
         @JoinColumn(name = "idproduct")
         private Product product;
@@ -26,8 +28,5 @@
         @ManyToOne
         @JoinColumn(name = "idsize")
         private Size size;
-
-        private Double price;
-
 
     }

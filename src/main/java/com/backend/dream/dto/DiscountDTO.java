@@ -21,8 +21,6 @@ public class DiscountDTO {
 
     private Date expiredDate = new Date();
 
-    private Long idcategory;
-
     private boolean active;
 
 
