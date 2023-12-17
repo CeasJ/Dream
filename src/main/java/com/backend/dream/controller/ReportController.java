@@ -24,31 +24,18 @@ public class ReportController {
   public String getReport(Model model) {
     getStatistic(model);
 
-    Date endDate = new Date();
-    Calendar calendar = Calendar.getInstance();
-    calendar.add(Calendar.DAY_OF_MONTH,-7);
-    Date startDate = calendar.getTime();
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-    String formattedStartDate = dateFormat.format(startDate);
-    String formattedEndDate = dateFormat.format(endDate);
-
-
-    List<Object[]> dailyRevenue = report.getDailyRevenue(orderStatus);
-    model.addAttribute("dailyRevenue", dailyRevenue);
-
     return "/admin/home/report";
   }
 
-//  @GetMapping("/getByDate")
-//  public String getRevenue(Model model, @RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate, @RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate){
-//    getStatistic(model);
-//
-//    List<Object[]> getRevenueByDateAndStatus = report.getTotalRevenueByDateAndStatus(orderStatus,startDate,endDate);
-//    model.addAttribute("totalRevenue", getRevenueByDateAndStatus);
-//
-//    return "/admin/home/report";
-//  }
+  @GetMapping("/getByDate")
+  public String getRevenue(Model model, @RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate, @RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate){
+    getStatistic(model);
+
+    List<Object[]> getRevenueByDateAndStatus = report.getTotalRevenueByDateAndStatus(orderStatus,startDate,endDate);
+    model.addAttribute("getRevenueByDateAndStatus", getRevenueByDateAndStatus);
+
+    return "/admin/home/report";
+  }
 
 
   private void getStatistic(Model model){
@@ -73,19 +60,27 @@ public class ReportController {
     List<Object[]> getAmountPaidByAccount = report.getAmountPaidByAccount(orderStatus);
     model.addAttribute("getAmountPaidByAccount", getAmountPaidByAccount);
 
-    Date endDate = new Date();
+    List<Object[]> dailyRevenue = report.getDailyRevenue(orderStatus);
+    model.addAttribute("dailyRevenue", dailyRevenue);
 
     Calendar calendar = Calendar.getInstance();
     calendar.add(Calendar.DAY_OF_MONTH,-7);
 
+    Calendar calendarLastMonth = Calendar.getInstance();
+    calendarLastMonth.add(Calendar.DAY_OF_MONTH,-30);
+
+    Date startDate = calendar.getTime();
+    Date startDateLastMonth = calendar.getTime();
+
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-    String formattedEndDate = dateFormat.format(endDate);
+    String formattedStartDate = dateFormat.format(startDate);
+    String formattedStartDateLastDate = dateFormat.format(startDateLastMonth);
 
-    Double getRevenueWeekAndStatus = report.getTotalRevenueLastWeekAndStatus(orderStatus, endDate);
+    Double getRevenueWeekAndStatus = report.getTotalRevenueLastWeekAndStatus(orderStatus, startDate);
     model.addAttribute("weeklyRevenue", getRevenueWeekAndStatus);
 
-    Double getRevenueMonthAndStatus = report.getTotalRevenueLastMonthAndStatus(orderStatus);
+    Double getRevenueMonthAndStatus = report.getTotalRevenueLastMonthAndStatus(orderStatus, startDateLastMonth);
     model.addAttribute("monthlyRevenue", getRevenueMonthAndStatus);
 
   }
