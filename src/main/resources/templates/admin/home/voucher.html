@@ -53,6 +53,8 @@
                                             <option ng-repeat="s in status" value="{{ s.id }}">{{ s.name }}</option>
                                         </select>
                                     </div>
+                                    <a class="btn btn-primary" th:href="@{|/rest/vouchers/download|}">Export to Excel</a>
+
                                 </div>
                             </div>
                             <!-- Thanh tìm kiếm ở góc phải -->

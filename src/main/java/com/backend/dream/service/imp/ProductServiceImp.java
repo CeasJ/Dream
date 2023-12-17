@@ -226,7 +226,7 @@ public class ProductServiceImp implements ProductService {
     @Override
     public ByteArrayInputStream getdataProduct() throws IOException {
         List<Product> products = productRepository.findAll();
-        ByteArrayInputStream data = ExcelUtil.dataToExcel(products);
+        ByteArrayInputStream data = ExcelUtil.dataToExcelProduct(products);
         return data;
     }
 }

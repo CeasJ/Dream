@@ -70,9 +70,9 @@ public class ProductRestController {
     }
     @GetMapping("/download")
     private ResponseEntity<InputStreamResource> download() throws IOException {
-        String fileName ="products.xlsx";
+        String fileName ="Data-products.xlsx";
         ByteArrayInputStream inputStream = productService.getdataProduct();
-        InputStreamResource    response = new InputStreamResource(inputStream);
+        InputStreamResource response = new InputStreamResource(inputStream);
 
         ResponseEntity<InputStreamResource> responseEntity = ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION,"attachment;filename="+fileName)

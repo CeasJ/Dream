@@ -13,11 +13,14 @@ import com.backend.dream.repository.VoucherRepository;
 import com.backend.dream.repository.VoucherStatusRepository;
 import com.backend.dream.service.AccountService;
 import com.backend.dream.service.VoucherService;
+import com.backend.dream.util.ExcelUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -173,6 +176,13 @@ public class VoucherServiceImp implements VoucherService {
         List<Voucher> vouchersUpdate = voucherRepository.saveAll(voucherList);
 
         return vouchersUpdate.stream().map(voucherMapper::voucherToVoucherDTO).collect(Collectors.toList());
+    }
+
+    @Override
+    public ByteArrayInputStream getdataVoucher() throws IOException {
+        List<Voucher> vouchers = voucherRepository.findAll();
+        ByteArrayInputStream data = ExcelUtil.dataToExcelVoucher(vouchers);
+        return data;
     }
 
     @Override
