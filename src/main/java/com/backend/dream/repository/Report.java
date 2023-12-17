@@ -41,13 +41,13 @@ public interface Report extends JpaRepository<OrderDetails,Long> {
             + "GROUP BY o.createDate")
     Double getTotalRevenueLastWeekAndStatus(int orderStatus, Date endDate);
 
-    @Query(value = "SELECT sum(od.quantity * od.price) "
-            + "FROM OrderDetails od "
-            + "JOIN od.orders o "
-            + "WHERE o.status.id = ?1 "
-            + "AND o.createDate BETWEEN current_date AND ?3 "
-            + "GROUP BY o.createDate")
-    Double getTotalRevenueLastMonthAndStatus(int orderStatus);
+        @Query(value = "SELECT sum(od.quantity * od.price) "
+                + "FROM OrderDetails od "
+                + "JOIN od.orders o "
+                + "WHERE o.status.id = ?1 "
+                + "AND o.createDate BETWEEN current_date AND ?3 "
+                + "GROUP BY o.createDate")
+        Double getTotalRevenueLastMonthAndStatus(int orderStatus);
 
     @Query(value = "SELECT cate.name, sum(o.totalAmount) "
             + "FROM OrderDetails od "
