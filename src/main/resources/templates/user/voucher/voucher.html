@@ -73,14 +73,16 @@
                         <div class="col-md-9" style="padding: 10px;">
                             <div class="discount-info" style="margin-left: 20px;">
                                 <h4 style="padding-bottom: 5px;">Giảm {{ voucher.percent | number : 0 }}₫</h4>
-                                <p style="margin-bottom: 15px; font-size: 15px;">Đơn tối thiểu {{ voucher.condition | number : 0}} ₫</p>
+                                <p style="margin-bottom: 15px; font-size: 15px;">Đơn tối thiểu {{ voucher.condition |
+                                    number : 0}} ₫</p>
                                 <a th:href="@{|/home|}" class="use-now-link"
                                     style="text-decoration: none; color: #1E90FF; float: right; padding-right: 20px;">
                                     Dùng ngay <span style="font-size: 16px;"><i class="bi bi-chevron-right"></i></span>
                                 </a>
                                 <div class="expiry-info text-danger" style="display: flex; font-size: 14px;">
                                     <i class="far fa-clock" style="padding-top: 3px; padding-right: 5px;"></i>
-                                    <p style="margin-bottom: 0px;">Có hiệu lực: {{ getRemainingTime(voucher.expireddate) }}</p>
+                                    <p style="margin-bottom: 0px;">Có hiệu lực: {{ getRemainingTime(voucher.expireddate)
+                                        }}</p>
                                 </div>
                             </div>
                         </div>
@@ -160,7 +162,7 @@
         <!-- Copyright End -->
 
         <!-- Back to Top -->
-        <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top">
+        <a href="#" class="btn btn-lg btn-dark btn-lg-square rounded-circle back-to-top">
             <i class="bi bi-arrow-up"></i>
         </a>
     </main>
