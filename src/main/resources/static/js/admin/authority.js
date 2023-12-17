@@ -326,5 +326,74 @@ app.controller("authority-ctrl", function ($scope, $http, $location,$timeout) {
         });
     },2000);
   };
-  
+
+
+  // Unban account features
+$scope.confirmUnlock = function(account) {
+    $scope.selectedAccount = account;
+    $('#confirmUnlockModal').modal('show');
+};
+
+$scope.unlockAccount = function(selectedAccount) {
+    $http.put('/rest/profile/unlock/' + selectedAccount.id)
+        .then(function(response) {
+            toastr.success('Tài khoản đã được mở khóa thành công.');
+            $('#confirmUnlockModal').modal('hide');
+            location.reload();
+        })
+        .catch(function(error) {
+            toastr.error('Mở khóa tài khoản thất bại.');
+        });
+};
+
+
+  // Ban account features
+  $scope.lockAccount = function(account) {
+      $scope.selectedAccount = account;
+      $('#lockAccountModal').modal('show');
+  };
+
+  $scope.lockAccountWithReason = function(selectedAccount) {
+      var lockData = {
+          accountId: selectedAccount.id,
+          reason: $scope.lockReason
+      };
+
+      $http.put('/rest/profile/lock', lockData)
+          .then(function(response) {
+              toastr.success('Tài khoản đã được khóa thành công.');
+              $('#lockAccountModal').modal('hide');
+              location.reload();
+          })
+          .catch(function(error) {
+              toastr.error('Khóa tài khoản thất bại.');
+          });
+  };
+
+// Function to get lock details and count
+$scope.lockCount = 0;
+    $scope.lockDetails = [];
+    $scope.selectedAccount = {};
+
+    // Hàm để lấy chi tiết khóa tài khoản
+    $scope.getLockDetails = function(accountId) {
+        $http.get('/rest/profile/lockDetails/' + accountId)
+            .then(function(response) {
+                $scope.lockCount = response.data.lockCount;
+                $scope.lockDetails = response.data.lockDetails;
+                // Xử lý dữ liệu nhận được từ backend ở đây nếu cần thiết
+            })
+            .catch(function(error) {
+                console.error('Error fetching lock details: ', error);
+            });
+    };
+
+    $scope.openLockDetailsModal = function(accountId) {
+        $scope.getLockDetails(accountId);
+        $('#lockDetailsModal').modal('show');
+    };
+
+    $scope.setSelectedAccount = function(account) {
+        $scope.selectedAccount = account;
+    };
 });

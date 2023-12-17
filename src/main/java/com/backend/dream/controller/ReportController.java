@@ -82,11 +82,11 @@ public class ReportController {
 
     String formattedEndDate = dateFormat.format(endDate);
 
-    Double getRevenueWeekAndStatus = report.getTotalRevenueLastWeekAndStatus(orderStatus, endDate);
-    model.addAttribute("weeklyRevenue", getRevenueWeekAndStatus);
-
-    Double getRevenueMonthAndStatus = report.getTotalRevenueLastMonthAndStatus(orderStatus);
-    model.addAttribute("monthlyRevenue", getRevenueMonthAndStatus);
+//    Double getRevenueWeekAndStatus = report.getTotalRevenueLastWeekAndStatus(orderStatus, endDate);
+//    model.addAttribute("weeklyRevenue", getRevenueWeekAndStatus);
+//
+//    Double getRevenueMonthAndStatus = report.getTotalRevenueLastMonthAndStatus(orderStatus);
+//    model.addAttribute("monthlyRevenue", getRevenueMonthAndStatus);
 
   }
 

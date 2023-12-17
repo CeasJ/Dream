@@ -38,4 +38,6 @@ public class AccountDTO {
 
     @NotBlank(message = "Address is required")
     private String address;
+
+    private boolean active;
 }
