@@ -15,6 +15,8 @@ public interface CategoryMapper {
     @Mapping(source = "discount.percent", target = "percent_discount")
     CategoryDTO categoryToCategoryDTO(Category category);
 
+    @Mapping(source = "id_discount", target = "discount.id")
+    @Mapping(source = "name_discount", target = "discount.name")
     Category categoryDTOToCategory(CategoryDTO categoryDTO);
 
 

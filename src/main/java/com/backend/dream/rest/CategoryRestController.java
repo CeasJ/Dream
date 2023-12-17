@@ -19,13 +19,7 @@ public class CategoryRestController {
         return categoryService.findAll();
     }
 
-    // @PostMapping("/rest/category")
-    // public Category createCategory(@RequestBody JsonNode cate, Model model)
-    // throws Exception{
-    // String namecategory = cate.get("name").asText();
-    // return categoryService.checknameExists(namecategory) ? null :
-    // categoryService.createCategory(cate);
-    // }
+
     @PostMapping()
     public CategoryDTO create(@RequestBody CategoryDTO categoryDTO) {
         return categoryService.create(categoryDTO);

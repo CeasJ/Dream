@@ -120,7 +120,7 @@ voucherApp.controller("voucher_ctrl", function ($scope, $http, $window) {
   };
 
   $scope.updateVoucher = function () {
-   let voucher= angular.copy($scope.voucher);
+   let voucher = angular.copy($scope.voucher);
     $http
       .put(`/rest/vouchers/${voucher.id}`, voucher)
       .then((resp) => {

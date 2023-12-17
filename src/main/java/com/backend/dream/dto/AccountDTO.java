@@ -24,6 +24,7 @@ public class AccountDTO {
     private String password;
 
     private String avatar;
+
     @NotBlank(message = "Firstname is required")
     private String firstname;
 

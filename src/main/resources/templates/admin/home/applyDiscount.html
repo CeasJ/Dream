@@ -7,14 +7,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Size - Dream Admin</title>
+    <title>Discount - Dream Admin</title>
     <link type="text/css" href="/css/admin/admin.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Angular -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.js"></script>
     <!-- jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <!-- toastr -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 </head>
 
-<body class="sb-nav-fixed" ng-app="size-app" ng-controller="size-ctrl">
+<body class="sb-nav-fixed" ng-app="discount-app" ng-controller="discount-ctrl">
     <div th:replace="~{/admin/component/header.html}"></div>
     <div id="layoutSidenav">
         <div id="layoutSidenav_nav">
@@ -25,53 +31,89 @@
                 <div class="card mb-4" style="border: none;">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h4 class="mb-0"><i class="fas fa-table me-1"></i> Apply Discounts</h4>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal">
+                            <i class="bi bi-plus-lg"></i>
+                        </button>
                     </div>
                     <div class="card-body">
                         <div class="row justify-content-between align-items-center mb-3 mt-1">
-
-                            <!-- Thanh tìm kiếm ở góc phải -->
-                            <div class="col-md-2 ms-auto">
-                                <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Search..." aria-label="Search"
-                                        aria-describedby="basic-addon2">
-                                </div>
-                            </div>
                         </div>
                         <div class="table-responsive">
                             <table class="table table-hover table-bordered order-datatable text-center">
                                 <thead class="table-dark">
                                     <tr>
-                                        <th>Number</th>
+                                        <th>No.</th>
                                         <th style="text-align: left;">Name</th>
+                                        <th style="text-align: left;">Discount Available</th>
                                         <th style="width: 500px;">DiscountName</th>
                                         <th></th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody >
+                                    <tr ng-repeat-start="c in cates"></tr>
                                     <tr>
-                                        <td>1</td>
-                                        <!-- <td>{{$index + 1}}</td> -->
-                                        <td style="text-align: left;">Cà phê</td>
+                                        <td>{{$index + 1}}</td>
+                                        <td style="text-align: left;">{{c.name}}</td>
+                                        <td style="text-align: left;" ng-if="c.name_discount !== null">{{c.name_discount}}</td>
+                                        <td style="text-align: left;" ng-if="c.name_discount === null">Has No Discount</td>
                                         <td>
-                                            <select class="form-control">
-                                                <option value="not-discount">Chọn Discount</option>
-                                                <option value="discount1">Giáng sinh</option>
-                                                <option value="discount2">Tháng hạnh phúc</option>
+                                            <select class="form-control" ng-model="c.selectDiscount">
+                                                <option ng-value="">Chọn Discount</option>
+                                                <option ng-repeat="discount in discounts" ng-value="discount.id" >{{discount.name}}
+                                                </option>
                                             </select>
                                         </td>
                                         <td>
-                                            <button class="btn btn-dark">
+                                            <button class="btn btn-dark" ng-click="updateApplyDiscount(c.id, c.selectDiscount,c.name)">
                                                 Apply
                                             </button>
-                                            <button class="btn btn-danger">
+                                            <button class="btn btn-danger" ng-click="updateNotApplyDiscount(c.id,c.name)">
                                                 Not Apply
                                             </button>
                                         </td>
                                     </tr>
-                                    <!-- <tr ng-repeat-end></tr> -->
+                                    <tr ng-repeat-end></tr>
                                 </tbody>
                             </table>
                         </div>
+
+                        <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-xl">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">
+                                        <i class="bi bi-pencil-square pe-2"></i>
+                                        Edit Category
+                                    </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-md-9 offset-sm-2" style="margin-top: 50px;">
+                                            <div class="row mb-3">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="name" class="fw-bold mb-3">Name</label>
+                                                        <input type="text" class="form-control" id="name" name="name"
+                                                            ng-model="name" placeholder="Category Name" />
+                                                    </div>
+                                                </div>
+                                               
+                                            </div>
+                                          
+                                           
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button ng-click="createCategory(name)" class="btn btn-danger" type="button">Create</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                         <div class="d-flex justify-content-between align-items-center pt-2">
                             <div class="fw-normal pb-3" style="font-size: 18px;">
                                 Showing 1 to 5 of 15 entries
@@ -102,7 +144,7 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous">
     </script>
-    <script src="js/admin/scripts.js"></script>
+   <script src="/js/admin/discount.js"></script>
 </body>
 
 </html>
