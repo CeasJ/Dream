@@ -1,8 +1,10 @@
 package com.backend.dream.service.imp;
 
 
+import com.backend.dream.dto.AuthorityDTO;
 import com.backend.dream.entity.Account;
 import com.backend.dream.entity.Authority;
+import com.backend.dream.mapper.AuthorityMapper;
 import com.backend.dream.repository.AccountRepository;
 import com.backend.dream.repository.AuthorityRepository;
 import com.backend.dream.service.AuthorityService;
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AuthorityServiceImp implements AuthorityService {
@@ -19,6 +22,9 @@ public class AuthorityServiceImp implements AuthorityService {
 	
 	@Autowired
 	AccountRepository accountRepository;
+
+	@Autowired
+	private AuthorityMapper authorityMapper;
 	
 	@Override
 	public List<Authority> getAdmin() {
@@ -40,5 +46,6 @@ public class AuthorityServiceImp implements AuthorityService {
 	public Authority create(Authority authority) {
 		return authorityRepository.save(authority);
 	}
+
 
 }

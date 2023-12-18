@@ -109,19 +109,29 @@ app.controller("discount-ctrl", function ($scope, $http) {
         };
 
         $scope.getPagerDiscount = function () {
-            let totalPages = $scope.totalPagesDiscount();
-            let currentPage = $scope.currentPageDiscount;
-            let startPage;
+            const totalPages = $scope.totalPagesDiscount(); // Tổng số trang
+                const maxPagesToShow = 5; // Số trang tối đa cần hiển thị
 
-            if (totalPages <= 5 || currentPage <= 3) {
-                startPage = 1;
-            } else if (currentPage + 1 >= totalPages) {
-                startPage = totalPages - 4;
-            } else {
-                startPage = currentPage - 2;
-            }
+                let startPage = 1;
+                let endPage = totalPages;
 
-            return Array.from({ length: 5 }, (_, i) => startPage + i);
+                if (totalPages > maxPagesToShow) {
+                    const maxPagesBeforeCurrentPage = Math.floor(maxPagesToShow / 2);
+                    const maxPagesAfterCurrentPage = Math.ceil(maxPagesToShow / 2) - 1;
+
+                    if ($scope.currentPageDiscount <= maxPagesBeforeCurrentPage) {
+                        startPage = 1;
+                        endPage = maxPagesToShow;
+                    } else if ($scope.currentPageDiscount + maxPagesAfterCurrentPage >= totalPages) {
+                        startPage = totalPages - maxPagesToShow + 1;
+                        endPage = totalPages;
+                    } else {
+                        startPage = $scope.currentPageDiscount - maxPagesBeforeCurrentPage;
+                        endPage = $scope.currentPageDiscount + maxPagesAfterCurrentPage;
+                    }
+                }
+
+                return Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i);
         };
 
         $scope.paginatedListDiscount = function () {
@@ -129,6 +139,27 @@ app.controller("discount-ctrl", function ($scope, $http) {
             const end = begin + $scope.pageSizeDiscount;
             return $scope.discounts.slice(begin, end);
         };
+
+
+         $scope.searchDiscount = function () {
+            if ($scope.searchText) {
+              $http.get("/rest/discount/search?name=" + $scope.searchText)
+                .then(function (response) {
+                  $scope.discounts = response.data;
+                })
+                .catch(function (error) {
+                  console.error("Error fetching discounts:", error);
+                });
+            } else {
+              $scope.initialize();
+            }
+          };
+
+          $scope.$watch('searchText', function(newVal, oldVal) {
+            if (newVal !== oldVal) {
+              $scope.searchDiscount();
+            }
+          });
 
 
 });

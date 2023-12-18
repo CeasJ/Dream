@@ -111,5 +111,10 @@ public class DiscountRestController {
         discountService.delete(id);
     }
 
+    @GetMapping("/search")
+    public List<DiscountDTO> searchDiscountByName(@RequestParam String name) {
+        return discountService.searchDiscountByName(name);
+    }
+
 
 }

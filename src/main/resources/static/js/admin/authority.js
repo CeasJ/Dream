@@ -396,4 +396,36 @@ $scope.lockCount = 0;
     $scope.setSelectedAccount = function(account) {
         $scope.selectedAccount = account;
     };
+
+    // Searching for authority.html
+    $scope.searchAccounts = function() {
+        if ($scope.searchText) {
+            $http.get("/rest/authorities/searchAccounts?name=" + $scope.searchText)
+                .then(function(response) {
+                    $scope.listStaff = response.data;
+                })
+                .catch(function(error) {
+                    console.error("Error fetching accounts:", error);
+                });
+        } else {
+            $scope.initialize();
+        }
+    };
+
+    // Filter by role
+    $scope.filterByRole = function(selectedRole) {
+        if (selectedRole && selectedRole.id) {
+            $http.get(`/rest/authorities/filterByRole?roleID=${selectedRole.id}`)
+                .then(function(response) {
+                    $scope.listStaff = response.data;
+                })
+                .catch(function(error) {
+                    console.error("Error fetching users by role:", error);
+                });
+        } else {
+            $scope.initialize();
+        }
+    };
+
+
 });

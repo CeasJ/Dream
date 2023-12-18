@@ -12,6 +12,7 @@ import com.backend.dream.service.QrCodeService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
+import org.mapstruct.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -19,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -56,7 +58,7 @@ public class OrderServiceImp implements OrderService {
 
         orderRepository.save(orders);
 
-        qrCodeService.generateQrCode("Your order number " + String.valueOf(orders.getId()) + " " + "has been paid successfully");
+        qrCodeService.generateQrCode("Your order number " + orders.getId() + " " + "has been paid successfully");
         TypeReference<List<OrderDetailDTO>> type = new TypeReference<List<OrderDetailDTO>>() {
         };
 
@@ -114,5 +116,19 @@ public class OrderServiceImp implements OrderService {
         }
         Orders updateOrder = orderRepository.save(orders);
         return orderMapper.orderToOrderDTO(updateOrder);
+    }
+
+    @Override
+    public List<OrderDTO> searchOrders(String username, Long statusID) {
+        List<Orders> searchedOrders;
+
+        if (statusID != null && username != null) {
+            searchedOrders = orderRepository.findByAccountUsername(statusID, username);
+        } else {
+            searchedOrders = new ArrayList<>();
+        }
+
+        List<OrderDTO> orderDTOList = orderMapper.listOrderToListOrderDTO(searchedOrders);
+        return orderDTOList;
     }
 }

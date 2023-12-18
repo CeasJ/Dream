@@ -36,22 +36,32 @@ app.controller("product_ctrl", function ($scope, $http) {
 
 
   $scope.initialize = function () {
-    $http.get(`/rest/products`).then((resp) => {
-      $scope.items = resp.data;
-      console.log($scope.items);
-      $scope.items.forEach((item) => {
-        item.createDate = new Date(item.createDate);
+      $http.get(`/rest/products`).then((resp) => {
+          $scope.items = resp.data;
+          $scope.items.forEach((item) => {
+              item.createDate = new Date(item.createDate);
+          });
       });
-    });
-    $http.get(`/rest/category`).then((resp) => {
-      $scope.cates = resp.data;
-    });
-    $http.get(`/rest/productsizes`).then((resp) => {
-      $scope.productsizes = resp.data;
-    });
+
+      $http.get(`/rest/category`).then((resp) => {
+          $scope.cates = resp.data;
+
+          if ($scope.cates.length > 0) {
+                $scope.selectedCategory = $scope.cates[0].id;
+              } else {
+                $scope.selectedCategory = '';
+              }
+      });
+
+      $http.get(`/rest/productsizes`).then((resp) => {
+          $scope.productsizes = resp.data;
+      });
+
+      $scope.selectedActive = 'true';
   };
 
   $scope.initialize();
+
 
   $scope.reset = function () {
     $scope.form = {
@@ -125,6 +135,54 @@ app.controller("product_ctrl", function ($scope, $http) {
       });
   };
 
+// Filter by category features
+$scope.filterByCategory = function () {
+    if ($scope.selectedCategory === '') {
+        $scope.pagedItems = $scope.items;
+    } else {
+        $scope.pagedItems = $scope.items.filter(function (item) {
+            return item.id_category === $scope.selectedCategory;
+        });
+    }
+    paginateItems();
+};
+
+// Filter by active
+$scope.filterByActive = function () {
+    if ($scope.selectedActive === '') {
+        $scope.pagedItems = $scope.items;
+    } else {
+        const isActive = $scope.selectedActive === 'true';
+        $scope.pagedItems = $scope.items.filter(function (item) {
+            return item.active === isActive;
+        });
+    }
+    paginateItems();
+};
+
+// Searching features
+$scope.searchByName = function () {
+    var searchTerm = $scope.searchTerm;
+
+    if (searchTerm) {
+        $scope.filteredItems = $scope.items.filter(function (item) {
+            return item.name.toLowerCase().includes(searchTerm.toLowerCase());
+        });
+
+
+        if ($scope.filteredItems.length > 0) {
+            $scope.pagination.currentPage = 1;
+            paginateItems();
+        }
+    } else {
+        $scope.filteredItems = angular.copy($scope.items);
+        paginateItems();
+    }
+};
+
+
+
+
   // Pagination
   $scope.pagedItems = []; // Danh sách sản phẩm được phân trang
       $scope.pagination = {
@@ -172,17 +230,37 @@ app.controller("product_ctrl", function ($scope, $http) {
           var begin = (($scope.pagination.currentPage - 1) * $scope.pagination.pageSize);
           var end = begin + $scope.pagination.pageSize;
 
-          $scope.pagedItems = $scope.items.slice(begin, end);
+          $scope.pagedItems = $scope.filteredItems.slice(begin, end);
+
           $scope.pagination.startIndex = begin;
-          $scope.pagination.endIndex = end > $scope.items.length ? $scope.items.length : end;
+          $scope.pagination.endIndex = end > $scope.filteredItems.length ? $scope.filteredItems.length : end;
 
           $scope.pagination.pages = $scope.getPagerNumbers();
       }
 
-      $scope.$watch('items', function () {
-          $scope.pagination.totalPages = Math.ceil($scope.items.length / $scope.pagination.pageSize);
-          paginateItems();
-      });
+
+   $scope.$watchGroup(['items.length', 'selectedCategory', 'selectedActive'], function () {
+       if ($scope.selectedCategory === '' && $scope.selectedActive === '') {
+           $scope.filteredItems = $scope.items;
+       } else {
+           $scope.filteredItems = $scope.items.filter(function (item) {
+               var categoryCondition = $scope.selectedCategory === '' || item.id_category === $scope.selectedCategory;
+               var activeCondition = $scope.selectedActive === '' || item.active === ($scope.selectedActive === 'true');
+               return categoryCondition && activeCondition;
+           });
+       }
+
+       $scope.pagination.currentPage = 1; // Trở về trang đầu tiên sau khi thay đổi bộ lọc
+       paginateItems();
+   });
+
+   $scope.$watch('filteredItems.length', function () {
+       $scope.pagination.totalPages = Math.ceil($scope.filteredItems.length / $scope.pagination.pageSize);
+       paginateItems();
+   });
+
+
+
 
       $scope.setPage = function (page) {
           if (page < 1 || page > $scope.pagination.totalPages) {

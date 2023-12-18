@@ -7,6 +7,7 @@ import com.backend.dream.dto.ProductSizeDTO;
 import com.backend.dream.entity.ProductSize;
 import com.backend.dream.service.AccountService;
 import com.backend.dream.service.NotificationService;
+import com.backend.dream.service.ProductService;
 import com.backend.dream.service.ProductSizeService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,9 @@ public class ProductSizeRestController {
 
     @Autowired
     private NotificationService notificationService;
+
+    @Autowired
+    private ProductService productService;
 
     @GetMapping()
     public List<ProductSizeDTO> getAllSizes() {
@@ -115,6 +119,11 @@ public class ProductSizeRestController {
                 productSizeService.delete(id);
             }
         }
+    }
+
+    @GetMapping("/search")
+    public List<ProductDTO> searchByProductIdAndSizeId(@RequestParam String name) {
+        return productService.searchProductByName(name);
     }
 
 }

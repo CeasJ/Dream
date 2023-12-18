@@ -16,4 +16,8 @@ public interface OrderRepository extends JpaRepository<Orders,Long> {
 
     @Query("SELECT o FROM Orders o WHERE o.status.id = ?1")
     List<Orders> getListOrder(int id);
+
+    @Query("SELECT o FROM Orders o WHERE o.status.id = :statusID AND LOWER(o.account.username) LIKE LOWER(CONCAT('%', :username, '%'))")
+    List<Orders> findByAccountUsername(Long statusID, String username);
+
 }

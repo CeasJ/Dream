@@ -16,4 +16,6 @@ public interface DiscountService {
     void delete(Long id);
 
     DiscountDTO getDiscountByID(Long id);
+
+    List<DiscountDTO> searchDiscountByName(String name);
 }

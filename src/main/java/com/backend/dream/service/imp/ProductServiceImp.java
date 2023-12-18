@@ -205,4 +205,10 @@ public class ProductServiceImp implements ProductService {
             return productDTO;
         });
     }
+
+    @Override
+    public List<ProductDTO> searchProductByName(String name) {
+        List<Product> products = productRepository.searchByName(name);
+        return products.stream().map(productMapper::productToProductDTO).collect(Collectors.toList());
+    }
 }

@@ -19,4 +19,6 @@ public interface OrderService {
     List<OrderDTO> getListOrderSuccess() throws ClassNotFoundException;
     List<OrderDTO> getListOrderCancel() throws ClassNotFoundException;
     OrderDTO updateOrder(OrderDTO orderDTO) throws ClassNotFoundException,NoSuchElementException;
+
+    List<OrderDTO> searchOrders(String username, Long statusID);
 }

@@ -35,4 +35,11 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
 
     @Query("SELECT a.role.id FROM Authority a WHERE a.account.username = :username")
     Long findRoleIdByUsername(@Param("username") String username);
+
+    @Query("SELECT a FROM Account a WHERE LOWER(a.fullname) LIKE LOWER(concat('%', :name, '%')) OR LOWER(a.username) LIKE LOWER(concat('%', :name, '%'))")
+    List<Account> searchAccount(@Param("name") String name);
+
+    @Query("SELECT a FROM Account a JOIN a.authority au WHERE au.role.id = ?1")
+    List<Account> getUsersByRole(@Param("roleID") Long roleID);
+
 }

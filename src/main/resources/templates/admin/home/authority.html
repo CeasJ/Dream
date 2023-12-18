@@ -40,14 +40,13 @@
                             <!-- Combobox Role -->
                             <div class="d-flex col-md-5">
                                 <div class="form-group mb-0 me-3">
-                                    <label for="categoryFilter" class="fw-bold pt-1" style="font-size: 18px;">
-                                        Select Role:
-                                    </label>
+                                    <label class="fw-bold pt-1" style="font-size: 18px;">Select Role:</label>
                                 </div>
                                 <div class="form-group mb-0" style="width: 200px;">
                                     <select class="form-select" ng-model="selectedRole"
-                                        ng-options="role.name for role in roles">
-                                        <option value="" disabled>All Role</option>
+                                            ng-options="role as role.name for role in roles"
+                                            ng-change="filterByRole(selectedRole)">
+                                        <option value="">All Role</option>
                                     </select>
                                 </div>
                             </div>
@@ -55,7 +54,7 @@
                             <div class="col-md-2 ms-auto">
                                 <div class="input-group">
                                     <input type="text" class="form-control" placeholder="Search..." aria-label="Search"
-                                        aria-describedby="basic-addon2">
+                                           aria-describedby="basic-addon2" ng-model="searchText" ng-change="searchAccounts()">
                                 </div>
                             </div>
                         </div>

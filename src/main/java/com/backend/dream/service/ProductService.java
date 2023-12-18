@@ -46,4 +46,6 @@ public interface ProductService {
     Page<ProductDTO> findByTopRated(Long categoryId, Pageable pageable);
 
     Page<ProductDTO> findByBestSeller(Long categoryId, Pageable pageable);
+
+    List<ProductDTO> searchProductByName(String name);
 }

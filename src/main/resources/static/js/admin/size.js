@@ -267,6 +267,26 @@ $scope.getPrice = function(productId, sizeId) {
     });
 
 
+    // Searching features
+    $scope.searchProduct = function () {
+        if ($scope.searchProductName && $scope.searchProductName !== "") {
+          $http.get(`/rest/productsizes/search?name=${$scope.searchProductName}`)
+            .then(function (response) {
+              $scope.products = response.data;
+            })
+            .catch(function (error) {
+              console.error("Error fetching products:", error);
+            });
+        } else {
+          $scope.intialize();
+        }
+      };
 
+      // Gọi phương thức tìm kiếm khi người dùng nhập vào input
+      $scope.$watch('searchProductName', function (newVal, oldVal) {
+        if (newVal !== oldVal) {
+          $scope.searchProduct();
+        }
+      });
 
 });

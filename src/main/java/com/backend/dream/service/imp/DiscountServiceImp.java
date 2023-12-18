@@ -78,4 +78,11 @@ public class DiscountServiceImp implements DiscountService {
         Optional<Discount> optionalDiscount = discountRepository.findById(id);
         return optionalDiscount.map(discountMapper::discountToDiscountDTO).orElse(null);
     }
+
+    @Override
+    public List<DiscountDTO> searchDiscountByName(String name) {
+        List<Discount> discount = discountRepository.searchByName(name);
+        return discount.stream().map(discountMapper::discountToDiscountDTO)
+                .collect(Collectors.toList());
+    }
 }

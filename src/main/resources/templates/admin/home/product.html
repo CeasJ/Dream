@@ -47,11 +47,13 @@
                                     </label>
                                 </div>
                                 <div class="form-group mb-0" style="width: 170px;">
-                                    <select class="form-control" id="categoryFilter" ng-model="selectedCategory">
-                                        <option value="" selected>All Categories</option>
-                                        <option ng-repeat="c in cates" ng-value="c.id">{{c.name}}</option>
+                                    <select class="form-control" id="categoryFilter"
+                                            ng-model="selectedCategory"
+                                            ng-options="c.id as c.name for c in cates"
+                                            ng-init="selectedCategory = cates[0].id">
                                     </select>
                                 </div>
+
                             </div>
 
                             <!-- Combobox Active -->
@@ -63,11 +65,11 @@
                                         </label>
                                     </div>
                                     <div class="form-group mb-0" style="width: 170px;">
-                                        <select class="form-control" id="activeFilter" ng-model="selectedActive">
-                                            <option value="" selected>All Active Status</option>
-                                            <option value="true">True</option>
+                                        <select class="form-control" id="activeFilter" ng-model="selectedActive" ng-change="filterByActive()">
+                                            <option value="true" selected>True</option>
                                             <option value="false">False</option>
                                         </select>
+
                                     </div>
                                 </div>
                             </div>
@@ -76,7 +78,7 @@
                             <div class="col-md-2 ms-auto">
                                 <div class="input-group">
                                     <input type="text" class="form-control" placeholder="Search..." aria-label="Search"
-                                        aria-describedby="basic-addon2">
+                                           aria-describedby="basic-addon2" ng-model="searchTerm" ng-change="searchByName()">
                                 </div>
                             </div>
                         </div>
@@ -132,7 +134,7 @@
                                 <ul class="pagination justify-content-end">
                                     <li class="page-item" ng-class="{ 'disabled': pagination.currentPage === 1 }">
                                         <a class="page-link" href="#" ng-click="firstPage()">
-                                            <i class="bi bi-arrow-bar-left"></i>
+                                            <i class="bi bi-caret-left-fill"></i>
                                         </a>
                                     </li>
                                     <li class="page-item" ng-repeat="pageNumber in getPagerNumbers()"

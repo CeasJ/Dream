@@ -1,6 +1,7 @@
 package com.backend.dream.service;
 
 
+import com.backend.dream.dto.AuthorityDTO;
 import com.backend.dream.entity.Authority;
 
 import java.util.List;

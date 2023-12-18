@@ -57,7 +57,6 @@ voucherApp.controller("voucher_ctrl", function ($scope, $http, $window) {
   };
 
   $scope.searchVouchers = function () {
-    // Gọi API để lấy danh sách vouchers dựa trên giá trị tìm kiếm (searchText)
     $http.get("/rest/vouchers/search?name=" + $scope.searchText).then(
       function (response) {
         $scope.vouchers = response.data;
