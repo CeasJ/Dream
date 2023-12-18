@@ -35,6 +35,7 @@ public class DiscountServiceImp implements DiscountService {
     private CategoryMapper categoryMapper;
     @Autowired
     private CategoryService categoryService;
+
     @Override
     public DiscountDTO createDiscount(DiscountDTO discountDTO) {
         Discount discount = discountMapper.discountDTOToDiscount(discountDTO);
@@ -42,10 +43,10 @@ public class DiscountServiceImp implements DiscountService {
         return discountMapper.discountToDiscountDTO(createdDiscount);
     }
 
-//    @Override
-//    public void deleteDiscount(Long id) {
-//        discountRepository.deleteById(id);
-//    }
+    // @Override
+    // public void deleteDiscount(Long id) {
+    // discountRepository.deleteById(id);
+    // }
 
     @Override
     public List<DiscountDTO> findAll() {
@@ -72,14 +73,6 @@ public class DiscountServiceImp implements DiscountService {
         ByteArrayInputStream data = ExcelUtil.dataToExcelDiscount(discounts);
         return data;
     }
-
-    @Override
-    public ByteArrayInputStream getdataDiscount() throws IOException {
-        List<Discount> discounts = discountRepository.findAll();
-        ByteArrayInputStream data = ExcelUtil.dataToExcelDiscount(discounts);
-        return data;
-    }
-
 
     @Override
     public Double getDiscountPercentByProductId(Long idCategory) {

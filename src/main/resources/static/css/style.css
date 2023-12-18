@@ -496,6 +496,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    max-height: 600px;
 }
 
 .voucher-modal .modal-header .btn-close {
@@ -512,7 +513,7 @@ body {
 }
 
 .voucher-modal .modal-content {
-    height: 70%; /* Điều chỉnh chiều rộng tối đa của modal */
+    height: auto; /* Điều chỉnh chiều rộng tối đa của modal */
 }
 
 .voucher-modal .modal-body {
@@ -1654,4 +1655,22 @@ body {
     max-width: 100%;
     max-height: 250px;
     display: block;
+}
+
+.custom-card {
+    background-color: #f0f0f0; /* Màu xám nhạt */
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.custom-card .btn-apply {
+    background-color: #a0a0a0;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: 0;
+    color: white;
+}
+.custom-card .btn-apply:hover {
+    background-color: #6c757d;
 }

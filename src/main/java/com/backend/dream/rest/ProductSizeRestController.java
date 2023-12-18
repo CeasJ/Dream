@@ -17,6 +17,7 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
@@ -82,24 +83,20 @@ public class ProductSizeRestController {
             }
         }
     }
-    @GetMapping("/download")
-    private ResponseEntity<InputStreamResource> download() throws IOException {
-        String fileName ="Data-productSizes.xlsx";
-        ByteArrayInputStream inputStream = productSizeService.getdataProductSize();
-        InputStreamResource response = new InputStreamResource(inputStream);
 
     @GetMapping("/search")
     public List<ProductDTO> searchByProductIdAndSizeId(@RequestParam String name) {
         return productService.searchProductByName(name);
     }
+
     @GetMapping("/download")
     private ResponseEntity<InputStreamResource> download() throws IOException {
-        String fileName ="Data-productSizes.xlsx";
+        String fileName = "Data-productSizes.xlsx";
         ByteArrayInputStream inputStream = productSizeService.getdataProductSize();
         InputStreamResource response = new InputStreamResource(inputStream);
 
         ResponseEntity<InputStreamResource> responseEntity = ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION,"attachment;filename="+fileName)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + fileName)
                 .contentType(MediaType.parseMediaType("application/vnd.ms-excel")).body(response);
         return responseEntity;
     }

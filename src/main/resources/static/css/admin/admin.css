@@ -11748,7 +11748,7 @@ body {
 
 .product-datatable th:nth-child(6) {
   /* Định dạng cột Describe */
-  width: 300px;
+  width: 400px;
 }
 
 .order-datatable td {
@@ -11758,6 +11758,7 @@ body {
 
 /* CSS riêng cho size-modal */
 .size-modal .modal-dialog {
+  max-height: 350px;
   width: 100%; /* Điều chỉnh chiều rộng của modal */
   max-width: 500px; /* Điều chỉnh chiều rộng tối đa của modal */
   margin: auto; /* Để modal nằm giữa màn hình */
@@ -11767,7 +11768,7 @@ body {
 }
 
 .size-modal .modal-content {
-  height: 35%; /* Điều chỉnh chiều rộng tối đa của modal */
+  height: auto; /* Điều chỉnh chiều rộng tối đa của modal */
 }
 
 .size-modal .modal-body {
@@ -11876,4 +11877,17 @@ body {
 
 .lockreason-modal .modal-body {
   overflow-y: auto;
+}
+
+.button-container {
+  text-align: right;
+  margin: 20px auto;
+}
+
+.button-container a {
+  display: inline-block;
+}
+
+.button-container a i {
+  margin-right: 3px;
 }

@@ -27,7 +27,7 @@
             <div th:replace="~{/admin/component/sidebar.html}"></div>
         </div>
         <div id="layoutSidenav_content">
-                    <main>
+            <main>
                 <div class="card mb-4" style="border: none;">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h4 class="mb-0"> <i class="fas fa-table me-1"></i> Discounts</h4>
@@ -36,7 +36,7 @@
                         </button>
                     </div>
                     <div class="card-body">
-                        <div class="row justify-content-between align-items-center mb-3 mt-1">
+                        <div class="row justify-content-between align-items-center mb-1 mt-1">
                             <div class="col-md-4">
                                 <div class="d-flex">
                                     <div class="form-group mb-0 me-3">
@@ -46,21 +46,27 @@
                                     <div class="form-group mb-0" style="width: 200px;">
                                         <input type="date" class="form-control" id="dateFilter" ng-model="selectedDate">
                                     </div>
-                                    <div class="form-group mb-0" style="width: 200px;">
-                                        <a class="btn btn-primary" th:href="@{|/rest/discount/download|}">Export to Excel</a>
-                                    </div>
                                 </div>
                             </div>
                             <!-- Thanh tìm kiếm ở góc phải -->
                             <div class="col-md-2 ms-auto">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Search by name..." aria-label="Search"
-                                           aria-describedby="basic-addon2" ng-model="searchText" ng-change="searchDiscount()">
+                                    <input type="text" class="form-control" placeholder="Search by name..."
+                                        aria-label="Search" aria-describedby="basic-addon2" ng-model="searchText"
+                                        ng-change="searchDiscount()">
                                 </div>
                             </div>
 
                         </div>
                         <div class="table-responsive">
+                            <div class="button-container">
+                                <a type="button" class="btn btn-danger">
+                                    <i class="bi bi-filetype-pdf"></i> PDF
+                                </a>
+                                <a type="button" class="btn btn-success" th:href="@{|/rest/discount/download|}">
+                                    <i class="bi bi-arrow-down-circle-fill"></i> Excel
+                                </a>
+                            </div>
                             <table class="table table-hover table-bordered text-center order-datatable">
                                 <thead class="table-dark">
                                     <tr>
@@ -104,22 +110,26 @@
                         <div class="d-flex justify-content-between align-items-center pt-2 pb-0">
                             <div class="fw-normal" style="font-size: 18px;">
                                 Showing {{ (currentPageDiscount - 1) * pageSizeDiscount + 1 }} to
-                                {{ currentPageDiscount * pageSizeDiscount > discounts.length ? discounts.length : currentPageDiscount * pageSizeDiscount }}
+                                {{ currentPageDiscount * pageSizeDiscount > discounts.length ? discounts.length :
+                                currentPageDiscount * pageSizeDiscount }}
                                 of {{ discounts.length }} entries
                             </div>
                             <nav aria-label="Page navigation">
                                 <ul class="pagination justify-content-end">
                                     <li class="page-item" ng-class="{ 'disabled': currentPageDiscount === 1 }">
-                                        <a class="page-link" href="#" tabindex="-1" ng-click="firstPageDiscount()" aria-disabled="true">
+                                        <a class="page-link" href="#" tabindex="-1" ng-click="firstPageDiscount()"
+                                            aria-disabled="true">
                                             <i class="bi bi-caret-left-fill"></i>
                                         </a>
                                     </li>
                                     <li class="page-item" ng-repeat="page in getPagerDiscount()">
-                                        <a class="page-link" href="#" ng-click="setPageDiscount(page)" ng-class="{ 'active': currentPageDiscount === page }">
+                                        <a class="page-link" href="#" ng-click="setPageDiscount(page)"
+                                            ng-class="{ 'active': currentPageDiscount === page }">
                                             {{ page }}
                                         </a>
                                     </li>
-                                    <li class="page-item" ng-class="{ 'disabled': currentPageDiscount === totalPagesDiscount() }">
+                                    <li class="page-item"
+                                        ng-class="{ 'disabled': currentPageDiscount === totalPagesDiscount() }">
                                         <a class="page-link" href="#" ng-click="lastPageDiscount()">
                                             <i class="bi bi-caret-right-fill"></i>
                                         </a>
