@@ -5,10 +5,13 @@ import com.backend.dream.dto.ProductSizeDTO;
 import com.backend.dream.entity.Product;
 import com.backend.dream.service.ProductService;
 import com.backend.dream.service.ProductSizeService;
+import com.backend.dream.util.ValidationService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,7 +24,8 @@ public class ProductRestController {
     private ProductService productService;
     @Autowired
     private ProductSizeService productSizeService;
-
+    @Autowired
+    private ValidationService validateService;
     @GetMapping("/{id}")
     public ProductDTO getOne(@PathVariable("id") Long id) {
         return productService.findById(id);
@@ -37,8 +41,13 @@ public class ProductRestController {
     }
 
     @PostMapping()
-    public Product create(@RequestBody ProductDTO productDTO) {
-        return productService.create(productDTO);
+    public ResponseEntity<?> create(@RequestBody @Valid ProductDTO productDTO, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            validateService.validation(bindingResult);
+            return ResponseEntity.badRequest().body(validateService.validation(bindingResult));
+        }
+
+        return  ResponseEntity.ok(productService.create(productDTO));
     }
 
     @PutMapping("{id}")

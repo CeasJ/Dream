@@ -14,7 +14,6 @@ app.controller("discount-ctrl", function ($scope, $http) {
     });
     $http.get(`/rest/category`).then((resp) => {
       $scope.cates = resp.data;
-      console.log(resp.data);
     });
 
     $scope.form = {
@@ -35,6 +34,11 @@ app.controller("discount-ctrl", function ($scope, $http) {
      };
    $scope.create = function () {
        let discount = angular.copy($scope.form);
+       let checkNameDiscount = $scope.discounts.find(dis => dis.name === discount.name);
+       if(checkNameDiscount) {
+          $("#discountModal").modal("hide");
+          toastr.error("Name already exists");
+       } else {
        $http
          .post(`/rest/discount`, discount)
          .then((resp) => {
@@ -49,11 +53,22 @@ app.controller("discount-ctrl", function ($scope, $http) {
            },1000);
          })
          .catch((err) => { 
-          toastr.error("Create Fail");
+          if (err.data && err.data.errors) {
+            $("#discountModal").modal("hide");
+            err.data.errors.forEach(function(error, index) {
+              toastr.error(`Error ${index + 1}: ${error}`);
+            });
+          } 
          });
+        }
      };
       $scope.update = function () {
         let discount = angular.copy($scope.form);
+        let checkNameDiscount = $scope.discounts.find(dis => dis.name === discount.name);
+        if(checkNameDiscount) {
+           $("#discountModal").modal("hide");
+           toastr.error("Name already exists");
+        } else {
         $http.put(`/rest/discount/${discount.id}`, discount).then(resp => {
           let index = $scope.discounts.findIndex(p => p.id === discount.id);
           $scope.discounts[index] = discount;
@@ -64,8 +79,12 @@ app.controller("discount-ctrl", function ($scope, $http) {
            location.reload();
           },1000);
         }).catch(err => {
-          toastr.error("Create Fail");
+          $("#discountModal").modal("hide");
+          err.data.errors.forEach(function(error, index) {
+            toastr.error(`Error ${index + 1}: ${error}`);
+          });
         })
+        }
       };
        $scope.delete = function (count) {
           $http.delete(`/rest/discount/${count.id}`).then(resp => {
@@ -83,14 +102,11 @@ app.controller("discount-ctrl", function ($scope, $http) {
         };
 
         $scope.updateApplyDiscount = function(categoryID, discountID,categoryName) {
-          console.log(categoryID);
-          console.log(discountID);
           let category = {
             id: categoryID,
             id_discount: discountID,
             name: categoryName,
           };
-          console.log(category);
           $http.put(`/rest/category/update/${categoryID}`, category).then(resp => {
             let index = $scope.cates.findIndex((cate) => cate.id === categoryID);
             $scope.cates[index] = category;
@@ -100,19 +116,16 @@ app.controller("discount-ctrl", function ($scope, $http) {
              location.reload();
             },1000);
           }).catch(err => {
-            console.log(err);
-            toastr.error("Upate Fail");
+            toastr.error("Update Fail");
           })
        };
 
         $scope.updateNotApplyDiscount = function(categoryID, categoryName) {
-          console.log(categoryID);
           let category = {
             id: categoryID,
             id_discount: '',
             name: categoryName,
           };
-          console.log(category);
           $http.put(`/rest/category/update/${categoryID}`, category).then(resp => {
             let index = $scope.cates.findIndex((cate) => cate.id === categoryID);
             $scope.cates[index] = category;
@@ -122,8 +135,7 @@ app.controller("discount-ctrl", function ($scope, $http) {
              location.reload();
             },1000);
           }).catch(err => {
-            console.log(err);
-            toastr.error("Upate Fail");
+            toastr.error("Update Fail");
           })
        };
       
@@ -132,7 +144,7 @@ app.controller("discount-ctrl", function ($scope, $http) {
 
         if(checkNameCategory){
           $("#createModal").modal("hide");
-          toastr.warning("Name already exist");
+          toastr.error("Name already exist");
         } else {
           let category = {
             name: name,
@@ -148,9 +160,12 @@ app.controller("discount-ctrl", function ($scope, $http) {
               },1000);
             })
             .catch((err) => { 
-             toastr.error("Create Fail");
+              if (err.data && err.data.errors) {
+                $("#createModal").modal("hide");
+                toastr.error(err.data.errors);
+              } 
             });
-        };
+        }
 
       };
 });

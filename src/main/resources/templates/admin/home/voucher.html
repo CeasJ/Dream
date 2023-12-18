@@ -254,7 +254,7 @@
                                                     <label for="name" class="fw-bold mb-3">Percent</label>
                                                     <input type="number" class="form-control" id="voucherPercent"
                                                         ng-model="voucher.percent" name="number" min="0"
-                                                        placeholder="Vocuher Percent" />
+                                                        placeholder="Voucher Percent" />
                                                 </div>
                                             </div>
                                         </div>
@@ -282,13 +282,13 @@
                                                     <div class="form-check form-check-inline">
                                                         <input class="form-check-input" type="radio"
                                                             ng-model="voucher.status" id="radio1" name="partner" 
-                                                            value="1" ng-required  ng-checked="voucher.status == 1"/>
+                                                            ng-value="1" ng-required  ng-checked="voucher.status === 1"/>
                                                         <label class="form-check-label" for="radio1">Active</label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
                                                         <input class="form-check-input" type="radio"
-                                                            ng-model="voucher.status" name="all" value="2"
-                                                            ng-required ng-checked="voucher.status == 2"/>
+                                                            ng-model="voucher.status" name="all" ng-value="2"
+                                                            ng-required ng-checked="voucher.status === 2"/>
                                                         <label class="form-check-label" >InActive
                                                             </label>
                                                     </div>
