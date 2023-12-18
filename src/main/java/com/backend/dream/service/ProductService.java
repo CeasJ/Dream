@@ -2,9 +2,12 @@ package com.backend.dream.service;
 
 import com.backend.dream.dto.ProductDTO;
 import com.backend.dream.entity.Product;
+import javassist.bytecode.ByteArray;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.List;
 
 public interface ProductService {
@@ -46,4 +49,8 @@ public interface ProductService {
     Page<ProductDTO> findByTopRated(Long categoryId, Pageable pageable);
 
     Page<ProductDTO> findByBestSeller(Long categoryId, Pageable pageable);
+
+    List<ProductDTO> searchProductByName(String name);
+
+    ByteArrayInputStream getdataProduct() throws IOException;
 }

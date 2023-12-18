@@ -34,12 +34,14 @@
                     </div>
                     <div class="card-body">
                         <div class="row justify-content-between align-items-center mb-3 mt-1">
+                            <a class="btn btn-primary" th:href="@{|/rest/productsizes/download|}">Export to Excel</a>
 
                             <!-- Thanh tìm kiếm ở góc phải -->
                             <div class="col-md-2 ms-auto">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Search..." aria-label="Search"
-                                        aria-describedby="basic-addon2">
+                                    <input type="text" class="form-control" placeholder="Search by product name..."
+                                           aria-label="Search" aria-describedby="basic-addon2"
+                                           ng-model="searchProductName" ng-change="searchProduct()">
                                 </div>
                             </div>
                         </div>
@@ -54,7 +56,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat-start="product in products">
+                                    <tr ng-repeat-start="product in filteredProducts">
                                         <td>{{$index + 1}}</td>
                                         <td style="text-align: left;">{{product.name}}</td>
                                         <td ng-repeat="size in sizes">
@@ -77,20 +79,23 @@
                         </div>
                         <div class="d-flex justify-content-between align-items-center pt-2">
                             <div class="fw-normal pb-3" style="font-size: 18px;">
-                                Showing 1 to 5 of 15 entries
+                                Showing {{(currentPage - 1) * pageSize + 1}} to
+                                {{currentPage * pageSize > products.length ? products.length : currentPage * pageSize}} of {{products.length}} entries
                             </div>
                             <nav aria-label="Page navigation">
                                 <ul class="pagination justify-content-end">
-                                    <li class="page-item disabled">
-                                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                                    <li class="page-item" ng-class="{ 'disabled': currentPage === 1 }">
+                                        <a class="page-link" href="#" ng-click="firstPage()" tabindex="-1" aria-disabled="true">
                                             <i class="bi bi-caret-left-fill"></i>
                                         </a>
                                     </li>
-                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#">
+                                    <li class="page-item" ng-repeat="page in getPagerNumbers()">
+                                        <a class="page-link" href="#" ng-click="setPage(page)" ng-class="{ 'active': currentPage === page }">
+                                            {{page}}
+                                        </a>
+                                    </li>
+                                    <li class="page-item" ng-class="{ 'disabled': currentPage === totalPages }">
+                                        <a class="page-link" href="#" ng-click="lastPage()">
                                             <i class="bi bi-caret-right-fill"></i>
                                         </a>
                                     </li>

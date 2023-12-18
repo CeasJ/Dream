@@ -246,10 +246,10 @@ function updateURLAndReload() {
 
 
     var newUrl = "/store?categoryId=" + selectedCategoryId;
-    if (selectedSortOption === 'sale') {
-        selectedCategoryId = '0';
-        newUrl = "/store?categoryId=0";
-    }
+//    if (selectedSortOption === 'sale') {
+//        selectedCategoryId = '0';
+//        newUrl = "/store?categoryId=0";
+//    }
 
 
     if (selectedSortOption !== 'none') {

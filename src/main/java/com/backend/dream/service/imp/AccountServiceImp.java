@@ -1,17 +1,22 @@
 package com.backend.dream.service.imp;
 
 import com.backend.dream.dto.AccountDTO;
+import com.backend.dream.dto.AuthorityDTO;
 import com.backend.dream.entity.Account;
 import com.backend.dream.entity.Authority;
 import com.backend.dream.entity.Role;
 import com.backend.dream.mapper.AccountMapper;
 import com.backend.dream.repository.AccountRepository;
 import com.backend.dream.repository.AuthorityRepository;
+import com.backend.dream.repository.RoleRepository;
 import com.backend.dream.service.AccountService;
+import com.backend.dream.util.ExcelUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -27,6 +32,9 @@ public class AccountServiceImp implements AccountService {
     private AccountMapper accountMapper;
     @Autowired
     private AuthorityRepository authorityRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
 
     @Override
     public Optional<Account> findByUsername(String username) {
@@ -120,6 +128,13 @@ public class AccountServiceImp implements AccountService {
         return list;
     }
 
+    @Override
+    public ByteArrayInputStream getdataStaff() throws IOException {
+        List<Account> accounts = accountRepository.getStaff();
+        ByteArrayInputStream data = ExcelUtil.dataToExcelSTAFF(accounts);
+        return data;
+    }
+
 //    @Override
 //    public Account createAccountWhenDontHaveAccount(Account account) {
 //        account.setPassword(passwordEncoder.encode(account.getPassword()));
@@ -153,5 +168,27 @@ public class AccountServiceImp implements AccountService {
     public Account findById(String username) {
         return accountRepository.findById(Long.valueOf(username)).get();
     }
+
+    @Override
+    public Long findRoleIdByUsername(String username) {
+        return accountRepository.findRoleIdByUsername(username);
+    }
+
+    @Override
+    public List<AccountDTO> searchAccount(String name) {
+        List<Account> accounts = accountRepository.searchAccount(name);
+        return accounts.stream()
+                .map(accountMapper::accountToAccountDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<AccountDTO> getUsersByRole(Long roleID) {
+        List<Account> usersByRole = accountRepository.getUsersByRole(roleID);
+        return usersByRole.stream()
+                .map(accountMapper::accountToAccountDTO)
+                .collect(Collectors.toList());
+    }
+
 
 }

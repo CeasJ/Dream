@@ -28,7 +28,7 @@ public interface VoucherRepository extends JpaRepository<Voucher, Long> {
 
     List<Voucher> findByExpiredDateBefore(Date currentDate);
 
-    @Query("SELECT v FROM Voucher v WHERE v.name = %:name%  " +
+    @Query("SELECT v FROM Voucher v WHERE v.number =:number " +
             "AND v.type.id = :idType ")
-    List<Voucher> findListVouchersByNameAndIDType(@Param("name") String name, @Param("idType") Long id);
+    List<Voucher> findListVouchersByNumberAndIDType(@Param("number") String number, @Param("idType") Long id);
 }

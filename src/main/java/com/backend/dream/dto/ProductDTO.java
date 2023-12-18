@@ -67,8 +67,6 @@ public class ProductDTO {
 
     private Long selectedSizeId;
 
-    private String formattedPriceBySize;
-
     private Double averageRating;
 
 }

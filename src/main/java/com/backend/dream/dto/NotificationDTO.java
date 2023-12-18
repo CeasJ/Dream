@@ -11,10 +11,10 @@ public class NotificationDTO {
     private Long id;
 
     private Long idAccount;
-
+    private String notificationTitle;
     private String notificationText;
 
     private Timestamp createdTime;
-
-    private Long id_role;
+    private long id_role;
+    private String image;
 }

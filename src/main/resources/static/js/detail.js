@@ -141,7 +141,9 @@ function getProductPrice(productId, sizeId) {
 
 // Price format function
 function formatPrice(price) {
-    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
+    let formattedPrice = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
+    formattedPrice = formattedPrice.replace(/\./g, ',');
+    return formattedPrice;
 }
 
 function getDiscountPercent(categoryID, sizePrice, priceElement, discountedPriceElement) {

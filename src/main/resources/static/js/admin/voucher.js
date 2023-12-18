@@ -66,7 +66,6 @@ $scope.initialize();
   };
 
   $scope.searchVouchers = function () {
-    // Gọi API để lấy danh sách vouchers dựa trên giá trị tìm kiếm (searchText)
     $http.get("/rest/vouchers/search?name=" + $scope.searchText).then(
       function (response) {
         $scope.vouchers = response.data;
@@ -176,6 +175,7 @@ $scope.initialize();
     if ($scope.voucherToDelete) {
       $http.delete("/rest/vouchers/" + $scope.voucherToDelete.id).then(
         function (response) {
+
         },
         function (error) {
           console.error("Error deleting voucher:", error);
@@ -220,4 +220,64 @@ $scope.initialize();
         })
         .catch((error) => {});
   };
+
+    // Pagination
+      $scope.currentPageVoucher = 1;
+      $scope.pageSizeVoucher = 5;
+      $scope.maxPagesToShow = 5; // Số trang tối đa được hiển thị
+
+      $scope.totalPagesVoucher = function () {
+          return Math.ceil($scope.vouchers.length / $scope.pageSizeVoucher);
+      };
+
+      $scope.setPageVoucher = function (page) {
+          if (page >= 1 && page <= $scope.totalPagesVoucher()) {
+              $scope.currentPageVoucher = page;
+          }
+      };
+
+      $scope.paginatedListVoucher = function () {
+          const begin = ($scope.currentPageVoucher - 1) * $scope.pageSizeVoucher;
+          const end = begin + $scope.pageSizeVoucher;
+
+          return $scope.vouchers.slice(begin, end);
+      };
+
+      $scope.firstPageVoucher = function () {
+          if ($scope.currentPageVoucher !== 1) {
+              $scope.currentPageVoucher = 1;
+          }
+      };
+
+      $scope.lastPageVoucher = function () {
+          const totalPages = $scope.totalPagesVoucher();
+          if ($scope.currentPageVoucher !== totalPages) {
+              $scope.currentPageVoucher = totalPages;
+          }
+      };
+
+      $scope.getPager = function () {
+          const totalPages = $scope.totalPagesVoucher();
+          let startPage = 1;
+          let endPage = totalPages;
+
+          if (totalPages > $scope.maxPagesToShow) {
+              const maxPagesBeforeCurrentPage = Math.floor($scope.maxPagesToShow / 2);
+              const maxPagesAfterCurrentPage = Math.ceil($scope.maxPagesToShow / 2) - 1;
+
+              if ($scope.currentPageVoucher <= maxPagesBeforeCurrentPage) {
+                  startPage = 1;
+                  endPage = $scope.maxPagesToShow;
+              } else if ($scope.currentPageVoucher + maxPagesAfterCurrentPage >= totalPages) {
+                  startPage = totalPages - $scope.maxPagesToShow + 1;
+                  endPage = totalPages;
+              } else {
+                  startPage = $scope.currentPageVoucher - maxPagesBeforeCurrentPage;
+                  endPage = $scope.currentPageVoucher + maxPagesAfterCurrentPage;
+              }
+          }
+
+          return Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i);
+      };
+
 });

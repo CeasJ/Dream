@@ -119,4 +119,13 @@ public class OrderRestController {
         return orderService.updateOrder(orderDTO);
     }
 
+    @GetMapping("/searchByStatusAndUsername")
+    public List<OrderDTO> searchByStatusAndUsername(
+            @RequestParam(value = "statusID") Long statusID,
+            @RequestParam(value = "username") String username
+    ) {
+        List<OrderDTO> searchedOrders = orderService.searchOrders(username, statusID);
+        return searchedOrders;
+    }
+
 }

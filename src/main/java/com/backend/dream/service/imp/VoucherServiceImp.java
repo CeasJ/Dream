@@ -13,11 +13,14 @@ import com.backend.dream.repository.VoucherRepository;
 import com.backend.dream.repository.VoucherStatusRepository;
 import com.backend.dream.service.AccountService;
 import com.backend.dream.service.VoucherService;
+import com.backend.dream.util.ExcelUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -102,7 +105,7 @@ public class VoucherServiceImp implements VoucherService {
         if (voucherDTO.getType() == 1L) {
             return Collections.singletonList(createSingleVoucher(voucherDTO));
         } else {
-          return createMultipleVouchers(voucherDTO);
+            return createMultipleVouchers(voucherDTO);
         }
     }
 
@@ -156,8 +159,8 @@ public class VoucherServiceImp implements VoucherService {
     }
 
     @Override
-    public List<VoucherDTO> updateListVoucherByNameAndIdType(VoucherDTO voucherDTO, String name, Long idType) {
-        List<Voucher> voucherList = voucherRepository.findListVouchersByNameAndIDType(name,idType);
+    public List<VoucherDTO> updateListVoucherByNameAndIdType(VoucherDTO voucherDTO, String number, Long idType) {
+        List<Voucher> voucherList = voucherRepository.findListVouchersByNumberAndIDType(number, idType);
         VoucherType type = new VoucherType();
         type.setId(voucherDTO.getType());
 
@@ -176,8 +179,34 @@ public class VoucherServiceImp implements VoucherService {
     }
 
     @Override
-    public void deleteByNameAndType(String name, Long idType) {
-        List<VoucherDTO> vouchers = voucherRepository.findListVouchersByNameAndIDType(name,idType).stream().map(voucherMapper::voucherToVoucherDTO).collect(Collectors.toList());
+    public ByteArrayInputStream getdataVoucher() throws IOException {
+        List<Voucher> vouchers = voucherRepository.findAll();
+        ByteArrayInputStream data = ExcelUtil.dataToExcelVoucher(vouchers);
+        return data;
+    }
+
+
+
+    @Override
+    public VoucherDTO getVoucherByID(Long voucherID) {
+        Voucher voucher = voucherRepository.findById(voucherID).orElse(null);
+        return voucherMapper.voucherToVoucherDTO(voucher);
+    }
+
+    @Override
+    public List<VoucherDTO> getVouchersByNameAndType(String number, Long idType) {
+        List<Voucher> vouchers = voucherRepository.findListVouchersByNumberAndIDType(number, idType);
+        return vouchers.stream()
+                .map(voucherMapper::voucherToVoucherDTO)
+                .collect(Collectors.toList());
+    }
+
+
+    @Override
+    public void deleteByNumberAndType(String name, Long idType) {
+        List<VoucherDTO> vouchers = voucherRepository.findListVouchersByNumberAndIDType(name,idType).stream().map(voucherMapper::voucherToVoucherDTO).collect(Collectors.toList());
         voucherRepository.deleteAll(voucherMapper.listVoucherDTOToListVoucher(vouchers));
     }
+
+
 }

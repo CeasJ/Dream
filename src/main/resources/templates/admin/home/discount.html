@@ -27,7 +27,7 @@
             <div th:replace="~{/admin/component/sidebar.html}"></div>
         </div>
         <div id="layoutSidenav_content">
-            <main>
+                    <main>
                 <div class="card mb-4" style="border: none;">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h4 class="mb-0"> <i class="fas fa-table me-1"></i> Discounts</h4>
@@ -46,15 +46,19 @@
                                     <div class="form-group mb-0" style="width: 200px;">
                                         <input type="date" class="form-control" id="dateFilter" ng-model="selectedDate">
                                     </div>
+                                    <div class="form-group mb-0" style="width: 200px;">
+                                        <a class="btn btn-primary" th:href="@{|/rest/discount/download|}">Export to Excel</a>
+                                    </div>
                                 </div>
                             </div>
                             <!-- Thanh tìm kiếm ở góc phải -->
                             <div class="col-md-2 ms-auto">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Search..." aria-label="Search"
-                                        aria-describedby="basic-addon2">
+                                    <input type="text" class="form-control" placeholder="Search by name..." aria-label="Search"
+                                           aria-describedby="basic-addon2" ng-model="searchText" ng-change="searchDiscount()">
                                 </div>
                             </div>
+
                         </div>
                         <div class="table-responsive">
                             <table class="table table-hover table-bordered text-center order-datatable">
@@ -71,11 +75,11 @@
                                     </tr>
                                 </thead>
                                 <tbody class="no-border-x">
-                                    <tr ng-repeat-start="count in discounts">
+                                    <tr ng-repeat-start="count in paginatedListDiscount()">
                                         <td>{{$index + 1}}</td>
                                         <td style="text-align: left;">{{count.name}}</td>
                                         <td>{{count.number}}</td>
-                                        <td>{{count.percent}} %</td>
+                                        <td>{{count.percent*100}} %</td>
                                         <td>{{count.activeDate | date: 'dd-MM-yyyy'}}</td>
                                         <td>{{count.expiredDate | date: 'dd-MM-yyyy'}}</td>
                                         <td ng-if="count.idcategory === 1">Cà phê</td>
@@ -99,20 +103,24 @@
                         </div>
                         <div class="d-flex justify-content-between align-items-center pt-2 pb-0">
                             <div class="fw-normal" style="font-size: 18px;">
-                                Showing 1 to 5 of 15 entries
+                                Showing {{ (currentPageDiscount - 1) * pageSizeDiscount + 1 }} to
+                                {{ currentPageDiscount * pageSizeDiscount > discounts.length ? discounts.length : currentPageDiscount * pageSizeDiscount }}
+                                of {{ discounts.length }} entries
                             </div>
                             <nav aria-label="Page navigation">
                                 <ul class="pagination justify-content-end">
-                                    <li class="page-item disabled">
-                                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                                    <li class="page-item" ng-class="{ 'disabled': currentPageDiscount === 1 }">
+                                        <a class="page-link" href="#" tabindex="-1" ng-click="firstPageDiscount()" aria-disabled="true">
                                             <i class="bi bi-caret-left-fill"></i>
                                         </a>
                                     </li>
-                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#">
+                                    <li class="page-item" ng-repeat="page in getPagerDiscount()">
+                                        <a class="page-link" href="#" ng-click="setPageDiscount(page)" ng-class="{ 'active': currentPageDiscount === page }">
+                                            {{ page }}
+                                        </a>
+                                    </li>
+                                    <li class="page-item" ng-class="{ 'disabled': currentPageDiscount === totalPagesDiscount() }">
+                                        <a class="page-link" href="#" ng-click="lastPageDiscount()">
                                             <i class="bi bi-caret-right-fill"></i>
                                         </a>
                                     </li>

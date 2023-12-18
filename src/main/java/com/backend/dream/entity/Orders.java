@@ -51,7 +51,7 @@ public class Orders implements Serializable {
     @JoinColumn(name = "idstatus")
     private OrderStatus status;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idvoucher")
     private Voucher voucher;
 

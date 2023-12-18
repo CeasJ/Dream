@@ -38,6 +38,8 @@ public class Account implements Serializable {
 
     private String address;
 
+    private boolean active;
+
     @JsonIgnore
     @OneToMany(mappedBy = "account", fetch = FetchType.EAGER, orphanRemoval = true)
     private List<Authority> authority;

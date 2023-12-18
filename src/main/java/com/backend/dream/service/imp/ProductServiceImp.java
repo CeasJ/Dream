@@ -8,6 +8,7 @@ import com.backend.dream.mapper.ProductMapper;
 import com.backend.dream.repository.ProductRepository;
 import com.backend.dream.repository.ProductSizeRepository;
 import com.backend.dream.service.*;
+import com.backend.dream.util.ExcelUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -204,5 +207,18 @@ public class ProductServiceImp implements ProductService {
             productDTO.setAverageRating(feedbackService.getAverageRating(product.getId()));
             return productDTO;
         });
+    }
+
+    @Override
+    public ByteArrayInputStream getdataProduct() throws IOException {
+        List<Product> products = productRepository.findAll();
+        ByteArrayInputStream data = ExcelUtil.dataToExcelProduct(products);
+        return data;
+    }
+
+    @Override
+    public List<ProductDTO> searchProductByName(String name) {
+        List<Product> products = productRepository.searchByName(name);
+        return products.stream().map(productMapper::productToProductDTO).collect(Collectors.toList());
     }
 }

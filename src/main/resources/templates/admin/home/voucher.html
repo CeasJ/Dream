@@ -53,6 +53,8 @@
                                             <option ng-repeat="s in status" value="{{ s.id }}">{{ s.name }}</option>
                                         </select>
                                     </div>
+                                    <a class="btn btn-primary" th:href="@{|/rest/vouchers/download|}">Export to Excel</a>
+
                                 </div>
                             </div>
                             <!-- Thanh tìm kiếm ở góc phải -->
@@ -82,7 +84,7 @@
                                     </tr>
                                 </thead>
                                 <tbody class="no-border-x">
-                                    <tr ng-repeat="voucher in vouchers">
+                                    <tr ng-repeat="voucher in paginatedListVoucher()">
                                         <td>{{$index + 1}}</td>
                                         <th style="font-size: 35px; font-weight: bold;">
                                             <i class="{{ voucher.icon }}"></i>
@@ -111,26 +113,28 @@
                         </div>
                         <div class="d-flex justify-content-between align-items-center pt-2 pb-0">
                             <div class="fw-normal" style="font-size: 18px;">
-                                Showing 1 to 5 of 15 entries
+                                Showing {{ (currentPageVoucher - 1) * pageSizeVoucher + 1 }} to
+                                {{ currentPageVoucher * pageSizeVoucher > vouchers.length ? vouchers.length : currentPageVoucher * pageSizeVoucher }}
+                                of {{ vouchers.length }} entries
                             </div>
                             <nav aria-label="Page navigation">
                                 <ul class="pagination justify-content-end">
-                                    <li class="page-item disabled">
-                                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
-                                            <i class="bi bi-caret-left-fill"></i>
-                                        </a>
+                                    <li class="page-item" ng-class="{ 'disabled': currentPageVoucher === 1 }">
+                                        <a class="page-link" href="#" tabindex="-1" ng-click="firstPageVoucher()" aria-disabled="true">
+                                            <i class="bi bi-caret-left-fill"></i>                                        </a>
                                     </li>
-                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#">
+                                    <li class="page-item" ng-repeat="page in getPager()" ng-class="{ 'active': currentPageVoucher === page }">
+                                        <a class="page-link" href="#" ng-click="setPageVoucher(page)">{{ page }}</a>
+                                    </li>
+                                    <li class="page-item" ng-class="{ 'disabled': currentPageVoucher === totalPagesVoucher() }">
+                                        <a class="page-link" href="#" ng-click="lastPageVoucher()">
                                             <i class="bi bi-caret-right-fill"></i>
                                         </a>
                                     </li>
                                 </ul>
                             </nav>
                         </div>
+
                     </div>
                 </div>
 
@@ -251,10 +255,10 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label for="name" class="fw-bold mb-3">Percent</label>
+                                                    <label for="name" class="fw-bold mb-3"> Voucher price</label>
                                                     <input type="number" class="form-control" id="voucherPercent"
                                                         ng-model="voucher.percent" name="number" min="0"
-                                                        placeholder="Voucher Percent" />
+                                                        placeholder="Voucher Price" />
                                                 </div>
                                             </div>
                                         </div>
@@ -314,6 +318,7 @@
                             </div>
                         </div>
                     </div>
+                </div>
                 </div>
             </main>
             <div th:replace="~{/admin/component/footer.html}"></div>

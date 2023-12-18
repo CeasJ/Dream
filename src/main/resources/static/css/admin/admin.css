@@ -11816,3 +11816,10 @@ body {
   background-color: #f8f8ff; /* Scrollbar track color */
 }
 
+/* Admin pagination */
+.pagination .page-item.active .page-link {
+    z-index: 3;
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+}
