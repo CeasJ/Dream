@@ -8,7 +8,7 @@ import com.backend.dream.mapper.OrderMapper;
 import com.backend.dream.repository.OrderDetailRepository;
 import com.backend.dream.repository.OrderRepository;
 import com.backend.dream.service.OrderService;
-import com.backend.dream.service.QrCodeService;
+import com.backend.dream.util.QrCodeService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -51,9 +51,11 @@ public class OrderServiceImp implements OrderService {
             orders.setVoucher(null);
         }
 
+        qrCodeService.generateQrCode("Your order number " + String.valueOf(orders.getId()) + " " + "has been paid successfully");
+        orders.setQr(qrCodeService.getQrCode());
+
         orderRepository.save(orders);
 
-        qrCodeService.generateQrCode("Your order number " + String.valueOf(orders.getId()) + " " + "has been paid successfully");
         TypeReference<List<OrderDetailDTO>> type = new TypeReference<List<OrderDetailDTO>>() {
         };
 

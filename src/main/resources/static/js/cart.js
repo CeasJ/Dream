@@ -144,6 +144,7 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
   $scope.qrCode = "";
   $scope.ipLocation = "";
   $scope.vehicle = "car";
+  
   $scope.originLocation = encodeURIComponent(
     "10.853832672000067,106.62833998400004"
   );
@@ -189,19 +190,9 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
           $scope.apiKey
       )
       .then(function (response) {
-        console.log(response);
         const distance = response.data.rows[0].elements[0].distance;
         $scope.order.distance = parseInt(distance.value);
-        console.log(parseInt($scope.order.distance));
       });
-  };
-
-  $scope.getQrCode = function () {
-    // $http.get(`/qrcode`).then((resp) => {
-    //   $scope.qrCode = resp.data;
-    //   console.log($scope.qrCode);
-    //   console.log(resp.data);
-    // });
   };
 
   $scope.selectOrder = function (orderID) {
@@ -211,7 +202,6 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
       .then((response) => {
         if (response.data) {
           $scope.listOrder = response.data;
-          console.log(response.data);
         }
       })
       .catch((error) => {});
@@ -372,13 +362,11 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
       );
 
       if (item) {
-        console.log(item);
         item.qty++;
         saveCart(this.username, this);
       } else {
         $http.get(`/rest/products/${id}/${sizeID}`).then((resp) => {
           let newItem = resp.data;
-          console.log(newItem);
           newItem.qty = 1;
           this.items.push(newItem);
           saveCart(this.username, this);
@@ -464,16 +452,19 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
         .then((resp) => {
           $scope.cart.clear();
           toastr.success("Order Success");
+          $scope.qrCode = resp.data.qr;
+          console.log($scope.qrCode);
         })
         .catch((error) => {});
     },
   };
 
   $scope.handlePaymentMethodChange = function () {
-    console.log($scope.payment);
     if ($scope.payment === 1 || $scope.payment === undefined) {
       $scope.order.purchaseOrder();
-      $scope.completeButtonClicked();
+      setTimeout(()=>{
+        $scope.completeButtonClicked();
+      },2000);
     } else if ($scope.payment === 2) {
       $scope.order.purchaseOrder();
       location.href = "/vnpay";
@@ -487,7 +478,6 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
 
   $scope.completeButtonClicked = function () {
     if (isSuccess) {
-      $scope.getQrCode();
       $(".cart-3").show();
       $(".cart-0, .cart-1, .form-buy, .infor-cart").hide();
       $("#number-3").addClass("active");
@@ -504,7 +494,6 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
       $scope.vouchers = response.data;
     },
     function (error) {
-      console.log("Error fetching data:", error);
     }
   );
 
@@ -513,7 +502,6 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
       $scope.allVouchers = response.data;
     },
     function (error) {
-      console.log("Error fetching data:", error);
     }
   );
 
@@ -522,7 +510,6 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
       $scope.userAddressDB = response.data.address;
     },
     function (error) {
-      console.log("Error fetching data:", error);
     }
   );
 
@@ -549,7 +536,6 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
 
   $scope.selectVoucher = function (voucher) {
     $scope.selectedVoucher = voucher;
-    console.log(voucher);
   };
 
   $scope.applyVoucher = function () {
@@ -587,7 +573,6 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
   };
 
   $scope.changeAddress = function () {
-    console.log($scope.userAddress);
     if (parseInt($scope.userAddress) === 1 || $scope.userAddress === undefined) {
       $scope.order.address = $scope.userAddressDB;
       $scope.changeNameLocationToIP();

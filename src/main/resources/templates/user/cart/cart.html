@@ -114,7 +114,7 @@
             <div class="container-fluid cart-1" style="display: none;">
               <div class="row product-row my-3" ng-repeat="product in cart.items">
                 <div class="col-md-2">
-                  <img ng-src="{{'/img/gallery/' + product.image}}" class="img-fluid img-product">
+                  <img ng-src="{{'/img/gallery/' + product.image}}" class="img-fluid img-product" alt="productImg">
                 </div>
                 <div class="col-md-2 pt-4">
                   <h6> {{product.name}} </h6>
@@ -333,7 +333,7 @@
           </div>
           <!-- Đơn hàng đã xử lý Start -->
           <div class="container-fluid cart-3 mx-auto" style="display: none;">
-            <!-- <img class="img-cart" ng-src="/img/qrcode/{{ qrCode }}"> -->
+            <img class="img-cart" ng-src="{{'/img/qrcode/' + qrCode}}" alt="qrCode">
             <h5 th:text="#{message.orderProcessed}"></h5>
             <a th:href="@{|/store|}">
               <button class="btn btn-danger mt-3" style="padding: 8px 18px;">

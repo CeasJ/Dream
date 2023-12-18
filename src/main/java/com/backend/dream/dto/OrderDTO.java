@@ -37,6 +37,8 @@ public class OrderDTO {
 
     private String name_voucher;
 
+    private String qr;
+
     private List<OrderDetailDTO> orderDetailsDTO;
 
     private Double totalAmount;
