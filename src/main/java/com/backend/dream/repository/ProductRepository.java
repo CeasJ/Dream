@@ -64,4 +64,8 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
         + "GROUP BY p.id, p.name "
         + "ORDER BY SUM(od.quantity) DESC")
     Page<Product> findByBestseller(@Param("categoryId") Long categoryId, Pageable pageable);
+
+    // For admin interface
+    @Query("SELECT p FROM Product p WHERE LOWER(p.name) LIKE LOWER(CONCAT('%', :name, '%'))")
+    List<Product> searchByName(@Param("name") String name);
 }

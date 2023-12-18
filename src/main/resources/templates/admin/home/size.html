@@ -39,8 +39,9 @@
                             <!-- Thanh tìm kiếm ở góc phải -->
                             <div class="col-md-2 ms-auto">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Search..." aria-label="Search"
-                                        aria-describedby="basic-addon2">
+                                    <input type="text" class="form-control" placeholder="Search by product name..."
+                                           aria-label="Search" aria-describedby="basic-addon2"
+                                           ng-model="searchProductName" ng-change="searchProduct()">
                                 </div>
                             </div>
                         </div>

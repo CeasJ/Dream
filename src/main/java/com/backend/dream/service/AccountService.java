@@ -1,6 +1,7 @@
 package com.backend.dream.service;
 
 import com.backend.dream.dto.AccountDTO;
+import com.backend.dream.dto.AuthorityDTO;
 import com.backend.dream.entity.Account;
 import com.backend.dream.entity.Authority;
 import com.backend.dream.entity.Role;
@@ -20,9 +21,9 @@ public interface AccountService {
 
     AccountDTO updateAccount(AccountDTO accountDTO);
 
-    public boolean isUsernameExists(String username);
+    boolean isUsernameExists(String username);
 
-    public boolean isEmailExists(String email);
+    boolean isEmailExists(String email);
 
     Account findByUsernameAndEmail(String username, String email);
 
@@ -52,5 +53,9 @@ public interface AccountService {
 
 //    Account createAccountWhenDontHaveAccount(Account account);
 
-    ByteArrayInputStream getdataStaff() throws IOException;
+    List<AccountDTO> searchAccount(String name);
+
+    List<AccountDTO> getUsersByRole(Long roleID);
+
+
 }

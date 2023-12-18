@@ -75,7 +75,7 @@ app.controller("order_ctrl", function ($scope, $http) {
       $scope.status = resp.data;
       if (!$scope.selectedStatus) {
           $scope.selectedStatus = 1;
-          $scope.selectedStatusChanged(); // Kích hoạt hàm khi giá trị được thay đổi
+          $scope.selectedStatusChanged();
       }
     });
 
@@ -465,5 +465,18 @@ $scope.$watch('listOrders', function () {
   $scope.$watch('listOrdersCancelled', function () {
       paginateOrderCancel();
   });
+
+  // Searching features
+    $scope.searchByStatusAndUsername = function () {
+        $http.get(`/rest/order/searchByStatusAndUsername?statusID=${$scope.selectedStatus}&username=${$scope.searchKeyword}`)
+            .then((resp) => {
+                $scope.listOrders = resp.data;
+            })
+            .catch((error) => {
+
+            });
+    };
+
+
 
 });

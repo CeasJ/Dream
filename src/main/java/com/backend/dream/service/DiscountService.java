@@ -17,6 +17,7 @@ public interface DiscountService {
     DiscountDTO update(DiscountDTO discountDTO);
     void delete(Long id);
 
-    ByteArrayInputStream getdataDiscount() throws IOException;
+    DiscountDTO getDiscountByID(Long id);
 
+    List<DiscountDTO> searchDiscountByName(String name);
 }

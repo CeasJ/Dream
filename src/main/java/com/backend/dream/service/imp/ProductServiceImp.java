@@ -213,6 +213,12 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
+    public List<ProductDTO> searchProductByName(String name) {
+        List<Product> products = productRepository.searchByName(name);
+        return products.stream().map(productMapper::productToProductDTO).collect(Collectors.toList());
+    }
+
+    @Override
     public ByteArrayInputStream getdataProduct() throws IOException {
         List<Product> products = productRepository.findAll();
         ByteArrayInputStream data = ExcelUtil.dataToExcelProduct(products);

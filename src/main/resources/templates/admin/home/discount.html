@@ -54,10 +54,11 @@
                             <!-- Thanh tìm kiếm ở góc phải -->
                             <div class="col-md-2 ms-auto">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Search..." aria-label="Search"
-                                        aria-describedby="basic-addon2">
+                                    <input type="text" class="form-control" placeholder="Search by name..." aria-label="Search"
+                                           aria-describedby="basic-addon2" ng-model="searchText" ng-change="searchDiscount()">
                                 </div>
                             </div>
+
                         </div>
                         <div class="table-responsive">
                             <table class="table table-hover table-bordered text-center order-datatable">

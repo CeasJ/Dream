@@ -120,52 +120,70 @@ app.controller("discount-ctrl", function ($scope, $http) {
           })
        };
 
-        $scope.updateNotApplyDiscount = function(categoryID, categoryName) {
-          let category = {
-            id: categoryID,
-            id_discount: '',
-            name: categoryName,
-          };
-          $http.put(`/rest/category/update/${categoryID}`, category).then(resp => {
-            let index = $scope.cates.findIndex((cate) => cate.id === categoryID);
-            $scope.cates[index] = category;
-            $scope.reset();
-            toastr.success("Update Success");
-            setTimeout(()=>{
-             location.reload();
-            },1000);
-          }).catch(err => {
-            toastr.error("Update Fail");
-          })
-       };
-      
-       $scope.createCategory = function (name) {
-        let checkNameCategory = $scope.cates.find(c => c.name === name);
+        $scope.firstPageDiscount = function () {
+            if ($scope.currentPageDiscount !== 1) {
+                $scope.currentPageDiscount = 1;
+            }
+        };
 
-        if(checkNameCategory){
-          $("#createModal").modal("hide");
-          toastr.error("Name already exist");
-        } else {
-          let category = {
-            name: name,
-          };
-          $http
-            .post(`/rest/category`, category)
-            .then((resp) => {
-              $scope.cates.push(resp.data);
-              $("#createModal").modal("hide");
-              toastr.success("Create Success");
-              setTimeout(()=>{
-               location.reload();
-              },1000);
-            })
-            .catch((err) => { 
-              if (err.data && err.data.errors) {
-                $("#createModal").modal("hide");
-                toastr.error(err.data.errors);
-              } 
-            });
-        }
+        $scope.lastPageDiscount = function () {
+            if ($scope.currentPageDiscount !== $scope.totalPagesDiscount()) {
+                $scope.currentPageDiscount = $scope.totalPagesDiscount();
+            }
+        };
 
-      };
+        $scope.getPagerDiscount = function () {
+            const totalPages = $scope.totalPagesDiscount(); // Tổng số trang
+                const maxPagesToShow = 5; // Số trang tối đa cần hiển thị
+
+                let startPage = 1;
+                let endPage = totalPages;
+
+                if (totalPages > maxPagesToShow) {
+                    const maxPagesBeforeCurrentPage = Math.floor(maxPagesToShow / 2);
+                    const maxPagesAfterCurrentPage = Math.ceil(maxPagesToShow / 2) - 1;
+
+                    if ($scope.currentPageDiscount <= maxPagesBeforeCurrentPage) {
+                        startPage = 1;
+                        endPage = maxPagesToShow;
+                    } else if ($scope.currentPageDiscount + maxPagesAfterCurrentPage >= totalPages) {
+                        startPage = totalPages - maxPagesToShow + 1;
+                        endPage = totalPages;
+                    } else {
+                        startPage = $scope.currentPageDiscount - maxPagesBeforeCurrentPage;
+                        endPage = $scope.currentPageDiscount + maxPagesAfterCurrentPage;
+                    }
+                }
+
+                return Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i);
+        };
+
+        $scope.paginatedListDiscount = function () {
+            const begin = ($scope.currentPageDiscount - 1) * $scope.pageSizeDiscount;
+            const end = begin + $scope.pageSizeDiscount;
+            return $scope.discounts.slice(begin, end);
+        };
+
+
+         $scope.searchDiscount = function () {
+            if ($scope.searchText) {
+              $http.get("/rest/discount/search?name=" + $scope.searchText)
+                .then(function (response) {
+                  $scope.discounts = response.data;
+                })
+                .catch(function (error) {
+                  console.error("Error fetching discounts:", error);
+                });
+            } else {
+              $scope.initialize();
+            }
+          };
+
+          $scope.$watch('searchText', function(newVal, oldVal) {
+            if (newVal !== oldVal) {
+              $scope.searchDiscount();
+            }
+          });
+
+
 });

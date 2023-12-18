@@ -50,5 +50,7 @@ public interface ProductService {
 
     Page<ProductDTO> findByBestSeller(Long categoryId, Pageable pageable);
 
+    List<ProductDTO> searchProductByName(String name);
+
     ByteArrayInputStream getdataProduct() throws IOException;
 }

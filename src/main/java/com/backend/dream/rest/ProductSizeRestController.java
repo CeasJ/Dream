@@ -6,6 +6,7 @@ import com.backend.dream.dto.ProductSizeDTO;
 import com.backend.dream.entity.ProductSize;
 import com.backend.dream.service.AccountService;
 import com.backend.dream.service.NotificationService;
+import com.backend.dream.service.ProductService;
 import com.backend.dream.service.ProductSizeService;
 import com.backend.dream.util.ValidationService;
 
@@ -34,6 +35,9 @@ public class ProductSizeRestController {
     private ProductSizeService productSizeService;
     @Autowired
     private ValidationService validateService;
+
+    @Autowired
+    private ProductService productService;
 
     @GetMapping()
     public List<ProductSizeDTO> getAllSizes() {
@@ -81,6 +85,11 @@ public class ProductSizeRestController {
         String fileName ="Data-productSizes.xlsx";
         ByteArrayInputStream inputStream = productSizeService.getdataProductSize();
         InputStreamResource response = new InputStreamResource(inputStream);
+
+    @GetMapping("/search")
+    public List<ProductDTO> searchByProductIdAndSizeId(@RequestParam String name) {
+        return productService.searchProductByName(name);
+    }
 
         ResponseEntity<InputStreamResource> responseEntity = ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION,"attachment;filename="+fileName)

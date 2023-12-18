@@ -1,6 +1,7 @@
 package com.backend.dream.service.imp;
 
 import com.backend.dream.dto.AccountDTO;
+import com.backend.dream.dto.AuthorityDTO;
 import com.backend.dream.entity.Account;
 import com.backend.dream.entity.Authority;
 import com.backend.dream.entity.Role;
@@ -168,5 +169,21 @@ public class AccountServiceImp implements AccountService {
         return accountRepository.findById(Long.valueOf(username)).get();
     }
 
+
+    @Override
+    public List<AccountDTO> searchAccount(String name) {
+        List<Account> accounts = accountRepository.searchAccount(name);
+        return accounts.stream()
+                .map(accountMapper::accountToAccountDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<AccountDTO> getUsersByRole(Long roleID) {
+        List<Account> usersByRole = accountRepository.getUsersByRole(roleID);
+        return usersByRole.stream()
+                .map(accountMapper::accountToAccountDTO)
+                .collect(Collectors.toList());
+    }
 
 }
