@@ -22,5 +22,10 @@ public interface ProductSizeService {
 
     ProductSizeDTO update(ProductSizeDTO productSizeDTO,Long id_product);
 
+    ProductSizeDTO findByID(Long id);
+
+    String getProductNameByProductSizeID(Long productSizeID);
+
+
     ByteArrayInputStream getdataProductSize() throws IOException;
 }

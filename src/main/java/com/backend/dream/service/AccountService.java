@@ -51,11 +51,14 @@ public interface AccountService {
 
     List<AccountDTO> getAllAccounts();
 
-    // Account createAccountWhenDontHaveAccount(Account account);
+    //    Account createAccountWhenDontHaveAccount(Account account);
+    Long findRoleIdByUsername(String username);
 
     List<AccountDTO> searchAccount(String name);
 
     List<AccountDTO> getUsersByRole(Long roleID);
 
-    Long findRoleIdByUsername(String username);
+
+
+    ByteArrayInputStream getdataStaff() throws IOException;
 }

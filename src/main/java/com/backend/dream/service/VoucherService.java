@@ -22,6 +22,8 @@ public interface VoucherService {
     void deleteByNumberAndType(String name, Long idType);
     VoucherDTO updateVoucher(VoucherDTO voucherDTO, Long id);
     List<VoucherDTO> updateListVoucherByNameAndIdType(VoucherDTO voucherDTO, String name, Long idType);
+    VoucherDTO getVoucherByID(Long voucherID);
+    List<VoucherDTO> getVouchersByNameAndType(String name, Long idType);
 
     ByteArrayInputStream getdataVoucher() throws IOException;
 }

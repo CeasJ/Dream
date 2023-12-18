@@ -19,6 +19,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.List;
@@ -52,7 +54,7 @@ public class ProductSizeRestController {
             return ResponseEntity.badRequest().body(validateService.validation(bindingResult));
         }
 
-        return ResponseEntity.ok(productSizeService.create(productSizeDTO));
+        return null;
     }
 
     @DeleteMapping("{id}")
@@ -90,6 +92,11 @@ public class ProductSizeRestController {
     public List<ProductDTO> searchByProductIdAndSizeId(@RequestParam String name) {
         return productService.searchProductByName(name);
     }
+    @GetMapping("/download")
+    private ResponseEntity<InputStreamResource> download() throws IOException {
+        String fileName ="Data-productSizes.xlsx";
+        ByteArrayInputStream inputStream = productSizeService.getdataProductSize();
+        InputStreamResource response = new InputStreamResource(inputStream);
 
         ResponseEntity<InputStreamResource> responseEntity = ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION,"attachment;filename="+fileName)

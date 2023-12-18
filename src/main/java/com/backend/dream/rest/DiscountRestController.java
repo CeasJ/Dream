@@ -19,10 +19,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.List;
 
 @CrossOrigin("*")
@@ -106,6 +106,8 @@ public class DiscountRestController {
     public List<DiscountDTO> searchDiscountByName(@RequestParam String name) {
         return discountService.searchDiscountByName(name);
     }
+
+
 
     @GetMapping("/download")
     private ResponseEntity<InputStreamResource> download() throws IOException {

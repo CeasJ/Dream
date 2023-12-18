@@ -174,6 +174,11 @@ public class AccountServiceImp implements AccountService {
     }
 
     @Override
+    public Long findRoleIdByUsername(String username) {
+        return accountRepository.findRoleIdByUsername(username);
+    }
+
+    @Override
     public List<AccountDTO> searchAccount(String name) {
         List<Account> accounts = accountRepository.searchAccount(name);
         return accounts.stream()
@@ -188,5 +193,6 @@ public class AccountServiceImp implements AccountService {
                 .map(accountMapper::accountToAccountDTO)
                 .collect(Collectors.toList());
     }
+
 
 }

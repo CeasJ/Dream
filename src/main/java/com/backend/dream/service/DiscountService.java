@@ -20,4 +20,7 @@ public interface DiscountService {
     DiscountDTO getDiscountByID(Long id);
 
     List<DiscountDTO> searchDiscountByName(String name);
+
+    ByteArrayInputStream getdataDiscount() throws IOException;
+
 }
