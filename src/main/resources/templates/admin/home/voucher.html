@@ -259,7 +259,7 @@
                                                     <label for="name" class="fw-bold mb-3"> Voucher price</label>
                                                     <input type="number" class="form-control" id="voucherPercent"
                                                         ng-model="voucher.percent" name="number" min="0"
-                                                        placeholder="Voucher Price" />
+                                                        placeholder="Voucher Percent" />
                                                 </div>
                                             </div>
                                         </div>
@@ -311,9 +311,33 @@
                                                                 ng-model="voucher.status" name="all" value="2"
                                                                 ng-required ng-checked="voucher.status == 2" />
                                                             <label class="form-check-label">InActive
+                                                    <label class="fw-bold mb-3">Active</label>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio"
+                                                            ng-model="voucher.status" id="radio1" name="partner" 
+                                                            ng-value="1" ng-required  ng-checked="voucher.status === 1"/>
+                                                        <label class="form-check-label" for="radio1">Active</label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio"
+                                                            ng-model="voucher.status" name="all" ng-value="2"
+                                                            ng-required ng-checked="voucher.status === 2"/>
+                                                        <label class="form-check-label" >InActive
                                                             </label>
                                                         </div>
                                                     </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="fw-bold mb-3">Type voucher</label>
+                                                    <select ng-model="voucher.type" class="form-control"
+                                                    name="type" id="type">
+                                                    <option value="" selected disabled>Select a type
+                                                    </option>
+                                                    <option ng-repeat="t in types" ng-value="t.id">{{t.name}}
+                                                    </option>
+                                                </select>
                                                 </div>
                                             </div>
                                         </div>

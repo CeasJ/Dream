@@ -8,8 +8,11 @@ import com.backend.dream.entity.ProductSize;
 import com.backend.dream.service.AccountService;
 import com.backend.dream.service.NotificationService;
 import com.backend.dream.service.ProductSizeService;
-import jakarta.servlet.http.HttpServletRequest;
+import com.backend.dream.util.ValidationService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
@@ -22,76 +25,21 @@ import java.util.List;
 public class ProductSizeRestController {
     @Autowired
     private ProductSizeService productSizeService;
-
     @Autowired
-    private AccountService accountService;
-
-    @Autowired
-    private NotificationService notificationService;
-
+    private ValidationService validateService;
     @GetMapping()
     public List<ProductSizeDTO> getAllSizes() {
         return productSizeService.findAll();
     }
     @PostMapping()
-    public ProductSize create(@RequestBody ProductSizeDTO productSizeDTO, HttpServletRequest request) {
-        String username = request.getRemoteUser();
-        Long idAccount = accountService.findIDByUsername(username);
-        Long idRole = accountService.findRoleIdByUsername(username);
-
-        if (idRole == 1 || idRole == 2) {
-            ProductSize createdProductSize = productSizeService.create(productSizeDTO);
-
-            String productName = productSizeService.getProductNameByProductSizeID(productSizeDTO.getId_product());
-
-            String notificationTitle = "Có sự thay đổi giá sản phẩm";
-            String notificationText = "Giá của sản phẩm '" + productName + "' đã được thêm bởi '" + username + "'";
-
-            NotificationDTO notificationDTO = new NotificationDTO();
-            notificationDTO.setIdAccount(idAccount);
-            notificationDTO.setNotificationTitle(notificationTitle);
-            notificationDTO.setNotificationText(notificationText);
-            notificationDTO.setId_role(idRole);
-            notificationDTO.setImage("size-change.jpg");
-            notificationDTO.setCreatedTime(Timestamp.from(Instant.now()));
-            notificationService.createNotification(notificationDTO);
-
-            return createdProductSize;
+    public ResponseEntity<?> productSize(@RequestBody @Valid ProductSizeDTO productSizeDTO, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            validateService.validation(bindingResult);
+            return ResponseEntity.badRequest().body(validateService.validation(bindingResult));
         }
 
-        return null;
+        return ResponseEntity.ok(productSizeService.create(productSizeDTO));
     }
-
-
-    @PutMapping("{id}")
-    public ProductSizeDTO update(@RequestBody ProductSizeDTO productSizeDTO, @PathVariable("id") Long id, HttpServletRequest request) {
-        String username = request.getRemoteUser();
-        Long idAccount = accountService.findIDByUsername(username);
-        Long idRole = accountService.findRoleIdByUsername(username);
-
-        if (idRole == 1 || idRole == 2) {
-            ProductSizeDTO previousProductSize = productSizeService.findByID(id);
-            ProductSizeDTO updatedProductSize = productSizeService.update(productSizeDTO, id);
-
-            String productName = productSizeService.getProductNameByProductSizeID(id);
-            String notificationTitle = "Có sự thay đổi giá sản phẩm";
-            String notificationText = "Giá của sản phẩm '" + productName + "' đã được cập nhật bởi '" + username + "'";
-
-            NotificationDTO notificationDTO = new NotificationDTO();
-            notificationDTO.setIdAccount(idAccount);
-            notificationDTO.setNotificationTitle(notificationTitle);
-            notificationDTO.setNotificationText(notificationText);
-            notificationDTO.setId_role(idRole);
-            notificationDTO.setImage("size-change.jpg");
-            notificationDTO.setCreatedTime(Timestamp.from(Instant.now()));
-            notificationService.createNotification(notificationDTO);
-
-            return updatedProductSize;
-        }
-
-        return null;
-    }
-
     @DeleteMapping("{id}")
     public void delete(@PathVariable("id") Long id, HttpServletRequest request) {
         String username = request.getRemoteUser();

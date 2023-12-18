@@ -6,9 +6,13 @@ import com.backend.dream.entity.Orders;
 import com.backend.dream.service.AccountService;
 import com.backend.dream.service.OrderService;
 import com.backend.dream.service.OrderStatusService;
+import com.backend.dream.util.ValidationService;
 import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
@@ -26,9 +30,16 @@ public class OrderRestController {
     private OrderStatusService orderStatusService;
     @Autowired
     private AccountService accountService;
+    @Autowired
+    private ValidationService validateService;
     @PostMapping
-    public Orders create(@RequestBody JsonNode orderData) throws ParseException {
-        return orderService.create(orderData);
+    public ResponseEntity<?> create(@RequestBody @Valid JsonNode orderData, BindingResult bindingResult) throws ParseException {
+        if (bindingResult.hasErrors()) {
+            validateService.validation(bindingResult);
+            return ResponseEntity.badRequest().body(validateService.validation(bindingResult));
+        }
+
+        return ResponseEntity.ok(orderService.create(orderData));
     }
     @GetMapping("/address")
     @ResponseBody

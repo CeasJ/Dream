@@ -6,11 +6,14 @@ import com.backend.dream.service.AccountService;
 import com.backend.dream.service.NotificationService;
 import com.backend.dream.service.VoucherService;
 import com.backend.dream.service.VoucherTypeService;
+import com.backend.dream.util.ValidationService;
 import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
@@ -28,13 +31,10 @@ public class VoucherRestController {
 
     @Autowired
     private HttpServletRequest request;
-
     @Autowired
     private VoucherTypeService voucherTypeService;
-
     @Autowired
-    private NotificationService notificationService;
-
+    private ValidationService validateService;
     // Get voucher for user
     @GetMapping("/applicable")
     public List<VoucherDTO> getApplicableVouchers(){
@@ -68,64 +68,17 @@ public class VoucherRestController {
     }
 
     @PostMapping()
-    public List<Voucher> createVoucher(@RequestBody JsonNode voucherData, HttpServletRequest request) {
-        String username = request.getRemoteUser();
-        Long idAccount = accountService.findIDByUsername(username);
-        Long idRole = accountService.findRoleIdByUsername(username);
-
-        if (idRole == 1 || idRole == 2) {
-            List<Voucher> createdVouchers = voucherService.createVoucher(voucherData);
-
-            for (Voucher voucher : createdVouchers) {
-                String voucherName = voucher.getName();
-                String notificationTitle = "Có sự thay đổi trong phiếu giảm";
-                String notificationText = "Phiếu giảm giá '" + voucherName + "' đã được thêm bởi '" + username + "'";
-
-                NotificationDTO notificationDTO = new NotificationDTO();
-                notificationDTO.setIdAccount(idAccount);
-                notificationDTO.setNotificationTitle(notificationTitle);
-                notificationDTO.setNotificationText(notificationText);
-                notificationDTO.setId_role(idRole);
-                notificationDTO.setImage("voucher-change.jpg");
-                notificationDTO.setCreatedTime(Timestamp.from(Instant.now()));
-                notificationService.createNotification(notificationDTO);
-            }
-
-            return createdVouchers;
+    public ResponseEntity<?> createVoucher(@RequestBody @Valid JsonNode voucherData, BindingResult bindingResult){
+        if (bindingResult.hasErrors()) {
+            validateService.validation(bindingResult);
+            return ResponseEntity.badRequest().body(validateService.validation(bindingResult));
         }
-
-        return null;
+        return ResponseEntity.ok(voucherService.createVoucher(voucherData));
     }
-
-    @PutMapping("/{id}")
-    public VoucherDTO updateVoucher(@RequestBody VoucherDTO voucherDTO, @PathVariable("id") Long id, HttpServletRequest request) {
-        String username = request.getRemoteUser();
-        Long idAccount = accountService.findIDByUsername(username);
-        Long idRole = accountService.findRoleIdByUsername(username);
-
-        if (idRole == 1 || idRole == 2) {
-            VoucherDTO updatedVoucher = voucherService.updateVoucher(voucherDTO, id);
-
-            String voucherName = updatedVoucher.getName();
-            String notificationTitle = "Có sự thay đổi trong phiếu giảm";
-            String notificationText = "Phiếu giảm giá '" + voucherName + "' đã được cập nhật bởi '" + username + "'";
-
-            NotificationDTO notificationDTO = new NotificationDTO();
-            notificationDTO.setIdAccount(idAccount);
-            notificationDTO.setNotificationTitle(notificationTitle);
-            notificationDTO.setNotificationText(notificationText);
-            notificationDTO.setId_role(idRole);
-            notificationDTO.setImage("voucher-change.jpg");
-            notificationDTO.setCreatedTime(Timestamp.from(Instant.now()));
-            notificationService.createNotification(notificationDTO);
-
-            return updatedVoucher;
-        }
-
-        return null;
+    @PutMapping("{id}")
+    public VoucherDTO updateVoucher(@RequestBody VoucherDTO voucherDTO,@PathVariable Long id){
+        return voucherService.updateVoucher(voucherDTO,id);
     }
-
-
     @PutMapping("/{name}/{idType}")
     public List<VoucherDTO> updateVoucher(@RequestBody VoucherDTO voucherDTO,@PathVariable String name ,@PathVariable Long idType){
         return voucherService.updateListVoucherByNameAndIdType(voucherDTO,name,idType);

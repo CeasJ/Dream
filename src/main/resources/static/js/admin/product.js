@@ -38,7 +38,6 @@ app.controller("product_ctrl", function ($scope, $http) {
   $scope.initialize = function () {
     $http.get(`/rest/products`).then((resp) => {
       $scope.items = resp.data;
-      console.log($scope.items);
       $scope.items.forEach((item) => {
         item.createDate = new Date(item.createDate);
       });
@@ -64,34 +63,54 @@ app.controller("product_ctrl", function ($scope, $http) {
     $scope.form = angular.copy(item);
   };
   $scope.create = function () {
-    if ($scope.validateProduct($scope.form)){
-        let item = angular.copy($scope.form);
-        $http
-          .post(`/rest/products`, item)
-          .then((resp) => {
-            resp.data.createDate = new Date(resp.data.createDate);
-            $scope.items.push(resp.data);
-            $scope.reset();
-            toastr.success("Create Success");
-          })
-          .catch((err) => {
-            toastr.error("Create Fail");
+    let item = angular.copy($scope.form);
+    let checkNameProduct = $scope.items.find(product => product.name === item.name);
+    if(checkNameProduct) {
+       $("#myModal").modal("hide");
+       toastr.error("Name already exists");
+    } else {
+    $http
+      .post(`/rest/products`, item)
+      .then((resp) => {
+        resp.data.createDate = new Date(resp.data.createDate);
+        $scope.items.push(resp.data);
+        $scope.reset();
+        $("#myModal").modal("hide");
+        toastr.success("Create Success");
+        setTimeout(()=>{
+         location.reload();
+        },1000);
+      })
+      .catch((err) => { 
+        if (err.data && err.data.errors) {
+          $("#myModal").modal("hide");
+          err.data.errors.forEach(function(error, index) {
+            toastr.error(`Error ${index + 1}: ${error}`);
           });
+        } 
+      });
     }
   };
 
   $scope.update = function () {
-   if ($scope.validateProduct($scope.form)){
-        let item = angular.copy($scope.form);
-        $http.put(`/rest/products/${item.id}`, item).then(resp => {
-          let index = $scope.items.findIndex(p => p.id == item.id);
-          $scope.items[index] = item;
-          $scope.reset();
-          toastr.success("Update Success");
-        }).catch(err => {
-          toastr.error("Update Fail");
-        })
-    }
+    let item = angular.copy($scope.form);
+    $http.put(`/rest/products/${item.id}`, item).then(resp => {
+      let index = $scope.items.findIndex(p => p.id == item.id);
+      $scope.items[index] = item;
+      $scope.reset();
+      $("#myModal").modal("hide");
+      toastr.success("Create Success");
+      setTimeout(()=>{
+       location.reload();
+      },1000);
+    }).catch(err => {
+      if (err.data && err.data.errors) {
+        $("#myModal").modal("hide");
+        err.data.errors.forEach(function(error, index) {
+          toastr.error(`Error ${index + 1}: ${error}`);
+        });
+      } 
+    });
   };
 
   $scope.delete = function (item) {
