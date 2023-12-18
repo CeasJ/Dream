@@ -121,7 +121,7 @@ public class ExcelUtil {
 //                row1.createCell(4).setCellValue(p.getActive());
                 row1.createCell(5).setCellValue(p.getActiveDate());
                 row1.createCell(6).setCellValue(p.getExpiredDate());
-                row1.createCell(7).setCellValue(p.getCategory().getName());
+                row1.createCell(7).setCellValue(p.getCategory().());
             }
 
             workbook.write(byteArrayOutputStream);

@@ -105,7 +105,7 @@ public class VoucherServiceImp implements VoucherService {
         if (voucherDTO.getType() == 1L) {
             return Collections.singletonList(createSingleVoucher(voucherDTO));
         } else {
-          return createMultipleVouchers(voucherDTO);
+            return createMultipleVouchers(voucherDTO);
         }
     }
 
@@ -185,11 +185,6 @@ public class VoucherServiceImp implements VoucherService {
         return data;
     }
 
-    @Override
-    public void deleteByNameAndType(String name, Long idType) {
-        List<VoucherDTO> vouchers = voucherRepository.findListVouchersByNameAndIDType(name,idType).stream().map(voucherMapper::voucherToVoucherDTO).collect(Collectors.toList());
-        voucherRepository.deleteAll(voucherMapper.listVoucherDTOToListVoucher(vouchers));
-    }
 
 
     @Override
@@ -205,4 +200,13 @@ public class VoucherServiceImp implements VoucherService {
                 .map(voucherMapper::voucherToVoucherDTO)
                 .collect(Collectors.toList());
     }
+
+
+    @Override
+    public void deleteByNumberAndType(String name, Long idType) {
+        List<VoucherDTO> vouchers = voucherRepository.findListVouchersByNumberAndIDType(name,idType).stream().map(voucherMapper::voucherToVoucherDTO).collect(Collectors.toList());
+        voucherRepository.deleteAll(voucherMapper.listVoucherDTOToListVoucher(vouchers));
+    }
+
+
 }
