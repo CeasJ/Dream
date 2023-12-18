@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class ExcelUtil {
-    public static String HEADERPRODUCT[] = {"Id", "Name", "Price", "Image", "Describe", "Create Date", "Active", "Category"};
+    public static String[] HEADERPRODUCT = {"Id", "Name", "Price", "Image", "Describe", "Create Date", "Active", "Category"};
 
     public static String SHEET_NAMEPRODUCT = "sheetForProductData";
     public static ByteArrayInputStream dataToExcelProduct(List<Product> productList) throws IOException {
@@ -54,7 +54,7 @@ public class ExcelUtil {
             byteArrayOutputStream.close();
         }
     }
-    public static String HEADERPRODUCTSIZE[] = {"Id", "Name", "Size", "Price", "Category"};
+    public static String[] HEADERPRODUCTSIZE = {"Id", "Name", "Size", "Price", "Category"};
     public static String SHEET_NAMEPRODUCTSIZE = "sheetForProductSizeData";
 
     public static ByteArrayInputStream dataToExcelProductSize(List<ProductSize> productSizeList) throws IOException {
@@ -93,7 +93,7 @@ public class ExcelUtil {
         }
     }
 
-    public static String HEADERDISCOUNT[] = {"Id", "Name", "Number", "Precent", "Active", "Actice Date", "Expired Date", "Category"};
+    public static String[] HEADERDISCOUNT = {"Id", "Name", "Number", "Precent", "Active", "Actice Date", "Expired Date", "Category"};
     public static String SHEET_NAMEDISCOUNT = "sheetForDiscountData";
 
     public static ByteArrayInputStream dataToExcelDiscount(List<Discount> discountList) throws IOException {
@@ -121,7 +121,7 @@ public class ExcelUtil {
 //                row1.createCell(4).setCellValue(p.getActive());
                 row1.createCell(5).setCellValue(p.getActiveDate());
                 row1.createCell(6).setCellValue(p.getExpiredDate());
-                row1.createCell(7).setCellValue(p.getCategory().());
+//                row1.createCell(7).setCellValue(p.getCategory().getName());
             }
 
             workbook.write(byteArrayOutputStream);
@@ -135,7 +135,7 @@ public class ExcelUtil {
         }
     }
 
-    public static String HEADERVOUCHER[] = {"Id", "Name", "Number", "Precent","Condition", "Voucher Status", "Actice Date", "Expired Date","Icon", "Name Account"};
+    public static String[] HEADERVOUCHER = {"Id", "Name", "Number", "Precent","Condition", "Voucher Status", "Actice Date", "Expired Date","Icon", "Name Account"};
     public static String SHEET_NAMEVOUCHER = "sheetForVoucherData";
 
     public static ByteArrayInputStream dataToExcelVoucher(List<Voucher> vouchersList) throws IOException {
@@ -179,7 +179,7 @@ public class ExcelUtil {
         }
     }
 
-    public static String HEADERSTAFF[] = {"Id", "Avatar", "Username","Firstname","Lastname","Fullname","Email","Phone","Address"};
+    public static String[] HEADERSTAFF = {"Id", "Avatar", "Username","Firstname","Lastname","Fullname","Email","Phone","Address"};
     public static String SHEET_NAMESTAFF = "sheetForStaffData";
 
     public static ByteArrayInputStream dataToExcelSTAFF(List<Account> accountList) throws IOException {
@@ -222,7 +222,7 @@ public class ExcelUtil {
         }
     }
 
-    public static String HEADERAUTHORITY[] = {"Id", "Name Account", "Role"};
+    public static String[] HEADERAUTHORITY = {"Id", "Name Account", "Role"};
     public static String SHEET_NAMEAUTHORITY = "sheetForAuthorityData";
 
     public static ByteArrayInputStream dataToExcelAuthority(List<Authority> authoritiesList) throws IOException {
@@ -259,5 +259,3 @@ public class ExcelUtil {
         }
     }
 }
-
-

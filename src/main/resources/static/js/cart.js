@@ -1,6 +1,6 @@
 (function ($) {
   "use strict";
-
+  try{
   // Spinner
   var spinner = function () {
     setTimeout(function () {
@@ -109,6 +109,7 @@
 
     $(document).ready(function () {
       $(".theme-mode input").change(function () {
+  
         if (this.checked) {
           // Chuyển sang dark mode
           $("body").removeClass("light-mode").addClass("dark-mode");

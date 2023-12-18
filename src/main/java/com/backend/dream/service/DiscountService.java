@@ -23,6 +23,4 @@ public interface DiscountService {
 
     ByteArrayInputStream getdataDiscount() throws IOException;
 
-    DiscountDTO getDiscountByCategoryId(Long idProduct);
-
 }

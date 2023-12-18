@@ -66,19 +66,6 @@ public class DiscountServiceImp implements DiscountService {
         discountRepository.deleteById(id);
     }
 
-    @Override
-    public ByteArrayInputStream getdataDiscount() throws IOException {
-        List<Discount> discounts = discountRepository.findAll();
-        ByteArrayInputStream data = ExcelUtil.dataToExcelDiscount(discounts);
-        return data;
-    }
-
-    @Override
-    public DiscountDTO getDiscountByCategoryId(Long idProduct) {
-        Optional<Discount> optionalDiscount = discountRepository.findByIDProduct(idProduct);
-        return optionalDiscount.map(discountMapper::discountToDiscountDTO).orElse(null);
-    }
-
 
     @Override
     public Double getDiscountPercentByProductId(Long idCategory) {
@@ -88,6 +75,7 @@ public class DiscountServiceImp implements DiscountService {
         }
         return 0.0;
     }
+
 
     @Override
     public DiscountDTO getDiscountByID(Long id) {
@@ -101,4 +89,13 @@ public class DiscountServiceImp implements DiscountService {
         return discount.stream().map(discountMapper::discountToDiscountDTO)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public ByteArrayInputStream getdataDiscount() throws IOException {
+        List<Discount> discounts = discountRepository.findAll();
+        ByteArrayInputStream data = ExcelUtil.dataToExcelDiscount(discounts);
+        return data;
+    }
+
+
 }
