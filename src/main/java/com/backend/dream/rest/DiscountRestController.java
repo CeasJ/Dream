@@ -10,6 +10,7 @@ import com.backend.dream.util.ValidationService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -20,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.security.Timestamp;
+import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
 
@@ -108,12 +109,12 @@ public class DiscountRestController {
 
     @GetMapping("/download")
     private ResponseEntity<InputStreamResource> download() throws IOException {
-        String fileName ="Data-discount.xlsx";
+        String fileName = "Data-discount.xlsx";
         ByteArrayInputStream inputStream = discountService.getdataDiscount();
         InputStreamResource response = new InputStreamResource(inputStream);
 
         ResponseEntity<InputStreamResource> responseEntity = ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION,"attachment;filename="+fileName)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + fileName)
                 .contentType(MediaType.parseMediaType("application/vnd.ms-excel")).body(response);
         return responseEntity;
     }
