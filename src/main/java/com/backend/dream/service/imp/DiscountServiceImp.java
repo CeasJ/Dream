@@ -12,9 +12,12 @@ import com.backend.dream.repository.CategoryRepository;
 import com.backend.dream.repository.DiscountRepository;
 import com.backend.dream.service.CategoryService;
 import com.backend.dream.service.DiscountService;
+import com.backend.dream.util.ExcelUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -61,6 +64,19 @@ public class DiscountServiceImp implements DiscountService {
     @Override
     public void delete(Long id) {
         discountRepository.deleteById(id);
+    }
+
+    @Override
+    public ByteArrayInputStream getdataDiscount() throws IOException {
+        List<Discount> discounts = discountRepository.findAll();
+        ByteArrayInputStream data = ExcelUtil.dataToExcelDiscount(discounts);
+        return data;
+    }
+
+    @Override
+    public DiscountDTO getDiscountByCategoryId(Long idProduct) {
+        Optional<Discount> optionalDiscount = discountRepository.findByIDProduct(idProduct);
+        return optionalDiscount.map(discountMapper::discountToDiscountDTO).orElse(null);
     }
 
 

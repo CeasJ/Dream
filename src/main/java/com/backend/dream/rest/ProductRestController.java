@@ -10,14 +10,19 @@ import com.backend.dream.service.ProductService;
 import com.backend.dream.service.ProductSizeService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.List;
 
 @CrossOrigin("*")
@@ -140,5 +145,15 @@ public class ProductRestController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(-1.0);
         }
     }
+    @GetMapping("/download")
+    private ResponseEntity<InputStreamResource> download() throws IOException {
+        String fileName ="Data-products.xlsx";
+        ByteArrayInputStream inputStream = productService.getdataProduct();
+        InputStreamResource response = new InputStreamResource(inputStream);
 
+        ResponseEntity<InputStreamResource> responseEntity = ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION,"attachment;filename="+fileName)
+                .contentType(MediaType.parseMediaType("application/vnd.ms-excel")).body(response);
+        return responseEntity;
+    }
 }

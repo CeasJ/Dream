@@ -8,9 +8,12 @@ import com.backend.dream.mapper.AuthorityMapper;
 import com.backend.dream.repository.AccountRepository;
 import com.backend.dream.repository.AuthorityRepository;
 import com.backend.dream.service.AuthorityService;
+import com.backend.dream.util.ExcelUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,6 +43,13 @@ public class AuthorityServiceImp implements AuthorityService {
 	@Override
 	public void delete(Long id) {
 		authorityRepository.deleteById(id);
+	}
+
+	@Override
+	public ByteArrayInputStream getdataAuthority() throws IOException {
+		List<Authority> authorities = authorityRepository.findAll();
+		ByteArrayInputStream data = ExcelUtil.dataToExcelAuthority(authorities);
+		return data;
 	}
 
 	@Override

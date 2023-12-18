@@ -37,6 +37,20 @@
                     </div>
                     <div class="card-body">
                         <div class="row justify-content-between align-items-center mb-3 mt-1">
+                            <div class="col-md-4">
+                                <div class="d-flex">
+                                    <div class="form-group mb-0 me-3">
+                                        <label for="dateFilter" class="fw-bold pt-1" style="font-size: 18px;">
+                                            Filter by Date:</label>
+                                    </div>
+                                    <div class="form-group mb-0" style="width: 200px;">
+                                        <input type="date" class="form-control" id="dateFilter" ng-model="selectedDate">
+                                    </div>
+                                    <div class="form-group mb-0" style="width: 200px;">
+                                        <a class="btn btn-primary" th:href="@{|/rest/discount/download|}">Export to Excel</a>
+                                    </div>
+                                </div>
+                            </div>
                             <!-- Thanh tìm kiếm ở góc phải -->
                             <div class="col-md-2 ms-auto">
                                 <div class="input-group">

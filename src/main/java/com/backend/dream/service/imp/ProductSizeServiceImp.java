@@ -11,10 +11,13 @@ import com.backend.dream.repository.ProductRepository;
 import com.backend.dream.repository.ProductSizeRepository;
 import com.backend.dream.repository.SizeRepository;
 import com.backend.dream.service.ProductSizeService;
+import com.backend.dream.util.ExcelUtil;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -112,5 +115,12 @@ public class ProductSizeServiceImp implements ProductSizeService {
         return null;
     }
 
+
+    @Override
+    public ByteArrayInputStream getdataProductSize() throws IOException {
+        List<ProductSize> productSize = productSizeRepository.findAll();
+        ByteArrayInputStream data = ExcelUtil.dataToExcelProductSize(productSize);
+        return data;
+    }
 
 }

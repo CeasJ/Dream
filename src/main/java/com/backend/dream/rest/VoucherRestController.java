@@ -9,12 +9,17 @@ import com.backend.dream.service.VoucherTypeService;
 import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -192,8 +197,17 @@ public class VoucherRestController {
                     .body("Error deleting vouchers: " + e.getMessage());
         }
     }
+    @GetMapping("/download")
+    private ResponseEntity<InputStreamResource> download() throws IOException {
+        String fileName ="Data-vouchers.xlsx";
+        ByteArrayInputStream inputStream = voucherService.getdataVoucher();
+        InputStreamResource response = new InputStreamResource(inputStream);
 
-
+        ResponseEntity<InputStreamResource> responseEntity = ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION,"attachment;filename="+fileName)
+                .contentType(MediaType.parseMediaType("application/vnd.ms-excel")).body(response);
+        return responseEntity;
+    }
 
 
 }

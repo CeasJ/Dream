@@ -10,10 +10,13 @@ import com.backend.dream.repository.AccountRepository;
 import com.backend.dream.repository.AuthorityRepository;
 import com.backend.dream.repository.RoleRepository;
 import com.backend.dream.service.AccountService;
+import com.backend.dream.util.ExcelUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -125,6 +128,13 @@ public class AccountServiceImp implements AccountService {
         return list;
     }
 
+    @Override
+    public ByteArrayInputStream getdataStaff() throws IOException {
+        List<Account> accounts = accountRepository.getStaff();
+        ByteArrayInputStream data = ExcelUtil.dataToExcelSTAFF(accounts);
+        return data;
+    }
+
 //    @Override
 //    public Account createAccountWhenDontHaveAccount(Account account) {
 //        account.setPassword(passwordEncoder.encode(account.getPassword()));
@@ -179,5 +189,6 @@ public class AccountServiceImp implements AccountService {
                 .map(accountMapper::accountToAccountDTO)
                 .collect(Collectors.toList());
     }
+
 
 }

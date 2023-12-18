@@ -4,6 +4,8 @@ package com.backend.dream.service;
 import com.backend.dream.dto.AuthorityDTO;
 import com.backend.dream.entity.Authority;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.List;
 
 public interface AuthorityService {
@@ -16,4 +18,5 @@ public interface AuthorityService {
 
 	void delete(Long id);
 
+	ByteArrayInputStream getdataAuthority() throws IOException;
 }
