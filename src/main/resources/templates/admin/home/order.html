@@ -20,8 +20,8 @@
     <!-- jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 </head>
 
 <body ng-app="order_app" ng-controller="order_ctrl" class="sb-nav-fixed">
@@ -63,7 +63,8 @@
                     <div class="col-md-2 ms-auto">
                         <div class="input-group">
                             <input type="text" class="form-control" placeholder="Search..." aria-label="Search"
-                                   aria-describedby="basic-addon2" ng-model="searchKeyword" ng-change="searchByStatusAndUsername()">
+                                aria-describedby="basic-addon2" ng-model="searchKeyword"
+                                ng-change="searchByStatusAndUsername()">
                         </div>
                     </div>
                 </div>
@@ -72,11 +73,19 @@
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h4 class="mb-0 text-primary"> <i class="fas fa-table me-1"></i> Orders</h4>
                     </div>
-                    <div class="card-body" >
+                    <div class="card-body">
                         <div class="table-responsive">
+                            <div class="button-container" style="margin-top: 10px !important;">
+                                <a type="button" class="btn btn-danger">
+                                    <i class="bi bi-filetype-pdf"></i> PDF
+                                </a>
+                                <a type="button" class="btn btn-success">
+                                    <i class="bi bi-arrow-down-circle-fill"></i> Excel
+                                </a>
+                            </div>
                             <table class="table table-hover table-bordered text-center order-datatable">
                                 <thead class="table-dark">
-                                    <th>No</th>
+                                    <th>Number</th>
                                     <th>ID</th>
                                     <th>CreateDate</th>
                                     <th>CreateTime</th>
@@ -84,7 +93,7 @@
                                     <th>Address</th>
                                     <th>Total</th>
                                     <th>Status</th>
-                                    <th></th>
+                                    <th>Action</th>
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat-start="order in pagerOrder.paginatedList">
@@ -101,8 +110,8 @@
                                                 ng-click="updateOrder.confirmOrder(order.id,2)">Confirm</button>
                                             <button class="btn btn-danger"
                                                 ng-click="updateOrder.cancelOrder(order.id,5)">Cancel</button>
-                                            <button class="btn btn-dark" ng-click="selectOrder(order.id)" data-bs-toggle="modal"
-                                                data-bs-target="#confirmModal">
+                                            <button class="btn btn-dark" ng-click="selectOrder(order.id)"
+                                                data-bs-toggle="modal" data-bs-target="#confirmModal">
                                                 <i class="bi bi-eye-fill"></i>
                                             </button>
                                         </td>
@@ -113,7 +122,8 @@
                         </div>
                         <div class="d-flex justify-content-between align-items-center pt-2 pb-0">
                             <div class="fw-normal" style="font-size: 18px;">
-                                Showing {{ pagerOrder.startIndex }} to {{ pagerOrder.endIndex }} of {{ pagerOrder.totalItems }} entries
+                                Showing {{ pagerOrder.startIndex }} to {{ pagerOrder.endIndex }} of {{
+                                pagerOrder.totalItems }} entries
                             </div>
                             <nav aria-label="Page navigation">
                                 <ul class="pagination justify-content-end">
@@ -123,9 +133,11 @@
                                         </a>
                                     </li>
                                     <li class="page-item" ng-repeat="page in pagerOrder.pages">
-                                        <a class="page-link" href="#" ng-click="setPageOrder(page)" ng-class="{ active: pagerOrder.currentPage === page }">{{ page }}</a>
+                                        <a class="page-link" href="#" ng-click="setPageOrder(page)"
+                                            ng-class="{ active: pagerOrder.currentPage === page }">{{ page }}</a>
                                     </li>
-                                    <li class="page-item" ng-class="{ 'disabled': pagerOrder.currentPage === pagerOrder.totalPages }">
+                                    <li class="page-item"
+                                        ng-class="{ 'disabled': pagerOrder.currentPage === pagerOrder.totalPages }">
                                         <a class="page-link" href="#" ng-click="setPageOrder(pagerOrder.totalPages)">
                                             <i class="bi bi-caret-right-fill"></i>
                                         </a>
@@ -135,144 +147,143 @@
                         </div>
                     </div>
 
-                    </div>
-                    <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                        aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">
-                                        <i class="bi bi-pencil-square pe-2"></i>
-                                        Orders
-                                    </h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="container hs-hd mx-auto">
-                                        <h5 class="title-hs col-md-12">Hóa đơn</h5>
-                                        <div class="row">
-                                            <div class="col-md-6 cnt-hd border-right">
-                                                <div class="info-pair">
-                                                    <h6>Order ID:</h6>
-                                                    <p>{{listOrder[0].id_order}}</p>
-                                                </div>
-                                                <div class="info-pair">
-                                                    <h6>Order Date:</h6>
-                                                    <p>{{listOrder[0].order_createDate | date:'dd-MM-yyyy'}}</p>
-                                                </div>
-                                                <!-- Thêm thông tin khác nếu cần -->
+                </div>
+                <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">
+                                    <i class="bi bi-pencil-square pe-2"></i>
+                                    Orders
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="container hs-hd mx-auto">
+                                    <h5 class="title-hs col-md-12">Hóa đơn</h5>
+                                    <div class="row">
+                                        <div class="col-md-6 cnt-hd border-right">
+                                            <div class="info-pair">
+                                                <h6>Order ID:</h6>
+                                                <p>{{listOrder[0].id_order}}</p>
                                             </div>
-                                            <div class="col-md-6 cnt-hd">
-                                                <div class="info-pair">
-                                                    <h6>Thanh toán:</h6>
-                                                    <p>Tiền mặt</p>
-                                                </div>
-                                                <div class="info-pair">
-                                                    <h6>Vận chuyển:</h6>
-                                                    <p>Shipper</p>
-                                                </div>
-                                                <!-- Thêm thông tin khác nếu cần -->
+                                            <div class="info-pair">
+                                                <h6>Order Date:</h6>
+                                                <p>{{listOrder[0].order_createDate | date:'dd-MM-yyyy'}}</p>
+                                            </div>
+                                            <!-- Thêm thông tin khác nếu cần -->
+                                        </div>
+                                        <div class="col-md-6 cnt-hd">
+                                            <div class="info-pair">
+                                                <h6>Thanh toán:</h6>
+                                                <p>Tiền mặt</p>
+                                            </div>
+                                            <div class="info-pair">
+                                                <h6>Vận chuyển:</h6>
+                                                <p>Shipper</p>
+                                            </div>
+                                            <!-- Thêm thông tin khác nếu cần -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="container hs-hd mx-auto" style="margin-top: 30px;">
+                                    <h5 class="title-hs col-md-12">Địa chỉ giao hàng</h5>
+                                    <div class="row">
+                                        <div class="col-md-6 cnt-hd border-right">
+                                            <div class="info-pair">
+                                                <h6>Họ và tên:</h6>
+                                                <p>{{listOrder[0].account_fullname}}</p>
+                                            </div>
+                                            <div class="info-pair">
+                                                <h6>Số điện thoại:</h6>
+                                                <p>{{listOrder[0].account_phone}}</p>
+                                            </div>
+                                            <div class="info-pair">
+                                                <h6>Địa chỉ:</h6>
+                                                <p>{{listOrder[0].order_address}}</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 cnt-hd">
+                                            <div class="info-pair">
+                                                <h6>Tỉnh/Thành phố:</h6>
+                                                <p>Hồ Chí Minh</p>
+                                            </div>
+                                            <div class="info-pair">
+                                                <h6>Quận/Huyện:</h6>
+                                                <p>Thủ Đức</p>
+                                            </div>
+                                            <div class="info-pair">
+                                                <h6>Phường/Xã:</h6>
+                                                <p>Hiệp Bình Phước</p>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="container hs-hd mx-auto" style="margin-top: 30px;">
-                                        <h5 class="title-hs col-md-12">Địa chỉ giao hàng</h5>
-                                        <div class="row">
-                                            <div class="col-md-6 cnt-hd border-right">
-                                                <div class="info-pair">
-                                                    <h6>Họ và tên:</h6>
-                                                    <p>{{listOrder[0].account_fullname}}</p>
-                                                </div>
-                                                <div class="info-pair">
-                                                    <h6>Số điện thoại:</h6>
-                                                    <p>{{listOrder[0].account_phone}}</p>
-                                                </div>
-                                                <div class="info-pair">
-                                                    <h6>Địa chỉ:</h6>
-                                                    <p>{{listOrder[0].order_address}}</p>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 cnt-hd">
-                                                <div class="info-pair">
-                                                    <h6>Tỉnh/Thành phố:</h6>
-                                                    <p>Hồ Chí Minh</p>
-                                                </div>
-                                                <div class="info-pair">
-                                                    <h6>Quận/Huyện:</h6>
-                                                    <p>Thủ Đức</p>
-                                                </div>
-                                                <div class="info-pair">
-                                                    <h6>Phường/Xã:</h6>
-                                                    <p>Hiệp Bình Phước</p>
-                                                </div>
-                                            </div>
+                                </div>
+                                <div class="container" style="margin-top: 30px; padding: 0;">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <table class="table table-bordered table-details">
+                                                <thead class="table-dark">
+                                                    <tr>
+                                                        <th>No.</th>
+                                                        <th>Hình ảnh</th>
+                                                        <th>Tên sản phẩm</th>
+                                                        <th>Số lượng</th>
+                                                        <th>Size</th>
+                                                        <th>Giá</th>
+                                                        <th>Tổng tiền</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="orderDetail in listOrder">
+                                                        <td>{{$index + 1}}</td>
+                                                        <td><img ng-src="{{'/img/gallery/' + orderDetail.product_image}}"
+                                                                class="img-fluid img-details"></td>
+                                                        <td>{{orderDetail.product_name}}</td>
+                                                        <td>{{orderDetail.quantity}}</td>
+                                                        <td ng-if="orderDetail.id_size === 1">S</td>
+                                                        <td ng-if="orderDetail.id_size === 2">M</td>
+                                                        <td ng-if="orderDetail.id_size === 3">L</td>
+                                                        <td>{{orderDetail.price | number : 0}} đ</td>
+                                                        <td>{{orderDetail.quantity * orderDetail.price | number :0}}
+                                                            đ</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="5" class="text-end"><strong>Tạm
+                                                                tính:</strong></td>
+                                                        <td>{{getSubTotal() | number : 0}} đ</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="5" class="text-end"><strong>Chi phí vận
+                                                                chuyển:</strong>
+                                                        </td>
+                                                        <td>20.000 đ</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="5" class="text-end"><strong>Tổng thanh
+                                                                toán:</strong></td>
+                                                        <th class="text-success">{{getTotal() | number : 0}} đ</th>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
-                                    <div class="container" style="margin-top: 30px; padding: 0;">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <table class="table table-bordered table-details">
-                                                    <thead class="table-dark">
-                                                        <tr>
-                                                            <th>No.</th>
-                                                            <th>Hình ảnh</th>
-                                                            <th>Tên sản phẩm</th>
-                                                            <th>Số lượng</th>
-                                                            <th>Size</th>
-                                                            <th>Giá</th>
-                                                            <th>Tổng tiền</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr ng-repeat="orderDetail in listOrder">
-                                                            <td>{{$index + 1}}</td>
-                                                            <td><img ng-src="{{'/img/gallery/' + orderDetail.product_image}}"
-                                                                    class="img-fluid img-details"></td>
-                                                            <td>{{orderDetail.product_name}}</td>
-                                                            <td>{{orderDetail.quantity}}</td>
-                                                            <td ng-if="orderDetail.id_size === 1">S</td>
-                                                            <td ng-if="orderDetail.id_size === 2">M</td>
-                                                            <td ng-if="orderDetail.id_size === 3">L</td>
-                                                            <td>{{orderDetail.price | number : 0}} đ</td>
-                                                            <td>{{orderDetail.quantity * orderDetail.price | number :0}}
-                                                                đ</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td colspan="5" class="text-end"><strong>Tạm
-                                                                    tính:</strong></td>
-                                                            <td>{{getSubTotal() | number : 0}} đ</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td colspan="5" class="text-end"><strong>Chi phí vận
-                                                                    chuyển:</strong>
-                                                            </td>
-                                                            <td>20.000 đ</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td colspan="5" class="text-end"><strong>Tổng thanh
-                                                                    toán:</strong></td>
-                                                            <th class="text-success">{{getTotal() | number : 0}} đ</th>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="mt-2" style="font-size: 20px;">
-                                        <label for="confirmOrderStatus" class="form-label fw-bold mb-3">
-                                            Order Status:</label>
-                                        <span class="fw-bold text-primary ps-1">Đã đặt hàng</span>
-                                    </div>
-                                    <!-- Add more input fields here based on your table columns -->
                                 </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Close</button>
+                                <div class="mt-2" style="font-size: 20px;">
+                                    <label for="confirmOrderStatus" class="form-label fw-bold mb-3">
+                                        Order Status:</label>
+                                    <span class="fw-bold text-primary ps-1">Đã đặt hàng</span>
                                 </div>
+                                <!-- Add more input fields here based on your table columns -->
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                             </div>
                         </div>
                     </div>
+                </div>
 
                 <!-- Bảng cho trạng thái confirm -->
                 <div class="card" style="border-radius: 0px; margin-bottom: 40px;" id="order-confirm">
@@ -281,16 +292,24 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
+                            <div class="button-container" style="margin-top: 10px !important;">
+                                <a type="button" class="btn btn-danger">
+                                    <i class="bi bi-filetype-pdf"></i> PDF
+                                </a>
+                                <a type="button" class="btn btn-success">
+                                    <i class="bi bi-arrow-down-circle-fill"></i> Excel
+                                </a>
+                            </div>
                             <table class="table table-hover table-bordered text-center order-datatable">
                                 <thead class="table-dark">
-                                    <th>No</th>
+                                    <th>Number</th>
                                     <th>ID</th>
                                     <th>CreateDate</th>
                                     <th>Fullname</th>
                                     <th>Address</th>
                                     <th>Total Amount</th>
                                     <th>Status</th>
-                                    <th></th>
+                                    <th>Action</th>
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat-start="order in pagerOrderProcessing.paginatedList">
@@ -304,8 +323,8 @@
                                         <td>
                                             <button class="btn btn-info"
                                                 ng-click="updateOrder.shippingOrder(order.id,3)">Ship</button>
-                                            <button class="btn btn-dark" data-bs-toggle="modal" ng-click="selectOrder(order.id)"
-                                                data-bs-target="#processingModal">
+                                            <button class="btn btn-dark" data-bs-toggle="modal"
+                                                ng-click="selectOrder(order.id)" data-bs-target="#processingModal">
                                                 <i class="bi bi-eye-fill"></i>
                                             </button>
                                         </td>
@@ -316,165 +335,171 @@
                         </div>
                         <div class="d-flex justify-content-between align-items-center pt-2 pb-0">
                             <div class="fw-normal" style="font-size: 18px;">
-                                Showing {{ pagerOrderProcessing.startIndex }} to {{ pagerOrderProcessing.endIndex }} of {{ pagerOrderProcessing.totalItems }} entries
+                                Showing {{ pagerOrderProcessing.startIndex }} to {{ pagerOrderProcessing.endIndex }} of
+                                {{ pagerOrderProcessing.totalItems }} entries
                             </div>
                             <nav aria-label="Page navigation">
                                 <ul class="pagination justify-content-end">
-                                    <li class="page-item" ng-class="{ 'disabled': pagerOrderProcessing.currentPage === 1 }">
-                                        <a class="page-link" href="#" ng-click="setPageOrderProcessing(1)" aria-disabled="true">
+                                    <li class="page-item"
+                                        ng-class="{ 'disabled': pagerOrderProcessing.currentPage === 1 }">
+                                        <a class="page-link" href="#" ng-click="setPageOrderProcessing(1)"
+                                            aria-disabled="true">
                                             <i class="bi bi-caret-left-fill"></i>
                                         </a>
                                     </li>
                                     <li class="page-item" ng-repeat="page in pagerOrderProcessing.pages">
-                                        <a class="page-link" href="#" ng-click="setPageOrderProcessing(page)" ng-class="{ active: pagerOrderProcessing.currentPage === page }">{{ page }}</a>
+                                        <a class="page-link" href="#" ng-click="setPageOrderProcessing(page)"
+                                            ng-class="{ active: pagerOrderProcessing.currentPage === page }">{{ page
+                                            }}</a>
                                     </li>
-                                    <li class="page-item" ng-class="{ 'disabled': pagerOrderProcessing.currentPage === pagerOrderProcessing.totalPages }">
-                                        <a class="page-link" href="#" ng-click="setPageOrderProcessing(pagerOrderProcessing.totalPages)">
+                                    <li class="page-item"
+                                        ng-class="{ 'disabled': pagerOrderProcessing.currentPage === pagerOrderProcessing.totalPages }">
+                                        <a class="page-link" href="#"
+                                            ng-click="setPageOrderProcessing(pagerOrderProcessing.totalPages)">
                                             <i class="bi bi-caret-right-fill"></i>
                                         </a>
                                     </li>
                                 </ul>
                             </nav>
                         </div>
-                        </div>
                     </div>
-                    <div class="modal fade" id="processingModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                        aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">
-                                        <i class="bi bi-pencil-square pe-2"></i>
-                                        Processing
-                                    </h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
+                </div>
+                <div class="modal fade" id="processingModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">
+                                    <i class="bi bi-pencil-square pe-2"></i>
+                                    Processing
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="container hs-hd mx-auto">
+                                    <h5 class="title-hs col-md-12">Hóa đơn</h5>
+                                    <div class="row">
+                                        <div class="col-md-6 cnt-hd border-right">
+                                            <div class="info-pair">
+                                                <h6>Order ID:</h6>
+                                                <p>#{{listOrder.id_order}}</p>
+                                            </div>
+                                            <div class="info-pair">
+                                                <h6>Order Date:</h6>
+                                                <p>{{listOrder[0].order_createDate | date:'dd-MM-yyyy'}}</p>
+                                            </div>
+                                            <!-- Thêm thông tin khác nếu cần -->
+                                        </div>
+                                        <div class="col-md-6 cnt-hd">
+                                            <div class="info-pair">
+                                                <h6>Thanh toán:</h6>
+                                                <p>Tiền mặt</p>
+                                            </div>
+                                            <div class="info-pair">
+                                                <h6>Vận chuyển:</h6>
+                                                <p>Shipper</p>
+                                            </div>
+                                            <!-- Thêm thông tin khác nếu cần -->
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="modal-body">
-                                    <div class="container hs-hd mx-auto">
-                                        <h5 class="title-hs col-md-12">Hóa đơn</h5>
-                                        <div class="row">
-                                            <div class="col-md-6 cnt-hd border-right">
-                                                <div class="info-pair">
-                                                    <h6>Order ID:</h6>
-                                                    <p>#{{listOrder.id_order}}</p>
-                                                </div>
-                                                <div class="info-pair">
-                                                    <h6>Order Date:</h6>
-                                                    <p>{{listOrder[0].order_createDate | date:'dd-MM-yyyy'}}</p>
-                                                </div>
-                                                <!-- Thêm thông tin khác nếu cần -->
+                                <div class="container hs-hd mx-auto" style="margin-top: 30px;">
+                                    <h5 class="title-hs col-md-12">Địa chỉ giao hàng</h5>
+                                    <div class="row">
+                                        <div class="col-md-6 cnt-hd border-right">
+                                            <div class="info-pair">
+                                                <h6>Họ và tên:</h6>
+                                                <p>{{listOrder[0].account_fullname}}</p>
                                             </div>
-                                            <div class="col-md-6 cnt-hd">
-                                                <div class="info-pair">
-                                                    <h6>Thanh toán:</h6>
-                                                    <p>Tiền mặt</p>
-                                                </div>
-                                                <div class="info-pair">
-                                                    <h6>Vận chuyển:</h6>
-                                                    <p>Shipper</p>
-                                                </div>
-                                                <!-- Thêm thông tin khác nếu cần -->
+                                            <div class="info-pair">
+                                                <h6>Số điện thoại:</h6>
+                                                <p>{{listOrder[0].account_phone}}</p>
+                                            </div>
+                                            <div class="info-pair">
+                                                <h6>Địa chỉ:</h6>
+                                                <p>{{listOrder[0].order_address}}</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 cnt-hd">
+                                            <div class="info-pair">
+                                                <h6>Tỉnh/Thành phố:</h6>
+                                                <p>Hồ Chí Minh</p>
+                                            </div>
+                                            <div class="info-pair">
+                                                <h6>Quận/Huyện:</h6>
+                                                <p>Thủ Đức</p>
+                                            </div>
+                                            <div class="info-pair">
+                                                <h6>Phường/Xã:</h6>
+                                                <p>Hiệp Bình Phước</p>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="container hs-hd mx-auto" style="margin-top: 30px;">
-                                        <h5 class="title-hs col-md-12">Địa chỉ giao hàng</h5>
-                                        <div class="row">
-                                            <div class="col-md-6 cnt-hd border-right">
-                                                <div class="info-pair">
-                                                    <h6>Họ và tên:</h6>
-                                                    <p>{{listOrder[0].account_fullname}}</p>
-                                                </div>
-                                                <div class="info-pair">
-                                                    <h6>Số điện thoại:</h6>
-                                                    <p>{{listOrder[0].account_phone}}</p>
-                                                </div>
-                                                <div class="info-pair">
-                                                    <h6>Địa chỉ:</h6>
-                                                    <p>{{listOrder[0].order_address}}</p>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 cnt-hd">
-                                                <div class="info-pair">
-                                                    <h6>Tỉnh/Thành phố:</h6>
-                                                    <p>Hồ Chí Minh</p>
-                                                </div>
-                                                <div class="info-pair">
-                                                    <h6>Quận/Huyện:</h6>
-                                                    <p>Thủ Đức</p>
-                                                </div>
-                                                <div class="info-pair">
-                                                    <h6>Phường/Xã:</h6>
-                                                    <p>Hiệp Bình Phước</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="container" style="margin-top: 30px; padding: 0;">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <table class="table table-bordered table-details">
-                                                    <thead class="table-dark">
-                                                        <tr>
-                                                            <th>STT.</th>
-                                                            <th>Hình ảnh</th>
-                                                            <th>Tên sản phẩm</th>
-                                                            <th>Số lượng</th>
-                                                            <th>Size</th>
-                                                            <th>Giá</th>
-                                                            <th>Tổng tiền</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr ng-repeat="orderDetail in listOrder">
-                                                            <td>{{$index + 1}}</td>
-                                                            <td><img ng-src="{{'/img/gallery/' + orderDetail.product_image}}"
-                                                                    class="img-fluid img-details"></td>
-                                                            <td>{{orderDetail.product_name}}</td>
-                                                            <td>{{orderDetail.quantity}}</td>
-                                                            <td ng-if="orderDetail.id_size === 1">S</td>
-                                                            <td ng-if="orderDetail.id_size === 2">M</td>
-                                                            <td ng-if="orderDetail.id_size === 3">L</td>
-                                                            <td>{{orderDetail.price | number : 0}} đ</td>
-                                                            <td>{{orderDetail.quantity * orderDetail.price | number :0}}
-                                                                đ</td>
-                                                        </tr>
+                                </div>
+                                <div class="container" style="margin-top: 30px; padding: 0;">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <table class="table table-bordered table-details">
+                                                <thead class="table-dark">
+                                                    <tr>
+                                                        <th>STT.</th>
+                                                        <th>Hình ảnh</th>
+                                                        <th>Tên sản phẩm</th>
+                                                        <th>Số lượng</th>
+                                                        <th>Size</th>
+                                                        <th>Giá</th>
+                                                        <th>Tổng tiền</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="orderDetail in listOrder">
+                                                        <td>{{$index + 1}}</td>
+                                                        <td><img ng-src="{{'/img/gallery/' + orderDetail.product_image}}"
+                                                                class="img-fluid img-details"></td>
+                                                        <td>{{orderDetail.product_name}}</td>
+                                                        <td>{{orderDetail.quantity}}</td>
+                                                        <td ng-if="orderDetail.id_size === 1">S</td>
+                                                        <td ng-if="orderDetail.id_size === 2">M</td>
+                                                        <td ng-if="orderDetail.id_size === 3">L</td>
+                                                        <td>{{orderDetail.price | number : 0}} đ</td>
+                                                        <td>{{orderDetail.quantity * orderDetail.price | number :0}}
+                                                            đ</td>
+                                                    </tr>
+                                                    <td colspan="5" class="text-end">
+                                                        <strong>Tạm tính:</strong>
+                                                    </td>
+                                                    <td>{{getSubTotal() | number : 0}} đ</td>
+                                                    </tr>
+                                                    <tr>
                                                         <td colspan="5" class="text-end">
-                                                            <strong>Tạm tính:</strong>
+                                                            <strong>Chi phí vận chuyển:</strong>
                                                         </td>
-                                                        <td>{{getSubTotal() | number : 0}} đ</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td colspan="5" class="text-end">
-                                                                <strong>Chi phí vận chuyển:</strong>
-                                                            </td>
-                                                            <td>20.000 đ</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td colspan="5" class="text-end">
-                                                                <strong> Tổng thanh toán:</strong>
-                                                            </td>
-                                                            <th class="text-success">{{getTotal() | number : 0}} đ</th>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
+                                                        <td>20.000 đ</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="5" class="text-end">
+                                                            <strong> Tổng thanh toán:</strong>
+                                                        </td>
+                                                        <th class="text-success">{{getTotal() | number : 0}} đ</th>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
-                                    <div class="mt-2" style="font-size: 20px;">
-                                        <label for="processingOrderStatus" class="form-label fw-bold mb-3">
-                                            Order Status:</label>
-                                        <span class="fw-bold text-primary ps-1">Đã xác nhận</span>
-                                    </div>
                                 </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Close</button>
+                                <div class="mt-2" style="font-size: 20px;">
+                                    <label for="processingOrderStatus" class="form-label fw-bold mb-3">
+                                        Order Status:</label>
+                                    <span class="fw-bold text-primary ps-1">Đã xác nhận</span>
                                 </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                             </div>
                         </div>
                     </div>
+                </div>
 
                 <!-- Bảng cho trạng thái shipping -->
                 <div class="card" style="border-radius: 0px; margin-bottom: 40px;" id="order-shipping">
@@ -483,16 +508,24 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
+                            <div class="button-container" style="margin-top: 10px !important;">
+                                <a type="button" class="btn btn-danger">
+                                    <i class="bi bi-filetype-pdf"></i> PDF
+                                </a>
+                                <a type="button" class="btn btn-success">
+                                    <i class="bi bi-arrow-down-circle-fill"></i> Excel
+                                </a>
+                            </div>
                             <table class="table table-hover table-bordered text-center order-datatable">
                                 <thead class="table-dark">
-                                    <th>No</th>
+                                    <th>Number</th>
                                     <th>ID</th>
                                     <th>CreateDate</th>
                                     <th>Fullname</th>
                                     <th>Address</th>
                                     <th>Total Amount</th>
                                     <th>Status</th>
-                                    <th></th>
+                                    <th>Action</th>
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat-start="order in pagerOrderShipping.paginatedList">
@@ -506,8 +539,8 @@
                                         <td>
                                             <button class="btn btn-success"
                                                 ng-click="updateOrder.successOrder(order.id,4)">Success</button>
-                                            <button class="btn btn-dark" data-bs-toggle="modal" ng-click="selectOrder(order.id)"
-                                                data-bs-target="#shippingModal">
+                                            <button class="btn btn-dark" data-bs-toggle="modal"
+                                                ng-click="selectOrder(order.id)" data-bs-target="#shippingModal">
                                                 <i class="bi bi-eye-fill"></i>
                                             </button>
                                         </td>
@@ -518,20 +551,27 @@
                         </div>
                         <div class="d-flex justify-content-between align-items-center pt-2 pb-0">
                             <div class="fw-normal" style="font-size: 18px;">
-                                Showing {{ pagerOrderShipping.startIndex }} to {{ pagerOrderShipping.endIndex }} of {{ pagerOrderShipping.totalItems }} entries
+                                Showing {{ pagerOrderShipping.startIndex }} to {{ pagerOrderShipping.endIndex }} of {{
+                                pagerOrderShipping.totalItems }} entries
                             </div>
                             <nav aria-label="Page navigation">
                                 <ul class="pagination justify-content-end">
-                                    <li class="page-item" ng-class="{ 'disabled': pagerOrderShipping.currentPage === 1 }">
-                                        <a class="page-link" href="#" ng-click="setPageOrderShipping(1)" aria-disabled="true">
+                                    <li class="page-item"
+                                        ng-class="{ 'disabled': pagerOrderShipping.currentPage === 1 }">
+                                        <a class="page-link" href="#" ng-click="setPageOrderShipping(1)"
+                                            aria-disabled="true">
                                             <i class="bi bi-caret-left-fill"></i>
                                         </a>
                                     </li>
                                     <li class="page-item" ng-repeat="page in pagerOrderShipping.pages">
-                                        <a class="page-link" href="#" ng-click="setPageOrderShipping(page)" ng-class="{ active: pagerOrderShipping.currentPage === page }">{{ page }}</a>
+                                        <a class="page-link" href="#" ng-click="setPageOrderShipping(page)"
+                                            ng-class="{ active: pagerOrderShipping.currentPage === page }">{{ page
+                                            }}</a>
                                     </li>
-                                    <li class="page-item" ng-class="{ 'disabled': pagerOrderShipping.currentPage === pagerOrderShipping.totalPages }">
-                                        <a class="page-link" href="#" ng-click="setPageOrderShipping(pagerOrderShipping.totalPages)">
+                                    <li class="page-item"
+                                        ng-class="{ 'disabled': pagerOrderShipping.currentPage === pagerOrderShipping.totalPages }">
+                                        <a class="page-link" href="#"
+                                            ng-click="setPageOrderShipping(pagerOrderShipping.totalPages)">
                                             <i class="bi bi-caret-right-fill"></i>
                                         </a>
                                     </li>
@@ -625,7 +665,7 @@
                                                         <th>Product Name</th>
                                                         <th>Quantity</th>
                                                         <th>Size</th>
-                                                        <th>Price</th>                                               
+                                                        <th>Price</th>
                                                         <th>Total</th>
                                                     </tr>
                                                 </thead>
@@ -640,7 +680,8 @@
                                                         <td ng-if="orderDetail.id_size === 2">M</td>
                                                         <td ng-if="orderDetail.id_size === 3">L</td>
                                                         <td>{{orderDetail.price | number : 0}} đ</td>
-                                                        <td>{{orderDetail.quantity * orderDetail.price | number :0}} đ</td>
+                                                        <td>{{orderDetail.quantity * orderDetail.price | number :0}} đ
+                                                        </td>
                                                     </tr>
                                                     <tr>
                                                         <td colspan="5" class="text-end"><strong>Tạm
@@ -684,6 +725,14 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
+                            <div class="button-container" style="margin-top: 10px !important;">
+                                <a type="button" class="btn btn-danger">
+                                    <i class="bi bi-filetype-pdf"></i> PDF
+                                </a>
+                                <a type="button" class="btn btn-success">
+                                    <i class="bi bi-arrow-down-circle-fill"></i> Excel
+                                </a>
+                            </div>
                             <table class="table table-hover table-bordered text-center order-datatable">
                                 <thead class="table-dark">
                                     <th>No</th>
@@ -693,7 +742,7 @@
                                     <th>Address</th>
                                     <th>Total Amount</th>
                                     <th>Status</th>
-                                    <th></th>
+                                    <th>Action</th>
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat-start="order in pagerOrderSuccess.paginatedList">
@@ -705,8 +754,8 @@
                                         <td>{{order.totalAmount | number : 0}} đ</td>
                                         <td ng-if="order.status === 4"> Đã giao hàng</td>
                                         <td>
-                                            <button class="btn btn-dark" data-bs-toggle="modal" ng-click="selectOrder(order.id,4)"
-                                                data-bs-target="#successModal">
+                                            <button class="btn btn-dark" data-bs-toggle="modal"
+                                                ng-click="selectOrder(order.id,4)" data-bs-target="#successModal">
                                                 <i class="bi bi-eye-fill"></i>
                                             </button>
                                         </td>
@@ -717,167 +766,172 @@
                         </div>
                         <div class="d-flex justify-content-between align-items-center pt-2 pb-0">
                             <div class="fw-normal" style="font-size: 18px;">
-                                Showing {{ pagerOrderSuccess.startIndex }} to {{ pagerOrderSuccess.endIndex }} of {{ pagerOrderSuccess.totalItems }} entries
+                                Showing {{ pagerOrderSuccess.startIndex }} to {{ pagerOrderSuccess.endIndex }} of {{
+                                pagerOrderSuccess.totalItems }} entries
                             </div>
                             <nav aria-label="Page navigation">
                                 <ul class="pagination justify-content-end">
-                                    <li class="page-item" ng-class="{ 'disabled': pagerOrderSuccess.currentPage === 1 }">
-                                        <a class="page-link" href="#" ng-click="setPageOrderSuccess(1)" aria-disabled="true">
+                                    <li class="page-item"
+                                        ng-class="{ 'disabled': pagerOrderSuccess.currentPage === 1 }">
+                                        <a class="page-link" href="#" ng-click="setPageOrderSuccess(1)"
+                                            aria-disabled="true">
                                             <i class="bi bi-caret-left-fill"></i>
                                         </a>
                                     </li>
                                     <li class="page-item" ng-repeat="page in pagerOrderSuccess.pages">
-                                        <a class="page-link" href="#" ng-click="setPageOrderSuccess(page)" ng-class="{ active: pagerOrderSuccess.currentPage === page }">{{ page }}</a>
+                                        <a class="page-link" href="#" ng-click="setPageOrderSuccess(page)"
+                                            ng-class="{ active: pagerOrderSuccess.currentPage === page }">{{ page }}</a>
                                     </li>
-                                    <li class="page-item" ng-class="{ 'disabled': pagerOrderSuccess.currentPage === pagerOrderSuccess.totalPages }">
-                                        <a class="page-link" href="#" ng-click="setPageOrderSuccess(pagerOrderSuccess.totalPages)">
+                                    <li class="page-item"
+                                        ng-class="{ 'disabled': pagerOrderSuccess.currentPage === pagerOrderSuccess.totalPages }">
+                                        <a class="page-link" href="#"
+                                            ng-click="setPageOrderSuccess(pagerOrderSuccess.totalPages)">
                                             <i class="bi bi-caret-right-fill"></i>
                                         </a>
                                     </li>
                                 </ul>
                             </nav>
                         </div>
-                        </div>
                     </div>
-                    <!-- Modal Success -->
-                    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                        aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">
-                                        <i class="bi bi-pencil-square pe-2"></i>
-                                        Success
-                                    </h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="container hs-hd mx-auto">
-                                        <h5 class="title-hs col-md-12">Hóa đơn</h5>
-                                        <div class="row">
-                                            <div class="col-md-6 cnt-hd border-right">
-                                                <div class="info-pair">
-                                                    <h6>Order ID:</h6>
-                                                    <p>#{{listOrder[0].id_order}}</p>
-                                                </div>
-                                                <div class="info-pair">
-                                                    <h6>Order Date:</h6>
-                                                    <p>{{listOrder[0].order_createDate | date :'dd-MM-yyyy'}}</p>
-                                                </div>
-                                                <!-- Thêm thông tin khác nếu cần -->
+                </div>
+                <!-- Modal Success -->
+                <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">
+                                    <i class="bi bi-pencil-square pe-2"></i>
+                                    Success
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="container hs-hd mx-auto">
+                                    <h5 class="title-hs col-md-12">Hóa đơn</h5>
+                                    <div class="row">
+                                        <div class="col-md-6 cnt-hd border-right">
+                                            <div class="info-pair">
+                                                <h6>Order ID:</h6>
+                                                <p>#{{listOrder[0].id_order}}</p>
                                             </div>
-                                            <div class="col-md-6 cnt-hd">
-                                                <div class="info-pair">
-                                                    <h6>Thanh toán:</h6>
-                                                    <p>Tiền mặt</p>
-                                                </div>
-                                                <div class="info-pair">
-                                                    <h6>Vận chuyển:</h6>
-                                                    <p>Shipper</p>
-                                                </div>
-                                                <!-- Thêm thông tin khác nếu cần -->
+                                            <div class="info-pair">
+                                                <h6>Order Date:</h6>
+                                                <p>{{listOrder[0].order_createDate | date :'dd-MM-yyyy'}}</p>
+                                            </div>
+                                            <!-- Thêm thông tin khác nếu cần -->
+                                        </div>
+                                        <div class="col-md-6 cnt-hd">
+                                            <div class="info-pair">
+                                                <h6>Thanh toán:</h6>
+                                                <p>Tiền mặt</p>
+                                            </div>
+                                            <div class="info-pair">
+                                                <h6>Vận chuyển:</h6>
+                                                <p>Shipper</p>
+                                            </div>
+                                            <!-- Thêm thông tin khác nếu cần -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="container hs-hd mx-auto" style="margin-top: 30px;">
+                                    <h5 class="title-hs col-md-12">Địa chỉ giao hàng</h5>
+                                    <div class="row">
+                                        <div class="col-md-6 cnt-hd border-right">
+                                            <div class="info-pair">
+                                                <h6>Họ và tên:</h6>
+                                                <p>{{listOrder[0].account_fullname}}</p>
+                                            </div>
+                                            <div class="info-pair">
+                                                <h6>Số điện thoại:</h6>
+                                                <p>{{listOrder[0].account_phone}}</p>
+                                            </div>
+                                            <div class="info-pair">
+                                                <h6>Địa chỉ:</h6>
+                                                <p>{{listOrder[0].order_address}}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 cnt-hd">
+                                            <div class="info-pair">
+                                                <h6>Tỉnh/Thành phố:</h6>
+                                                <p>Hồ Chí Minh</p>
+                                            </div>
+                                            <div class="info-pair">
+                                                <h6>Quận/Huyện:</h6>
+                                                <p>Thủ Đức</p>
+                                            </div>
+                                            <div class="info-pair">
+                                                <h6>Phường/Xã:</h6>
+                                                <p>Hiệp Bình Phước</p>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="container hs-hd mx-auto" style="margin-top: 30px;">
-                                        <h5 class="title-hs col-md-12">Địa chỉ giao hàng</h5>
-                                        <div class="row">
-                                            <div class="col-md-6 cnt-hd border-right">
-                                                <div class="info-pair">
-                                                    <h6>Họ và tên:</h6>
-                                                    <p>{{listOrder[0].account_fullname}}</p>
-                                                </div>
-                                                <div class="info-pair">
-                                                    <h6>Số điện thoại:</h6>
-                                                    <p>{{listOrder[0].account_phone}}</p>
-                                                </div>
-                                                <div class="info-pair">
-                                                    <h6>Địa chỉ:</h6>
-                                                    <p>{{listOrder[0].order_address}}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 cnt-hd">
-                                                <div class="info-pair">
-                                                    <h6>Tỉnh/Thành phố:</h6>
-                                                    <p>Hồ Chí Minh</p>
-                                                </div>
-                                                <div class="info-pair">
-                                                    <h6>Quận/Huyện:</h6>
-                                                    <p>Thủ Đức</p>
-                                                </div>
-                                                <div class="info-pair">
-                                                    <h6>Phường/Xã:</h6>
-                                                    <p>Hiệp Bình Phước</p>
-                                                </div>
-                                            </div>
+                                </div>
+                                <div class="container" style="margin-top: 30px; padding: 0;">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <table class="table table-bordered table-details">
+                                                <thead class="table-dark">
+                                                    <tr>
+                                                        <th>No.</th>
+                                                        <th>Hình ảnh</th>
+                                                        <th>Tên sản phẩm</th>
+                                                        <th>Số lượng</th>
+                                                        <th>Size</th>
+                                                        <th>Giá</th>
+                                                        <th>Tổng tiền</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="orderDetail in listOrder">
+                                                        <td>{{$index + 1}}</td>
+                                                        <td><img ng-src="{{'/img/gallery/' + orderDetail.product_image}}"
+                                                                class="img-fluid img-details"></td>
+                                                        <td>{{orderDetail.product_name}}</td>
+                                                        <td>{{orderDetail.quantity}}</td>
+                                                        <td ng-if="orderDetail.id_size === 1">S</td>
+                                                        <td ng-if="orderDetail.id_size === 2">M</td>
+                                                        <td ng-if="orderDetail.id_size === 3">L</td>
+                                                        <td>{{orderDetail.price | number : 0}} đ</td>
+                                                        <td>{{orderDetail.quantity * orderDetail.price | number :0}}
+                                                            đ</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="5" class="text-end"><strong>Tạm
+                                                                tính:</strong></td>
+                                                        <td>{{getSubTotal() | number : 0}} đ</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="5" class="text-end"><strong>Chi phí vận
+                                                                chuyển:</strong>
+                                                        </td>
+                                                        <td>20.000 đ</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="5" class="text-end"><strong>Tổng thanh
+                                                                toán:</strong></td>
+                                                        <th class="text-success">{{getTotal() | number : 0}} đ</th>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
-                                    <div class="container" style="margin-top: 30px; padding: 0;">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <table class="table table-bordered table-details">
-                                                    <thead class="table-dark">
-                                                        <tr>
-                                                            <th>No.</th>
-                                                            <th>Hình ảnh</th>
-                                                            <th>Tên sản phẩm</th>
-                                                            <th>Số lượng</th>
-                                                            <th>Size</th>
-                                                            <th>Giá</th>
-                                                            <th>Tổng tiền</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr ng-repeat="orderDetail in listOrder">
-                                                            <td>{{$index + 1}}</td>
-                                                            <td><img ng-src="{{'/img/gallery/' + orderDetail.product_image}}"
-                                                                    class="img-fluid img-details"></td>
-                                                            <td>{{orderDetail.product_name}}</td>
-                                                            <td>{{orderDetail.quantity}}</td>
-                                                            <td ng-if="orderDetail.id_size === 1">S</td>
-                                                            <td ng-if="orderDetail.id_size === 2">M</td>
-                                                            <td ng-if="orderDetail.id_size === 3">L</td>
-                                                            <td>{{orderDetail.price | number : 0}} đ</td>
-                                                            <td>{{orderDetail.quantity * orderDetail.price | number :0}}
-                                                                đ</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td colspan="5" class="text-end"><strong>Tạm
-                                                                    tính:</strong></td>
-                                                            <td>{{getSubTotal() | number : 0}} đ</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td colspan="5" class="text-end"><strong>Chi phí vận
-                                                                    chuyển:</strong>
-                                                            </td>
-                                                            <td>20.000 đ</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td colspan="5" class="text-end"><strong>Tổng thanh
-                                                                    toán:</strong></td>
-                                                            <th class="text-success">{{getTotal() | number : 0}} đ</th>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="mt-2" style="font-size: 20px;">
-                                        <label for="successOrderStatus" class="form-label fw-bold mb-3">
-                                            Order Status:</label>
-                                        <span class="fw-bold text-success ps-1">Đã giao hàng</span>
-                                    </div>
-                                    <!-- Add more input fields here based on your table columns -->
                                 </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Close</button>
+                                <div class="mt-2" style="font-size: 20px;">
+                                    <label for="successOrderStatus" class="form-label fw-bold mb-3">
+                                        Order Status:</label>
+                                    <span class="fw-bold text-success ps-1">Đã giao hàng</span>
                                 </div>
+                                <!-- Add more input fields here based on your table columns -->
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                             </div>
                         </div>
                     </div>
+                </div>
 
                 <!-- Bảng cho trạng thái cancel -->
                 <div class="card" style="border-radius: 0px; margin-bottom: 30px;" id="order-cancel">
@@ -886,6 +940,14 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
+                            <div class="button-container" style="margin-top: 10px !important;">
+                                <a type="button" class="btn btn-danger">
+                                    <i class="bi bi-filetype-pdf"></i> PDF
+                                </a>
+                                <a type="button" class="btn btn-success">
+                                    <i class="bi bi-arrow-down-circle-fill"></i> Excel
+                                </a>
+                            </div>
                             <table class="table table-hover table-bordered text-center order-datatable">
                                 <thead class="table-dark">
                                     <th>Number</th>
@@ -895,7 +957,7 @@
                                     <th>Address</th>
                                     <th>Total Amount</th>
                                     <th>Status</th>
-                                    <th></th>
+                                    <th>Action</th>
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat-start="order in pagerOrderCancel.paginatedList">
@@ -907,11 +969,12 @@
                                         <td>{{order.totalAmount | number : 0}} đ</td>
                                         <td ng-if="order.status === 5"> Đã hủy</td>
                                         <td>
-                                            <button class="btn btn-danger" ng-click="updateOrder.resetOrder(order.id,2)">
+                                            <button class="btn btn-danger"
+                                                ng-click="updateOrder.resetOrder(order.id,2)">
                                                 Reset
                                             </button>
-                                            <button class="btn btn-dark" data-bs-toggle="modal" ng-click="selectOrder(order.id)"
-                                                data-bs-target="#cancelModal">
+                                            <button class="btn btn-dark" data-bs-toggle="modal"
+                                                ng-click="selectOrder(order.id)" data-bs-target="#cancelModal">
                                                 <i class="bi bi-eye-fill"></i>
                                             </button>
                                         </td>
@@ -920,22 +983,27 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div  class="d-flex justify-content-between align-items-center pt-2 pb-0">
+                        <div class="d-flex justify-content-between align-items-center pt-2 pb-0">
                             <div class="fw-normal" style="font-size: 18px;">
-                                Showing {{ pagerOrderCancel.startIndex }} to {{ pagerOrderCancel.endIndex }} of {{ pagerOrderCancel.totalItems }} entries
+                                Showing {{ pagerOrderCancel.startIndex }} to {{ pagerOrderCancel.endIndex }} of {{
+                                pagerOrderCancel.totalItems }} entries
                             </div>
                             <nav aria-label="Page navigation">
                                 <ul class="pagination justify-content-end">
                                     <li class="page-item" ng-class="{ 'disabled': pagerOrderCancel.currentPage === 1 }">
-                                        <a class="page-link" href="#" ng-click="setPageOrderCancel(1)" aria-disabled="true">
+                                        <a class="page-link" href="#" ng-click="setPageOrderCancel(1)"
+                                            aria-disabled="true">
                                             <i class="bi bi-caret-left-fill"></i>
                                         </a>
                                     </li>
                                     <li class="page-item" ng-repeat="page in pagerOrderCancel.pages">
-                                        <a class="page-link" href="#" ng-click="setPageOrderCancel(page)" ng-class="{ active: pagerOrderCancel.currentPage === page }">{{ page }}</a>
+                                        <a class="page-link" href="#" ng-click="setPageOrderCancel(page)"
+                                            ng-class="{ active: pagerOrderCancel.currentPage === page }">{{ page }}</a>
                                     </li>
-                                    <li class="page-item" ng-class="{ 'disabled': pagerOrderCancel.currentPage === pagerOrderCancel.totalPages }">
-                                        <a class="page-link" href="#" ng-click="setPageOrderCancel(pagerOrderCancel.totalPages)">
+                                    <li class="page-item"
+                                        ng-class="{ 'disabled': pagerOrderCancel.currentPage === pagerOrderCancel.totalPages }">
+                                        <a class="page-link" href="#"
+                                            ng-click="setPageOrderCancel(pagerOrderCancel.totalPages)">
                                             <i class="bi bi-caret-right-fill"></i>
                                         </a>
                                     </li>
@@ -1043,7 +1111,8 @@
                                                         <td ng-if="orderDetail.id_size === 2">M</td>
                                                         <td ng-if="orderDetail.id_size === 3">L</td>
                                                         <td>{{orderDetail.price | number : 0}} đ</td>
-                                                        <td>{{orderDetail.quantity * orderDetail.price | number :0}} đ</td>
+                                                        <td>{{orderDetail.quantity * orderDetail.price | number :0}} đ
+                                                        </td>
                                                     </tr>
                                                     <tr>
                                                         <td colspan="5" class="text-end"><strong>Tạm
@@ -1057,7 +1126,7 @@
                                                         <td>20.000 đ</td>
                                                     </tr>
                                                     <tr>
-                                                        <td colspan="5" class="text-end"><strong>Tổng 
+                                                        <td colspan="5" class="text-end"><strong>Tổng
                                                                 toán:</strong></td>
                                                         <th class="text-success">{{getTotal() | number : 0}} đ</th>
                                                     </tr>

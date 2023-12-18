@@ -1,6 +1,5 @@
 package com.backend.dream.rest;
 
-
 import com.backend.dream.dto.NotificationDTO;
 import com.backend.dream.dto.ProductDTO;
 import com.backend.dream.dto.ProductSizeDTO;
@@ -11,6 +10,8 @@ import com.backend.dream.service.ProductService;
 import com.backend.dream.service.ProductSizeService;
 import jakarta.servlet.http.HttpServletRequest;
 import com.backend.dream.util.ValidationService;
+
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -32,6 +33,10 @@ import java.util.List;
 @RestController
 public class ProductSizeRestController {
     @Autowired
+    private NotificationService notificationService;
+    @Autowired
+    private AccountService accountService;
+    @Autowired
     private ProductSizeService productSizeService;
     @Autowired
     private ValidationService validateService;
@@ -49,6 +54,7 @@ public class ProductSizeRestController {
     public List<ProductSizeDTO> getAllSizes() {
         return productSizeService.findAll();
     }
+
     @PostMapping()
     public ProductSize create(@RequestBody ProductSizeDTO productSizeDTO, HttpServletRequest request) {
         String username = request.getRemoteUser();
@@ -78,9 +84,9 @@ public class ProductSizeRestController {
         return null;
     }
 
-
     @PutMapping("{id}")
-    public ProductSizeDTO update(@RequestBody ProductSizeDTO productSizeDTO, @PathVariable("id") Long id, HttpServletRequest request) {
+    public ProductSizeDTO update(@RequestBody ProductSizeDTO productSizeDTO, @PathVariable("id") Long id,
+            HttpServletRequest request) {
         String username = request.getRemoteUser();
         Long idAccount = accountService.findIDByUsername(username);
         Long idRole = accountService.findRoleIdByUsername(username);
@@ -118,7 +124,8 @@ public class ProductSizeRestController {
             String productName = productSizeService.getProductNameByProductSizeID(id);
             if (productName != null) {
                 String notificationTitle = "Có sự thay đổi trong sản phẩm";
-                String notificationText = "Một giá của sản phẩm '" + productName + "' đã được xóa bởi '" + username + "'";
+                String notificationText = "Một giá của sản phẩm '" + productName + "' đã được xóa bởi '" + username
+                        + "'";
 
                 NotificationDTO notificationDTO = new NotificationDTO();
                 notificationDTO.setIdAccount(idAccount);
@@ -137,14 +144,15 @@ public class ProductSizeRestController {
     public List<ProductDTO> searchByProductIdAndSizeId(@RequestParam String name) {
         return productService.searchProductByName(name);
     }
+
     @GetMapping("/download")
     private ResponseEntity<InputStreamResource> download() throws IOException {
-        String fileName ="Data-productSizes.xlsx";
+        String fileName = "Data-productSizes.xlsx";
         ByteArrayInputStream inputStream = productSizeService.getdataProductSize();
         InputStreamResource response = new InputStreamResource(inputStream);
 
         ResponseEntity<InputStreamResource> responseEntity = ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION,"attachment;filename="+fileName)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + fileName)
                 .contentType(MediaType.parseMediaType("application/vnd.ms-excel")).body(response);
         return responseEntity;
     }

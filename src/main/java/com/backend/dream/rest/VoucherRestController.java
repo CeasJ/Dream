@@ -28,7 +28,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/rest/vouchers")
 public class VoucherRestController {
-
+    @Autowired
+    private NotificationService notificationService;
     @Autowired
     private VoucherService voucherService;
     @Autowired
@@ -43,15 +44,16 @@ public class VoucherRestController {
     private NotificationService notificationService;
     @Autowired
     private ValidationService validateService;
+
     // Get voucher for user
     @GetMapping("/applicable")
-    public List<VoucherDTO> getApplicableVouchers(){
+    public List<VoucherDTO> getApplicableVouchers() {
         String user = request.getRemoteUser();
         return voucherService.getApplicableVouchers(user);
     }
 
     @GetMapping("/all")
-    public List<VoucherDTO> getAllVouchers(){
+    public List<VoucherDTO> getAllVouchers() {
         return voucherService.getAllVouchers();
     }
 
@@ -59,6 +61,7 @@ public class VoucherRestController {
     public List<VoucherStatusDTO> getAllVoucherStatus() {
         return voucherService.getAllVoucherStatus();
     }
+
     @GetMapping("/type/all")
     public List<VoucherTypeDTO> getAllVoucherTypes() {
         return voucherTypeService.getAllVoucherTypes();
@@ -105,40 +108,16 @@ public class VoucherRestController {
         return null;
     }
 
-    @PutMapping("/{id}")
-    public VoucherDTO updateVoucher(@RequestBody VoucherDTO voucherDTO, @PathVariable("id") Long id, HttpServletRequest request) {
-        String username = request.getRemoteUser();
-        Long idAccount = accountService.findIDByUsername(username);
-        Long idRole = accountService.findRoleIdByUsername(username);
-
-        if (idRole == 1 || idRole == 2) {
-            VoucherDTO updatedVoucher = voucherService.updateVoucher(voucherDTO, id);
-
-            String voucherName = updatedVoucher.getName();
-            String notificationTitle = "Có sự thay đổi trong phiếu giảm";
-            String notificationText = "Phiếu giảm giá '" + voucherName + "' đã được cập nhật bởi '" + username + "'";
-
-            NotificationDTO notificationDTO = new NotificationDTO();
-            notificationDTO.setIdAccount(idAccount);
-            notificationDTO.setNotificationTitle(notificationTitle);
-            notificationDTO.setNotificationText(notificationText);
-            notificationDTO.setId_role(idRole);
-            notificationDTO.setImage("voucher-change.jpg");
-            notificationDTO.setCreatedTime(Timestamp.from(Instant.now()));
-            notificationService.createNotification(notificationDTO);
-
-            return updatedVoucher;
-        }
-
-        return null;
+    @PutMapping("{id}")
+    public VoucherDTO updateVoucher(@RequestBody VoucherDTO voucherDTO, @PathVariable Long id) {
+        return voucherService.updateVoucher(voucherDTO, id);
     }
-
 
     @PutMapping("/{name}/{idType}")
-    public List<VoucherDTO> updateVoucher(@RequestBody VoucherDTO voucherDTO,@PathVariable String name ,@PathVariable Long idType){
-        return voucherService.updateListVoucherByNameAndIdType(voucherDTO,name,idType);
+    public List<VoucherDTO> updateVoucher(@RequestBody VoucherDTO voucherDTO, @PathVariable String name,
+            @PathVariable Long idType) {
+        return voucherService.updateListVoucherByNameAndIdType(voucherDTO, name, idType);
     }
-
 
     @DeleteMapping("/{voucherId}")
     public ResponseEntity<String> deleteVoucher(@PathVariable Long voucherID) {
@@ -200,17 +179,17 @@ public class VoucherRestController {
                     .body("Error deleting vouchers: " + e.getMessage());
         }
     }
+
     @GetMapping("/download")
     private ResponseEntity<InputStreamResource> download() throws IOException {
-        String fileName ="Data-vouchers.xlsx";
+        String fileName = "Data-vouchers.xlsx";
         ByteArrayInputStream inputStream = voucherService.getdataVoucher();
         InputStreamResource response = new InputStreamResource(inputStream);
 
         ResponseEntity<InputStreamResource> responseEntity = ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION,"attachment;filename="+fileName)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + fileName)
                 .contentType(MediaType.parseMediaType("application/vnd.ms-excel")).body(response);
         return responseEntity;
     }
-
 
 }

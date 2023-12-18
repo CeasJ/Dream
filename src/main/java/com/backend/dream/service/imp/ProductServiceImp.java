@@ -25,11 +25,11 @@ import java.util.stream.Collectors;
 @Service
 public class ProductServiceImp implements ProductService {
     @Autowired
-    private  ProductRepository productRepository;
+    private ProductRepository productRepository;
     @Autowired
-    private  ProductMapper productMapper;
+    private ProductMapper productMapper;
     @Autowired
-    private  ProductSizeRepository productSizeRepository;
+    private ProductSizeRepository productSizeRepository;
     @Autowired
     private CategoryService categoryService;
 
@@ -39,7 +39,6 @@ public class ProductServiceImp implements ProductService {
     @Autowired
     private FeedbackService feedbackService;
 
-
     @Override
     public List<ProductDTO> findAll() {
         List<Product> products = productRepository.findAll();
@@ -48,13 +47,11 @@ public class ProductServiceImp implements ProductService {
                 .collect(Collectors.toList());
     }
 
-
     @Override
     public ProductDTO findById(Long id) {
         Product product = productRepository.getReferenceById(id);
         return product != null ? productMapper.productToProductDTO(product) : null;
     }
-
 
     @Override
     public Page<ProductDTO> findByNamePaged(String name, Pageable pageable) {
@@ -65,7 +62,6 @@ public class ProductServiceImp implements ProductService {
             return productDTO;
         });
     }
-
 
     @Override
     public Product create(ProductDTO productDTO) {
@@ -85,7 +81,6 @@ public class ProductServiceImp implements ProductService {
         productRepository.deleteById(id);
     }
 
-
     @Override
     public Page<ProductDTO> findByCategory(Long categoryId, Pageable pageable) {
         Page<Product> productPage = productRepository.findByCategoryID(categoryId, pageable);
@@ -101,7 +96,6 @@ public class ProductServiceImp implements ProductService {
         Page<Product> productPage = productRepository.findAll(pageable);
         return productPage.map(productMapper::productToProductDTO);
     }
-
 
     @Override
     public Page<ProductDTO> sortByPriceAsc(Long categoryId, Pageable pageable) {
@@ -133,9 +127,8 @@ public class ProductServiceImp implements ProductService {
         });
     }
 
-
     @Override
-    public double getDiscountedPrice(Long productID,Long categoryID) {
+    public double getDiscountedPrice(Long productID, Long categoryID) {
         CategoryDTO categoryDTO = categoryService.getDiscountByCategoryId(categoryID);
         double originalPrice = getOriginalProductPrice(productID);
         if (categoryDTO != null) {
@@ -146,7 +139,6 @@ public class ProductServiceImp implements ProductService {
             return originalPrice;
         }
     }
-
 
     @Override
     public double getOriginalProductPrice(Long productId) {
@@ -187,7 +179,6 @@ public class ProductServiceImp implements ProductService {
         }
         return 0.0;
     }
-
 
     @Override
     public Page<ProductDTO> findByTopRated(Long categoryId, Pageable pageable) {

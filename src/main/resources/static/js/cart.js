@@ -11,16 +11,16 @@
   };
   spinner();
 
-  new WOW().init();
+    new WOW().init();
 
-  // Sticky Navbar
-  $(window).scroll(function () {
-    if ($(this).scrollTop() > 300) {
-      $(".sticky-top").addClass("shadow-sm").css("top", "0px");
-    } else {
-      $(".sticky-top").removeClass("shadow-sm").css("top", "-150px");
-    }
-  });
+    // Sticky Navbar
+    $(window).scroll(function () {
+      if ($(this).scrollTop() > 300) {
+        $(".sticky-top").addClass("shadow-sm").css("top", "0px");
+      } else {
+        $(".sticky-top").removeClass("shadow-sm").css("top", "-150px");
+      }
+    });
 
   // Back to top button
   $(window).scroll(function () {
@@ -56,10 +56,10 @@
       $(".infor-cart").show();
       $(".cart-0, .cart-1, .form-buy").hide();
 
-    // Add active class to number-2 and apply animation
-    $("#number-2").addClass("active");
-    $("#line-1").addClass("active-line");
-    $("#step-2").addClass("active-stext");
+      // Add active class to number-2 and apply animation
+      $("#number-2").addClass("active");
+      $("#line-1").addClass("active-line");
+      $("#step-2").addClass("active-stext");
 
       // Change color of number-2 to match .step-button.active
       $("#number-2").css({
@@ -68,18 +68,18 @@
       });
     });
 
-  $("#backButton").click(function () {
-    $(".cart-0, .cart-1, .form-buy").show();
-    $(".infor-cart").hide();
+    $("#backButton").click(function () {
+      $(".cart-0, .cart-1, .form-buy").show();
+      $(".infor-cart").hide();
 
-    // Remove active class from number-2 and remove animation
-    $("#number-2").removeClass("active");
-    $("#line-1").removeClass("active-line");
-    $("#step-2").removeClass("active-stext");
-    // Reset color of number-2 to default state
-    $("#number-2").css({
-      "background-color": "lightgray", // Màu mặc định của number-2
-    });
+      // Remove active class from number-2 and remove animation
+      $("#number-2").removeClass("active");
+      $("#line-1").removeClass("active-line");
+      $("#step-2").removeClass("active-stext");
+      // Reset color of number-2 to default state
+      $("#number-2").css({
+        "background-color": "lightgray", // Màu mặc định của number-2
+      });
 
   });
 
@@ -419,7 +419,7 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
           id_product: parseInt(item.id_product),
           price: item.price,
           quantity: item.qty,
-          id_size:parseInt(item.id_size),
+          id_size: parseInt(item.id_size),
         };
       });
     },
@@ -489,8 +489,8 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
         const today = new Date();
         const expiration = new Date(expireDate);
 
-        const difference = expiration - today;
-        const daysRemaining = Math.floor(difference / oneDay);
+    const difference = expiration - today;
+    const daysRemaining = Math.floor(difference / oneDay);
 
         if (daysRemaining > 0) {
             return "Còn " + daysRemaining + " ngày";

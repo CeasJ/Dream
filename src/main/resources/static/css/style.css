@@ -125,8 +125,8 @@ body {
 .navbar .navbar-brand {
     position: absolute;
     padding: 0;
-    width: 135px;
-    height: 135px;
+    width: 120px;
+    height: 120px;
     top: 0;
     left: 0;
 }
@@ -496,6 +496,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    max-height: 600px;
 }
 
 .voucher-modal .modal-header .btn-close {
@@ -512,7 +513,7 @@ body {
 }
 
 .voucher-modal .modal-content {
-    height: 70%; /* Điều chỉnh chiều rộng tối đa của modal */
+    height: auto; /* Điều chỉnh chiều rộng tối đa của modal */
 }
 
 .voucher-modal .modal-body {
@@ -1625,4 +1626,51 @@ body {
 .link-discount a {
     color: white;
     padding: 10px 25px;
+}
+
+.custom-file-upload {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+}
+
+.custom-file-upload input[type="file"] {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+}
+
+.custom-file-upload i {
+    font-size: 22px;
+}
+
+.img-avatar {
+    width: 50px;
+    height: 50px;
+    align-self: flex-start;
+}
+
+.img-feedback img {
+    max-width: 100%;
+    max-height: 250px;
+    display: block;
+}
+
+.custom-card {
+    background-color: #f0f0f0; /* Màu xám nhạt */
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.custom-card .btn-apply {
+    background-color: #a0a0a0;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: 0;
+    color: white;
+}
+.custom-card .btn-apply:hover {
+    background-color: #6c757d;
 }
