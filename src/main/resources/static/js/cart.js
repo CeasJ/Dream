@@ -11,67 +11,28 @@
   };
   spinner();
 
-  new WOW().init();
+    new WOW().init();
 
-  // Sticky Navbar
-  $(window).scroll(function () {
-    if ($(this).scrollTop() > 300) {
-      $(".sticky-top").addClass("shadow-sm").css("top", "0px");
-    } else {
-      $(".sticky-top").removeClass("shadow-sm").css("top", "-150px");
-    }
-  });
-
-  // Back to top button
-  $(window).scroll(function () {
-    if ($(this).scrollTop() > 300) {
-      $(".back-to-top").fadeIn("slow");
-    } else {
-      $(".back-to-top").fadeOut("slow");
-    }
-  });
-
-  // Show .cart-0 if cartCount is less than or equal to 0, otherwise show .cart-1
-  var cartCount = parseInt($("#cartCount").text());
-
-  if (cartCount <= 0) {
-    $(".cart-0").show();
-    $(".cart-1").hide();
-  } else {
-    $(".cart-0").hide();
-    $(".cart-1").show();
-  }
-
-    $("#step-1").addClass("active-stext");
-    // Show infor-cart and hide cart-0, cart-1 on Buy button click
-    $("#buyButton").click(function () {
-      $(".infor-cart").show();
-      $(".cart-0, .cart-1, .form-buy").hide();
-
-    // Add active class to number-2 and apply animation
-    $("#number-2").addClass("active");
-    $("#line-1").addClass("active-line");
-    $("#step-2").addClass("active-stext");
-
-      // Change color of number-2 to match .step-button.active
-      $("#number-2").css({
-        "background-color": "var(--primary)", // Màu xanh lá của bạn
-        color: "white",
-      });
+    // Sticky Navbar
+    $(window).scroll(function () {
+      if ($(this).scrollTop() > 300) {
+        $(".sticky-top").addClass("shadow-sm").css("top", "0px");
+      } else {
+        $(".sticky-top").removeClass("shadow-sm").css("top", "-150px");
+      }
     });
 
-  $("#backButton").click(function () {
-    $(".cart-0, .cart-1, .form-buy").show();
-    $(".infor-cart").hide();
-
-    // Remove active class from number-2 and remove animation
-    $("#number-2").removeClass("active");
-    $("#line-1").removeClass("active-line");
-    $("#step-2").removeClass("active-stext");
-    // Reset color of number-2 to default state
-    $("#number-2").css({
-      "background-color": "lightgray", // Màu mặc định của number-2
+    // Back to top button
+    $(window).scroll(function () {
+      if ($(this).scrollTop() > 300) {
+        $(".back-to-top").fadeIn("slow");
+      } else {
+        $(".back-to-top").fadeOut("slow");
+      }
     });
+
+    // Show .cart-0 if cartCount is less than or equal to 0, otherwise show .cart-1
+    var cartCount = parseInt($("#cartCount").text());
 
     if (cartCount <= 0) {
       $(".cart-0").show();
@@ -80,7 +41,46 @@
       $(".cart-0").hide();
       $(".cart-1").show();
     }
-  });
+
+    $("#step-1").addClass("active-stext");
+    // Show infor-cart and hide cart-0, cart-1 on Buy button click
+    $("#buyButton").click(function () {
+      $(".infor-cart").show();
+      $(".cart-0, .cart-1, .form-buy").hide();
+
+      // Add active class to number-2 and apply animation
+      $("#number-2").addClass("active");
+      $("#line-1").addClass("active-line");
+      $("#step-2").addClass("active-stext");
+
+      // Change color of number-2 to match .step-button.active
+      $("#number-2").css({
+        "background-color": "var(--primary)", // Màu xanh lá của bạn
+        color: "white",
+      });
+    });
+
+    $("#backButton").click(function () {
+      $(".cart-0, .cart-1, .form-buy").show();
+      $(".infor-cart").hide();
+
+      // Remove active class from number-2 and remove animation
+      $("#number-2").removeClass("active");
+      $("#line-1").removeClass("active-line");
+      $("#step-2").removeClass("active-stext");
+      // Reset color of number-2 to default state
+      $("#number-2").css({
+        "background-color": "lightgray", // Màu mặc định của number-2
+      });
+
+      if (cartCount <= 0) {
+        $(".cart-0").show();
+        $(".cart-1").hide();
+      } else {
+        $(".cart-0").hide();
+        $(".cart-1").show();
+      }
+    });
 
     // let isSuccess = true;
 
@@ -109,7 +109,6 @@
 
     $(document).ready(function () {
       $(".theme-mode input").change(function () {
-  
         if (this.checked) {
           // Chuyển sang dark mode
           $("body").removeClass("light-mode").addClass("dark-mode");
@@ -162,9 +161,9 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
       $http
         .get(
           "https://rsapi.goong.io/geocode?address=" +
-            encodeURIComponent(addressToQuery) +
-            "&api_key=" +
-            $scope.apiKey
+          encodeURIComponent(addressToQuery) +
+          "&api_key=" +
+          $scope.apiKey
         )
         .then(function (response) {
           const location = response.data.results[0].geometry.location;
@@ -184,13 +183,13 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
     $http
       .get(
         "https://rsapi.goong.io/DistanceMatrix?origins=" +
-          $scope.originLocation +
-          "&destinations=" +
-          encodeURIComponent($scope.ipLocation) +
-          "&vehicle=" +
-          $scope.vehicle +
-          "&api_key=" +
-          $scope.apiKey
+        $scope.originLocation +
+        "&destinations=" +
+        encodeURIComponent($scope.ipLocation) +
+        "&vehicle=" +
+        $scope.vehicle +
+        "&api_key=" +
+        $scope.apiKey
       )
       .then(function (response) {
         const distance = response.data.rows[0].elements[0].distance;
@@ -207,7 +206,7 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
           $scope.listOrder = response.data;
         }
       })
-      .catch((error) => {});
+      .catch((error) => { });
   };
 
   $scope.getSubTotal = function () {
@@ -238,8 +237,8 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
       $http
         .get(
           "https://provinces.open-api.vn/api/p/" +
-            $scope.selectedProvince +
-            "?depth=2"
+          $scope.selectedProvince +
+          "?depth=2"
         )
         .then(function (response) {
           $scope.districts = response.data.districts;
@@ -252,8 +251,8 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
       $http
         .get(
           "https://provinces.open-api.vn/api/d/" +
-            $scope.selectedDistrict +
-            "?depth=2"
+          $scope.selectedDistrict +
+          "?depth=2"
         )
         .then(function (response) {
           $scope.wards = response.data.wards;
@@ -325,9 +324,9 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
     return json
       ? JSON.parse(json)
       : {
-          username: username,
-          items: [],
-        };
+        username: username,
+        items: [],
+      };
   }
 
   function saveCart(username, cart) {
@@ -443,7 +442,7 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
           id_product: parseInt(item.id_product),
           price: item.price,
           quantity: item.qty,
-          id_size:parseInt(item.id_size),
+          id_size: parseInt(item.id_size),
         };
       });
     },
@@ -458,7 +457,7 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
           $scope.qrCode = resp.data.qr;
           console.log($scope.qrCode);
         })
-        .catch((error) => {});
+        .catch((error) => { });
     },
   };
 
@@ -521,8 +520,8 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
     const today = new Date();
     const expiration = new Date(expireDate);
 
-        const difference = expiration - today;
-        const daysRemaining = Math.floor(difference / oneDay);
+    const difference = expiration - today;
+    const daysRemaining = Math.floor(difference / oneDay);
 
     if (daysRemaining > 0) {
       return "Còn " + daysRemaining + " ngày";
@@ -557,22 +556,22 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
 
     const voucher = $scope.allVouchers[voucherIndex];
 
-    if(voucherIndex === -1) {
+    if (voucherIndex === -1) {
       toastr.error("Voucher doest not exist");
       return;
     }
 
-    if(voucher.status === 2) {
+    if (voucher.status === 2) {
       toastr.error("Voucher is expired");
       return;
     }
 
-    if (voucherIndex !== -1 && voucher.percent !== undefined &&  voucher.status === 1) {
+    if (voucherIndex !== -1 && voucher.percent !== undefined && voucher.status === 1) {
       const discountAmount = voucher.percent;
       $scope.cart.totalDiscount = discountAmount;
       $scope.order.id_voucher = voucher.id;
       $scope.order.totalAmount = $scope.order.totalAmount - $scope.cart.totalDiscount;
-    } 
+    }
   };
 
   $scope.changeAddress = function () {

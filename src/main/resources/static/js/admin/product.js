@@ -172,54 +172,6 @@ $scope.exportToExcel = function () {
     });
 };
 
-// Filter by category features
-$scope.filterByCategory = function () {
-    if ($scope.selectedCategory === '') {
-        $scope.pagedItems = $scope.items;
-    } else {
-        $scope.pagedItems = $scope.items.filter(function (item) {
-            return item.id_category === $scope.selectedCategory;
-        });
-    }
-    paginateItems();
-};
-
-// Filter by active
-$scope.filterByActive = function () {
-    if ($scope.selectedActive === '') {
-        $scope.pagedItems = $scope.items;
-    } else {
-        const isActive = $scope.selectedActive === 'true';
-        $scope.pagedItems = $scope.items.filter(function (item) {
-            return item.active === isActive;
-        });
-    }
-    paginateItems();
-};
-
-// Searching features
-$scope.searchByName = function () {
-    var searchTerm = $scope.searchTerm;
-
-    if (searchTerm) {
-        $scope.filteredItems = $scope.items.filter(function (item) {
-            return item.name.toLowerCase().includes(searchTerm.toLowerCase());
-        });
-
-
-        if ($scope.filteredItems.length > 0) {
-            $scope.pagination.currentPage = 1;
-            paginateItems();
-        }
-    } else {
-        $scope.filteredItems = angular.copy($scope.items);
-        paginateItems();
-    }
-};
-
-
-
-
   // Pagination
   $scope.pagedItems = []; // Danh sách sản phẩm được phân trang
       $scope.pagination = {

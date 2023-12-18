@@ -42,6 +42,11 @@ public class AccountServiceImp implements AccountService {
     }
 
     @Override
+    public Long findRoleIdByUsername(String username) {
+        return accountRepository.findRoleIdByUsername(username);
+    }
+
+    @Override
     public AccountDTO registerAccount(AccountDTO accountDTO) {
         Account account = accountMapper.accountDTOToAccount(accountDTO);
         account.setFullname(accountDTO.getFirstname() + " " + accountDTO.getLastname());
@@ -135,11 +140,11 @@ public class AccountServiceImp implements AccountService {
         return data;
     }
 
-//    @Override
-//    public Account createAccountWhenDontHaveAccount(Account account) {
-//        account.setPassword(passwordEncoder.encode(account.getPassword()));
-//        return accountRepository.save(account);
-//    }
+    // @Override
+    // public Account createAccountWhenDontHaveAccount(Account account) {
+    // account.setPassword(passwordEncoder.encode(account.getPassword()));
+    // return accountRepository.save(account);
+    // }
 
     @Override
     public Account createStaff(AccountDTO accountDTO) {
@@ -163,15 +168,9 @@ public class AccountServiceImp implements AccountService {
         return savedAccount;
     }
 
-
     @Override
     public Account findById(String username) {
         return accountRepository.findById(Long.valueOf(username)).get();
-    }
-
-    @Override
-    public Long findRoleIdByUsername(String username) {
-        return accountRepository.findRoleIdByUsername(username);
     }
 
     @Override
@@ -189,6 +188,5 @@ public class AccountServiceImp implements AccountService {
                 .map(accountMapper::accountToAccountDTO)
                 .collect(Collectors.toList());
     }
-
 
 }

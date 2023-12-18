@@ -34,15 +34,21 @@
                     </div>
                     <div class="card-body">
                         <div class="row justify-content-between align-items-center mb-3 mt-1">
-                            <a class="btn btn-primary" th:href="@{|/rest/productsizes/download|}">Export to Excel</a>
-
                             <!-- Thanh tìm kiếm ở góc phải -->
-                            <div class="col-md-2 ms-auto">
+                            <div class="col-md-2">
                                 <div class="input-group">
                                     <input type="text" class="form-control" placeholder="Search by product name..."
-                                           aria-label="Search" aria-describedby="basic-addon2"
-                                           ng-model="searchProductName" ng-change="searchProduct()">
+                                        aria-label="Search" aria-describedby="basic-addon2" ng-model="searchProductName"
+                                        ng-change="searchProduct()">
                                 </div>
+                            </div>
+                            <div class="col-md-2" style="text-align: right;">
+                                <a type="button" class="btn btn-danger">
+                                    <i class="bi bi-filetype-pdf"></i> PDF
+                                </a>
+                                <a type="button" class="btn btn-success" th:href="@{|/rest/productsizes/download|}">
+                                    <i class="bi bi-arrow-down-circle-fill"></i> Excel
+                                </a>
                             </div>
                         </div>
                         <div class="table-responsive">
@@ -52,7 +58,7 @@
                                         <th>Number</th>
                                         <th style="text-align: left;">Name</th>
                                         <th ng-repeat="size in sizes">{{size.name}}</th>
-                                        <th></th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -80,17 +86,20 @@
                         <div class="d-flex justify-content-between align-items-center pt-2">
                             <div class="fw-normal pb-3" style="font-size: 18px;">
                                 Showing {{(currentPage - 1) * pageSize + 1}} to
-                                {{currentPage * pageSize > products.length ? products.length : currentPage * pageSize}} of {{products.length}} entries
+                                {{currentPage * pageSize > products.length ? products.length : currentPage * pageSize}}
+                                of {{products.length}} entries
                             </div>
                             <nav aria-label="Page navigation">
                                 <ul class="pagination justify-content-end">
                                     <li class="page-item" ng-class="{ 'disabled': currentPage === 1 }">
-                                        <a class="page-link" href="#" ng-click="firstPage()" tabindex="-1" aria-disabled="true">
+                                        <a class="page-link" href="#" ng-click="firstPage()" tabindex="-1"
+                                            aria-disabled="true">
                                             <i class="bi bi-caret-left-fill"></i>
                                         </a>
                                     </li>
                                     <li class="page-item" ng-repeat="page in getPagerNumbers()">
-                                        <a class="page-link" href="#" ng-click="setPage(page)" ng-class="{ 'active': currentPage === page }">
+                                        <a class="page-link" href="#" ng-click="setPage(page)"
+                                            ng-class="{ 'active': currentPage === page }">
                                             {{page}}
                                         </a>
                                     </li>
@@ -124,7 +133,7 @@
                                             <div class="form-group d-flex align-items-center">
                                                 <label for="price" class="fw-bold me-3">Price</label>
                                                 <input type="number" class="form-control" id="price" ng-model="price"
-                                                    name="price" placeholder="Product Price"
+                                                    name="price" placeholder="Product Price" min="0"
                                                     ng-change="updateProductSizePrice()" />
                                             </div>
                                         </div>

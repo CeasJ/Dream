@@ -54,7 +54,7 @@
                                         <th>Email</th>
                                         <th>Phone</th>
                                         <th>Address</th>
-                                        <th></th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody class="no-border-x" ng-repeat="acc in paginatedList()">
@@ -71,13 +71,15 @@
                                     <td>{{acc.phone}}</td>
                                     <td>{{acc.address}}</td>
                                     <td>
-                                        <button ng-if="!acc.active" class="btn btn-danger" ng-click="confirmUnlock(acc)">
+                                        <button ng-if="!acc.active" class="btn btn-danger"
+                                            ng-click="confirmUnlock(acc)">
                                             <i class="bi bi-lock-fill"></i>
                                         </button>
                                         <button ng-if="acc.active" class="btn btn-dark" ng-click="lockAccount(acc)">
                                             <i class="bi bi-unlock-fill"></i>
                                         </button>
-                                        <button class="btn btn-dark mt-1" ng-click="openLockDetailsModal(acc.id); setSelectedAccount(acc)">
+                                        <button class="btn btn-dark mt-1"
+                                            ng-click="openLockDetailsModal(acc.id); setSelectedAccount(acc)">
                                             <i class="bi bi-eye-fill"></i>
                                         </button>
                                     </td>
@@ -85,17 +87,21 @@
                         </div>
                         <div class="d-flex justify-content-between align-items-center pt-2">
                             <div class="fw-normal pb-3" style="font-size: 18px;">
-                                Showing {{ (currentPage - 1) * pageSize + 1 }} to {{ currentPage * pageSize > listStaff.length ? listStaff.length : currentPage * pageSize }} of {{ listStaff.length }} entries
+                                Showing {{ (currentPage - 1) * pageSize + 1 }} to {{ currentPage * pageSize >
+                                listStaff.length ? listStaff.length : currentPage * pageSize }} of {{ listStaff.length
+                                }} entries
                             </div>
                             <nav aria-label="Page navigation">
                                 <ul class="pagination justify-content-end">
                                     <li class="page-item" ng-class="{ 'disabled': currentPage === 1 }">
-                                        <a class="page-link" href="#" tabindex="-1" ng-click="prevPage()" aria-disabled="true">
+                                        <a class="page-link" href="#" tabindex="-1" ng-click="prevPage()"
+                                            aria-disabled="true">
                                             <i class="bi bi-caret-left-fill"></i>
                                         </a>
                                     </li>
                                     <li class="page-item" ng-repeat="page in getPager()">
-                                        <a class="page-link" href="#" ng-click="setPage(page)" ng-class="{ active: currentPage === page }">{{ page }}</a>
+                                        <a class="page-link" href="#" ng-click="setPage(page)"
+                                            ng-class="{ active: currentPage === page }">{{ page }}</a>
                                     </li>
                                     <li class="page-item" ng-class="{ 'disabled': currentPage === totalPages() }">
                                         <a class="page-link" href="#" ng-click="nextPage()">
@@ -108,36 +114,33 @@
                     </div>
                 </div>
                 <!-- Modal detail -->
-                <div class="modal fade" id="lockDetailsModal" tabindex="-1" role="dialog" aria-labelledby="lockDetailsModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
+                <div class="modal fade lock-modal" id="lockDetailsModal" tabindex="-1"
+                    aria-labelledby="lockDetailsModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="lockDetailsModalLabel">Chi tiết khóa tài khoản</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
+                                <h5 class="modal-title" id="lockDetailsModalLabel">Account lock details</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <p>Số lần khóa: {{ lockCount }}</p>
-                                <table class="table">
+                                <p style="font-size: 17px;">Number of lock times: {{ lockCount }}</p>
+                                <table class="table order-datatable text-center">
                                     <thead>
-                                    <tr>
-                                        <th>STT</th>
-                                        <th>Ngày khóa</th>
-                                        <th>Lý do</th>
-                                    </tr>
+                                        <tr>
+                                            <th>Number</th>
+                                            <th>Lock date</th>
+                                            <th>Reason</th>
+                                        </tr>
                                     </thead>
                                     <tbody>
-                                    <tr ng-repeat="lock in lockDetails">
-                                        <td>{{ $index + 1 }}</td>
-                                        <td>{{ lock.banDate }}</td>
-                                        <td>{{ lock.reason }}</td>
-                                    </tr>
+                                        <tr ng-repeat="lock in lockDetails">
+                                            <td>{{ $index + 1 }}</td>
+                                            <td>{{ lock.banDate }}</td>
+                                            <td>{{ lock.reason }}</td>
+                                        </tr>
                                     </tbody>
                                 </table>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
                             </div>
                         </div>
                     </div>
@@ -145,26 +148,27 @@
                 <!-- End Modal -->
 
                 <!-- Modal lock start -->
-                <div class="modal fade" id="lockAccountModal" tabindex="-1" role="dialog" aria-labelledby="lockAccountModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
+                <div class="modal fade lockreason-modal" id="lockAccountModal" tabindex="-1"
+                    aria-labelledby="lockAccountModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-xl">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="lockAccountModalLabel">Lý do khóa tài khoản</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
+                                <h5 class="modal-title" id="lockAccountModalLabel">Reason for account lock</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <form>
+                                <form style="margin: 30px auto;">
                                     <div class="form-group">
-                                        <label for="lockReason">Lý do:</label>
+                                        <label class="fw-bold mb-2" for="lockReason">Reason:</label>
                                         <input type="text" class="form-control" id="lockReason" ng-model="lockReason">
                                     </div>
                                 </form>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                                <button type="button" class="btn btn-primary" ng-click="lockAccountWithReason(selectedAccount)">Khóa tài khoản</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-primary"
+                                    ng-click="lockAccountWithReason(selectedAccount)">Lock account</button>
                             </div>
                         </div>
                     </div>
@@ -172,21 +176,24 @@
                 <!-- Modal lock end -->
 
                 <!-- Modal for confirming unlock -->
-                <div class="modal fade" id="confirmUnlockModal" tabindex="-1" role="dialog" aria-labelledby="confirmUnlockModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
+                <div class="modal fade delete-modal" id="confirmUnlockModal" tabindex="-1"
+                    aria-labelledby="confirmUnlockModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-xl">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="confirmUnlockModalLabel">Xác nhận mở khóa tài khoản</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
+                                <h5 class="modal-title" id="confirmUnlockModalLabel">Confirm account unlock</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
                             </div>
-                            <div class="modal-body">
-                                <p>Bạn có chắc chắn muốn mở khóa tài khoản này?</p>
+                            <div class="modal-body" style="vertical-align: middle; text-align: center;">
+                                <p style="margin-bottom: 0; font-size: 18px; margin: 20px auto;">
+                                    Are you sure you want to unlock this account?
+                                </p>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-                                <button type="button" class="btn btn-danger" ng-click="unlockAccount(selectedAccount)">Mở khóa</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-danger"
+                                    ng-click="unlockAccount(selectedAccount)">Unlock</button>
                             </div>
                         </div>
                     </div>
