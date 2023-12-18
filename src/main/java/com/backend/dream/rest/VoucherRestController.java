@@ -6,14 +6,17 @@ import com.backend.dream.service.AccountService;
 import com.backend.dream.service.NotificationService;
 import com.backend.dream.service.VoucherService;
 import com.backend.dream.service.VoucherTypeService;
+import com.backend.dream.util.ValidationService;
 import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
@@ -33,13 +36,13 @@ public class VoucherRestController {
 
     @Autowired
     private HttpServletRequest request;
-
     @Autowired
     private VoucherTypeService voucherTypeService;
 
     @Autowired
     private NotificationService notificationService;
-
+    @Autowired
+    private ValidationService validateService;
     // Get voucher for user
     @GetMapping("/applicable")
     public List<VoucherDTO> getApplicableVouchers(){

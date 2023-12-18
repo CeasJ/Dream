@@ -7,6 +7,16 @@ voucherApp.controller("voucher_ctrl", function ($scope, $http, $window) {
   $scope.defaultStatus = "";
   $scope.selectedStatus = $scope.defaultStatus;
   $scope.searchText = "";
+
+  $scope.voucher = {
+    type: 1,
+    status:1,
+  };
+
+console.log($scope.voucher.type);
+console.log($scope.voucher.status);
+
+  $scope.initialize = function () {
   $http.get("/rest/vouchers/all").then(
     function (response) {
       $scope.vouchers = response.data;
@@ -33,6 +43,8 @@ voucherApp.controller("voucher_ctrl", function ($scope, $http, $window) {
       console.error("Error fetching voucher status:", error);
     }
   );
+};
+$scope.initialize();  
 
   $scope.filterVouchers = function () {
     if ($scope.selectedStatus === "") {
@@ -93,7 +105,6 @@ voucherApp.controller("voucher_ctrl", function ($scope, $http, $window) {
     type:"",
 
     createVoucher() {
-
       let voucher = angular.copy(this);
       console.log(voucher);
       $http
@@ -107,19 +118,23 @@ voucherApp.controller("voucher_ctrl", function ($scope, $http, $window) {
           }, 1000);
         })
         .catch((err) => {
-          toastr.error("Create Fail");
+          if (err.data && err.data.errors) {
+            $("#discountModal").modal("hide");
+            err.data.errors.forEach(function(error, index) {
+              toastr.error(`Error ${index + 1}: ${error}`);
+            });
+          } 
         });
       }
   };
 
   $scope.editVoucher = function (voucher) {
-    console.log(voucher);
     $scope.voucher = angular.copy(voucher);
     $scope.voucher.expiredDate  = new Date(voucher.expiredDate);
   };
 
   $scope.updateVoucher = function () {
-   let voucher= angular.copy($scope.voucher);
+   let voucher = angular.copy($scope.voucher);
     $http
       .put(`/rest/vouchers/${voucher.id}`, voucher)
       .then((resp) => {
@@ -132,7 +147,12 @@ voucherApp.controller("voucher_ctrl", function ($scope, $http, $window) {
         },1000);
       })
       .catch((err) => {
-        toastr.error("Update Fail");
+        if (err.data && err.data.errors) {
+          $("#discountModal").modal("hide");
+          err.data.errors.forEach(function(error, index) {
+            toastr.error(`Error ${index + 1}: ${error}`);
+          });
+        } 
       });
   };
 

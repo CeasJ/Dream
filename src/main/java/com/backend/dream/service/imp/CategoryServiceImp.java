@@ -28,6 +28,9 @@ public class CategoryServiceImp implements CategoryService {
     @Override
     public CategoryDTO create(CategoryDTO categoryDTO) {
         Category category = categoryMapper.categoryDTOToCategory(categoryDTO);
+        if(categoryDTO.getId_discount() == null){
+            category.setDiscount(null);
+        }
         Category createdCategory = categoryRepository.save(category);
         return categoryMapper.categoryToCategoryDTO(createdCategory);
     }
@@ -35,6 +38,9 @@ public class CategoryServiceImp implements CategoryService {
     @Override
     public CategoryDTO update(CategoryDTO categoryDTO) {
         Category category = categoryMapper.categoryDTOToCategory(categoryDTO);
+        if(categoryDTO.getId_discount() == null){
+            category.setDiscount(null);
+        }
         Category updatedCategory = categoryRepository.save(category);
         return categoryMapper.categoryToCategoryDTO(updatedCategory);
     }

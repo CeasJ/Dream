@@ -8,6 +8,8 @@ import com.backend.dream.service.AccountService;
 import com.backend.dream.service.NotificationService;
 import com.backend.dream.service.ProductService;
 import com.backend.dream.service.ProductSizeService;
+import com.backend.dream.util.ValidationService;
+import jakarta.validation.Valid;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -17,6 +19,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
@@ -39,7 +42,8 @@ public class ProductRestController {
 
     @Autowired
     private NotificationService notificationService;
-
+    @Autowired
+    private ValidationService validateService;
     @GetMapping("/{id}")
     public ProductDTO getOne(@PathVariable("id") Long id) {
         return productService.findById(id);

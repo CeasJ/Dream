@@ -33,21 +33,19 @@ public interface Report extends JpaRepository<OrderDetails,Long> {
             + "GROUP BY o.createDate")
     List<Object[]> getDailyRevenue(int orderStatus);
 
-//    @Query(value = "SELECT sum(od.quantity * od.price) "
-//            + "FROM OrderDetails od "
-//            + "JOIN od.orders o "
-//            + "WHERE o.status.id = ?1 "
-//            + "AND o.createDate BETWEEN current_date AND ?3 "
-//            + "GROUP BY o.createDate")
-//    Double getTotalRevenueLastWeekAndStatus(int orderStatus, Date endDate);
-//
-//        @Query(value = "SELECT sum(od.quantity * od.price) "
-//                + "FROM OrderDetails od "
-//                + "JOIN od.orders o "
-//                + "WHERE o.status.id = ?1 "
-//                + "AND o.createDate BETWEEN current_date AND ?3 "
-//                + "GROUP BY o.createDate")
-//        Double getTotalRevenueLastMonthAndStatus(int orderStatus);
+    @Query(value = "SELECT sum(o.totalAmount) "
+            + "FROM OrderDetails od "
+            + "JOIN od.orders o "
+            + "WHERE o.status.id = ?1 "
+            + "AND o.createDate BETWEEN ?2 AND current_date ")
+    Double getTotalRevenueLastWeekAndStatus(int orderStatus, Date startDate);
+
+    @Query(value = "SELECT sum(o.totalAmount) "
+            + "FROM OrderDetails od "
+            + "JOIN od.orders o "
+            + "WHERE o.status.id = ?1 "
+            + "AND o.createDate BETWEEN ?2 AND current_date ")
+    Double getTotalRevenueLastMonthAndStatus(int orderStatus, Date startDate);
 
     @Query(value = "SELECT cate.name, sum(o.totalAmount) "
             + "FROM OrderDetails od "
@@ -57,6 +55,15 @@ public interface Report extends JpaRepository<OrderDetails,Long> {
             + "WHERE o.status.id = ?1 "
             + "GROUP BY cate.name")
     List<Object[]> getProductHasSoldByCategory(int orderStatus);
+
+    @Query(value = "SELECT o.createDate, sum(o.totalAmount) "
+            + "FROM OrderDetails od "
+            + "JOIN od.orders o "
+            + "WHERE o.status.id = ?1 "
+            + "AND o.createDate BETWEEN ?2 AND ?3 "
+            + "GROUP BY o.createDate")
+    List<Object[]> getTotalRevenueByDateAndStatus(int orderStatus, Date startDate, Date endDate);
+
 
     @Query(value = "SELECT a.fullname, SUM(o.totalAmount - COALESCE(v.percent,0) + o.distance * 4) , a.phone, a.address "
             + "FROM OrderDetails od "

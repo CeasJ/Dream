@@ -41,6 +41,8 @@ public class Orders implements Serializable {
     @Column(name = "totalamount")
     private Double totalAmount;
 
+    private String qr;
+
     @ManyToOne
     @JoinColumn(name = "idaccount")
     private Account account;

@@ -10,11 +10,15 @@ import com.backend.dream.service.NotificationService;
 import com.backend.dream.service.ProductService;
 import com.backend.dream.service.ProductSizeService;
 import jakarta.servlet.http.HttpServletRequest;
+import com.backend.dream.util.ValidationService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
@@ -29,6 +33,8 @@ import java.util.List;
 public class ProductSizeRestController {
     @Autowired
     private ProductSizeService productSizeService;
+    @Autowired
+    private ValidationService validateService;
 
     @Autowired
     private AccountService accountService;

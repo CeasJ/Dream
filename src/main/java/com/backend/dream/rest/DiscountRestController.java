@@ -5,9 +5,13 @@ import com.backend.dream.dto.NotificationDTO;
 import com.backend.dream.mapper.DiscountMapper;
 import com.backend.dream.service.AccountService;
 import com.backend.dream.service.DiscountService;
+import com.backend.dream.util.ValidationService;
+import jakarta.validation.Valid;
 import com.backend.dream.service.NotificationService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -27,7 +31,7 @@ public class DiscountRestController {
     @Autowired
     private DiscountService discountService;
     @Autowired
-    private DiscountMapper discountMapper;
+    private ValidationService validateService;
 
     @Autowired
     private AccountService accountService;

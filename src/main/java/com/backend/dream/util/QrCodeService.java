@@ -1,4 +1,4 @@
-package com.backend.dream.service;
+package com.backend.dream.util;
 
 import java.io.IOException;
 

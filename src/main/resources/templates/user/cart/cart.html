@@ -115,7 +115,7 @@
             <div class="container-fluid cart-1" style="display: none;">
               <div class="row product-row my-3" ng-repeat="product in cart.items">
                 <div class="col-md-2">
-                  <img ng-src="{{'/img/gallery/' + product.image}}" class="img-fluid img-product">
+                  <img ng-src="{{'/img/gallery/' + product.image}}" class="img-fluid img-product" alt="productImg">
                 </div>
                 <div class="col-md-2 pt-4">
                   <h6> {{product.name}} </h6>
@@ -167,12 +167,21 @@
               <p class="title-prc" ng-if="cart.totalDiscount >= 0">Áp dụng Voucher
                 <span class="text-danger" style="float: right; font-weight: bold; font-size: 16px;">- {{ cart.totalDiscount | number:0 }} VNĐ</span>
               </p>
+
+              <div class="input-group mb-4 mt-3 d-flex justify-content-between align-items-center">
+                <label class="mb-0 me-2 ps-2">Dream Voucher</label>
+                <input type="text" placeholder="Enter Voucher Number" ng-model="voucherNumber">
+                <button ng-click="applyVoucherNumber()">Submit</button>
+            </div>
+            
+
               <div class="input-group mb-4 mt-3 d-flex justify-content-between align-items-center">
                 <label class="mb-0 me-2 ps-2">Dream Voucher</label>
                 <a href="#" class="change-voucher-link pt-1" id="applyDiscountBtn" data-bs-toggle="modal"
                   data-bs-target="#voucherModal" th:text="#{cart.selectDiscountCode}">
                 </a>
               </div>
+
               <!-- Modal -->
               <div class="modal fade voucher-modal" id="voucherModal" tabindex="-1" aria-labelledby="voucherModalLabel"
                 aria-hidden="true">
@@ -288,7 +297,7 @@
 
                   <div class="mb-3">
                     <label for="note" class="form-label label pb-2"><span th:text="#{label.note}"></span></label>
-                    <textarea type="text" class="form-control" id="note" required ng-model="order.note"></textarea>
+                    <textarea type="text" class="form-control" id="note" ng-model="order.note"></textarea>
                   </div>
                   <div class="mb-3">
                     <label for="paymentMethod" class="form-label label pb-2">
@@ -322,7 +331,7 @@
           </div>
           <!-- Đơn hàng đã xử lý Start -->
           <div class="container-fluid cart-3 mx-auto" style="display: none;">
-            <!-- <img class="img-cart" ng-src="/img/qrcode/{{ qrCode }}"> -->
+            <img class="img-cart" ng-src="{{'/img/qrcode/' + qrCode}}" alt="qrCode">
             <h5 th:text="#{message.orderProcessed}"></h5>
             <a th:href="@{|/store|}">
               <button class="btn btn-danger mt-3" style="padding: 8px 18px;">
