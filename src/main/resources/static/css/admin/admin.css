@@ -11818,8 +11818,62 @@ body {
 
 /* Admin pagination */
 .pagination .page-item.active .page-link {
-    z-index: 3;
-    color: #fff;
-    background-color: #007bff;
-    border-color: #007bff;
+  z-index: 3;
+  color: #fff;
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.delete-modal .modal-dialog {
+  max-height: 500px;
+  width: 100%; /* Điều chỉnh chiều rộng của modal */
+  max-width: 500px; /* Điều chỉnh chiều rộng tối đa của modal */
+  margin: auto; /* Để modal nằm giữa màn hình */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.delete-modal .modal-content {
+  height: auto;
+}
+
+.delete-modal .modal-body {
+  overflow-y: auto;
+}
+
+.lock-modal .modal-dialog {
+  max-height: 500px;
+  width: 100%; /* Điều chỉnh chiều rộng của modal */
+  max-width: 800px; /* Điều chỉnh chiều rộng tối đa của modal */
+  margin: auto; /* Để modal nằm giữa màn hình */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lock-modal .modal-content {
+  height: auto; /* Điều chỉnh chiều rộng tối đa của modal */
+}
+
+.lock-modal .modal-body {
+  overflow-y: auto;
+}
+
+.lockreason-modal .modal-dialog {
+  max-height: 500px;
+  width: 100%; /* Điều chỉnh chiều rộng của modal */
+  max-width: 500px; /* Điều chỉnh chiều rộng tối đa của modal */
+  margin: auto; /* Để modal nằm giữa màn hình */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lockreason-modal .modal-content {
+  height: auto; /* Điều chỉnh chiều rộng tối đa của modal */
+}
+
+.lockreason-modal .modal-body {
+  overflow-y: auto;
 }

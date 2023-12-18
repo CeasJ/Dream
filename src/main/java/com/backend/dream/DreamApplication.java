@@ -15,13 +15,16 @@ public class DreamApplication {
 		SpringApplication.run(DreamApplication.class, args);
 	}
 
-//	 @Bean
-//	 CommandLineRunner run(AccountService accountServiceImp){
-//	 return args -> {
-//	 accountServiceImp.createAccountWhenDontHaveAccount(new Account("cuong","123"));
-//	 accountServiceImp.createAccountWhenDontHaveAccount(new Account("toan","123"));
-//	 accountServiceImp.createAccountWhenDontHaveAccount(new Account("hung","123"));
-//	 };
-//	 };
+	// @Bean
+	// CommandLineRunner run(AccountService accountServiceImp){
+	// return args -> {
+	// accountServiceImp.createAccountWhenDontHaveAccount(new
+	// Account("cuong","123"));
+	// accountServiceImp.createAccountWhenDontHaveAccount(new
+	// Account("toan","123"));
+	// accountServiceImp.createAccountWhenDontHaveAccount(new
+	// Account("hung","123"));
+	// };
+	// };
 
 }

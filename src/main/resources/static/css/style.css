@@ -1626,3 +1626,32 @@ body {
     color: white;
     padding: 10px 25px;
 }
+
+.custom-file-upload {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+}
+
+.custom-file-upload input[type="file"] {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+}
+
+.custom-file-upload i {
+    font-size: 22px;
+}
+
+.img-avatar {
+    width: 50px;
+    height: 50px;
+    align-self: flex-start;
+}
+
+.img-feedback img {
+    max-width: 100%;
+    max-height: 250px;
+    display: block;
+}

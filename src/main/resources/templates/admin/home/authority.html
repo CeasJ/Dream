@@ -15,11 +15,11 @@
     <!-- Angular -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.js"></script>
-   <!-- jQuery -->
-   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
 </head>
 
@@ -66,7 +66,7 @@
                                         <th>Number</th>
                                         <th style="text-align: left;">Name</th>
                                         <th ng-repeat="role in roles">{{role.name}}</th>
-                                        <th></th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -78,8 +78,8 @@
                                                 ng-click="authority_changed(acc, role)" type="checkbox">
                                         </td>
                                         <td>
-                                            <button class="btn btn-dark" data-bs-toggle="modal" ng-click="getInformation(acc)"
-                                                data-bs-target="#myModal">
+                                            <button class="btn btn-dark" data-bs-toggle="modal"
+                                                ng-click="getInformation(acc)" data-bs-target="#myModal">
                                                 <i class="bi bi-eye-fill"></i>
                                             </button>
                                         </td>
@@ -90,21 +90,26 @@
                         </div>
                         <div class="d-flex justify-content-between align-items-center pt-2">
                             <div class="fw-normal pb-3" style="font-size: 18px;">
-                                Showing {{ (currentPageAuth - 1) * pageSizeAuth + 1 }} to {{ currentPageAuth * pageSizeAuth > listStaff.length ? listStaff.length : currentPageAuth * pageSizeAuth }} of {{ listStaff.length }} entries
+                                Showing {{ (currentPageAuth - 1) * pageSizeAuth + 1 }} to {{ currentPageAuth *
+                                pageSizeAuth > listStaff.length ? listStaff.length : currentPageAuth * pageSizeAuth }}
+                                of {{ listStaff.length }} entries
                             </div>
                             <nav aria-label="Page navigation">
                                 <ul class="pagination justify-content-end">
                                     <li class="page-item" ng-class="{ 'disabled': currentPageAuth === 1 }">
-                                        <a class="page-link" href="#" tabindex="-1" ng-click="firstPageAuth()" aria-disabled="true">
+                                        <a class="page-link" href="#" tabindex="-1" ng-click="firstPageAuth()"
+                                            aria-disabled="true">
                                             <i class="bi bi-caret-left-fill"></i>
                                         </a>
                                     </li>
                                     <li class="page-item" ng-repeat="page in getPagerAuth()">
-                                        <a class="page-link" href="#" ng-click="setPageAuth(page)" ng-class="{ 'active': currentPageAuth === page }">
+                                        <a class="page-link" href="#" ng-click="setPageAuth(page)"
+                                            ng-class="{ 'active': currentPageAuth === page }">
                                             {{ page }}
                                         </a>
                                     </li>
-                                    <li class="page-item" ng-class="{ 'disabled': currentPageAuth === totalPagesAuth() }">
+                                    <li class="page-item"
+                                        ng-class="{ 'disabled': currentPageAuth === totalPagesAuth() }">
                                         <a class="page-link" href="#" ng-click="lastPageAuth()">
                                             <i class="bi bi-caret-right-fill"></i>
                                         </a>
