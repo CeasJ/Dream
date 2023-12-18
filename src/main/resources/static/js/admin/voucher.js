@@ -13,9 +13,6 @@ voucherApp.controller("voucher_ctrl", function ($scope, $http, $window) {
     status:1,
   };
 
-console.log($scope.voucher.type);
-console.log($scope.voucher.status);
-
   $scope.initialize = function () {
   $http.get("/rest/vouchers/all").then(
     function (response) {
@@ -207,12 +204,12 @@ $scope.initialize();
     }
   };
 
-  $scope.deleteListVoucherByNameAndIdType = function (name, idType) {
+  $scope.deleteListVoucherByNameAndIdType = function (number, idType) {
       $http
-        .delete("/rest/vouchers/" + name + "/" + idType)
+        .delete("/rest/vouchers/" + number + "/" + idType)
         .then(function (response) {
           $scope.vouchers = $scope.vouchers.filter(function (voucher) {
-            return voucher.name !== name && voucher.type !== type;
+            return voucher.number !== number && voucher.type !== type;
           });
 
           toastr.success("Xóa voucher thành công");

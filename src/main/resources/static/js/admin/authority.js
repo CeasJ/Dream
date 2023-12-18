@@ -112,7 +112,12 @@ app.controller("authority-ctrl", function ($scope, $http, $location,$timeout) {
           }, 1000);
         })
         .catch(function (err) {
-          toastr.error("Create Fail");
+          if (err.data && err.data.errors) {
+            $("#discountModal").modal("hide");
+            err.data.errors.forEach(function(error, index) {
+              toastr.error(`Error ${index + 1}: ${error}`);
+            });
+          } 
         });
     }
   };

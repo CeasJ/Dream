@@ -43,10 +43,11 @@ public class VoucherDTO {
     private String icon;
 
     @NotNull(message = "Please choose at least one ")
+    @Min(value = 1, message = "Please choose at least one")
     private Long status;
 
     @NotNull(message = "Please choose at least one ")
-    @NotBlank(message = "Please choose at least one")
+    @Min(value = 1, message = "Please choose at least one")
     private Long type;
 
     private Long id_account;

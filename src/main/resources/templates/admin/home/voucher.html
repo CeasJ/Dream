@@ -152,9 +152,9 @@
                                     <div class="row mb-3">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="name" class="fw-bold mb-3">Name</label>
-                                                <input type="text" class="form-control" id="name" name="name"
-                                                    ng-model="name" placeholder="Voucher Name" />
+                                                <label for="name" class="fw-bold mb-3">Code voucher</label>
+                                                <input type="text" class="form-control" id="number" name="number"
+                                                    ng-model="number" placeholder="Voucher code" />
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -176,7 +176,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button ng-click="deleteListVoucherByNameAndIdType(name,type)" class="btn btn-danger" type="button">Delete</button>
+                            <button ng-click="deleteListVoucherByNameAndIdType(number,type)" class="btn btn-danger" type="button">Delete</button>
                         </div>
                     </div>
                 </div>
@@ -261,10 +261,9 @@
                                         <div class="row mb-3">
                                             <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <label for="name" class="fw-bold mb-3">Condition</label>
-                                                    <textarea type="number" class="form-control" id="describe"
-                                                        name="name" ng-model="voucher.condition" placeholder="Describe"
-                                                        style="height: 80px;"></textarea>
+                                                    <label for="condition" class="fw-bold mb-3">Condition</label>
+                                                    <input type="number" class="form-control" id="Condition" min="0"
+                                                        name="condition" ng-model="voucher.condition" placeholder="Condition"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -280,15 +279,11 @@
                                                 <div class="form-group">
                                                     <label class="fw-bold mb-3">Active</label>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio"
-                                                            ng-model="voucher.status" id="radio1" name="partner" 
-                                                            ng-value="1" ng-required  ng-checked="voucher.status === 1"/>
+                                                        <input class="form-check-input" type="radio" ng-model="voucher.status" id="radio1" name="partner" ng-value="1" ng-required ng-init="voucher.status = voucher.status || 1"/>
                                                         <label class="form-check-label" for="radio1">Active</label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio"
-                                                            ng-model="voucher.status" name="all" ng-value="2"
-                                                            ng-required ng-checked="voucher.status === 2"/>
+                                                        <input class="form-check-input" type="radio" ng-model="voucher.status" id="radio2" name="all" ng-value="2" ng-required ng-init="voucher.status = voucher.status || 2"/>
                                                         <label class="form-check-label" >InActive
                                                             </label>
                                                     </div>
@@ -297,9 +292,9 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label class="fw-bold mb-3">Type voucher</label>
-                                                    <select ng-model="voucher.type" class="form-control"
+                                                    <select ng-model="voucher.type" class="form-control" ng-init="voucher.type = voucher.type || 1"
                                                     name="type" id="type">
-                                                    <option value="" selected disabled>Select a type
+                                                    <option value="" disabled>Select a type
                                                     </option>
                                                     <option ng-repeat="t in types" ng-value="t.id">{{t.name}}
                                                     </option>
@@ -314,7 +309,7 @@
                                 <button ng-click="voucher.createVoucher()" class="btn btn-primary"
                                     type="button">Create</button>
                                 <button ng-click="updateVoucher()" class="btn btn-success" type="button">Update</button>
-                                <button ng-click="updateListVoucher()" class="btn btn-success" type="button">Update Multi</button>
+                                <!-- <button ng-click="updateListVoucher()" class="btn btn-success" type="button">Update Multi</button> -->
                                 <button ng-click="reset()" class="btn btn-secondary" type="button">New</button>
                             </div>
                         </div>
