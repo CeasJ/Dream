@@ -1,6 +1,5 @@
 package com.backend.dream.rest;
 
-
 import com.backend.dream.dto.NotificationDTO;
 import com.backend.dream.dto.ProductDTO;
 import com.backend.dream.dto.ProductSizeDTO;
@@ -9,6 +8,8 @@ import com.backend.dream.service.AccountService;
 import com.backend.dream.service.NotificationService;
 import com.backend.dream.service.ProductSizeService;
 import com.backend.dream.util.ValidationService;
+
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,15 +25,22 @@ import java.util.List;
 @RestController
 public class ProductSizeRestController {
     @Autowired
+    private NotificationService notificationService;
+    @Autowired
+    private AccountService accountService;
+    @Autowired
     private ProductSizeService productSizeService;
     @Autowired
     private ValidationService validateService;
+
     @GetMapping()
     public List<ProductSizeDTO> getAllSizes() {
         return productSizeService.findAll();
     }
+
     @PostMapping()
-    public ResponseEntity<?> productSize(@RequestBody @Valid ProductSizeDTO productSizeDTO, BindingResult bindingResult) {
+    public ResponseEntity<?> productSize(@RequestBody @Valid ProductSizeDTO productSizeDTO,
+            BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             validateService.validation(bindingResult);
             return ResponseEntity.badRequest().body(validateService.validation(bindingResult));
@@ -40,6 +48,7 @@ public class ProductSizeRestController {
 
         return ResponseEntity.ok(productSizeService.create(productSizeDTO));
     }
+
     @DeleteMapping("{id}")
     public void delete(@PathVariable("id") Long id, HttpServletRequest request) {
         String username = request.getRemoteUser();
@@ -50,7 +59,8 @@ public class ProductSizeRestController {
             String productName = productSizeService.getProductNameByProductSizeID(id);
             if (productName != null) {
                 String notificationTitle = "Có sự thay đổi trong sản phẩm";
-                String notificationText = "Một giá của sản phẩm '" + productName + "' đã được xóa bởi '" + username + "'";
+                String notificationText = "Một giá của sản phẩm '" + productName + "' đã được xóa bởi '" + username
+                        + "'";
 
                 NotificationDTO notificationDTO = new NotificationDTO();
                 notificationDTO.setIdAccount(idAccount);

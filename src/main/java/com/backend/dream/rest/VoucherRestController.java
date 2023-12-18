@@ -23,7 +23,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/rest/vouchers")
 public class VoucherRestController {
-
+    @Autowired
+    private NotificationService notificationService;
     @Autowired
     private VoucherService voucherService;
     @Autowired
@@ -35,15 +36,16 @@ public class VoucherRestController {
     private VoucherTypeService voucherTypeService;
     @Autowired
     private ValidationService validateService;
+
     // Get voucher for user
     @GetMapping("/applicable")
-    public List<VoucherDTO> getApplicableVouchers(){
+    public List<VoucherDTO> getApplicableVouchers() {
         String user = request.getRemoteUser();
         return voucherService.getApplicableVouchers(user);
     }
 
     @GetMapping("/all")
-    public List<VoucherDTO> getAllVouchers(){
+    public List<VoucherDTO> getAllVouchers() {
         return voucherService.getAllVouchers();
     }
 
@@ -51,6 +53,7 @@ public class VoucherRestController {
     public List<VoucherStatusDTO> getAllVoucherStatus() {
         return voucherService.getAllVoucherStatus();
     }
+
     @GetMapping("/type/all")
     public List<VoucherTypeDTO> getAllVoucherTypes() {
         return voucherTypeService.getAllVoucherTypes();
@@ -68,22 +71,24 @@ public class VoucherRestController {
     }
 
     @PostMapping()
-    public ResponseEntity<?> createVoucher(@RequestBody @Valid JsonNode voucherData, BindingResult bindingResult){
+    public ResponseEntity<?> createVoucher(@RequestBody @Valid JsonNode voucherData, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             validateService.validation(bindingResult);
             return ResponseEntity.badRequest().body(validateService.validation(bindingResult));
         }
         return ResponseEntity.ok(voucherService.createVoucher(voucherData));
     }
+
     @PutMapping("{id}")
-    public VoucherDTO updateVoucher(@RequestBody VoucherDTO voucherDTO,@PathVariable Long id){
-        return voucherService.updateVoucher(voucherDTO,id);
-    }
-    @PutMapping("/{name}/{idType}")
-    public List<VoucherDTO> updateVoucher(@RequestBody VoucherDTO voucherDTO,@PathVariable String name ,@PathVariable Long idType){
-        return voucherService.updateListVoucherByNameAndIdType(voucherDTO,name,idType);
+    public VoucherDTO updateVoucher(@RequestBody VoucherDTO voucherDTO, @PathVariable Long id) {
+        return voucherService.updateVoucher(voucherDTO, id);
     }
 
+    @PutMapping("/{name}/{idType}")
+    public List<VoucherDTO> updateVoucher(@RequestBody VoucherDTO voucherDTO, @PathVariable String name,
+            @PathVariable Long idType) {
+        return voucherService.updateListVoucherByNameAndIdType(voucherDTO, name, idType);
+    }
 
     @DeleteMapping("/{voucherId}")
     public ResponseEntity<String> deleteVoucher(@PathVariable Long voucherID) {
@@ -145,8 +150,5 @@ public class VoucherRestController {
                     .body("Error deleting vouchers: " + e.getMessage());
         }
     }
-
-
-
 
 }

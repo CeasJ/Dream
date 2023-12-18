@@ -9,6 +9,8 @@ import com.backend.dream.service.NotificationService;
 import com.backend.dream.service.ProductService;
 import com.backend.dream.service.ProductSizeService;
 import com.backend.dream.util.ValidationService;
+
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -26,18 +28,25 @@ import java.util.List;
 @RequestMapping("/rest/products")
 public class ProductRestController {
     @Autowired
+    private NotificationService notificationService;
+    @Autowired
+    private AccountService accountService;
+    @Autowired
     private ProductService productService;
     @Autowired
     private ProductSizeService productSizeService;
     @Autowired
     private ValidationService validateService;
+
     @GetMapping("/{id}")
     public ProductDTO getOne(@PathVariable("id") Long id) {
         return productService.findById(id);
     }
+
     @GetMapping("/{product_id}/{size_id}")
-    public ProductSizeDTO getProductSizeDTOByID(@PathVariable("product_id") Long product,@PathVariable("size_id") Long size){
-        return productSizeService.getProductSizeByProductIdAndSizeId(product,size);
+    public ProductSizeDTO getProductSizeDTOByID(@PathVariable("product_id") Long product,
+            @PathVariable("size_id") Long size) {
+        return productSizeService.getProductSizeByProductIdAndSizeId(product, size);
     }
 
     @GetMapping()
@@ -52,11 +61,12 @@ public class ProductRestController {
             return ResponseEntity.badRequest().body(validateService.validation(bindingResult));
         }
 
-        return  ResponseEntity.ok(productService.create(productDTO));
+        return ResponseEntity.ok(productService.create(productDTO));
     }
 
     @PutMapping("{id}")
-    public ProductDTO update(@RequestBody ProductDTO productDTO, @PathVariable("id") Long id, HttpServletRequest request) {
+    public ProductDTO update(@RequestBody ProductDTO productDTO, @PathVariable("id") Long id,
+            HttpServletRequest request) {
         String username = request.getRemoteUser();
         Long idAccount = accountService.findIDByUsername(username);
         Long idRole = accountService.findRoleIdByUsername(username);
@@ -67,7 +77,8 @@ public class ProductRestController {
             ProductDTO updatedProduct = productService.update(productDTO);
 
             String notificationTitle = "Có sự thay đổi trong sản phẩm";
-            String notificationText = "Sản phẩm '" + previousProduct.getName() + "' đã được cập nhật bởi '" + username + "'";
+            String notificationText = "Sản phẩm '" + previousProduct.getName() + "' đã được cập nhật bởi '" + username
+                    + "'";
 
             NotificationDTO notificationDTO = new NotificationDTO();
             notificationDTO.setIdAccount(idAccount);
@@ -84,7 +95,6 @@ public class ProductRestController {
 
         return null;
     }
-
 
     @DeleteMapping("{id}")
     public void delete(@PathVariable("id") Long id, HttpServletRequest request) {
@@ -110,7 +120,6 @@ public class ProductRestController {
         }
 
     }
-
 
     @GetMapping("/getProductPriceByName")
     public ResponseEntity<Double> getProductPriceByName(
