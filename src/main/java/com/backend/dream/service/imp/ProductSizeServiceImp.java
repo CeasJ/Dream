@@ -11,10 +11,13 @@ import com.backend.dream.repository.ProductRepository;
 import com.backend.dream.repository.ProductSizeRepository;
 import com.backend.dream.repository.SizeRepository;
 import com.backend.dream.service.ProductSizeService;
+import com.backend.dream.util.ExcelUtil;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -95,22 +98,10 @@ public class ProductSizeServiceImp implements ProductSizeService {
     }
 
     @Override
-    public ProductSizeDTO findByID(Long id) {
-        Optional<ProductSize> productSizeOptional = productSizeRepository.findById(id);
-        return productSizeOptional.map(productSizeMapper::productSizeToProductSizeDTO).orElse(null);
+    public ByteArrayInputStream getdataProductSize() throws IOException {
+        List<ProductSize> productSize = productSizeRepository.findAll();
+        ByteArrayInputStream data = ExcelUtil.dataToExcelProductSize(productSize);
+        return data;
     }
-
-    @Override
-    public String getProductNameByProductSizeID(Long productSizeID) {
-        Optional<ProductSize> productSizeOptional = productSizeRepository.findById(productSizeID);
-        if (productSizeOptional.isPresent()) {
-            ProductSize productSize = productSizeOptional.get();
-            if (productSize.getProduct() != null) {
-                return productSize.getProduct().getName();
-            }
-        }
-        return null;
-    }
-
 
 }

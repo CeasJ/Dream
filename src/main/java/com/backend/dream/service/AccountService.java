@@ -7,6 +7,8 @@ import com.backend.dream.entity.Role;
 import com.backend.dream.repository.AccountRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -48,8 +50,7 @@ public interface AccountService {
 
     List<AccountDTO> getAllAccounts();
 
-    //    Account createAccountWhenDontHaveAccount(Account account);
-    Long findRoleIdByUsername(String username);
+//    Account createAccountWhenDontHaveAccount(Account account);
 
-
+    ByteArrayInputStream getdataStaff() throws IOException;
 }
