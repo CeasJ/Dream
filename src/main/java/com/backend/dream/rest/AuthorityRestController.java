@@ -28,7 +28,8 @@ import java.util.Optional;
 public class AuthorityRestController {
 	@Autowired
 	AuthorityService authorityService;
-
+	@Autowired
+	AuthorityRepository authorityRepository;
 	@Autowired
 	private AccountService accountService;
 

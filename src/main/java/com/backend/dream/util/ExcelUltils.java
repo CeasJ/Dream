@@ -96,13 +96,13 @@ public class ExcelUltils {
             CreationHelper createExpiredHelper = row.getSheet().getWorkbook().getCreationHelper();
             dateCellExpiredStyle.setDataFormat(createExpiredHelper.createDataFormat().getFormat("dd-MM-yyyy"));
             cellDateExpired.setCellStyle(dateCellExpiredStyle);
-            row.createCell(7).setCellValue(discount.getCategory().getName());
+//            row.createCell(7).setCellValue(discount.getCategory().getName());
         } else if (obj instanceof Voucher) {
             Voucher voucher = (Voucher) obj;
             row.createCell(0).setCellValue(voucher.getId());
             row.createCell(1).setCellValue(voucher.getName());
             row.createCell(2).setCellValue(voucher.getNumber());
-            row.createCell(3).setCellValue(voucher.getPercent());
+            row.createCell(3).setCellValue(voucher.getPrice());
             row.createCell(4).setCellValue(voucher.getCondition());
             row.createCell(5).setCellValue(voucher.getStatus().getName());
             Cell cellDateActive = row.createCell(6);

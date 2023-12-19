@@ -72,13 +72,13 @@ public class PdfUtils {
             table.addCell(String.valueOf(discount.isActive()));
             table.addCell(String.valueOf(discount.getActiveDate()));
             table.addCell(String.valueOf(discount.getExpiredDate()));
-            table.addCell(discount.getCategory().getName());
+//            table.addCell(discount.getCategory().getName());
         } else if (obj instanceof Voucher) {
             Voucher voucher = (Voucher) obj;
             table.addCell(String.valueOf(voucher.getId()));
             table.addCell(voucher.getName());
             table.addCell(voucher.getNumber());
-            table.addCell(String.valueOf(voucher.getPercent()));
+            table.addCell(String.valueOf(voucher.getPrice()));
             table.addCell(String.valueOf(voucher.getCondition()));
             table.addCell(voucher.getStatus().getName());
             table.addCell(String.valueOf(voucher.getCreateDate()));

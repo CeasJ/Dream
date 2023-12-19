@@ -59,7 +59,7 @@ public class ProductRestController {
 
     @GetMapping("/{product_id}/{size_id}")
     public ProductSizeDTO getProductSizeDTOByID(@PathVariable("product_id") Long product,
-            @PathVariable("size_id") Long size) {
+                                                @PathVariable("size_id") Long size) {
         return productSizeService.getProductSizeByProductIdAndSizeId(product, size);
     }
 
@@ -75,42 +75,42 @@ public class ProductRestController {
 
         Long idRole = accountService.findRoleIdByUsername(username);
         if (idRole == 1 || idRole == 2) {
-        if (idRole == 1 || idRole == 2) {
-            String notificationTitle = "Có sự thay đổi trong sản phẩm";
-            String notificationText = "Sản phẩm '" + productDTO.getName() + "' đã được thêm bởi '" + username + "'";
-            String notificationText = "Sản phẩm '" + productDTO.getName() + "' đã được thêm bởi '" + username + "'";
-            NotificationDTO notificationDTO = new NotificationDTO();
-            notificationDTO.setIdAccount(idAccount);
-            notificationDTO.setNotificationTitle(notificationTitle);
-            notificationDTO.setNotificationText(notificationText);
-            notificationDTO.setId_role(idRole);
-            notificationDTO.setImage("product-change.jpg");
-            notificationDTO.setCreatedTime(Timestamp.from(Instant.now()));
-            notificationService.createNotification(notificationDTO);
-            Product createdProduct = productService.create(productDTO);
+            if (idRole == 1 || idRole == 2) {
+                String notificationTitle = "Có sự thay đổi trong sản phẩm";
+                String notificationText = "Sản phẩm '" + productDTO.getName() + "' đã được thêm bởi '" + username + "'";
+                NotificationDTO notificationDTO = new NotificationDTO();
+                notificationDTO.setIdAccount(idAccount);
+                notificationDTO.setNotificationTitle(notificationTitle);
+                notificationDTO.setNotificationText(notificationText);
+                notificationDTO.setId_role(idRole);
+                notificationDTO.setImage("product-change.jpg");
+                notificationDTO.setCreatedTime(Timestamp.from(Instant.now()));
+                notificationService.createNotification(notificationDTO);
+                Product createdProduct = productService.create(productDTO);
 
-            Long productId = createdProduct.getId();
-            Long sizeSId = 1L;
+                Long productId = createdProduct.getId();
+                Long sizeSId = 1L;
 
-            ProductSizeDTO existingProductSize = productSizeService.getProductSizeByProductIdAndSizeId(productId,
-                    sizeSId);
-            if (existingProductSize == null) {
-                ProductSizeDTO sizeSDTO = new ProductSizeDTO();
-                sizeSDTO.setId_product(productId);
-                sizeSDTO.setId_size(sizeSId);
-                sizeSDTO.setPrice(createdProduct.getPrice());
+                ProductSizeDTO existingProductSize = productSizeService.getProductSizeByProductIdAndSizeId(productId,
+                        sizeSId);
+                if (existingProductSize == null) {
+                    ProductSizeDTO sizeSDTO = new ProductSizeDTO();
+                    sizeSDTO.setId_product(productId);
+                    sizeSDTO.setId_size(sizeSId);
+                    sizeSDTO.setPrice(createdProduct.getPrice());
 
-                productSizeService.create(sizeSDTO);
+                    productSizeService.create(sizeSDTO);
+                }
+
+                return createdProduct;
             }
-
-            return createdProduct;
         }
-        return null;
+            return null;
     }
 
+
     @PutMapping("{id}")
-    public ProductDTO update(@RequestBody ProductDTO productDTO, @PathVariable("id") Long id,
-            HttpServletRequest request) {
+    public ProductDTO update(@RequestBody ProductDTO productDTO, @PathVariable("id") Long id, HttpServletRequest request) {
         String username = request.getRemoteUser();
         Long idAccount = accountService.findIDByUsername(username);
         Long idRole = accountService.findRoleIdByUsername(username);

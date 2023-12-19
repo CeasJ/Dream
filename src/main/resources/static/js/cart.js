@@ -101,7 +101,10 @@
       }
     });
   });
-
+} catch (error) {
+  // Nếu có lỗi, chuyển hướng người dùng đến trang error
+  window.location.href = "/error-page";
+}
 
 })(jQuery);
 
