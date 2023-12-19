@@ -582,6 +582,22 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
       $scope.order.address = $scope.userAddressWeb;
     }
   };
+
+});
+
+// Thành nó làm
+document.addEventListener("DOMContentLoaded", function () {
+  var notificationIcon = document.querySelector(".notification-icon");
+  var notificationDropdown = document.querySelector(".notification-dropdown");
+
+  notificationIcon.addEventListener("click", function () {
+    // Toggle the display of the dropdown
+    if (notificationDropdown.style.display === "block") {
+      notificationDropdown.style.display = "none";
+    } else {
+      notificationDropdown.style.display = "block";
+    }
+  });
 });
 
 

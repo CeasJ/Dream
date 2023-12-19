@@ -56,3 +56,20 @@ app.controller("category-ctrl", function ($scope, $http) {
       .catch((err) => {});
   };
 });
+
+// Nhấn mạnh là thg Thành n làm
+document.addEventListener("DOMContentLoaded", function () {
+  var notificationIcon = document.querySelector(".notification-icon");
+  var notificationDropdown = document.querySelector(".notification-dropdown");
+
+  notificationIcon.addEventListener("click", function () {
+    // Toggle the display of the dropdown
+    if (notificationDropdown.style.display === "block") {
+      notificationDropdown.style.display = "none";
+    } else {
+      notificationDropdown.style.display = "block";
+    }
+  });
+});
+
+

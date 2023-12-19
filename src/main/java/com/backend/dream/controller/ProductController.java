@@ -112,9 +112,11 @@ public class ProductController {
 //            productPage = productService.findSaleProducts(pageable);
 //        }
         else if("topRated".equals(selectedOption)){
-            productPage = productService.findByTopRated(categoryIdValue, pageable);
+            Pageable Top5 = PageRequest.of(page, 5);
+            productPage = productService.findByTopRated(categoryIdValue, Top5);
         } else if("bestSelling".equals(selectedOption)){
-            productPage = productService.findByBestSeller(categoryIdValue, pageable);
+            Pageable Top5 = PageRequest.of(page, 5);
+            productPage = productService.findByBestSeller(categoryIdValue, Top5);
         } else {
             // Mặc định
             productPage = productService.findByCategory(categoryIdValue, pageable);

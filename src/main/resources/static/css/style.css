@@ -227,7 +227,7 @@ body {
 }
 
 .notification-icon {
-    margin-left: 15px; /* Điều chỉnh khoảng cách giữa Icon Chuông Thông Báo và /cart */
+    margin-left: 15px;
     position: relative;
     cursor: pointer;
 }
@@ -242,7 +242,9 @@ body {
     display: none;
     width: 400px;
     overflow: auto;
+    max-height: 400px;
 }
+
 .notification-dropdown .notification-title {
     font-size: 17px;
     padding-left: 8px;
@@ -251,10 +253,6 @@ body {
     align-items: center;
     margin-bottom: 0px;
     color: gray;
-}
-.notification-icon:hover .notification-dropdown {
-    display: block;
-    max-width: 400px;
 }
 
 .notification-dropdown .notification-content {
@@ -273,6 +271,18 @@ body {
 .notification-dropdown .notification-text {
     vertical-align: middle;
     padding-left: 10px;
+}
+
+.notification-dropdown::-webkit-scrollbar {
+    width: 5px;
+}
+
+.notification-dropdown::-webkit-scrollbar-thumb {
+    background-color: #c0c0c0; /* Scrollbar thumb color */
+}
+
+.notification-dropdown::-webkit-scrollbar-track {
+    background-color: #f8f8ff; / Scrollbar track color */
 }
 
 .cart-icon {

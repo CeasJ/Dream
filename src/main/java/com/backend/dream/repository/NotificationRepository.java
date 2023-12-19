@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
-    @Query("SELECT n FROM Notification n WHERE n.account.id = :idAccount and n.role.id = 3 ORDER BY n.createdTime DESC LIMIT 5")
+    @Query("SELECT n FROM Notification n WHERE n.account.id = :idAccount and n.role.id = 3 ORDER BY n.createdTime DESC")
     List<Notification> findAllNotifications(@Param("idAccount") Long idAccount);
 
     @Query("SELECT n FROM Notification n WHERE n.role.id = 1 OR n.role.id = 2 ORDER BY n.createdTime DESC")
