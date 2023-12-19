@@ -8,7 +8,7 @@ import com.backend.dream.mapper.AccountMapper;
 import com.backend.dream.repository.AccountRepository;
 import com.backend.dream.repository.AuthorityRepository;
 import com.backend.dream.service.AccountService;
-import com.backend.dream.util.ExcelUtil;
+import com.backend.dream.util.ExcelUltils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class AccountServiceImp implements AccountService {
@@ -126,7 +125,7 @@ public class AccountServiceImp implements AccountService {
     @Override
     public ByteArrayInputStream getdataStaff() throws IOException {
         List<Account> accounts = accountRepository.getStaff();
-        ByteArrayInputStream data = ExcelUtil.dataToExcelSTAFF(accounts);
+        ByteArrayInputStream data = ExcelUltils.dataToExcel(accounts, ExcelUltils.SHEET_NAMESTAFF,ExcelUltils.HEADERSTAFF);
         return data;
     }
 

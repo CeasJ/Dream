@@ -5,9 +5,12 @@ import com.backend.dream.dto.VoucherDTO;
 import com.backend.dream.dto.VoucherStatusDTO;
 import com.backend.dream.dto.VoucherTypeDTO;
 import com.backend.dream.entity.Voucher;
+import com.backend.dream.repository.VoucherRepository;
 import com.backend.dream.service.AccountService;
 import com.backend.dream.service.VoucherService;
 import com.backend.dream.service.VoucherTypeService;
+import com.backend.dream.util.ExcelUltils;
+import com.backend.dream.util.PdfUtils;
 import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +33,8 @@ public class VoucherRestController {
     private VoucherService voucherService;
     @Autowired
     private AccountService accountService;
+    @Autowired
+    private VoucherRepository voucherRepository;
 
     @Autowired
     private HttpServletRequest request;
@@ -114,6 +119,28 @@ public class VoucherRestController {
                 .contentType(MediaType.parseMediaType("application/vnd.ms-excel")).body(response);
         return responseEntity;
     }
+    @GetMapping("/pdf")
+    public ResponseEntity<byte[]> exportToPdf() {
+        try {
+            List<Voucher> vouchers = voucherRepository.findAll();
+            String title = "Data Voucher";
+            ByteArrayInputStream pdfStream = PdfUtils.dataToPdf(vouchers, ExcelUltils.HEADERVOUCHER,title);
 
+            // Chuyển đổi ByteArrayInputStream sang byte array
+            byte[] pdfContents = new byte[pdfStream.available()];
+            pdfStream.read(pdfContents);
+
+            // Đặt headers để trình duyệt hiểu được định dạng của file PDF
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_PDF);
+            headers.setContentDispositionFormData("attachment", "Data-voucher.pdf");
+            headers.setCacheControl("must-revalidate, no-store");
+
+            return new ResponseEntity<>(pdfContents, headers, HttpStatus.OK);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
 }

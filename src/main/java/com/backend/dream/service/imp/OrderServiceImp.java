@@ -3,18 +3,22 @@ package com.backend.dream.service.imp;
 import com.backend.dream.dto.OrderDTO;
 import com.backend.dream.dto.OrderDetailDTO;
 import com.backend.dream.entity.Orders;
+import com.backend.dream.entity.Product;
 import com.backend.dream.entity.Voucher;
 import com.backend.dream.mapper.OrderDetailMapper;
 import com.backend.dream.mapper.OrderMapper;
 import com.backend.dream.repository.OrderDetailRepository;
 import com.backend.dream.repository.OrderRepository;
 import com.backend.dream.service.OrderService;
+import com.backend.dream.util.ExcelUltils;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -108,5 +112,12 @@ public class OrderServiceImp implements OrderService {
         Orders orders = orderMapper.orderDTOToOrder(orderDTO);
         Orders updateOrder = orderRepository.save(orders);
         return orderMapper.orderToOrderDTO(updateOrder);
+    }
+
+    @Override
+    public ByteArrayInputStream getdataOrder() throws IOException {
+        List<Orders> orders = orderRepository.findAll();
+        ByteArrayInputStream data = ExcelUltils.dataToExcel(orders, ExcelUltils.SHEET_ORDER, ExcelUltils.HEADER_ORDER);
+        return data;
     }
 }

@@ -1,11 +1,16 @@
 package com.backend.dream.rest;
 
 import com.backend.dream.dto.DiscountDTO;
+import com.backend.dream.entity.Discount;
 import com.backend.dream.mapper.DiscountMapper;
+import com.backend.dream.repository.DiscountRepository;
 import com.backend.dream.service.DiscountService;
+import com.backend.dream.util.ExcelUltils;
+import com.backend.dream.util.PdfUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +25,8 @@ import java.util.List;
 public class DiscountRestController {
     @Autowired
     private DiscountService discountService;
+    @Autowired
+    private DiscountRepository discountRepository;
     @Autowired
     private DiscountMapper discountMapper;
     @GetMapping()
@@ -49,5 +56,26 @@ public class DiscountRestController {
                 .header(HttpHeaders.CONTENT_DISPOSITION,"attachment;filename="+fileName)
                 .contentType(MediaType.parseMediaType("application/vnd.ms-excel")).body(response);
         return responseEntity;
+    }
+    @GetMapping("/pdf")
+    public ResponseEntity<byte[]> exportToPdf() {
+        try {
+            List<Discount> discounts = discountRepository.findAll();
+            String title = "Data Discount";
+            ByteArrayInputStream pdfStream = PdfUtils.dataToPdf(discounts, ExcelUltils.HEADERDISCOUNT,title);
+
+            byte[] pdfContents = new byte[pdfStream.available()];
+            pdfStream.read(pdfContents);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_PDF);
+            headers.setContentDispositionFormData("attachment", "Data-discount.pdf");
+            headers.setCacheControl("must-revalidate, no-store");
+
+            return new ResponseEntity<>(pdfContents, headers, HttpStatus.OK);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

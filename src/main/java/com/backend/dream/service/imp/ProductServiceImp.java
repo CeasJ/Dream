@@ -11,7 +11,8 @@ import com.backend.dream.service.DiscountService;
 import com.backend.dream.service.FeedbackService;
 import com.backend.dream.service.ProductService;
 import com.backend.dream.service.ProductSizeService;
-import com.backend.dream.util.ExcelUtil;
+import com.backend.dream.util.ExcelUltils;
+import com.backend.dream.util.PdfUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -226,7 +227,8 @@ public class ProductServiceImp implements ProductService {
     @Override
     public ByteArrayInputStream getdataProduct() throws IOException {
         List<Product> products = productRepository.findAll();
-        ByteArrayInputStream data = ExcelUtil.dataToExcelProduct(products);
+        ByteArrayInputStream data = ExcelUltils.dataToExcel(products, ExcelUltils.SHEET_NAMEPRODUCT, ExcelUltils.HEADER_PRODUCT);
         return data;
     }
+
 }

@@ -11,7 +11,7 @@ import com.backend.dream.repository.ProductRepository;
 import com.backend.dream.repository.ProductSizeRepository;
 import com.backend.dream.repository.SizeRepository;
 import com.backend.dream.service.ProductSizeService;
-import com.backend.dream.util.ExcelUtil;
+import com.backend.dream.util.ExcelUltils;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -99,7 +99,7 @@ public class ProductSizeServiceImp implements ProductSizeService {
     @Override
     public ByteArrayInputStream getdataProductSize() throws IOException {
         List<ProductSize> productSize = productSizeRepository.findAll();
-        ByteArrayInputStream data = ExcelUtil.dataToExcelProductSize(productSize);
+        ByteArrayInputStream data = ExcelUltils.dataToExcel(productSize, ExcelUltils.SHEET_NAMEPRODUCTSIZE,ExcelUltils.HEADERPRODUCTSIZE);
         return data;
     }
 

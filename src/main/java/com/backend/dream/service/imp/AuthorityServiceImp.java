@@ -6,7 +6,7 @@ import com.backend.dream.entity.Authority;
 import com.backend.dream.repository.AccountRepository;
 import com.backend.dream.repository.AuthorityRepository;
 import com.backend.dream.service.AuthorityService;
-import com.backend.dream.util.ExcelUtil;
+import com.backend.dream.util.ExcelUltils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,7 +42,7 @@ public class AuthorityServiceImp implements AuthorityService {
 	@Override
 	public ByteArrayInputStream getdataAuthority() throws IOException {
 		List<Authority> authorities = authorityRepository.findAll();
-		ByteArrayInputStream data = ExcelUtil.dataToExcelAuthority(authorities);
+		ByteArrayInputStream data = ExcelUltils.dataToExcel(authorities, ExcelUltils.SHEET_NAMEAUTHORITY,ExcelUltils.HEADERAUTHORITY);
 		return data;
 	}
 
