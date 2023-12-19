@@ -10,7 +10,8 @@ import java.util.List;
 
 @Repository
 public interface Report extends JpaRepository<OrderDetails,Long> {
-    @Query(value = "SELECT SUM(o.totalAmount) FROM OrderDetails od JOIN od.orders o WHERE od.orders.status.id = ?1")
+    @Query(value = "SELECT SUM(o.totalAmount - COALESCE(v.price,0) + o.distance * 4) FROM OrderDetails od JOIN od.orders o "
+            + "LEFT JOIN od.orders.voucher v WHERE od.orders.status.id = ?1")
     Double getRevenue(int orderStatus);
     @Query(value = "SELECT count(o.id) FROM Orders o WHERE o.status.id = ?1")
     Double getTotalOrder(int orderStatus);
@@ -33,14 +34,14 @@ public interface Report extends JpaRepository<OrderDetails,Long> {
             + "GROUP BY o.createDate")
     List<Object[]> getDailyRevenue(int orderStatus);
 
-    @Query(value = "SELECT sum(o.totalAmount) "
+    @Query(value = "SELECT SUM(o.totalAmount) "
             + "FROM OrderDetails od "
             + "JOIN od.orders o "
             + "WHERE o.status.id = ?1 "
             + "AND o.createDate BETWEEN ?2 AND current_date ")
     Double getTotalRevenueLastWeekAndStatus(int orderStatus, Date startDate);
 
-    @Query(value = "SELECT sum(o.totalAmount) "
+    @Query(value = "SELECT SUM(o.totalAmount) "
             + "FROM OrderDetails od "
             + "JOIN od.orders o "
             + "WHERE o.status.id = ?1 "

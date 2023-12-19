@@ -314,7 +314,7 @@
                       <span th:text="#{label.paymentMethod}"></span>:</label><br>
                     <div class="form-check form-check-inline">
                       <input type="radio" class="form-check-input" id="paymentMethod" name="paymentMethod"
-                        ng-model="payment" ng-value="1" ng-checked="true">
+                        ng-model="payment" ng-value="1" ng-init="payment = 1">
                       <label class="form-check-label" for="paymentMethod"><span th:text="#{label.cash}"></span></label>
                     </div>
                     <div class="form-check form-check-inline">

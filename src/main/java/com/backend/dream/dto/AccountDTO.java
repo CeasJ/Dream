@@ -37,7 +37,6 @@ public class AccountDTO {
     @Size(min = 10, max = 11, message = "Phone number must be between 10 and 11 digits")
     private String phone;
 
-    @NotBlank(message = "Address is required")
     private String address;
 
     private boolean active;

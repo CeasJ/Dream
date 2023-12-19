@@ -460,6 +460,7 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
     $http.get('/rest/vouchers/applicable')
     .then(function(response) {
         $scope.vouchers = response.data;
+        console.log(response.data);
     }, function(error) {
     });
 

@@ -70,7 +70,7 @@ public class ReportController {
     calendarLastMonth.add(Calendar.DAY_OF_MONTH,-30);
 
     Date startDate = calendar.getTime();
-    Date startDateLastMonth = calendar.getTime();
+    Date startDateLastMonth = calendarLastMonth.getTime();
 
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 

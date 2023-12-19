@@ -28,6 +28,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.List;
 
+@CrossOrigin("**")
 @RestController
 @RequestMapping("/rest/vouchers")
 public class VoucherRestController {
@@ -125,15 +126,15 @@ public class VoucherRestController {
         return voucherService.updateListVoucherByNameAndIdType(voucherDTO, name, idType);
     }
 
-    @DeleteMapping("/{voucherId}")
-    public ResponseEntity<String> deleteVoucher(@PathVariable Long voucherID) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteVoucher(@PathVariable Long id) {
         try {
             String notificationTitle = "Có sự thay đổi trong phiếu giảm";
             String username = request.getRemoteUser();
             Long idAccount = accountService.findIDByUsername(username);
             Long idRole = accountService.findRoleIdByUsername(username);
 
-            VoucherDTO deletedVoucher = voucherService.getVoucherByID(voucherID);
+            VoucherDTO deletedVoucher = voucherService.getVoucherByID(id);
             String voucherName = deletedVoucher.getName();
             String notificationText = "Một phiếu giảm giá '" + voucherName + "' đã bị xóa bởi '" + username + "'";
 
@@ -146,7 +147,7 @@ public class VoucherRestController {
             notificationDTO.setCreatedTime(Timestamp.from(Instant.now()));
             notificationService.createNotification(notificationDTO);
 
-            voucherService.delete(voucherID);
+            voucherService.delete(id);
             return ResponseEntity.ok("Voucher has been deleted successfully!");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

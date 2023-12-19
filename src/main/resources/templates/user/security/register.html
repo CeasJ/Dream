@@ -57,96 +57,96 @@
 							<p class="text-center fw-bold mx-3 mb-0">Or</p>
 						</div>
 
-						 <div th:if="${message}" class="form-outline mb-3">
+						<div th:if="${message}" class="form-outline mb-3">
 							<h6 class="text-center text-danger " th:text="${message}"></h6>
 						</div>
 						<div class="form-floating mb-3 position-relative">
 							<input type="text" id="firstname" class="form-control" name="firstname"
 								placeholder="Enter First Name" th:field="*{firstname}" required>
 							<label class="form-label" for="firstname">First Name</label>
-							<div class="invalid-tooltip tooltip-left">
-							 <span th:if="${#fields.hasErrors('firstname')}" th:errors="*{firstname}"
+<!--							<div class="invalid-tooltip tooltip-left">-->
+								<span th:if="${#fields.hasErrors('firstname')}" th:errors="*{firstname}"
 									class="text-danger"></span>
-								Please enter your First Name
-							</div>
-							<div class="valid-tooltip tooltip-left">
-								Completed!
-							</div>
+<!--								Please enter your First Name-->
+<!--							</div>-->
+<!--							<div class="valid-tooltip tooltip-left">-->
+<!--								Completed!-->
+<!--							</div>-->
 						</div>
 						<div class="form-floating mt-3 mb-3">
 							<input type="text" id="lastname" class="form-control" name="lastname"
 								placeholder="Enter Last Name" th:field="*{lastname}" required />
 							<label class="form-label" for="lastname">Last Name</label>
 							<div class="invalid-tooltip tooltip-left">
-							<span th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}"
+								<span th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}"
 									class="text-danger"></span>
-								Please enter your Last Name
-							</div>
-							<div class="valid-tooltip tooltip-left">
-								Completed!
-							</div>
+<!--								Please enter your Last Name-->
+<!--							</div>-->
+<!--							<div class="valid-tooltip tooltip-left">-->
+<!--								Completed!-->
+<!--							</div>-->
 						</div>
 						<div class="form-floating mb-3">
 							<input type="text" id="username" class="form-control" name="username"
 								placeholder="Enter username" th:field="*{username}" required />
 							<label class="form-label" for="username">Username</label>
-							<div class="invalid-tooltip tooltip-left">
-							<span th:if="${#fields.hasErrors('username')}" th:errors="*{username}"
+<!--							<div class="invalid-tooltip tooltip-left">-->
+								<span th:if="${#fields.hasErrors('username')}" th:errors="*{username}"
 									class="text-danger"></span>
-								Please enter your Username
-							</div>
-							<div class="valid-tooltip tooltip-left">
-								Completed!
-							</div>
+<!--								Please enter your Username-->
+<!--							</div>-->
+<!--							<div class="valid-tooltip tooltip-left">-->
+<!--								Completed!-->
+<!--							</div>-->
 						</div>
 						<div class="form-floating mb-3">
 							<input type="email" id="email" class="form-control" name="email" placeholder="Enter email"
 								th:field="*{email}" required />
 							<label class="form-label" for="email">Email</label>
-							<div class="invalid-tooltip tooltip-left">
-							 <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
+<!--							<div class="invalid-tooltip tooltip-left">-->
+								<span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
 									class="text-danger"></span>
-								Please enter your email
-							</div>
-							<div class="valid-tooltip tooltip-left">
-								Completed!
-							</div>
+<!--								Please enter your email-->
+<!--							</div>-->
+<!--							<div class="valid-tooltip tooltip-left">-->
+<!--								Completed!-->
+<!--							</div>-->
 						</div>
 						<div class="form-floating mb-3">
 							<input type="password" id="password" class="form-control" name="password"
 								placeholder="Enter password" th:field="*{password}" required />
 							<label class="form-label" for="password">Password</label>
-							<div class="invalid-tooltip tooltip-left">
-								<!-- <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"
-									class="text-danger"></span> -->
-								Please enter your password
-							</div>
-							<div class="valid-tooltip tooltip-left">
-								Completed!
-							</div>
+<!--							<div class="invalid-tooltip tooltip-left">-->
+								<span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"
+									class="text-danger"></span>
+<!--								Please enter your password-->
+<!--							</div>-->
+<!--							<div class="valid-tooltip tooltip-left">-->
+<!--								Completed!-->
+<!--							</div>-->
 						</div>
 						<div class="form-floating mb-3">
 							<input type="password" id="confirmPassword" class="form-control" name="confirmPassword"
 								placeholder="Enter password" required />
 							<label class="form-label" for="password">Confirm Password</label>
-							<div class="invalid-tooltip tooltip-left">
-								Please enter the password again
-							</div>
-							<div class="valid-tooltip tooltip-left">
-								Completed!
-							</div>
+<!--							<div class="invalid-tooltip tooltip-left">-->
+<!--								Please enter the password again-->
+<!--							</div>-->
+<!--							<div class="valid-tooltip tooltip-left">-->
+<!--								Completed!-->
+<!--							</div>-->
 						</div>
 						<div class="form-floating mb-3">
 							<input type="number" id="phone" class="form-control" name="phone" placeholder="Enter Phone"
 								th:field="*{phone}" min="0" required />
 							<label class="form-label" for="phone">Phone</label>
-							<div class="invalid-tooltip tooltip-left">
-								<!-- <span th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="text-danger"></span> -->
-								Please enter your phone number
-							</div>
-							<div class="valid-tooltip tooltip-left">
-								Completed!
-							</div>
+<!--							<div class="invalid-tooltip tooltip-left">-->
+								<span th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="text-danger"></span>
+<!--								Please enter your phone number-->
+<!--							</div>-->
+<!--							<div class="valid-tooltip tooltip-left">-->
+<!--								Completed!-->
+<!--							</div>-->
 						</div>
 
 						<div class="text-center text-lg-start mt-3 pt-2">
@@ -165,28 +165,28 @@
 		</div>
 	</section>
 
-	<script>
-		// Example starter JavaScript for disabling form submissions if there are invalid fields
-		(function () {
-			'use strict'
+<!--	<script>-->
+<!--		// Example starter JavaScript for disabling form submissions if there are invalid fields-->
+<!--		(function () {-->
+<!--			'use strict'-->
 
-			// Fetch all the forms we want to apply custom Bootstrap validation styles to
-			var forms = document.querySelectorAll('.needs-validation')
+<!--			// Fetch all the forms we want to apply custom Bootstrap validation styles to-->
+<!--			var forms = document.querySelectorAll('.needs-validation')-->
 
-			// Loop over them and prevent submission
-			Array.prototype.slice.call(forms)
-				.forEach(function (form) {
-					form.addEventListener('submit', function (event) {
-						if (!form.checkValidity()) {
-							event.preventDefault()
-							event.stopPropagation()
-						}
+<!--			// Loop over them and prevent submission-->
+<!--			Array.prototype.slice.call(forms)-->
+<!--				.forEach(function (form) {-->
+<!--					form.addEventListener('submit', function (event) {-->
+<!--						if (!form.checkValidity()) {-->
+<!--							event.preventDefault()-->
+<!--							event.stopPropagation()-->
+<!--						}-->
 
-						form.classList.add('was-validated')
-					}, false)
-				})
-		})()
-	</script>
+<!--						form.classList.add('was-validated')-->
+<!--					}, false)-->
+<!--				})-->
+<!--		})()-->
+<!--	</script>-->
 
 </body>
 

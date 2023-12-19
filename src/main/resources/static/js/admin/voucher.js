@@ -1,6 +1,6 @@
 let voucherApp = angular.module("voucher_app", []);
 
-voucherApp.controller("voucher_ctrl", function ($scope, $http, $window) {
+voucherApp.controller("voucher_ctrl", function ($scope, $http) {
   $scope.vouchers = [];
   $scope.status = [];
   $scope.types = [];
@@ -222,37 +222,32 @@ voucherApp.controller("voucher_ctrl", function ($scope, $http, $window) {
       }
   };
 
-  $scope.confirmDelete = function () {
-    if ($scope.voucherToDelete) {
-      $http.delete("/rest/vouchers/" + $scope.voucherToDelete.id).then(
-        function (response) {
+  $scope.deleteItem = null;
 
-        },
-        function (error) {
-          console.error("Error deleting voucher:", error);
-        }
-      );
-    }
+  $scope.setDeleteItem = function(item) {
+      $scope.deleteItem = item;
   };
 
   // Delete voucher
-  $scope.deleteVoucher = function (voucherId) {
-    if ($window.confirm("Bạn có chắc muốn xóa voucher này không?")) {
-      $http
-        .delete("/rest/vouchers/" + voucherId)
-        .then(function (response) {
-          $scope.vouchers = $scope.vouchers.filter(function (voucher) {
-            return voucher.id !== voucherId;
-          });
-
-          toastr.success("Xóa voucher thành công");
-
-          setTimeout(() => {
-            location.reload();
-          }, 1000);
-        })
-        .catch((error) => { });
+  $scope.deleteVoucher = function (voucher) {
+    if (!voucher || !voucher.id) {
+      toastr.error("Invalid item or item ID");
+      return;
     }
+    console.log(voucher.id);
+    $http.delete(`/rest/vouchers/${voucher.id}`).then(resp => {
+      let index = $scope.vouchers.findIndex(vou => vou.id === voucher.id);
+      $scope.vouchers.splice(index, 1);
+      toastr.success("Delete Success");
+      setTimeout(() => {
+        location.reload();
+      }, 1000);
+    }).catch(err => {
+      toastr.success("Delete Success");
+      setTimeout(()=>{
+        location.reload();
+      },1000);
+    });
   };
 
   $scope.deleteListVoucherByNameAndIdType = function (number, idType) {

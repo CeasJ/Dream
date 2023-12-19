@@ -124,6 +124,54 @@ app.controller("discount-ctrl", function ($scope, $http) {
            toastr.warning("Please fill in all required fields correctly!");
        }
    };
+
+
+   $scope.updateApplyDiscount = function(categoryID, discountID,categoryName) {
+    let category = {
+      id: categoryID,
+      id_discount: discountID,
+      name: categoryName,
+    };
+    $http.put(`/rest/category/update/${categoryID}`, category).then(resp => {
+      let index = $scope.cates.findIndex((cate) => cate.id === categoryID);
+      $scope.cates[index] = category;
+      $scope.reset();
+      toastr.success("Update Success");
+      setTimeout(()=>{
+       location.reload();
+      },1000);
+    }).catch(err => {
+      toastr.error("Update Fail");
+    })
+ };
+
+
+   $scope.deleteItem = null;
+
+   $scope.setDeleteItem = function(item) {
+       $scope.deleteItem = item;
+   };
+ 
+
+   $scope.delete = function (count) {
+    if (!count || !count.id) {
+      toastr.error("Invalid item or item ID");
+      return;
+    }
+
+    $http.delete(`/rest/discount/${count.id}`).then(resp => {
+      let index = $scope.discounts.findIndex(p => p.id === count.id);
+      $scope.discounts.splice(index, 1);
+      $scope.reset();
+      $("#discountModal").modal("hide");
+      toastr.success("Delete Success");
+      setTimeout(()=>{
+     location.reload();
+    },1000);
+    }).catch(err => {
+      toastr.error("Create Fail");
+    })
+  };
         $scope.updateNotApplyDiscount = function(categoryID, categoryName) {
           let category = {
             id: categoryID,
