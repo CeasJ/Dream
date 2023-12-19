@@ -4,6 +4,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" href="/img/logo.jpg" type="image/x-icon" />
     <title>Tea House - Voucher</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
@@ -38,7 +39,10 @@
 </head>
 
 <body ng-app="cart_app" ng-controller="ctrl" style="background-color: whitesmoke;">
-
+    <div id="spinner"
+        class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;"></div>
+    </div>
     <!-- Navbar Start -->
     <div th:replace="~{/user/component/header.html}"></div>
     <!-- Navbar End -->
@@ -47,11 +51,12 @@
         <!-- Page Header Start -->
         <div class="container-fluid page-header py-5 wow fadeIn" data-wow-delay="0.1s">
             <div class="container text-center py-5">
-                <h1 class="display-2 text-dark mb-4 animated slideInDown">My Vouchers</h1>
+                <h1 class="display-2 text-dark mb-4 animated slideInDown" th:text="#{voucher.title}"></h1>
                 <nav aria-label="breadcrumb animated slideInDown">
                     <ol class="breadcrumb justify-content-center mb-0">
-                        <li class="breadcrumb-item"><a th:href="@{|/home|}">Home</a></li>
-                        <li class="breadcrumb-item text-dark" aria-current="page">vouchers</li>
+                        <li class="breadcrumb-item"><a th:href="@{|/home|}" th:text="#{breadcrumb.home}"></a></li>
+                        <li class="breadcrumb-item text-dark" aria-current="page" th:text="#{voucher.vouchers}">
+                        </li>
                     </ol>
                 </nav>
             </div>
@@ -61,100 +66,27 @@
         <!--Voucher Start  -->
         <div class="container voucher-1 col-md-12">
             <div class="row mb-4">
-                <div class="col-md-5 vouchers-item">
+                <div class="col-md-5 vouchers-item mb-3" ng-repeat="voucher in vouchers">
                     <div class="row">
                         <div class="col-md-3 content-sale text-center">
                             <div class="icon-container">
-                                <i class="bi bi-cup-straw text-white"></i>
+                                <i class="{{ voucher.icon }} text-white"></i>
                             </div>
-                            <h6 class="text-white">Thức uống</h6>
+                            <h6 class="text-white">{{ voucher.name }}</h6>
                         </div>
                         <div class="col-md-9" style="padding: 10px;">
                             <div class="discount-info" style="margin-left: 20px;">
-                                <h4 style="padding-bottom: 5px;">Giảm 10%</h4>
-                                <p style="margin-bottom: 15px; font-size: 15px;">Đơn tối thiểu 100k, giảm tối đa 10k</p>
-                                <a href="#" class="use-now-link"
+                                <h4 style="padding-bottom: 5px;">Giảm {{ voucher.percent | number : 0 }}₫</h4>
+                                <p style="margin-bottom: 15px; font-size: 15px;">Đơn tối thiểu {{ voucher.condition |
+                                    number : 0}} ₫</p>
+                                <a th:href="@{|/home|}" class="use-now-link"
                                     style="text-decoration: none; color: #1E90FF; float: right; padding-right: 20px;">
                                     Dùng ngay <span style="font-size: 16px;"><i class="bi bi-chevron-right"></i></span>
                                 </a>
                                 <div class="expiry-info text-danger" style="display: flex; font-size: 14px;">
                                     <i class="far fa-clock" style="padding-top: 3px; padding-right: 5px;"></i>
-                                    <p style="margin-bottom: 0px;">Sắp hết hạn: Còn 4 giờ</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-5 vouchers-item">
-                    <div class="row">
-                        <div class="col-md-3 content-sale text-center">
-                            <div class="icon-container">
-                                <i class="bi bi-cake2 text-white"></i>
-                            </div>
-                            <h6 class="text-white">Tráng miệng</h6>
-                        </div>
-                        <div class="col-md-9" style="padding: 10px;">
-                            <div class="discount-info" style="margin-left: 20px;">
-                                <h4 style="padding-bottom: 5px;">Giảm 10%</h4>
-                                <p style="margin-bottom: 15px; font-size: 15px;">Đơn tối thiểu 100k, giảm tối đa 10k</p>
-                                <a href="#" class="use-now-link"
-                                    style="text-decoration: none; color: #1E90FF; float: right; padding-right: 20px;">
-                                    Dùng ngay <span style="font-size: 16px;"><i class="bi bi-chevron-right"></i></span>
-                                </a>
-                                <div class="expiry-info text-danger" style="display: flex; font-size: 14px;">
-                                    <i class="far fa-clock" style="padding-top: 3px; padding-right: 5px;"></i>
-                                    <p style="margin-bottom: 0px;">Sắp hết hạn: Còn 12 giờ</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row mb-4">
-                <div class="col-md-5 vouchers-item">
-                    <div class="row">
-                        <div class="col-md-3 content-sale text-center">
-                            <div class="icon-container">
-                                <i class="bi bi-truck text-white"></i>
-                            </div>
-                            <h6 class="text-white">Mã vận chuyển</h6>
-                        </div>
-                        <div class="col-md-9" style="padding: 10px;">
-                            <div class="discount-info" style="margin-left: 20px;">
-                                <h4 style="padding-bottom: 5px;">Giảm tối đa 50k</h4>
-                                <p style="margin-bottom: 15px; font-size: 15px;">Đơn tối thiểu 100k</p>
-                                <a href="#" class="use-now-link"
-                                    style="text-decoration: none; color: #1E90FF; float: right; padding-right: 20px;">
-                                    Dùng ngay <span style="font-size: 16px;"><i class="bi bi-chevron-right"></i></span>
-                                </a>
-                                <div class="expiry-info text-danger" style="display: flex; font-size: 14px;">
-                                    <i class="far fa-clock" style="padding-top: 3px; padding-right: 5px;"></i>
-                                    <p style="margin-bottom: 0px;">Có hiệu lực: Sau 1 ngày</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-5 vouchers-item">
-                    <div class="row">
-                        <div class="col-md-3 content-sale text-center">
-                            <div class="icon-container">
-                                <i class="bi bi-truck text-white"></i>
-                            </div>
-                            <h6 class="text-white">Mã vận chuyển</h6>
-                        </div>
-                        <div class="col-md-9" style="padding: 10px;">
-                            <div class="discount-info" style="margin-left: 20px;">
-                                <h4 style="padding-bottom: 5px;">Giảm tối đa 25k</h4>
-                                <p style="margin-bottom: 15px; font-size: 15px;">Đơn tối thiểu 50k</p>
-                                <a href="#" class="use-now-link"
-                                    style="text-decoration: none; color: #1E90FF; float: right; padding-right: 20px;">
-                                    Dùng ngay <span style="font-size: 16px;"><i class="bi bi-chevron-right"></i></span>
-                                </a>
-                                <div class="expiry-info text-danger" style="display: flex; font-size: 14px;">
-                                    <i class="far fa-clock" style="padding-top: 3px; padding-right: 5px;"></i>
-                                    <p style="margin-bottom: 0px;">Có hiệu lực: Sau 1 ngày</p>
+                                    <p style="margin-bottom: 0px;">Có hiệu lực: {{ getRemainingTime(voucher.expireddate)
+                                        }}</p>
                                 </div>
                             </div>
                         </div>
@@ -234,7 +166,7 @@
         <!-- Copyright End -->
 
         <!-- Back to Top -->
-        <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top">
+        <a href="#" class="btn btn-lg btn-dark btn-lg-square rounded-circle back-to-top">
             <i class="bi bi-arrow-up"></i>
         </a>
     </main>

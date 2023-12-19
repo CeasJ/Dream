@@ -1,5 +1,6 @@
 package com.backend.dream.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,6 +9,7 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -29,14 +31,19 @@ public class Discount implements Serializable {
     @Column(name = "discountpercent")
     private Double percent;
 
+    private boolean active;
+
     @Column(name = "activedate")
-    private Date activeDate;
+    @Temporal(TemporalType.DATE)
+    private Date activeDate=new Date();
 
     @Column(name = "expireddate")
-    private Date expiredDate;
+    @Temporal(TemporalType.DATE)
+    private Date expiredDate=new Date();
 
-    @ManyToOne
-    @JoinColumn(name = "idproduct")
-    private Product product;
+    @JsonIgnore
+    @OneToMany(mappedBy = "discount", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Category> category;
+
 
 }

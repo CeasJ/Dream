@@ -9,8 +9,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
-public class
-DreamApplication {
+
+public class DreamApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(DreamApplication.class, args);
 	}
@@ -18,9 +18,12 @@ DreamApplication {
 	// @Bean
 	// CommandLineRunner run(AccountService accountServiceImp){
 	// return args -> {
-	// accountServiceImp.create(new Account("cuong","123"));
-	// accountServiceImp.create(new Account("toan","123"));
-	// accountServiceImp.create(new Account("hung","123"));
+	// accountServiceImp.createAccountWhenDontHaveAccount(new
+	// Account("cuong","123"));
+	// accountServiceImp.createAccountWhenDontHaveAccount(new
+	// Account("toan","123"));
+	// accountServiceImp.createAccountWhenDontHaveAccount(new
+	// Account("hung","123"));
 	// };
 	// };
 

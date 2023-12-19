@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,17 +26,25 @@ public class Voucher implements Serializable {
 
     private String number;
 
+    @Column(name = "createdate")
     @Temporal(TemporalType.DATE)
     private Date createDate = new Date();
 
+    @Column(name = "expireddate")
     @Temporal(TemporalType.DATE)
     private Date expiredDate;
 
-    private Double percent;
+    private Double price;
 
     private Double condition;
 
-    @ManyToOne
+    private String icon;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "voucher")
+    private List<Orders> orders;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idaccount")
     @JsonIgnore
     private Account account;
@@ -43,4 +52,8 @@ public class Voucher implements Serializable {
     @ManyToOne
     @JoinColumn(name = "idvoucherstatus")
     private VoucherStatus status;
+
+    @ManyToOne
+    @JoinColumn(name = "idvouchertype")
+    private VoucherType type;
 }

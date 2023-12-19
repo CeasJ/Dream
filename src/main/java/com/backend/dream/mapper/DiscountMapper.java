@@ -9,8 +9,6 @@ import org.mapstruct.factory.Mappers;
 @Mapper(componentModel = "spring")
 public interface DiscountMapper {
     DiscountMapper INSTANCE = Mappers.getMapper(DiscountMapper.class);
-    @Mapping(source = "product.id", target = "id_product")
     DiscountDTO discountToDiscountDTO(Discount discount);
-
     Discount discountDTOToDiscount(DiscountDTO discountDTO);
 }

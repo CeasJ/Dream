@@ -20,9 +20,12 @@ public class Account implements Serializable {
     private Long id;
     @Column(unique = true)
     private String username;
+
     private String email;
+
     private String password;
 
+    @Column(unique = false)
     private String avatar;
 
     private String firstname;
@@ -34,12 +37,15 @@ public class Account implements Serializable {
     private String phone;
 
     private String address;
+
+    private boolean active;
+
     @JsonIgnore
-    @OneToMany(mappedBy = "account", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "account", fetch = FetchType.EAGER, orphanRemoval = true)
     private List<Authority> authority;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "account")
+    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY,  orphanRemoval = true)
     private List<Voucher> voucher;
 
     @JsonIgnore

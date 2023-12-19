@@ -35,4 +35,9 @@ public class OrderDetailDTO {
 
     private String product_name;
 
+    private Long id_size;
+
+    private Double discount;
+
+    private Double distance;
 }

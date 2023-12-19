@@ -15,7 +15,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table
+@Table(name = "voucherstatus")
 public class VoucherStatus implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

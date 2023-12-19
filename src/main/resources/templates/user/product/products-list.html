@@ -3,14 +3,11 @@
 
 <head>
     <meta charset="utf-8">
+    <link rel="icon" href="/img/logo.jpg" type="image/x-icon" />
     <title>Dream - The Coffee and Tea</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
-    <!-- Favicon -->
-
-    <link href="img/logo.png" rel="icon">
-
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,21 +38,25 @@
 </head>
 
 <body ng-app="cart_app" ng-controller="ctrl">
-
+    <div id="spinner"
+        class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;"></div>
+    </div>
     <!-- Navbar Start -->
     <div th:replace="~{/user/component/header.html}"></div>
     <!-- Navbar End -->
 
     <main>
+
         <!-- Page Header Start -->
         <div class="container-fluid page-header py-5 wow fadeIn" data-wow-delay="0.1s">
             <div class="container text-center py-5">
-                <h1 class="display-2 text-dark mb-4 animated slideInDown">Products</h1>
+                <h1 class="display-2 text-dark mb-4 animated slideInDown" th:text="#{product.title}"></h1>
                 <nav aria-label="breadcrumb animated slideInDown">
                     <ol class="breadcrumb justify-content-center mb-0">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item"><a href="#">Pages</a></li>
-                        <li class="breadcrumb-item text-dark" aria-current="page">Products</li>
+                        <li class="breadcrumb-item"><a th:href="@{|/home|}" th:text="#{breadcrumb.home}"></a></li>
+                        <li class="breadcrumb-item text-dark" aria-current="page" th:text="#{product.title}">
+                        </li>
                     </ol>
                 </nav>
             </div>
@@ -63,55 +64,73 @@
         <!-- Page Header End -->
 
 
-<!-- Products Start -->
-<div class="container-xxl py-5">
-    <div class="container">
-        <div class="section-title text-center mx-auto wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
-            <p class="fs-5 fw-medium fst-italic text-primary">Online Store</p>
-            <h1 class="display-6">Want to stay healthy? Choose tea taste</h1>
-        </div>
-        <div class="row mt-2 mb-3">
-            <div class="col-md-4 sort">
-                <div class="d-flex align-items-center" style="margin-top: 3px;">
-                    <label for="productGroup" style="margin-right: 15px; font-weight: 600;">Theo nhóm</label>
-                    <select class="form-select cb-sort" id="productGroup" name="categoryId" style="width: 270px; height: 36px;">
-                        <option th:each="category : ${categories}" th:value="${category.id}"
-                                th:text="${category.name}"></option>
-                    </select>
+        <!-- Products Start -->
+        <div class="container-xxl" style="margin-bottom: 0px; padding-top: 20px;">
+            <div class="container">
+                <div class="section-title text-center mx-auto wow fadeInUp" data-wow-delay="0.1s"
+                    style="max-width: 600px;">
+                    <p class="fs-5 fw-medium fst-italic text-primary">Dream Tea & Coffee</p>
+                    <h1 class="display-6" th:text="#{product.brand}"></h1>
+                </div>
+
+                <div class="row mt-2 mb-3">
+                    <div class="col-md-3 sort">
+                        <div class="d-flex align-items-center" style="margin-top: 3px;">
+                            <label for="productGroup" style="margin-right: 15px; font-weight: 600; white-space: nowrap;"
+                                th:text="#{product.sortBy}"></label>
+                            <select class="form-select cb-sort" id="productGroup" name="categoryId"
+                                style="width: 270px; height: 36px;">
+                                <option th:each="category : ${categories}" th:value="${category.id}"
+                                    th:text="${category.name}"></option>
+                            </select>
 
                         </div>
                     </div>
 
-
-
-                    <div class="col-md-4 sort">
+                    <div class="col-md-3 sort">
                         <!-- Theo giá + comboBox( Từ thấp đến cao, từ cao đến thấp ) -->
-
                         <form th:action="@{/store}" method="get">
                             <div class="d-flex align-items-center" style="margin-top: 3px;">
-                                <label for="sortByPrice" class="mr-2" style="margin-right: 15px; font-weight: 600;">Theo
-                                    giá</label>
+                                <label style="margin-right: 15px; font-weight: 600; white-space: nowrap;"
+                                    th:text="#{product.sortPrices}"></label>
                                 <select class="form-select cb-sort" name="sortOption" id="sortByPrice"
                                     style="width: 270px; height: 36px;" onchange="updateCategoryIdAndSubmit(this)">
-                                    <option value="none" th:selected="${sortOption == null || sortOption == 'none'}">
-                                        Không lựa chọn</option>
-                                    <option value="asc" th:selected="${sortOption == 'asc'}">Từ thấp đến cao</option>
-                                    <option value="desc" th:selected="${sortOption == 'desc'}">Từ cao đến thấp</option>
-                            <option value="sale" th:selected="${sortOption == 'sale'}">Đang được giảm giá</option>
+                                    <option value="none" th:selected="${sortOption == null || sortOption == 'none'}"
+                                        th:text="#{product.none}">
+                                    </option>
+                                    <option value="asc" th:selected="${sortOption == 'asc'}"
+                                        th:text="#{product.lowToHigh}"></option>
+                                    <option value="desc" th:selected="${sortOption == 'desc'}"
+                                        th:text="#{product.highToLow}"></option>
+                                    <!--                                    <option value="sale" th:selected="${sortOption == 'sale'}"-->
+                                    <!--                                        th:text="#{product.sale}">-->
+                                    </option>
                                 </select>
                             </div>
                         </form>
+                    </div>
 
+                    <div class="col-md-3 sort">
+                        <div class="d-flex align-items-center" style="margin-top: 3px;">
+                            <label for="comboBox" style="margin-right: 15px; font-weight: 600; white-space: nowrap;"
+                                th:text="#{label.sortBy}"></label>
+                            <select class="form-select cb-sort" id="comboBox" name="comboBox"
+                                style="width: 270px; height: 36px;">
+                                <option value="none" th:text="#{product.none}" th:selected="${sortOption == 'none'}">
+                                </option>
+                                <option value="bestSelling" th:text="#{option.bestSelling}"></option>
+                                <option value="topRated" th:selected="${sortOption == 'topRated'}"
+                                    th:text="#{option.topRated}"></option>
+                            </select>
+                        </div>
                     </div>
 
 
-
-
-                    <div class="col-md-4 sort">
+                    <div class="col-md-3 sort">
                         <form th:action="@{/search}" method="get">
-                            <div class="input-group" style="margin-top: 1px; padding: 0 10px;">
+                            <div class="d-flex align-items-center" style="margin-top: 3px;">
                                 <input type="text" class="form-control ip-sort" name="productName"
-                                    placeholder="Tìm kiếm...">
+                                    th:placeholder="#{search.placeholder}">
                                 <div class="input-group-append">
                                     <button class="btn btn-dark" type="submit" id="searchButton">
                                         <i class="bi bi-search"></i>
@@ -120,34 +139,87 @@
                             </div>
                         </form>
                     </div>
-
                 </div>
                 <div class="row g-4">
-                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s" th:each="product : ${products}">
+                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s" th:each="product: ${products}"
+                        th:if="${product.active}">
                         <div class="store-item position-relative text-center">
                             <img class="img-fluid" th:src="@{'/img/gallery/' + ${product.image}}" alt="">
                             <div class="p-4">
                                 <div class="text-center mb-3">
-                                    <small class="fa fa-star text-primary"></small>
-                                    <small class="fa fa-star text-primary"></small>
-                                    <small class="fa fa-star text-primary"></small>
-                                    <small class="fa fa-star text-primary"></small>
-                                    <small class="fa fa-star text-primary"></small>
+                                    <div th:if="${product.averageRating == 0}">
+                                        <small class="fa fa-star"></small>
+                                        <small class="fa fa-star"></small>
+                                        <small class="fa fa-star"></small>
+                                        <small class="fa fa-star"></small>
+                                        <small class="fa fa-star"></small>
+                                    </div>
+                                    <div th:if="${product.averageRating == 1}">
+                                        <small class="fa fa-star text-primary"></small>
+                                        <small class="fa fa-star"></small>
+                                        <small class="fa fa-star"></small>
+                                        <small class="fa fa-star"></small>
+                                        <small class="fa fa-star"></small>
+                                    </div>
+                                    <div th:if="${product.averageRating == 2}">
+                                        <small class="fa fa-star text-primary"></small>
+                                        <small class="fa fa-star text-primary"></small>
+                                        <small class="fa fa-star"></small>
+                                        <small class="fa fa-star"></small>
+                                        <small class="fa fa-star"></small>
+                                    </div>
+                                    <div th:if="${product.averageRating == 3}">
+                                        <small class="fa fa-star text-primary"></small>
+                                        <small class="fa fa-star text-primary"></small>
+                                        <small class="fa fa-star text-primary"></small>
+                                        <small class="fa fa-star"></small>
+                                        <small class="fa fa-star"></small>
+                                    </div>
+                                    <div th:if="${product.averageRating == 4}">
+                                        <small class="fa fa-star text-primary"></small>
+                                        <small class="fa fa-star text-primary"></small>
+                                        <small class="fa fa-star text-primary"></small>
+                                        <small class="fa fa-star text-primary"></small>
+                                        <small class="fa fa-star"></small>
+                                    </div>
+                                    <div th:if="${product.averageRating == 5}">
+                                        <small class="fa fa-star text-primary"></small>
+                                        <small class="fa fa-star text-primary"></small>
+                                        <small class="fa fa-star text-primary"></small>
+                                        <small class="fa fa-star text-primary"></small>
+                                        <small class="fa fa-star text-primary"></small>
+                                    </div>
+
                                 </div>
-                                <h4 class="mb-3" th:text="${product.name}">Nature close tea</h4>
+                                <h4 class="mb-3" th:text="${product.name}"></h4>
                                 <p class="product-description" th:text="${product.describe}"></p>
-                                <!--                        Format money number-->
-                                <th:block th:with="numberFormat=#{'###,###,###,###'}"></th:block>
-                                <h4 class="text-primary" th:text="${product.formattedPrice}">VNĐ</h4>
+
+                                <div th:if="${product.discountedPrice != null}">
+                                    <p class="header">
+                                    <h5 style="display: inline;"><del><i><span
+                                                    th:text="${product.formattedPrice}"></span></i></del></h5>
+                                    <h4 style="display: inline;"><span
+                                            th:text="${product.formattedDiscountedPrice}"></span>
+                                    </h4>
+                                    </p>
+                                </div>
+                                <div th:unless="${product.discountedPrice != null}">
+                                    <h4><span th:text="${product.formattedPrice}"></span></h4>
+                                </div>
                             </div>
                             <div class="store-overlay">
                                 <a th:href="@{/product/{name}(name=${product.name})}"
-                                    class="btn btn-primary rounded-pill py-2 px-4 m-2">More Detail <i
-                                        class="fa fa-arrow-right ms-2"></i></a>
+                                    class="btn btn-primary rounded-pill py-2 px-4 m-2" style="width: 154px;"
+                                    th:id="'moreDetail_' + ${product.id}">
+                                    <span th:text="#{button.moreDetail}"></span> <i class="fa fa-arrow-right ms-2"></i>
+                                </a>
                                 <button th:attr="ng-click=@{|cart.add(${product.id})|}"
-                                    class="btn btn-dark rounded-pill py-2 px-4 m-2">Add to Cart <i
-                                        class="fa fa-cart-plus ms-2"></i></button>
+                                    class="btn btn-dark rounded-pill py-2 px-4 m-2"
+                                    th:id="'addToCart_' + ${product.id}">
+                                    <span th:text="#{button.addToCart}"></span> <i class="fa fa-cart-plus ms-2"></i>
+                                </button>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -159,9 +231,6 @@
                         </li>
                     </ul>
                 </div>
-        </div>
-
-
             </div>
         </div>
         <!-- Products End -->
@@ -170,15 +239,12 @@
     <div th:replace="~{/user/component/footer.html}"></div>
     <!-- Footer End -->
 
-
     <!-- Copyright Start -->
     <div th:replace="~{/user/component/copyright.html}"></div>
     <!-- Copyright End -->
 
-
     <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i
-            class="bi bi-arrow-up"></i></a>
+    <a href="#" class="btn btn-lg btn-dark btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
 
 
     <!-- JavaScript Libraries -->
@@ -188,11 +254,11 @@
     <script src="lib/waypoints/waypoints.min.js"></script>
     <script src="lib/owlcarousel/owl.carousel.min.js"></script>
 
-    <!-- Template Javascript -->
-    <script src="js/main.js"></script>
-
     <!-- Cart AngularJS -->
-    <script src="js/cart.js"></script>
+    <script src="/js/cart.js"></script>
+
+
+    <script src="/js/main.js"></script>
 </body>
 
 </html>

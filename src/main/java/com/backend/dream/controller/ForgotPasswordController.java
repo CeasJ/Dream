@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.mail.MessagingException;
 import java.time.LocalDateTime;
 
 @Controller
@@ -39,7 +40,7 @@ public class ForgotPasswordController {
 
     @PostMapping("/forgot")
     public String processForgotPasswordForm(@RequestParam("username") String username,
-            @RequestParam("email") String email, Model model, HttpSession session) {
+            @RequestParam("email") String email, Model model, HttpSession session) throws MessagingException {
 
         Account account = accountService.findByUsernameAndEmail(username, email);
         if (account == null) {
