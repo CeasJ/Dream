@@ -47,8 +47,8 @@
                             <table class="table table-hover table-bordered order-datatable text-center">
                                 <thead class="table-dark">
                                     <tr>
-                                        <th>STT</th>
-                                        <th style="text-align: left;">Tên sản phẩm</th>
+                                        <th>Number</th>
+                                        <th style="text-align: left;">Name</th>
                                         <th ng-repeat="size in sizes">{{size.name}}</th>
                                         <th></th>
                                     </tr>
@@ -60,10 +60,16 @@
                                         <td ng-repeat="size in sizes">
                                             <input ng-checked="size_of(product.id, size.id)" ng-click="size_changed(product.id, size.id)"
                                                 type="checkbox">
+                                            <p ng-if="getPrice(product.id, size.id) !== null">{{getPrice(product.id, size.id) | number : 0}}đ</p>
                                         </td>
-                                        <td> <button class="btn btn-dark" data-bs-toggle="modal"
-                                                data-bs-target="#priceModal">
+
+                                        <td> <button class="btn btn-dark" data-bs-toggle="modal" 
+                                                data-bs-target="#priceModal" ng-click="showModal(product.id)">
                                                 <i class="bi bi-pencil-square"></i>
+                                            </button>
+                                            <button class="btn btn-dark" data-bs-toggle="modal"
+                                                data-bs-target="#sizeModal">
+                                                <i class="bi bi-eye-fill"></i>
                                             </button>
                                         </td>
                                     </tr>
@@ -124,15 +130,15 @@
                                                 <div>
                                                     <label class="form-check-label me-3">
                                                         <input class="form-check-input" type="radio" name="size"
-                                                        ng-model="selectedSize" value="S" ng-change="selectedSize(1)" ng-disabled="radioBlocked.S"> S
+                                                        ng-model="selectedSize" value="S" ng-change="selectSizeProduct(1)" ng-disabled="radioBlocked.S"> S
                                                     </label>
                                                     <label class="form-check-label me-3">
                                                         <input class="form-check-input" type="radio" name="size"
-                                                        ng-model="selectedSize" value="M" ng-change="selectedSize(2)" ng-disabled="radioBlocked.M"> M
+                                                        ng-model="selectedSize" value="M" ng-change="selectSizeProduct(2)" ng-disabled="radioBlocked.M"> M
                                                     </label>
                                                     <label class="form-check-label">
                                                         <input class="form-check-input" type="radio" name="size"
-                                                        ng-model="selectedSize" value="L" ng-change="selectedSize(3)" ng-disabled="radioBlocked.L"> L
+                                                        ng-model="selectedSize" value="L" ng-change="selectSizeProduct(3)" ng-disabled="radioBlocked.L"> L
                                                     </label>
                                                 </div>
                                             </div>
@@ -141,8 +147,84 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button ng-click="add()" class="btn btn-secondary" type="button">Add</button>
-                                <button ng-click="update()" class="btn btn-success" type="button">Update</button>
+                                <button ng-click="add()" class="btn btn-secondary" type="button">Add Price Size</button>
+                                <button ng-click="updatePriceSize()" class="btn btn-success" type="button">Update Price Size</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade price-modal" id="sizeModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-xl">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">
+                                    <i class="bi bi-eye-fill pe-2"></i>
+                                    View Product Details
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered">
+                                        <thead class="table-dark">
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>S</th>
+                                                <th>M</th>
+                                                <th>L</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Trà Đào Cam Sả Nóng</td>
+                                                <td>29000</td>
+                                                <td>38000</td>
+                                                <td>42000</td>
+                                            </tr>
+                                            <!-- Thêm các dòng khác nếu cần -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade price-modal" id="sizeModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-xl">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">
+                                    <i class="bi bi-eye-fill pe-2"></i>
+                                    View Product Details
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered">
+                                        <thead class="table-dark">
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>S</th>
+                                                <th>M</th>
+                                                <th>L</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Trà Đào Cam Sả Nóng</td>
+                                                <td>29000</td>
+                                                <td>38000</td>
+                                                <td>42000</td>
+                                            </tr>
+                                            <!-- Thêm các dòng khác nếu cần -->
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>

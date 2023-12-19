@@ -13,10 +13,8 @@
     <!-- Angular -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.js"></script>
-    <!-- Angular -->
     <!-- Boostrap -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.min.js"></script>
-    <!-- Boostrap -->
 </head>
 
 <body class="sb-nav-fixed" ng-app="authority-app" ng-controller="authority-ctrl">
@@ -48,7 +46,7 @@
                             <table class="table table-hover table-bordered order-datatable text-center">
                                 <thead class="table-dark">
                                     <tr>
-                                        <th>STT</th>
+                                        <th>Number</th>
                                         <th>Avatar</th>
                                         <th>Username</th>
                                         <th>Firstname</th>
@@ -63,7 +61,7 @@
                                 <tbody class="no-border-x" ng-repeat="acc in admins">
                                     <td>{{$index + 1}}</td>
                                     <td>
-                                        <img class="img-fluid" ng-src="{{'/img/gallery/' + acc.avatar}}"
+                                        <img class="img-fluid" ng-src="{{'/img/avatar/' + acc.avatar}}"
                                             style="width: 60px; height: 60px; border: none;">
                                     </td>
                                     <td>{{acc.username}}</td>
@@ -123,7 +121,7 @@
                                         style="display: flex; justify-content: center; align-items: center;">
                                         <label for="avatar" style="cursor: pointer;">
                                             <img class="img-fluid" id="imagePreview"
-                                                ng-src="{{'/img/gallery/' + form.avatar}}" ng-click="selectImage()">
+                                                ng-src="{{'/img/avatar/' + form.avatar}}" ng-click="selectImage()">
                                             <input type="file" id="avatar" name="avatar" ng-model="form.avatar"
                                                 onchange="angular.element(this).scope().imageChanged(this.files)"
                                                 style="display: none;">

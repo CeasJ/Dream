@@ -215,12 +215,6 @@ public class ProductController {
 
             if (start >= 0 && end <= feedbackList.size()) {
                 List<FeedBackDTO> pagedFeedbackList = feedbackList.subList(start, end);
-                for (FeedBackDTO feedbackDTO : pagedFeedbackList) {
-                    System.out.println(feedbackDTO.getId());
-                    System.out.println(feedbackDTO.getImage());
-                }
-
-
                 model.addAttribute("feedbackList", pagedFeedbackList);
             }
             // Check if user has logged in yet
