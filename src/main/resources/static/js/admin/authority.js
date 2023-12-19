@@ -1,5 +1,5 @@
 const app = angular.module("authority-app", []);
-app.controller("authority-ctrl", function ($scope, $http, $location,$timeout) {
+app.controller("authority-ctrl", function ($scope, $http, $location, $timeout) {
   $scope.roles = [];
   $scope.listStaff = [];
   $scope.authorities = [];
@@ -162,58 +162,58 @@ app.controller("authority-ctrl", function ($scope, $http, $location,$timeout) {
   $scope.pageSizeAuth = 5;
 
   $scope.totalPagesAuth = function () {
-      return Math.ceil($scope.listStaff.length / $scope.pageSizeAuth);
+    return Math.ceil($scope.listStaff.length / $scope.pageSizeAuth);
   };
 
   $scope.setPageAuth = function (page) {
-      if (page >= 1 && page <= $scope.totalPagesAuth()) {
-          $scope.currentPageAuth = page;
-      }
+    if (page >= 1 && page <= $scope.totalPagesAuth()) {
+      $scope.currentPageAuth = page;
+    }
   };
 
   $scope.firstPageAuth = function () {
-      if ($scope.currentPageAuth !== 1) {
-          $scope.currentPageAuth = 1;
-      }
+    if ($scope.currentPageAuth !== 1) {
+      $scope.currentPageAuth = 1;
+    }
   };
 
   $scope.lastPageAuth = function () {
-      if ($scope.currentPageAuth !== $scope.totalPagesAuth()) {
-          $scope.currentPageAuth = $scope.totalPagesAuth();
-      }
+    if ($scope.currentPageAuth !== $scope.totalPagesAuth()) {
+      $scope.currentPageAuth = $scope.totalPagesAuth();
+    }
   };
 
   $scope.getPagerAuth = function () {
-      const totalPages = $scope.totalPagesAuth();
-      const currentPage = $scope.currentPageAuth;
-      const maxPagesToShow = 5;
+    const totalPages = $scope.totalPagesAuth();
+    const currentPage = $scope.currentPageAuth;
+    const maxPagesToShow = 5;
 
-      let startPage, endPage;
-      if (totalPages <= maxPagesToShow) {
-          startPage = 1;
-          endPage = totalPages;
+    let startPage, endPage;
+    if (totalPages <= maxPagesToShow) {
+      startPage = 1;
+      endPage = totalPages;
+    } else {
+      if (currentPage <= Math.ceil(maxPagesToShow / 2)) {
+        startPage = 1;
+        endPage = maxPagesToShow;
+      } else if (currentPage + Math.floor(maxPagesToShow / 2) >= totalPages) {
+        startPage = totalPages - maxPagesToShow + 1;
+        endPage = totalPages;
       } else {
-          if (currentPage <= Math.ceil(maxPagesToShow / 2)) {
-              startPage = 1;
-              endPage = maxPagesToShow;
-          } else if (currentPage + Math.floor(maxPagesToShow / 2) >= totalPages) {
-              startPage = totalPages - maxPagesToShow + 1;
-              endPage = totalPages;
-          } else {
-              startPage = currentPage - Math.floor(maxPagesToShow / 2);
-              endPage = currentPage + Math.floor(maxPagesToShow / 2);
-          }
+        startPage = currentPage - Math.floor(maxPagesToShow / 2);
+        endPage = currentPage + Math.floor(maxPagesToShow / 2);
       }
+    }
 
-      const pages = Array.from(Array(endPage + 1 - startPage).keys()).map(i => startPage + i);
-      return pages;
+    const pages = Array.from(Array(endPage + 1 - startPage).keys()).map(i => startPage + i);
+    return pages;
   };
 
   $scope.paginatedListAuth = function () {
-      const begin = ($scope.currentPageAuth - 1) * $scope.pageSizeAuth;
-      const end = begin + $scope.pageSizeAuth;
+    const begin = ($scope.currentPageAuth - 1) * $scope.pageSizeAuth;
+    const end = begin + $scope.pageSizeAuth;
 
-      return $scope.listStaff.slice(begin, end);
+    return $scope.listStaff.slice(begin, end);
   };
 
   // Trang thứ hai (pagination cho trang nhân viên)
@@ -221,58 +221,58 @@ app.controller("authority-ctrl", function ($scope, $http, $location,$timeout) {
   $scope.pageSize = 5; // Số nhân viên hiển thị mỗi trang
 
   $scope.totalPages = function () {
-      return Math.ceil($scope.listStaff.length / $scope.pageSize);
+    return Math.ceil($scope.listStaff.length / $scope.pageSize);
   };
 
   $scope.setPage = function (page) {
-      if (page >= 1 && page <= $scope.totalPages()) {
-          $scope.currentPage = page;
-      }
+    if (page >= 1 && page <= $scope.totalPages()) {
+      $scope.currentPage = page;
+    }
   };
 
   $scope.firstPage = function () {
-      if ($scope.currentPage !== 1) {
-          $scope.currentPage = 1;
-      }
+    if ($scope.currentPage !== 1) {
+      $scope.currentPage = 1;
+    }
   };
 
   $scope.lastPage = function () {
-      if ($scope.currentPage !== $scope.totalPages()) {
-          $scope.currentPage = $scope.totalPages();
-      }
+    if ($scope.currentPage !== $scope.totalPages()) {
+      $scope.currentPage = $scope.totalPages();
+    }
   };
 
   $scope.getPager = function () {
-      const totalPages = $scope.totalPages();
-      const currentPage = $scope.currentPage;
-      const maxPagesToShow = 5;
+    const totalPages = $scope.totalPages();
+    const currentPage = $scope.currentPage;
+    const maxPagesToShow = 5;
 
-      let startPage, endPage;
-      if (totalPages <= maxPagesToShow) {
-          startPage = 1;
-          endPage = totalPages;
+    let startPage, endPage;
+    if (totalPages <= maxPagesToShow) {
+      startPage = 1;
+      endPage = totalPages;
+    } else {
+      if (currentPage <= Math.ceil(maxPagesToShow / 2)) {
+        startPage = 1;
+        endPage = maxPagesToShow;
+      } else if (currentPage + Math.floor(maxPagesToShow / 2) >= totalPages) {
+        startPage = totalPages - maxPagesToShow + 1;
+        endPage = totalPages;
       } else {
-          if (currentPage <= Math.ceil(maxPagesToShow / 2)) {
-              startPage = 1;
-              endPage = maxPagesToShow;
-          } else if (currentPage + Math.floor(maxPagesToShow / 2) >= totalPages) {
-              startPage = totalPages - maxPagesToShow + 1;
-              endPage = totalPages;
-          } else {
-              startPage = currentPage - Math.floor(maxPagesToShow / 2);
-              endPage = currentPage + Math.floor(maxPagesToShow / 2);
-          }
+        startPage = currentPage - Math.floor(maxPagesToShow / 2);
+        endPage = currentPage + Math.floor(maxPagesToShow / 2);
       }
+    }
 
-      const pages = Array.from(Array(endPage + 1 - startPage).keys()).map(i => startPage + i);
-      return pages;
+    const pages = Array.from(Array(endPage + 1 - startPage).keys()).map(i => startPage + i);
+    return pages;
   };
 
   $scope.paginatedList = function () {
-      const begin = ($scope.currentPage - 1) * $scope.pageSize;
-      const end = begin + $scope.pageSize;
+    const begin = ($scope.currentPage - 1) * $scope.pageSize;
+    const end = begin + $scope.pageSize;
 
-      return $scope.listStaff.slice(begin, end);
+    return $scope.listStaff.slice(begin, end);
   };
 
   // Pagination for user accounts
@@ -280,152 +280,164 @@ app.controller("authority-ctrl", function ($scope, $http, $location,$timeout) {
   $scope.pageSize = 5; // Số nhân viên hiển thị mỗi trang
 
   $scope.totalPages = function () {
-      return Math.ceil($scope.listStaff.length / $scope.pageSize);
+    return Math.ceil($scope.listStaff.length / $scope.pageSize);
   };
 
   $scope.setPage = function (page) {
-      if (page >= 1 && page <= $scope.totalPages()) {
-          $scope.currentPage = page;
-      }
+    if (page >= 1 && page <= $scope.totalPages()) {
+      $scope.currentPage = page;
+    }
   };
 
   $scope.paginatedList = function () {
-      const begin = ($scope.currentPage - 1) * $scope.pageSize;
-      const end = begin + $scope.pageSize;
-      return $scope.listStaff.slice(begin, end);
+    const begin = ($scope.currentPage - 1) * $scope.pageSize;
+    const end = begin + $scope.pageSize;
+    return $scope.listStaff.slice(begin, end);
   };
 
   $scope.nextPage = function () {
-      if ($scope.currentPage < $scope.totalPages()) {
-          $scope.currentPage++;
-      }
+    if ($scope.currentPage < $scope.totalPages()) {
+      $scope.currentPage++;
+    }
   };
 
   $scope.prevPage = function () {
-      if ($scope.currentPage > 1) {
-          $scope.currentPage--;
-      }
+    if ($scope.currentPage > 1) {
+      $scope.currentPage--;
+    }
   };
 
 
 
   $scope.initialize();
 
-  $scope.getInformation = function(account) {
+  $scope.getInformation = function (account) {
     $scope.form = angular.copy(account);
   };
 
   $scope.autoCompleteAddress = function () {
-    if(timeout){
+    if (timeout) {
       $timeout.cancel(timeout);
     }
 
-    timeout = $timeout(function(){
-        $http.get(`https://rsapi.goong.io/Place/AutoComplete?api_key=GXxEBBNR5xvIezVsTctnwdM9MznM7HB8bzjCXBvh&input=` + encodeURIComponent($scope.address)).then((resp) => {
-          $scope.address = resp.data.predictions[0].description;
-        });
-    },2000);
+    timeout = $timeout(function () {
+      $http.get(`https://rsapi.goong.io/Place/AutoComplete?api_key=GXxEBBNR5xvIezVsTctnwdM9MznM7HB8bzjCXBvh&input=` + encodeURIComponent($scope.address)).then((resp) => {
+        $scope.address = resp.data.predictions[0].description;
+      });
+    }, 2000);
   };
 
 
   // Unban account features
-$scope.confirmUnlock = function(account) {
+  $scope.confirmUnlock = function (account) {
     $scope.selectedAccount = account;
     $('#confirmUnlockModal').modal('show');
-};
+  };
 
-$scope.unlockAccount = function(selectedAccount) {
+  $scope.unlockAccount = function (selectedAccount) {
     $http.put('/rest/profile/unlock/' + selectedAccount.id)
-        .then(function(response) {
-            toastr.success('Tài khoản đã được mở khóa thành công.');
-            $('#confirmUnlockModal').modal('hide');
-            location.reload();
-        })
-        .catch(function(error) {
-            toastr.error('Mở khóa tài khoản thất bại.');
-        });
-};
+      .then(function (response) {
+        toastr.success('Tài khoản đã được mở khóa thành công.');
+        $('#confirmUnlockModal').modal('hide');
+        location.reload();
+      })
+      .catch(function (error) {
+        toastr.error('Mở khóa tài khoản thất bại.');
+      });
+  };
 
 
   // Ban account features
-  $scope.lockAccount = function(account) {
-      $scope.selectedAccount = account;
-      $('#lockAccountModal').modal('show');
+  $scope.lockAccount = function (account) {
+    $scope.selectedAccount = account;
+    $('#lockAccountModal').modal('show');
   };
 
-  $scope.lockAccountWithReason = function(selectedAccount) {
-      var lockData = {
-          accountId: selectedAccount.id,
-          reason: $scope.lockReason
-      };
+  $scope.lockAccountWithReason = function (selectedAccount) {
+    var lockData = {
+      accountId: selectedAccount.id,
+      reason: $scope.lockReason
+    };
 
-      $http.put('/rest/profile/lock', lockData)
-          .then(function(response) {
-              toastr.success('Tài khoản đã được khóa thành công.');
-              $('#lockAccountModal').modal('hide');
-              location.reload();
-          })
-          .catch(function(error) {
-              toastr.error('Khóa tài khoản thất bại.');
-          });
+    $http.put('/rest/profile/lock', lockData)
+      .then(function (response) {
+        toastr.success('Tài khoản đã được khóa thành công.');
+        $('#lockAccountModal').modal('hide');
+        location.reload();
+      })
+      .catch(function (error) {
+        toastr.error('Khóa tài khoản thất bại.');
+      });
   };
 
-// Function to get lock details and count
-$scope.lockCount = 0;
-    $scope.lockDetails = [];
-    $scope.selectedAccount = {};
+  // Function to get lock details and count
+  $scope.lockCount = 0;
+  $scope.lockDetails = [];
+  $scope.selectedAccount = {};
 
-    // Hàm để lấy chi tiết khóa tài khoản
-    $scope.getLockDetails = function(accountId) {
-        $http.get('/rest/profile/lockDetails/' + accountId)
-            .then(function(response) {
-                $scope.lockCount = response.data.lockCount;
-                $scope.lockDetails = response.data.lockDetails;
-                // Xử lý dữ liệu nhận được từ backend ở đây nếu cần thiết
-            })
-            .catch(function(error) {
-                console.error('Error fetching lock details: ', error);
-            });
-    };
+  // Hàm để lấy chi tiết khóa tài khoản
+  $scope.getLockDetails = function (accountId) {
+    $http.get('/rest/profile/lockDetails/' + accountId)
+      .then(function (response) {
+        $scope.lockCount = response.data.lockCount;
+        $scope.lockDetails = response.data.lockDetails;
+        // Xử lý dữ liệu nhận được từ backend ở đây nếu cần thiết
+      })
+      .catch(function (error) {
+        console.error('Error fetching lock details: ', error);
+      });
+  };
 
-    $scope.openLockDetailsModal = function(accountId) {
-        $scope.getLockDetails(accountId);
-        $('#lockDetailsModal').modal('show');
-    };
+  $scope.openLockDetailsModal = function (accountId) {
+    $scope.getLockDetails(accountId);
+    $('#lockDetailsModal').modal('show');
+  };
 
-    $scope.setSelectedAccount = function(account) {
-        $scope.selectedAccount = account;
-    };
+  $scope.setSelectedAccount = function (account) {
+    $scope.selectedAccount = account;
+  };
 
-    // Searching for authority.html
-    $scope.searchAccounts = function() {
-        if ($scope.searchText) {
-            $http.get("/rest/authorities/searchAccounts?name=" + $scope.searchText)
-                .then(function(response) {
-                    $scope.listStaff = response.data;
-                })
-                .catch(function(error) {
-                    console.error("Error fetching accounts:", error);
-                });
-        } else {
-            $scope.initialize();
-        }
-    };
+  // Searching for authority.html
+  $scope.searchAccounts = function () {
+    if ($scope.searchText) {
+      $http.get("/rest/authorities/searchAccounts?name=" + $scope.searchText)
+        .then(function (response) {
+          $scope.listStaff = response.data;
+        })
+        .catch(function (error) {
+          console.error("Error fetching accounts:", error);
+        });
+    } else {
+      $scope.initialize();
+    }
+  };
 
-    // Filter by role
-    $scope.filterByRole = function(selectedRole) {
-        if (selectedRole && selectedRole.id) {
-            $http.get(`/rest/authorities/filterByRole?roleID=${selectedRole.id}`)
-                .then(function(response) {
-                    $scope.listStaff = response.data;
-                })
-                .catch(function(error) {
-                    console.error("Error fetching users by role:", error);
-                });
-        } else {
-            $scope.initialize();
-        }
-    };
+  // Filter by role
+  $scope.filterByRole = function (selectedRole) {
+    if (selectedRole && selectedRole.id) {
+      $http.get(`/rest/authorities/filterByRole?roleID=${selectedRole.id}`)
+        .then(function (response) {
+          $scope.listStaff = response.data;
+        })
+        .catch(function (error) {
+          console.error("Error fetching users by role:", error);
+        });
+    } else {
+      $scope.initialize();
+    }
+  };
+});
 
+document.addEventListener("DOMContentLoaded", function () {
+  var notificationIcon = document.querySelector(".notification-icon");
+  var notificationDropdown = document.querySelector(".notification-dropdown");
 
+  notificationIcon.addEventListener("click", function () {
+    // Toggle the display of the dropdown
+    if (notificationDropdown.style.display === "block") {
+      notificationDropdown.style.display = "none";
+    } else {
+      notificationDropdown.style.display = "block";
+    }
+  });
 });

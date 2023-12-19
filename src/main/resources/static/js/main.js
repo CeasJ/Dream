@@ -4,10 +4,10 @@
         // Spinner
         var spinner = function () {
             setTimeout(function () {
-                if ($('#spinner').length > 0) {
-                    $('#spinner').removeClass('show');
+                if ($("#spinner").length > 0) {
+                    $("#spinner").removeClass("show");
                 }
-            }, 1);
+            }, 500);
         };
         spinner();
 
@@ -246,10 +246,10 @@ function updateURLAndReload() {
 
 
     var newUrl = "/store?categoryId=" + selectedCategoryId;
-//    if (selectedSortOption === 'sale') {
-//        selectedCategoryId = '0';
-//        newUrl = "/store?categoryId=0";
-//    }
+    //    if (selectedSortOption === 'sale') {
+    //        selectedCategoryId = '0';
+    //        newUrl = "/store?categoryId=0";
+    //    }
 
 
     if (selectedSortOption !== 'none') {
@@ -300,6 +300,20 @@ document.addEventListener("DOMContentLoaded", function () {
         var linkPage = link.getAttribute("data-page");
         if (linkPage === currentPage) {
             link.classList.add("active");
+        }
+    });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    var notificationIcon = document.querySelector(".notification-icon");
+    var notificationDropdown = document.querySelector(".notification-dropdown");
+
+    notificationIcon.addEventListener("click", function () {
+        // Toggle the display of the dropdown
+        if (notificationDropdown.style.display === "block") {
+            notificationDropdown.style.display = "none";
+        } else {
+            notificationDropdown.style.display = "block";
         }
     });
 });

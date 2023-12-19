@@ -24,11 +24,11 @@ app.controller("size-ctrl", function ($scope, $http, $location) {
   };
   $scope.intialize();
 
-$scope.getPrice = function(productId, sizeId) {
-       const productSize = $scope.productSize.find(ps => ps.id_product === productId && ps.id_size === sizeId);
+  $scope.getPrice = function (productId, sizeId) {
+    const productSize = $scope.productSize.find(ps => ps.id_product === productId && ps.id_size === sizeId);
 
-       return productSize ? productSize.price : null;
-   };
+    return productSize ? productSize.price : null;
+  };
 
   $scope.size_of = function (id_product, id_size) {
     if ($scope.productSize) {
@@ -38,11 +38,11 @@ $scope.getPrice = function(productId, sizeId) {
     }
   };
 
-   $scope.getPrice = function(productId, sizeId) {
-       const productSize = $scope.productSize.find(ps => ps.id_product === productId && ps.id_size === sizeId);
+  $scope.getPrice = function (productId, sizeId) {
+    const productSize = $scope.productSize.find(ps => ps.id_product === productId && ps.id_size === sizeId);
 
-       return productSize ? productSize.price : null;
-   };
+    return productSize ? productSize.price : null;
+  };
 
   $scope.size_changed = function (id_product, id_size) {
     let productSize = $scope.size_of(id_product, id_size);
@@ -70,68 +70,68 @@ $scope.getPrice = function(productId, sizeId) {
     let id_size = $scope.id_size;
     let price = $scope.updateProductSizePrice();
     if (!isNaN(price) && price > 0) {
-        if(id_size){
-            let productSize = {
-              id_product: id_product,
-              id_size: id_size,
-              price: price,
-            };
-            $http
-              .post(`/rest/productsizes`, productSize)
-              .then((resp) => {
-                $scope.productSize.push(resp.data);
-                $("#priceModal").modal("hide");
-                toastr.success("Add size success");
-                setTimeout(() => {
-                  location.reload();
-                }, 1000);
-              })
-              .catch((error) => {});
-          } else {
-                toastr.error("Please select a size");
-          }
-      }else {
-           toastr.error("Price must be a number greater than 0");
-       }
+      if (id_size) {
+        let productSize = {
+          id_product: id_product,
+          id_size: id_size,
+          price: price,
+        };
+        $http
+          .post(`/rest/productsizes`, productSize)
+          .then((resp) => {
+            $scope.productSize.push(resp.data);
+            $("#priceModal").modal("hide");
+            toastr.success("Add size success");
+            setTimeout(() => {
+              location.reload();
+            }, 1000);
+          })
+          .catch((error) => { });
+      } else {
+        toastr.error("Please select a size");
+      }
+    } else {
+      toastr.error("Price must be a number greater than 0");
+    }
   };
 
-  $scope.showModal = function(id_product){
+  $scope.showModal = function (id_product) {
     $scope.id_product = id_product;
     $("#priceModal").modal("show");
   };
 
-  $scope.updatePriceSize = function(){
+  $scope.updatePriceSize = function () {
     let id_product = $scope.id_product;
     let id_size = $scope.id_size;
     let price = $scope.updateProductSizePrice();
     if (!isNaN(price) && price > 0) {
-        if(id_size){
-            let productSize = {
-              id_product: id_product,
-              id_size: id_size,
-              price: price,
-            };
-            $http.put(`/rest/productsizes/${id_product}`,productSize)
-            .then((resp) => {
-              let index = $scope.productSize.findIndex((product) => product.id === product.id_product);
-              $scope.productSize[index] = productSize;
-              $("#priceModal").modal("hide");
-              toastr.success("Update price size success");
-              setTimeout(() => {
-                location.reload();
-              }, 1000);
-            })
-            .catch((error) => {});
-        } else {
-                toastr.error("Please select a size");
-        }
-     } else {
-        // Hiển thị cảnh báo cho người dùng về giá trị không hợp lệ
-        toastr.error("Price must be a number greater than 0");
+      if (id_size) {
+        let productSize = {
+          id_product: id_product,
+          id_size: id_size,
+          price: price,
+        };
+        $http.put(`/rest/productsizes/${id_product}`, productSize)
+          .then((resp) => {
+            let index = $scope.productSize.findIndex((product) => product.id === product.id_product);
+            $scope.productSize[index] = productSize;
+            $("#priceModal").modal("hide");
+            toastr.success("Update price size success");
+            setTimeout(() => {
+              location.reload();
+            }, 1000);
+          })
+          .catch((error) => { });
+      } else {
+        toastr.error("Please select a size");
+      }
+    } else {
+      // Hiển thị cảnh báo cho người dùng về giá trị không hợp lệ
+      toastr.error("Price must be a number greater than 0");
     }
   };
 
-  $scope.selectSizeProduct = function(id_size){
+  $scope.selectSizeProduct = function (id_size) {
     return $scope.id_size = id_size;
   };
 
@@ -148,7 +148,7 @@ $scope.getPrice = function(productId, sizeId) {
           location.reload();
         }, 1000);
       })
-      .catch((error) => {});
+      .catch((error) => { });
   };
 
   $scope.updateProductSizePrice = function () {
@@ -187,106 +187,120 @@ $scope.getPrice = function(productId, sizeId) {
   };
 
 
-// Pagination
-    $scope.currentPage = 1;
-    $scope.pageSize = 5;
-    $scope.totalPages = 0;
+  // Pagination
+  $scope.currentPage = 1;
+  $scope.pageSize = 5;
+  $scope.totalPages = 0;
+  $scope.totalPagesArray = [];
+
+  $scope.getFilteredProducts = function () {
+    var begin = ($scope.currentPage - 1) * $scope.pageSize;
+    var end = begin + $scope.pageSize;
+    $scope.filteredProducts = $scope.products.slice(begin, end);
+  };
+
+  $scope.calculateTotalPages = function () {
+    $scope.totalPages = Math.ceil($scope.products.length / $scope.pageSize);
     $scope.totalPagesArray = [];
+    for (var i = 1; i <= $scope.totalPages; i++) {
+      $scope.totalPagesArray.push(i);
+    }
+  };
 
-    $scope.getFilteredProducts = function () {
-        var begin = ($scope.currentPage - 1) * $scope.pageSize;
-        var end = begin + $scope.pageSize;
-        $scope.filteredProducts = $scope.products.slice(begin, end);
-    };
+  $scope.firstPage = function () {
+    if ($scope.currentPage !== 1) {
+      $scope.currentPage = 1;
+      $scope.getFilteredProducts();
+    }
+  };
 
-    $scope.calculateTotalPages = function () {
-        $scope.totalPages = Math.ceil($scope.products.length / $scope.pageSize);
-        $scope.totalPagesArray = [];
-        for (var i = 1; i <= $scope.totalPages; i++) {
-            $scope.totalPagesArray.push(i);
-        }
-    };
+  $scope.lastPage = function () {
+    if ($scope.currentPage !== $scope.totalPages) {
+      $scope.currentPage = $scope.totalPages;
+      $scope.getFilteredProducts();
+    }
+  };
 
-    $scope.firstPage = function () {
-        if ($scope.currentPage !== 1) {
-            $scope.currentPage = 1;
-            $scope.getFilteredProducts();
-        }
-    };
+  $scope.getPagerNumbers = function () {
+    let totalPages = $scope.totalPages;
+    let currentPage = $scope.currentPage;
 
-    $scope.lastPage = function () {
-        if ($scope.currentPage !== $scope.totalPages) {
-            $scope.currentPage = $scope.totalPages;
-            $scope.getFilteredProducts();
-        }
-    };
+    if (totalPages <= 5) {
+      return Array.from({ length: totalPages }, (_, i) => i + 1);
+    } else {
+      let startPage = Math.max(1, currentPage - 2);
+      let endPage = Math.min(currentPage + 2, totalPages);
 
-    $scope.getPagerNumbers = function () {
-        let totalPages = $scope.totalPages;
-        let currentPage = $scope.currentPage;
+      if (endPage - startPage < 4) {
+        startPage = Math.max(1, endPage - 4);
+      }
 
-        if (totalPages <= 5) {
-            return Array.from({ length: totalPages }, (_, i) => i + 1);
-        } else {
-            let startPage = Math.max(1, currentPage - 2);
-            let endPage = Math.min(currentPage + 2, totalPages);
+      return Array.from({ length: 5 }, (_, i) => startPage + i);
+    }
+  };
 
-            if (endPage - startPage < 4) {
-                startPage = Math.max(1, endPage - 4);
-            }
+  $scope.setPage = function (page) {
+    if (page < 1 || page > $scope.totalPages) {
+      return;
+    }
+    $scope.currentPage = page;
+    $scope.getFilteredProducts();
+  };
 
-            return Array.from({ length: 5 }, (_, i) => startPage + i);
-        }
-    };
+  $scope.nextPage = function () {
+    if ($scope.currentPage < $scope.totalPages) {
+      $scope.currentPage++;
+      $scope.getFilteredProducts();
+    }
+  };
 
-    $scope.setPage = function (page) {
-        if (page < 1 || page > $scope.totalPages) {
-            return;
-        }
-        $scope.currentPage = page;
-        $scope.getFilteredProducts();
-    };
+  $scope.prevPage = function () {
+    if ($scope.currentPage > 1) {
+      $scope.currentPage--;
+      $scope.getFilteredProducts();
+    }
+  };
 
-    $scope.nextPage = function () {
-        if ($scope.currentPage < $scope.totalPages) {
-            $scope.currentPage++;
-            $scope.getFilteredProducts();
-        }
-    };
-
-    $scope.prevPage = function () {
-        if ($scope.currentPage > 1) {
-            $scope.currentPage--;
-            $scope.getFilteredProducts();
-        }
-    };
-
-    $scope.$watch("products", function () {
-        $scope.calculateTotalPages();
-        $scope.getFilteredProducts();
-    });
+  $scope.$watch("products", function () {
+    $scope.calculateTotalPages();
+    $scope.getFilteredProducts();
+  });
 
 
-    // Searching features
-    $scope.searchProduct = function () {
-        if ($scope.searchProductName && $scope.searchProductName !== "") {
-          $http.get(`/rest/productsizes/search?name=${$scope.searchProductName}`)
-            .then(function (response) {
-              $scope.products = response.data;
-            })
-            .catch(function (error) {
-              console.error("Error fetching products:", error);
-            });
-        } else {
-          $scope.intialize();
-        }
-      };
+  // Searching features
+  $scope.searchProduct = function () {
+    if ($scope.searchProductName && $scope.searchProductName !== "") {
+      $http.get(`/rest/productsizes/search?name=${$scope.searchProductName}`)
+        .then(function (response) {
+          $scope.products = response.data;
+        })
+        .catch(function (error) {
+          console.error("Error fetching products:", error);
+        });
+    } else {
+      $scope.intialize();
+    }
+  };
 
-      // Gọi phương thức tìm kiếm khi người dùng nhập vào input
-      $scope.$watch('searchProductName', function (newVal, oldVal) {
-        if (newVal !== oldVal) {
-          $scope.searchProduct();
-        }
-      });
+  // Gọi phương thức tìm kiếm khi người dùng nhập vào input
+  $scope.$watch('searchProductName', function (newVal, oldVal) {
+    if (newVal !== oldVal) {
+      $scope.searchProduct();
+    }
+  });
 
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  var notificationIcon = document.querySelector(".notification-icon");
+  var notificationDropdown = document.querySelector(".notification-dropdown");
+
+  notificationIcon.addEventListener("click", function () {
+    // Toggle the display of the dropdown
+    if (notificationDropdown.style.display === "block") {
+      notificationDropdown.style.display = "none";
+    } else {
+      notificationDropdown.style.display = "block";
+    }
+  });
 });

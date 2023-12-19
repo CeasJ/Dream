@@ -29,7 +29,7 @@ app.controller("category-ctrl", function ($scope, $http) {
           $scope.clearForm();
           alert("Create Successful");
         })
-        .catch(function (error) {});
+        .catch(function (error) { });
     }
   };
   $scope.update = function () {
@@ -42,7 +42,7 @@ app.controller("category-ctrl", function ($scope, $http) {
         $scope.clearForm();
         alert("Update Success");
       })
-      .catch((err) => {});
+      .catch((err) => { });
   };
   $scope.delete = function (cate) {
     $http
@@ -53,6 +53,20 @@ app.controller("category-ctrl", function ($scope, $http) {
         $scope.clearForm();
         alert("Delete Success");
       })
-      .catch((err) => {});
+      .catch((err) => { });
   };
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  var notificationIcon = document.querySelector(".notification-icon");
+  var notificationDropdown = document.querySelector(".notification-dropdown");
+
+  notificationIcon.addEventListener("click", function () {
+    // Toggle the display of the dropdown
+    if (notificationDropdown.style.display === "block") {
+      notificationDropdown.style.display = "none";
+    } else {
+      notificationDropdown.style.display = "block";
+    }
+  });
 });

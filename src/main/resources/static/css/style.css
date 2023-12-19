@@ -227,7 +227,7 @@ body {
 }
 
 .notification-icon {
-    margin-left: 15px; /* Điều chỉnh khoảng cách giữa Icon Chuông Thông Báo và /cart */
+    margin-left: 15px;
     position: relative;
     cursor: pointer;
 }
@@ -241,8 +241,22 @@ body {
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     display: none;
     width: 400px;
+    min-height: 400px;
     overflow: auto;
 }
+
+.notification-dropdown::-webkit-scrollbar {
+    width: 8px;
+}
+
+.notification-dropdown::-webkit-scrollbar-thumb {
+    background-color: #c0c0c0; /* Scrollbar thumb color */
+}
+
+.notification-dropdown::-webkit-scrollbar-track {
+    background-color: #f8f8ff; /* Scrollbar track color */
+}
+
 .notification-dropdown .notification-title {
     font-size: 17px;
     padding-left: 8px;
@@ -251,10 +265,6 @@ body {
     align-items: center;
     margin-bottom: 0px;
     color: gray;
-}
-.notification-icon:hover .notification-dropdown {
-    display: block;
-    max-width: 400px;
 }
 
 .notification-dropdown .notification-content {
