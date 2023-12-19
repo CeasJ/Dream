@@ -50,7 +50,7 @@ public class RegisterController {
         }
         if (password.equals(confirmPassword)) {
             accountService.registerAccount(accountDTO);
-            return "redirect:/login/form";
+            return "redirect:/login";
         } else {
             model.addAttribute("error", "Wrong Password");
             return "/user/security/register";
