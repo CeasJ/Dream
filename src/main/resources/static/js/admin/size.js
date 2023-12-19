@@ -70,15 +70,11 @@ $scope.getPrice = function(productId, sizeId) {
       let id_size = $scope.id_size;
       let price = $scope.updateProductSizePrice();
 
-      if (!isValidPrice(price)) {
-          toastr.error("Price must be a number greater than 0");
-          return;
-      }
 
-      if (!isValidSizePrice(id_size, price, $scope.productSize)) {
-          toastr.error("Invalid size price. Please ensure S < M < L.");
-          return;
-      }
+      if (!isValidSizePrice(id_product, id_size, price)) {
+              toastr.error("Invalid size price. Please ensure S < M < L.");
+              return;
+          }
 
       if (id_size) {
           let productSize = {
@@ -112,15 +108,11 @@ $scope.getPrice = function(productId, sizeId) {
      let id_size = $scope.id_size;
      let price = $scope.updateProductSizePrice();
 
-     if (!isValidPrice(price)) {
-         toastr.error("Price must be a number greater than 0");
-         return;
-     }
 
-     if (!isValidSizePrice(id_size, price, $scope.productSize)) {
-         toastr.error("Invalid size price. Please ensure S < M < L.");
-         return;
-     }
+     if (!isValidSizePrice(id_product, id_size, price)) {
+             toastr.error("Invalid size price. Please ensure S < M < L.");
+             return;
+         }
 
      if (id_size) {
          let productSize = {
@@ -303,30 +295,23 @@ $scope.getPrice = function(productId, sizeId) {
       });
 
       // Size checking and comparison
-      function isValidPrice(price) {
-          return !isNaN(price) && price > 0;
-      }
+      function isValidSizePrice(id_product, id_size, price) {
+          const productSizes = $scope.productSize.filter(ps => ps.id_product === id_product && ps.id_size !== id_size);
 
-      function isValidSizePrice(id_size, price, productSize) {
-          const priceS = getPriceForSize(1, productSize);
-          const priceM = getPriceForSize(2, productSize);
-          const priceL = getPriceForSize(3, productSize);
+          const sizeS = productSizes.find(ps => ps.id_size === 1);
+          const sizeM = productSizes.find(ps => ps.id_size === 2);
+          const sizeL = productSizes.find(ps => ps.id_size === 3);
 
           switch (id_size) {
               case 1:
-                  return (price < priceM && (!priceL || priceM < priceL));
+                  return (!sizeM || price < sizeM.price) && (!sizeL || sizeM.price < sizeL.price);
               case 2:
-                  return (priceS && priceS < price && (!priceL || price < priceL));
+                  return (!sizeS || sizeS.price < price) && (!sizeL || price < sizeL.price);
               case 3:
-                  return (priceS && priceM && priceS < priceM && priceM < price);
+                  return (!sizeS || sizeS.price < sizeM.price) && (!sizeM || sizeM.price < price);
               default:
                   return false;
           }
-      }
-
-      function getPriceForSize(sizeId, productSize) {
-          const size = productSize.find(ps => ps.id_size === sizeId);
-          return size ? size.price : null;
       }
 
 
