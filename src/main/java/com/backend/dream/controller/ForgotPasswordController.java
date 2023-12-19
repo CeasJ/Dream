@@ -101,7 +101,7 @@ public class ForgotPasswordController {
         delete();
 
         model.addAttribute("message", "Your password has been reset successfully");
-        return "/user/security/login";
+        return "redirect:/login";
     }
 
     @Transactional
