@@ -76,7 +76,7 @@
                         </div>
                         <div class="col-md-9" style="padding: 10px;">
                             <div class="discount-info" style="margin-left: 20px;">
-                                <h4 style="padding-bottom: 5px;">Giảm {{ voucher.percent | number : 0 }}₫</h4>
+                                <h4 style="padding-bottom: 5px;">Giảm {{ voucher.price | number : 0 }}₫</h4>
                                 <p style="margin-bottom: 15px; font-size: 15px;">Đơn tối thiểu {{ voucher.condition |
                                     number : 0}} ₫</p>
                                 <a th:href="@{|/home|}" class="use-now-link"
@@ -85,7 +85,7 @@
                                 </a>
                                 <div class="expiry-info text-danger" style="display: flex; font-size: 14px;">
                                     <i class="far fa-clock" style="padding-top: 3px; padding-right: 5px;"></i>
-                                    <p style="margin-bottom: 0px;">Có hiệu lực: {{ getRemainingTime(voucher.expireddate)
+                                    <p style="margin-bottom: 0px;">Có hiệu lực: {{ getRemainingTime(voucher.expiredDate)
                                         }}</p>
                                 </div>
                             </div>

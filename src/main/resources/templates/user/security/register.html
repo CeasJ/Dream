@@ -18,7 +18,7 @@
 </head>
 
 <body>
-	<!-- <div id="spinner"
+			<!-- <div id="spinner"
 		class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
 		<div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;"></div>
 	</div> -->
@@ -57,16 +57,16 @@
 							<p class="text-center fw-bold mx-3 mb-0">Or</p>
 						</div>
 
-						<!-- <div th:if="${message}" class="form-outline mb-3">
+						 <div th:if="${message}" class="form-outline mb-3">
 							<h6 class="text-center text-danger " th:text="${message}"></h6>
-						</div> -->
+						</div>
 						<div class="form-floating mb-3 position-relative">
 							<input type="text" id="firstname" class="form-control" name="firstname"
 								placeholder="Enter First Name" th:field="*{firstname}" required>
 							<label class="form-label" for="firstname">First Name</label>
 							<div class="invalid-tooltip tooltip-left">
-								<!-- <span th:if="${#fields.hasErrors('firstname')}" th:errors="*{firstname}"
-									class="text-danger"></span> -->
+							 <span th:if="${#fields.hasErrors('firstname')}" th:errors="*{firstname}"
+									class="text-danger"></span>
 								Please enter your First Name
 							</div>
 							<div class="valid-tooltip tooltip-left">
@@ -78,8 +78,8 @@
 								placeholder="Enter Last Name" th:field="*{lastname}" required />
 							<label class="form-label" for="lastname">Last Name</label>
 							<div class="invalid-tooltip tooltip-left">
-								<!-- <span th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}"
-									class="text-danger"></span> -->
+							<span th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}"
+									class="text-danger"></span>
 								Please enter your Last Name
 							</div>
 							<div class="valid-tooltip tooltip-left">
@@ -91,8 +91,8 @@
 								placeholder="Enter username" th:field="*{username}" required />
 							<label class="form-label" for="username">Username</label>
 							<div class="invalid-tooltip tooltip-left">
-								<!-- <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}"
-									class="text-danger"></span> -->
+							<span th:if="${#fields.hasErrors('username')}" th:errors="*{username}"
+									class="text-danger"></span>
 								Please enter your Username
 							</div>
 							<div class="valid-tooltip tooltip-left">
@@ -104,8 +104,8 @@
 								th:field="*{email}" required />
 							<label class="form-label" for="email">Email</label>
 							<div class="invalid-tooltip tooltip-left">
-								<!-- <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
-									class="text-danger"></span> -->
+							 <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
+									class="text-danger"></span>
 								Please enter your email
 							</div>
 							<div class="valid-tooltip tooltip-left">

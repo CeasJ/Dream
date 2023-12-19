@@ -23,6 +23,11 @@ app.controller("product_ctrl", function ($scope, $http) {
           isValid = false;
       }
 
+       if (form.image === "icloud-upload.png") {
+              toastr.warning("Please select an image.");
+              isValid = false;
+          }
+
       if (!form.price || form.price <= 0 || isNaN(form.price)) {
           toastr.warning("The product price must be greater than 0 and can only be a number!");
           isValid = false;
@@ -296,6 +301,25 @@ app.controller("product_ctrl", function ($scope, $http) {
       paginateItems();
     }
   };
+
+
+      // Searching features
+      $scope.searchByName = function() {
+          if ($scope.searchTerm && $scope.searchTerm.trim() !== '') {
+              $http.get(`/rest/productsizes/search?name=${$scope.searchTerm}`)
+                  .then(function(response) {
+                      $scope.items = response.data;
+                      $scope.items.forEach((item) => {
+                          item.createDate = new Date(item.createDate);
+                      });
+                  })
+                  .catch(function(error) {
+                      console.error('Error searching products:', error);
+                  });
+          } else {
+              $scope.initialize();
+          }
+      };
 
 });
 
