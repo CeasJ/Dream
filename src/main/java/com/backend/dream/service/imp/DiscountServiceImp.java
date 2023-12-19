@@ -2,7 +2,6 @@ package com.backend.dream.service.imp;
 
 import com.backend.dream.dto.CategoryDTO;
 import com.backend.dream.dto.DiscountDTO;
-import com.backend.dream.entity.Category;
 import com.backend.dream.entity.Discount;
 import com.backend.dream.mapper.CategoryMapper;
 import com.backend.dream.mapper.DiscountMapper;
@@ -11,6 +10,7 @@ import com.backend.dream.repository.DiscountRepository;
 import com.backend.dream.service.CategoryService;
 import com.backend.dream.service.DiscountService;
 import com.backend.dream.util.ExcelUltils;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Transactional
 @Service
 public class DiscountServiceImp implements DiscountService {
 

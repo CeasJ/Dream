@@ -53,6 +53,9 @@ app.controller("authority-ctrl", function ($scope, $http, $location, $timeout) {
         .then((resp) => {
           $scope.authorities.push(resp.data);
           toastr.success("Authorization successful");
+          setTimeout(()=>{
+            location.reload();
+          },1000);
         })
         .catch((error) => {
           toastr.error("Authorization Fail");
@@ -66,6 +69,9 @@ app.controller("authority-ctrl", function ($scope, $http, $location, $timeout) {
           let index = $scope.authorities.findIndex((a) => a.id == authority.id);
           $scope.authorities.splice(index, 1);
           toastr.success("Permissions revoked successfully");
+          setTimeout(()=>{
+            location.reload();
+          },1000);
         })
         .catch((err) => {
           toastr.error("Permissions revoked Fail");

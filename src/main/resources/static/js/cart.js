@@ -1,15 +1,15 @@
 (function ($) {
   "use strict";
-  try {
-    // Spinner
-    var spinner = function () {
-      setTimeout(function () {
-        if ($("#spinner").length > 0) {
-          $("#spinner").removeClass("show");
-        }
-      }, 500);
-    };
-    spinner();
+
+  // Spinner
+  var spinner = function () {
+    setTimeout(function () {
+      if ($("#spinner").length > 0) {
+        $("#spinner").removeClass("show");
+      }
+    }, 500); 
+  };
+  spinner();
 
     new WOW().init();
 
@@ -22,24 +22,33 @@
       }
     });
 
-    // Back to top button
-    $(window).scroll(function () {
-      if ($(this).scrollTop() > 300) {
-        $(".back-to-top").fadeIn("slow");
-      } else {
-        $(".back-to-top").fadeOut("slow");
-      }
-    });
-
-    // Show .cart-0 if cartCount is less than or equal to 0, otherwise show .cart-1
-    var cartCount = parseInt($("#cartCount").text());
-
-    if (cartCount > 0) {
-      $(".cart-1").show();
+  // Back to top button
+  $(window).scroll(function () {
+    if ($(this).scrollTop() > 300) {
+      $(".back-to-top").fadeIn("slow");
     } else {
-      $(".cart-0").hide();
+      $(".back-to-top").fadeOut("slow");
     }
+  });
+  // Back to top button
+  $(window).scroll(function () {
+    if ($(this).scrollTop() > 300) {
+      $(".back-to-top").fadeIn("slow");
+    } else {
+      $(".back-to-top").fadeOut("slow");
+    }
+  });
 
+  // Show .cart-0 if cartCount is less than or equal to 0, otherwise show .cart-1
+  // var cartCount = parseInt($("#cartCount").text());
+
+  // if (cartCount <= 0) {
+  //   $(".cart-0").show();
+  //   $(".cart-1").hide();
+  // } else {
+  //   $(".cart-0").hide();
+  //   $(".cart-1").show();
+  // }
 
     $("#step-1").addClass("active-stext");
     // Show infor-cart and hide cart-0, cart-1 on Buy button click
@@ -72,23 +81,16 @@
         "background-color": "lightgray", // Màu mặc định của number-2
       });
 
-      if (cartCount <= 0) {
-        $(".cart-0").show();
-        $(".cart-1").hide();
-      } else {
-        $(".cart-0").hide();
-        $(".cart-1").show();
-      }
-    });
+      
+  });
 
-    $(document).ready(function () {
-      $("#applyDiscountBtn").click(function () {
-        var toast = new bootstrap.Toast(
-          document.getElementById("successToast")
-        );
-        toast.show();
-      });
+
+  $(document).ready(function () {
+    $("#applyDiscountBtn").click(function () {
+      var toast = new bootstrap.Toast(document.getElementById("successToast"));
+      toast.show();
     });
+  });
 
   $(document).ready(function () {
     $(".theme-mode input").change(function () {
@@ -101,10 +103,7 @@
       }
     });
   });
-} catch (error) {
-  // Nếu có lỗi, chuyển hướng người dùng đến trang error
-  window.location.href = "/error-page";
-}
+
 
 })(jQuery);
 
@@ -460,7 +459,6 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
     $http.get('/rest/vouchers/applicable')
     .then(function(response) {
         $scope.vouchers = response.data;
-        console.log(response.data);
     }, function(error) {
     });
 
@@ -535,14 +533,12 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
       $scope.order.address = $scope.userAddressWeb;
     }
    };
-
    //Cart Control End
 
 
 });
 
-//Cart Control End
-
+// Nhấn mạnh là thg Thành n làm
 document.addEventListener("DOMContentLoaded", function () {
   var notificationIcon = document.querySelector(".notification-icon");
   var notificationDropdown = document.querySelector(".notification-dropdown");
@@ -556,3 +552,4 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
+

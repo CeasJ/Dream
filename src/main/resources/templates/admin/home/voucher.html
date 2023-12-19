@@ -100,7 +100,7 @@
                                         </th>
                                         <td style="text-align: left;"> {{ voucher.name }}</td>
                                         <td> {{ voucher.number }}</td>
-                                        <td> {{ voucher.percent | number: 0 }}đ </td>
+                                        <td> {{ voucher.price | number: 0 }}đ </td>
                                         <td>Tối thiểu {{ voucher.condition | number: 0}}đ</td>
                                         <td>{{ voucher.createDate | date:'dd-MM-yyyy' }}</td>
                                         <td>{{ voucher.expiredDate | date:'dd-MM-yyyy' }}</td>
@@ -291,8 +291,8 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="name" class="fw-bold mb-3"> Voucher price</label>
-                                                    <input type="number" class="form-control" id="voucherPercent"
-                                                        ng-model="voucher.percent" name="number" min="0"
+                                                    <input type="number" class="form-control" id="voucherPrice"
+                                                        ng-model="voucher.price" name="number" min="0"
                                                         placeholder="Voucher Price" />
                                                 </div>
                                             </div>

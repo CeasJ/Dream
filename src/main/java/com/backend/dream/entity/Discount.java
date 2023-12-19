@@ -42,7 +42,7 @@ public class Discount implements Serializable {
     private Date expiredDate=new Date();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "discount", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "discount")
     private List<Category> category;
 
 

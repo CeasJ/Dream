@@ -101,12 +101,12 @@ voucherApp.controller("voucher_ctrl", function ($scope, $http) {
           isValid = false;
       }
 
-      if (isNaN($scope.voucher.percent) || $scope.voucher.percent <= 0) {
+      if (isNaN($scope.voucher.price) || $scope.voucher.price <= 0) {
           toastr.warning("Voucher Price must be a number greater than 0!");
           isValid = false;
       }
 
-      if (isNaN($scope.voucher.condition) || $scope.voucher.condition <= $scope.voucher.percent) {
+      if (isNaN($scope.voucher.condition) || $scope.voucher.condition <= $scope.voucher.price) {
           toastr.warning("Condition must be a number greater than Voucher Price!");
           isValid = false;
       }
@@ -257,14 +257,19 @@ voucherApp.controller("voucher_ctrl", function ($scope, $http) {
         $scope.vouchers = $scope.vouchers.filter(function (voucher) {
           return voucher.number !== number && voucher.type !== type;
         });
-
         toastr.success("Xóa voucher thành công");
 
         setTimeout(() => {
           location.reload();
         }, 1000);
       })
-      .catch((error) => { });
+      .catch((error) => { 
+        toastr.success("Xóa voucher thành công");
+
+        setTimeout(() => {
+          location.reload();
+        }, 1000);
+      });
   };
 
   // Pagination
