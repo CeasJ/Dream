@@ -124,7 +124,7 @@ public class VoucherServiceImp implements VoucherService {
             newVoucherDTO.setNumber(voucherDTO.getNumber());
             newVoucherDTO.setCreateDate(voucherDTO.getCreateDate());
             newVoucherDTO.setExpiredDate(voucherDTO.getExpiredDate());
-            newVoucherDTO.setPercent(voucherDTO.getPercent());
+            newVoucherDTO.setPrice(voucherDTO.getPrice());
             newVoucherDTO.setCondition(voucherDTO.getCondition());
             newVoucherDTO.setIcon(voucherDTO.getIcon());
             newVoucherDTO.setStatus(voucherDTO.getStatus());
@@ -149,7 +149,7 @@ public class VoucherServiceImp implements VoucherService {
         voucher.setNumber(voucherDTO.getNumber());
         voucher.setIcon(voucherDTO.getIcon());
         voucher.setCondition(voucherDTO.getCondition());
-        voucher.setPercent(voucherDTO.getPercent());
+        voucher.setPrice(voucherDTO.getPrice());
         voucher.setExpiredDate(voucherDTO.getExpiredDate());
         voucher.setType(type);
 
@@ -169,7 +169,7 @@ public class VoucherServiceImp implements VoucherService {
             voucher.setNumber(voucherDTO.getNumber());
             voucher.setIcon(voucherDTO.getIcon());
             voucher.setCondition(voucherDTO.getCondition());
-            voucher.setPercent(voucherDTO.getPercent());
+            voucher.setPrice(voucherDTO.getPrice());
             voucher.setExpiredDate(voucherDTO.getExpiredDate());
             voucher.setType(type);
         });

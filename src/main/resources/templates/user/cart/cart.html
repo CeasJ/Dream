@@ -99,8 +99,8 @@
       <div class="main-cart">
         <div class="row">
           <div class="col-md-9">
-            <div class="container-fluid cart-0">
-              <img class="img-cart" src="/img/gallery/cart-0.png"></img>
+            <div class="container-fluid cart-0" ng-if="cart.count === 0">
+              <img class="img-cart" src="/img/gallery/cart-0.png" alt="cart"></img>
               <h5>Không có sản phẩm trong giỏ hàng</h5>
               <a th:href="@{|/store|}">
                 <button class="btn btn-danger mt-3" style="padding: 8px 18px;">
@@ -108,8 +108,8 @@
                 </button>
               </a>
             </div>
-            <div class="container-fluid cart-1">
-              <div class=" row product-row my-3" ng-repeat="product in cart.items">
+            <div class="container-fluid cart-1" ng-if="cart.count > 0">
+              <div class="row product-row my-3" ng-repeat="product in cart.items">
                 <div class="col-md-2">
                   <img ng-src="{{'/img/gallery/' + product.image}}" class="img-fluid img-product" alt="productImg">
                 </div>
@@ -335,7 +335,7 @@
           </div>
           <!-- Đơn hàng đã xử lý Start -->
           <div class="container-fluid cart-3 mx-auto" style="display: none;">
-            <img class="img-cart" ng-src="{{'/img/qrcode/' + qrCode}}" alt="qrCode">
+            <img class="img-cart" ng-src="/img/gallery/cart-0" alt="cart" >
             <h5 th:text="#{message.orderProcessed}"></h5>
             <a th:href="@{|/store|}">
               <button class="btn btn-danger mt-3" style="padding: 8px 18px;">

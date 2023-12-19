@@ -75,7 +75,9 @@ public class ProductRestController {
 
         Long idRole = accountService.findRoleIdByUsername(username);
         if (idRole == 1 || idRole == 2) {
+        if (idRole == 1 || idRole == 2) {
             String notificationTitle = "Có sự thay đổi trong sản phẩm";
+            String notificationText = "Sản phẩm '" + productDTO.getName() + "' đã được thêm bởi '" + username + "'";
             String notificationText = "Sản phẩm '" + productDTO.getName() + "' đã được thêm bởi '" + username + "'";
             NotificationDTO notificationDTO = new NotificationDTO();
             notificationDTO.setIdAccount(idAccount);

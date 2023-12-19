@@ -22,7 +22,7 @@ public interface OrderDetailMapper {
     @Mapping(source = "orders.distance",target = "distance")
     @Mapping(source = "orders.address",target = "order_address")
     @Mapping(source = "orders.status.id",target = "order_status")
-    @Mapping(source = "orders.voucher.percent",target = "discount")
+    @Mapping(source = "orders.voucher.price",target = "discount")
     @Mapping(source = "sizes.id",target = "id_size")
     OrderDetailDTO orderDetailToOrderDetailDTO(OrderDetails orderDetails);
 
@@ -46,7 +46,7 @@ public interface OrderDetailMapper {
     @Mapping(source = "orders.distance",target = "distance")
     @Mapping(source = "orders.address",target = "order_address")
     @Mapping(source = "orders.status.id",target = "order_status")
-    @Mapping(source = "orders.voucher.percent",target = "discount")
+    @Mapping(source = "orders.voucher.price",target = "discount")
     @Mapping(source = "sizes.id",target = "id_size")
     List<OrderDetailDTO> listOrderDetailToListOrderDetailDTO(List<OrderDetails> orderDetails);
 

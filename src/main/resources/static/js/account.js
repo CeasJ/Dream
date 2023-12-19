@@ -73,7 +73,7 @@ app.factory('errorInterceptor', ['$q', '$location', function ($q, $location) {
 app.config(['$httpProvider', function ($httpProvider) {
   $httpProvider.interceptors.push('errorInterceptor');
 }]);
-app.controller('profile_ctrl', function ($scope, $http, $rootScope) {
+app.controller("profile_ctrl", function ($scope, $http, $rootScope) {
   $scope.account = {};
   $scope.provinces = [];
   $scope.districts = [];

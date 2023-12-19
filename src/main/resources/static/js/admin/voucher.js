@@ -13,9 +13,6 @@ voucherApp.controller("voucher_ctrl", function ($scope, $http, $window) {
     status: 1,
   };
 
-  console.log($scope.voucher.type);
-  console.log($scope.voucher.status);
-
   $scope.initialize = function () {
     $http.get("/rest/vouchers/all").then(
       function (response) {
@@ -137,11 +134,11 @@ voucherApp.controller("voucher_ctrl", function ($scope, $http, $window) {
     name: "",
     number: "",
     createDate: new Date(),
-    expiredDate: "",
-    percent: "",
-    condition: "",
-    icon: "",
-    status: "",
+    expiredDate:"",
+    price:"",
+    condition:"",
+    icon:"",
+    status:"",
     id_account: "",
     type: "",
 

@@ -34,7 +34,7 @@ public class Voucher implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date expiredDate;
 
-    private Double percent;
+    private Double price;
 
     private Double condition;
 

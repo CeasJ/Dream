@@ -45,7 +45,6 @@ public class ProductSizeRestController {
     private ProductSizeService productSizeService;
     @Autowired
     private ValidationService validateService;
-
     @Autowired
     private ProductService productService;
 
