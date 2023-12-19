@@ -98,8 +98,8 @@
                                         th:text="#{product.lowToHigh}"></option>
                                     <option value="desc" th:selected="${sortOption == 'desc'}"
                                         th:text="#{product.highToLow}"></option>
-                                    <option value="sale" th:selected="${sortOption == 'sale'}"
-                                        th:text="#{product.sale}">
+<!--                                    <option value="sale" th:selected="${sortOption == 'sale'}"-->
+<!--                                        th:text="#{product.sale}">-->
                                     </option>
                                 </select>
                             </div>
@@ -112,9 +112,11 @@
                                 th:text="#{label.sortBy}"></label>
                             <select class="form-select cb-sort" id="comboBox" name="comboBox"
                                 style="width: 270px; height: 36px;">
-                                <option value="none" th:text="#{product.none}" th:selected="${sortOption == 'none'}"></option>
+                                <option value="none" th:text="#{product.none}" th:selected="${sortOption == 'none'}">
+                                </option>
                                 <option value="bestSelling" th:text="#{option.bestSelling}"></option>
-                                <option value="topRated" th:selected="${sortOption == 'topRated'}" th:text="#{option.topRated}"></option>
+                                <option value="topRated" th:selected="${sortOption == 'topRated'}"
+                                    th:text="#{option.topRated}"></option>
                             </select>
                         </div>
                     </div>
@@ -135,7 +137,7 @@
                     </div>
                 </div>
                 <div class="row g-4">
-                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s" th:each="product: ${products}">
+                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s" th:each="product: ${products}" th:if="${product.active}">
                         <div class="store-item position-relative text-center">
                             <img class="img-fluid" th:src="@{'/img/gallery/' + ${product.image}}" alt="">
                             <div class="p-4">
@@ -190,24 +192,23 @@
                                 <div th:if="${product.discountedPrice != null}">
                                     <p class="header">
                                     <h5 style="display: inline;"><del><i><span
-                                                    th:text="${product.formattedPrice}"></span></i></del></h5>
+                                            th:text="${product.formattedPrice}"></span></i></del></h5>
                                     <h4 style="display: inline;"><span
                                             th:text="${product.formattedDiscountedPrice}"></span>
                                     </h4>
                                     </p>
                                 </div>
                                 <div th:unless="${product.discountedPrice != null}">
-                                    <!-- Hiển thị giá gốc nếu không có giảm giá -->
                                     <h4><span th:text="${product.formattedPrice}"></span></h4>
                                 </div>
                             </div>
                             <div class="store-overlay">
                                 <a th:href="@{/product/{name}(name=${product.name})}"
-                                    class="btn btn-primary rounded-pill py-2 px-4 m-2" style="width: 154px;">
+                                    class="btn btn-primary rounded-pill py-2 px-4 m-2" style="width: 154px;" th:id="'moreDetail_' + ${product.id}">
                                     <span th:text="#{button.moreDetail}"></span> <i class="fa fa-arrow-right ms-2"></i>
                                 </a>
                                 <button th:attr="ng-click=@{|cart.add(${product.id})|}"
-                                    class="btn btn-dark rounded-pill py-2 px-4 m-2">
+                                    class="btn btn-dark rounded-pill py-2 px-4 m-2" th:id="'addToCart_' + ${product.id}">
                                     <span th:text="#{button.addToCart}"></span> <i class="fa fa-cart-plus ms-2"></i>
                                 </button>
                             </div>
@@ -236,8 +237,7 @@
     <!-- Copyright End -->
 
     <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i
-            class="bi bi-arrow-up"></i></a>
+    <a href="#" class="btn btn-lg btn-dark btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
 
 
     <!-- JavaScript Libraries -->

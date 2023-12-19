@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor
@@ -25,6 +24,10 @@ public class Category implements Serializable {
     private String name;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Product> product = new ArrayList<>();
+    @OneToMany(mappedBy = "category")
+    private List<Product> product;
+
+    @ManyToOne
+    @JoinColumn(name = "iddiscount")
+    private Discount discount;
 }

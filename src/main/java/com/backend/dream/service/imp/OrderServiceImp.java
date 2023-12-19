@@ -8,18 +8,19 @@ import com.backend.dream.mapper.OrderMapper;
 import com.backend.dream.repository.OrderDetailRepository;
 import com.backend.dream.repository.OrderRepository;
 import com.backend.dream.service.OrderService;
+import com.backend.dream.util.QrCodeService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
+import org.mapstruct.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.sql.Time;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -40,6 +41,8 @@ public class OrderServiceImp implements OrderService {
     private OrderDetailRepository orderDetailRepository;
     @Autowired
     private OrderDetailMapper orderDetailMapper;
+    @Autowired
+    private QrCodeService qrCodeService;
 
     @Override
     public Orders create(JsonNode orderData) throws NoSuchElementException, NullPointerException, ParseException {
@@ -49,6 +52,12 @@ public class OrderServiceImp implements OrderService {
 
 
         Orders orders = orderMapper.orderDTOToOrder(orderDTO);
+        if (orderDTO.getId_voucher() == null){
+            orders.setVoucher(null);
+        }
+
+        qrCodeService.generateQrCode("Your order number " + String.valueOf(orders.getId()) + " " + "has been paid successfully");
+        orders.setQr(qrCodeService.getQrCode());
 
         orderRepository.save(orders);
 
@@ -58,16 +67,18 @@ public class OrderServiceImp implements OrderService {
         List<OrderDetailDTO> details = mapper.convertValue(orderData.get("orderDetails"), type)
                 .stream().peek(d -> d.setId_order(orders.getId())).collect(Collectors.toList());
 
-        orderDetailRepository.saveAll(orderDetailMapper.listOrderDetaiDTOlToListOrderDetail(details));
+        orderDetailRepository.saveAll(orderDetailMapper.listOrderDetailDTOlToListOrderDetail(details));
 
         return orders;
     }
 
     @Override
-    public List<OrderDTO> listOrderByUsername(String username) throws NoSuchElementException {
-        List<OrderDTO> listOrders = orderMapper.listOrderToListOrderDTO(orderRepository.listOrdersByUsername(username));
-        return listOrders;
+    public Page<OrderDTO> listOrderByUsername(String username, Pageable pageable) throws NoSuchElementException {
+        Page<Orders> ordersPage = orderRepository.listOrdersByUsername(username, pageable);
+        List<OrderDTO> listOrders = orderMapper.listOrderToListOrderDTO(ordersPage.getContent());
+        return new PageImpl<>(listOrders, pageable, ordersPage.getTotalElements());
     }
+
 
     @Override
     public List<OrderDTO> getListOrder() throws ClassNotFoundException {
@@ -102,7 +113,24 @@ public class OrderServiceImp implements OrderService {
     @Override
     public OrderDTO updateOrder(OrderDTO orderDTO) throws ClassNotFoundException, NoSuchElementException {
         Orders orders = orderMapper.orderDTOToOrder(orderDTO);
+        if (orderDTO.getId_voucher() == null){
+            orders.setVoucher(null);
+        }
         Orders updateOrder = orderRepository.save(orders);
         return orderMapper.orderToOrderDTO(updateOrder);
+    }
+
+    @Override
+    public List<OrderDTO> searchOrders(String username, Long statusID) {
+        List<Orders> searchedOrders;
+
+        if (statusID != null && username != null) {
+            searchedOrders = orderRepository.findByAccountUsername(statusID, username);
+        } else {
+            searchedOrders = new ArrayList<>();
+        }
+
+        List<OrderDTO> orderDTOList = orderMapper.listOrderToListOrderDTO(searchedOrders);
+        return orderDTOList;
     }
 }

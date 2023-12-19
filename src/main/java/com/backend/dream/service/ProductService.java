@@ -2,9 +2,12 @@ package com.backend.dream.service;
 
 import com.backend.dream.dto.ProductDTO;
 import com.backend.dream.entity.Product;
+import javassist.bytecode.ByteArray;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.List;
 
 public interface ProductService {
@@ -34,16 +37,22 @@ public interface ProductService {
 
 
     //  Display discounted price and original price in product detail and product list
-    double getDiscountedPrice(Long productId);
+    double getDiscountedPrice(Long productID, Long categoryID);
 
     double getOriginalProductPrice(Long productId);
 
     double getProductPriceBySize(Long productId, Long sizeId);
 
-    double getDiscountPercentByProductId(Long productId);
+    double getDiscountPercentByCategoryId(Long productId);
 
     // Sort products by star rating
     Page<ProductDTO> findByTopRated(Long categoryId, Pageable pageable);
 
     Page<ProductDTO> findByBestSeller(Long categoryId, Pageable pageable);
+
+    List<ProductDTO> searchProductByName(String name);
+
+    ByteArrayInputStream getdataProduct() throws IOException;
+
+    Double getMinPrice(Long productId);
 }

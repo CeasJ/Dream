@@ -43,6 +43,7 @@ public class HomeController {
     public String updatePasswordSuccess() {
         return "/user/infor/updatePassSuccess";
     }
+
     @RequestMapping("/changePassword")
     public String changePassword() {
         return "/user/infor/changePassword";
@@ -51,6 +52,11 @@ public class HomeController {
     @RequestMapping("/voucher")
     public String voucher() {
         return "/user/voucher/voucher";
+    }
+
+    @RequestMapping("/error-page")
+    public String errorPage() {
+        return "/error";
     }
 
 }

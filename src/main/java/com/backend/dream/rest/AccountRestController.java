@@ -2,9 +2,12 @@ package com.backend.dream.rest;
 
 import com.backend.dream.dto.AccountDTO;
 import com.backend.dream.dto.AccountDTO;
+import com.backend.dream.dto.AccountsLockDTO;
 import com.backend.dream.entity.Account;
+import com.backend.dream.entity.AccountsLock;
 import com.backend.dream.mapper.AccountMapper;
 import com.backend.dream.service.AccountService;
+import com.backend.dream.service.AccountsLockService;
 import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +17,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.sql.Timestamp;
+import java.util.*;
 
 @CrossOrigin("*")
 @RestController
@@ -29,6 +30,9 @@ public class AccountRestController {
     private AccountMapper accountMapper;
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private AccountsLockService accountsLockService;
 
     @GetMapping("/{id}")
     public ResponseEntity<AccountDTO> getOne(@PathVariable("id") Long id) {
@@ -74,22 +78,61 @@ public class AccountRestController {
         return new ResponseEntity<>(accountDTO, HttpStatus.OK);
     }
 
-    @GetMapping("/admin")
-    public List<Account> getAccounts(@RequestParam("admin") Optional<Boolean> admin) {
-        if (admin.orElse(false)) {
-            return accountService.getStaff();
-        } else {
-            return accountService.findALL();
+
+    @PutMapping("/lock")
+    public ResponseEntity<AccountDTO> lockAccount(@RequestBody AccountsLockDTO lockData) {
+        try {
+            AccountDTO accountDTO = accountService.findById(lockData.getAccountId());
+            if (accountDTO != null && accountDTO.isActive()) {
+                accountDTO.setActive(false);
+                accountService.updateAccount(accountDTO);
+
+                AccountsLockDTO accountsLockDTO = new AccountsLockDTO();
+                accountsLockDTO.setAccountId(lockData.getAccountId());
+                accountsLockDTO.setReason(lockData.getReason());
+                accountsLockDTO.setBanDate(new Timestamp(System.currentTimeMillis()));
+                accountsLockService.save(accountsLockDTO);
+                return new ResponseEntity<>(accountDTO, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-    @PostMapping("/add")
-    public Account createStaff(@RequestBody JsonNode account, Model model) {
-        String username = account.get("username").asText();
-        return accountService.checkUsernameExists(username) ? null : accountService.createStaff(account);
+
+
+    @PutMapping("/unlock/{id}")
+    public ResponseEntity<AccountDTO> unlockAccount(@PathVariable("id") Long id) {
+        try {
+            AccountDTO accountDTO = accountService.findById(id);
+            accountDTO.setActive(true);
+            AccountDTO updatedAccountDTO = accountService.updateAccount(accountDTO);
+            if (updatedAccountDTO != null) {
+                return new ResponseEntity<>(updatedAccountDTO, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
-    @PutMapping("/update/{id}")
-    public Account updateStaff(@RequestBody Account staffToUpdate, @PathVariable("id") Long id) {
-        return accountService.updateStaff(staffToUpdate);
+    @GetMapping("/lockDetails/{id}")
+    public ResponseEntity<Map<String, Object>> getLockDetailsByAccountId(@PathVariable("id") Long id) {
+        try {
+            Map<String, Object> response = new HashMap<>();
+            int lockCount = accountsLockService.getLockCountByAccountId(id);
+            List<AccountsLock> lockDetails = accountsLockService.getLockDetailsByAccountId(id);
+
+            response.put("lockCount", lockCount);
+            response.put("lockDetails", lockDetails);
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
+
+
 }

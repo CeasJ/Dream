@@ -7,10 +7,7 @@ import com.backend.dream.mapper.AccountMapper;
 import com.backend.dream.mapper.ProductMapper;
 import com.backend.dream.repository.FeedBackRepository;
 import com.backend.dream.repository.ProductRepository;
-import com.backend.dream.service.DiscountService;
-import com.backend.dream.service.FeedbackService;
-import com.backend.dream.service.ProductService;
-import com.backend.dream.service.ProductSizeService;
+import com.backend.dream.service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,12 +21,14 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 public class ProductController {
 
-    private Long defaultCategoryId = 1L;
+    private final Long defaultCategoryId = 1L;
     private final ProductService productService;
     private final ProductSizeService productSizeService;
 
@@ -46,10 +45,13 @@ public class ProductController {
     private ProductRepository productRepository;
 
     @Autowired
-    DiscountService discountService;
+    private DiscountService discountService;
 
     @Autowired
-    FeedbackService feedbackService;
+    private FeedbackService feedbackService;
+
+    @Autowired
+    private CategoryService categoryService;
 
     @Autowired
     private HttpServletRequest request;
@@ -105,23 +107,24 @@ public class ProductController {
         } else if ("desc".equals(sortOption)) {
             // Sắp xếp theo giá giảm dần
             productPage = productService.sortByPriceDesc(categoryIdValue, pageable);
-        } else if ("sale".equals(sortOption)) {
-            productPage = productService.findSaleProducts(pageable);
-        } else if("topRated".equals(selectedOption)){
-            productPage = productService.findByTopRated(categoryIdValue, pageable);
+        }
+//        else if ("sale".equals(sortOption)) {
+//            productPage = productService.findSaleProducts(pageable);
+//        }
+        else if("topRated".equals(selectedOption)){
+            Pageable Top5 = PageRequest.of(page, 5);
+            productPage = productService.findByTopRated(categoryIdValue, Top5);
         } else if("bestSelling".equals(selectedOption)){
-            productPage = productService.findByBestSeller(categoryIdValue, pageable);
+            Pageable Top5 = PageRequest.of(page, 5);
+            productPage = productService.findByBestSeller(categoryIdValue, Top5);
         } else {
             // Mặc định
             productPage = productService.findByCategory(categoryIdValue, pageable);
         }
 
-
-
-
         List<ProductDTO> products = productPage.getContent();
         for (ProductDTO product : products) {
-            double discountedPrice = productService.getDiscountedPrice(product.getId());
+            double discountedPrice = productService.getDiscountedPrice(product.getId(), product.getId_category());
             if (discountedPrice < product.getPrice()) {
                 product.setIsDiscounted(true);
                 product.setDiscountedPrice(discountedPrice);
@@ -129,6 +132,18 @@ public class ProductController {
                 product.setIsDiscounted(false);
             }
         }
+
+
+        // Set min price for display products list
+        for (ProductDTO product : products) {
+            double minPrice = productService.getMinPrice(product.getId());
+            if (minPrice > 0) {
+                product.setPrice(minPrice);
+            }
+        }
+
+
+
 
         model.addAttribute("products", products);
         model.addAttribute("currentPage", page);
@@ -159,85 +174,91 @@ public class ProductController {
             @RequestParam(value = "starRating", required = false, defaultValue = "0") int starRating,
             @RequestParam(value = "page", required = false, defaultValue = "0") int page,
             Model model) {
-        try {
 
-            String decoded = URLDecoder.decode(name, "UTF-8");
-            ProductDTO product = productService.findByNamePaged(decoded, PageRequest.of(0, 1)).getContent().get(0);
-            List<SizeDTO> availableSizes = productSizeService.getSizesByProductId(product.getId());
+        String decoded = URLDecoder.decode(name, StandardCharsets.UTF_8);
+        ProductDTO product = productService.findByNamePaged(decoded, PageRequest.of(0, 1)).getContent().get(0);
+        List<SizeDTO> availableSizes = productSizeService.getSizesByProductId(product.getId());
 
-            // Set the price based on the selected size
-            if (sizeId != null) {
-                double productPriceBySize = productService.getProductPriceBySize(product.getId(), sizeId);
-                product.setSelectedSizeId(sizeId);
-                product.setPrice(productPriceBySize);
-            }
-
-            double discountedPrice = productService.getDiscountedPrice(product.getId());
-
-            if (discountedPrice < product.getPrice()) {
-                product.setIsDiscounted(true);
-                product.setDiscountedPrice(discountedPrice);
-            } else {
-                product.setIsDiscounted(false);
-            }
-
-            // Get the discount percent
-            DiscountDTO discount = discountService.getDiscountByProductId(product.getId());
-            Double discountPercent = (discount != null) ? discount.getPercent() : 0.0;
-            // Get reviews list
-            List<FeedBackDTO> feedbackList;
-
-            if (starRating == 0) {
-                feedbackList = feedbackService.getFeedbacksForProduct(product.getId());
-            } else {
-                feedbackList = feedbackService.getFeedbacksForProductByRating(product.getId(), starRating);
-            }
-
-            for (FeedBackDTO feedback : feedbackList) {
-                Account account = feedBackRepository.findAccountByFeedBackId(feedback.getId());
-                feedback.setAccountDTO(accountMapper.accountToAccountDTO(account));
-            }
-
-            double averageRating = feedbackService.getAverageRating(product.getId());
-
-            // Pagination
-            int pageSize = 5;
-            int totalPages = (int) Math.ceil((double) feedbackList.size() / pageSize);
-
-            if (page < 0) {
-                page = 0;
-            } else if (page >= totalPages) {
-                page = totalPages - 1;
-            }
-
-            int start = page * pageSize;
-            int end = Math.min((start + pageSize), feedbackList.size());
-
-            if (start >= 0 && end <= feedbackList.size()) {
-                List<FeedBackDTO> pagedFeedbackList = feedbackList.subList(start, end);
-                model.addAttribute("feedbackList", pagedFeedbackList);
-            }
-            // Check if user has logged in yet
-            String remoteUser = request.getRemoteUser();
-
-            // Count number of comments
-            Long totalComments = feedbackService.countFeedback(product.getId());
-
-            model.addAttribute("discountPercent", discountPercent);
-            model.addAttribute("product", product);
-            model.addAttribute("availableSizes", availableSizes);
-            model.addAttribute("name", name);
-            model.addAttribute("averageRating", averageRating);
-            model.addAttribute("currentPage", page);
-            model.addAttribute("totalPages", totalPages);
-            model.addAttribute("remoteUser", remoteUser);
-            model.addAttribute("totalComments", totalComments);
-
-
-            return "user/product/detail";
-        } catch (UnsupportedEncodingException e) {
-            return "error";
+        if (!availableSizes.isEmpty()) {
+            SizeDTO firstSize = availableSizes.get(0);
+            double productPriceBySize = productService.getProductPriceBySize(product.getId(), firstSize.getId());
+            product.setSelectedSizeId(firstSize.getId());
+            product.setPrice(productPriceBySize);
         }
+
+        // Set the price based on the selected size
+        if (sizeId != null) {
+            double productPriceBySize = productService.getProductPriceBySize(product.getId(), sizeId);
+            product.setSelectedSizeId(sizeId);
+            product.setPrice(productPriceBySize);
+        }
+
+        double discountedPrice = productService.getDiscountedPrice(product.getId(), product.getId_category());
+
+        if (discountedPrice < product.getPrice()) {
+            product.setIsDiscounted(true);
+            product.setDiscountedPrice(discountedPrice);
+        } else {
+            product.setIsDiscounted(false);
+        }
+
+        // Get the discount percent
+        CategoryDTO categoryDTO = categoryService.getDiscountByCategoryId(product.getId_category());
+        Double discountPercent = (categoryDTO != null) ? categoryDTO.getPercent_discount() : 0.0;
+        // Get reviews list
+        List<FeedBackDTO> feedbackList;
+
+        if (starRating == 0) {
+            feedbackList = feedbackService.getFeedbacksForProduct(product.getId());
+        } else {
+            feedbackList = feedbackService.getFeedbacksForProductByRating(product.getId(), starRating);
+        }
+
+        for (FeedBackDTO feedback : feedbackList) {
+            Account account = feedBackRepository.findAccountByFeedBackId(feedback.getId());
+            feedback.setAccountDTO(accountMapper.accountToAccountDTO(account));
+        }
+
+        double averageRating = feedbackService.getAverageRating(product.getId());
+
+        // Pagination
+        int pageSize = 5;
+        int totalPages = (int) Math.ceil((double) feedbackList.size() / pageSize);
+
+        if (page < 0) {
+            page = 0;
+        } else if (page >= totalPages) {
+            page = totalPages - 1;
+        }
+
+        int start = page * pageSize;
+        int end = Math.min((start + pageSize), feedbackList.size());
+
+        if (start >= 0 && end <= feedbackList.size()) {
+            List<FeedBackDTO> pagedFeedbackList = feedbackList.subList(start, end);
+            model.addAttribute("feedbackList", pagedFeedbackList);
+        }
+        // Check if user has logged in yet
+        String remoteUser = request.getRemoteUser();
+
+        // Count number of comments
+        Long totalComments = feedbackService.countFeedback(product.getId());
+
+        // Get the min price
+
+
+        model.addAttribute("discountPercent", discountPercent);
+        model.addAttribute("product", product);
+        model.addAttribute("availableSizes", availableSizes);
+        model.addAttribute("name", name);
+        model.addAttribute("averageRating", averageRating);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("remoteUser", remoteUser);
+        model.addAttribute("totalComments", totalComments);
+
+
+        return "user/product/detail";
     }
 
     @GetMapping("/getProductPriceBySize")
@@ -252,9 +273,9 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/getDiscountPercentByProductId")
-    public ResponseEntity<Double> getDiscountPercentByProductId(@RequestParam("productId") Long productId) {
-        double discountPercent = productService.getDiscountPercentByProductId(productId);
+    @GetMapping("/getDiscountPercentByCategoryId")
+    public ResponseEntity<Double> getDiscountPercentByProductId(@RequestParam("categoryID") Long categoryID) {
+        double discountPercent = productService.getDiscountPercentByCategoryId(categoryID);
         return ResponseEntity.ok(discountPercent);
     }
 

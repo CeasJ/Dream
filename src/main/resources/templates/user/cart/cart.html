@@ -38,10 +38,10 @@
 
   <!-- jQuery -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-  
+
   <!--    toastr-->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-  
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
 </head>
@@ -115,7 +115,7 @@
             <div class="container-fluid cart-1" style="display: none;">
               <div class="row product-row my-3" ng-repeat="product in cart.items">
                 <div class="col-md-2">
-                  <img ng-src="{{'/img/gallery/' + product.image}}" class="img-fluid img-product">
+                  <img ng-src="{{'/img/gallery/' + product.image}}" class="img-fluid img-product" alt="productImg">
                 </div>
                 <div class="col-md-2 pt-4">
                   <h6> {{product.name}} </h6>
@@ -123,16 +123,30 @@
                 <div class="col-md-1 pt-4">
                   <h6> {{product.name_size}}</h6>
                 </div>
-                <div class="col-md-2 pt-4">
+
+                <div class="col-md-2 pt-4" ng-if="product.discount_percent">
+                  <p>{{product.price - (product.discount_percent * product.price) | number:0}} VND</p>
+                </div>
+
+                <div class="col-md-2 pt-4" ng-if="!product.discount_percent">
                   <p>{{product.price | number:0}} VND</p>
                 </div>
+
+
                 <div class="col-md-1 pt-4">
                   <input type="number" class="form-control quantity-input" min="1" ng-model="product.qty"
                     ng-change="cart.saveToLocalStorage()">
                 </div>
-                <div class="col-md-2 pt-4">
+
+                <div class="col-md-2 pt-4" ng-if="product.discount_percent">
+                  <p> {{product.qty * (product.price-(product.price * product.discount_percent)) | number:0}} VND</p>
+                </div>
+
+                <div class="col-md-2 pt-4" ng-if="!product.discount_percent">
                   <p> {{product.qty * product.price | number:0}} VND</p>
                 </div>
+
+
                 <div class="col-md-2 pt-3">
                   <button ng-click="cart.remove(product.id)" class="btn">
                     <i style="font-size: 20px;" class="bi bi-trash text-danger fw-bold"></i>
@@ -150,12 +164,9 @@
                   {{cart.count}}
                 </span>
               </p>
-              <p>
-                <span class="title-prc" th:text="#{cart.shippingCost}"></span>
-                <span style="float: right; font-weight: bold; font-size: 16px;"> 30,000 VNĐ</span>
-              </p>
               <p class="title-prc" ng-if="cart.totalDiscount >= 0">Áp dụng Voucher
-                <span class="text-danger" style="float: right; font-weight: bold; font-size: 16px;">- {{ cart.totalDiscount | number:0 }} VNĐ</span>
+                <span class="text-danger" style="float: right; font-weight: bold; font-size: 16px;">- {{
+                  cart.totalDiscount | number:0 }} VNĐ</span>
               </p>
               <div class="input-group mb-4 mt-3 d-flex justify-content-between align-items-center">
                 <label class="mb-0 me-2 ps-2">Dream Voucher</label>
@@ -163,6 +174,7 @@
                   data-bs-target="#voucherModal" th:text="#{cart.selectDiscountCode}">
                 </a>
               </div>
+
               <!-- Modal -->
               <div class="modal fade voucher-modal" id="voucherModal" tabindex="-1" aria-labelledby="voucherModalLabel"
                 aria-hidden="true">
@@ -173,43 +185,61 @@
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                      <p class="text-muted ps-3" style="font-size: 18px;" th:text="#{modal.title}"></p>
+                      <div class="container-fluid mb-2">
+                        <div class="custom-card">
+                          <div class="custom-input-group input-group">
+                            <input type="text" class="form-control" placeholder="Enter Voucher Number"
+                              ng-model="voucherNumber">
+                            <button class="btn-apply" ng-click="applyVoucherNumber()">Áp dụng</button>
+                          </div>
+                        </div>
+                      </div>
+                      <p class="text-muted pt-3" style="font-size: 18px; padding-left: 24px;" th:text="#{modal.title}">
+                      </p>
                       <div class="container mx-auto">
                         <!-- Voucher 1 -->
-                        <div class="row custom-shadow" style="margin-bottom: 30px;" ng-repeat="voucher in vouchers" ng-if="voucher.condition <= cart.amount">
-                            <div class="col-md-3 content-sale text-center">
-                              <div class="icon-container">
-                                <i class="{{ voucher.icon }} text-white"></i>
-                              </div>
-                              <h6 class="text-white">{{ voucher.name }}</h6>
+                        <div class="row custom-shadow" style="margin-bottom: 30px;" ng-repeat="voucher in vouchers"
+                          ng-if="voucher.condition <= cart.amount">
+                          <div class="col-md-3 content-sale text-center">
+                            <div class="icon-container">
+                              <i class="{{ voucher.icon }} text-white"></i>
                             </div>
-                            <div class="col-md-9">
-                              <div class="discount-info" style="margin-left: 5px; padding: 10px 0;">
-                                <p style="margin-bottom: 5px; font-weight: bold; font-size: 24px;">
-                                  Giảm {{ voucher.percent | number : 0 }}₫</p>
-                                <div class="form-check float-end">
-                                  <input class="form-check-input" type="radio" id="customRadio" name="customRadio" ng-click="selectVoucher(voucher)">
-                                </div>
-                                <p style="font-size: 15px; margin-bottom: 10px;">Đơn tối thiểu {{ voucher.condition | number : 0}} ₫</p>
-                                <div class="expiry-info text-danger" style="display: flex; font-size: 14px;">
-                                  <i class="far fa-clock" style="padding-top: 3px; padding-right: 5px;"></i>
-                                  <p style="margin-bottom: 0px;">Có hiệu lực: {{ getRemainingTime(voucher.expireddate) }}</p>
-                                </div>
+                            <h6 class="text-white">{{ voucher.name }}</h6>
+                          </div>
+                          <div class="col-md-9">
+                            <div class="discount-info" style="margin-left: 5px; padding: 10px 0;">
+                              <p style="margin-bottom: 5px; font-weight: bold; font-size: 24px;">
+                                Giảm {{ voucher.percent | number : 0 }}₫</p>
+                              <div class="form-check float-end">
+                                <input class="form-check-input" type="radio" id="customRadio" name="customRadio"
+                                  ng-click="selectVoucher(voucher)">
                               </div>
+                              <p style="font-size: 15px; margin-bottom: 10px;">Đơn tối thiểu {{ voucher.condition |
+                                number : 0}} ₫</p>
+                              <div class="expiry-info text-danger" style="display: flex; font-size: 14px;">
+                                <i class="far fa-clock" style="padding-top: 3px; padding-right: 5px;"></i>
+                                <p style="margin-bottom: 0px;">Có hiệu lực: {{ getRemainingTime(voucher.expiredDate) }}
+                                </p>
+                              </div>
+                            </div>
                           </div>
                         </div>
                         <!-- Voucher 1 -->
                       </div>
                     </div>
                     <div class="modal-footer">
-                      <button type="button" class="btn btn-primary" data-bs-dismiss="modal" ng-click="applyVoucher()">Áp dụng</button>
+                      <button type="button" class="btn btn-primary" style="padding: 10px 40px;" data-bs-dismiss="modal"
+                        ng-click="applyVoucher()">
+                        OK
+                      </button>
                     </div>
                   </div>
                 </div>
               </div>
 
               <hr>
-              <p class="title-prc">Tổng tiền <span class="price" style="float: right;">{{ (cart.amount - cart.totalDiscount ) | number : 0 }} VND</span></p>
+              <p class="title-prc">Tổng tiền <span class="price" style="float: right;">{{ (cart.amount -
+                  cart.totalDiscount ) | number : 0 }} VND</span></p>
               <hr>
               <div class="text-center"><button class="btn btn-danger btn-buy" id="buyButton"
                   ng-disabled="cart.count === 0"><span th:text="#{cart.buyButton}"></span> {{cart.count}}</button>
@@ -222,18 +252,21 @@
                 <form class="form-infor" style="padding: 20px 20px; font-size: 16px;">
                   <div class="choose-address">
                     <div class="mb-3">
-                      <input type="radio" id="currentAddress" name="addressType" checked>
+                      <input type="radio" id="currentAddress" name="addressType" ng-checked="true" ng-value="1"
+                        ng-model="userAddress" ng-change="changeAddress()">
                       <label class="ps-1" for="currentAddress">Địa chỉ hiện tại</label>
                     </div>
                     <div class="mb-3">
-                      <input type="radio" id="newAddress" name="addressType">
+                      <input type="radio" id="newAddress" name="addressType" ng-value="2" ng-model="userAddress"
+                        ng-change="changeAddress()">
                       <label class="ps-1" for="newAddress">Địa chỉ mới</label>
                     </div>
                   </div>
 
                   <div class="current-address mb-3 mt-3">
                     <label for="result" class="form-label label pb-2"><span th:text="#{label.address}"></span></label>
-                    <input type="text" class="form-control" id="currentAddressInput" readonly>
+                    <input type="text" class="form-control" id="currentAddressInput" readonly ng-model="userAddressDB"
+                      value="{{ address }}">
                   </div>
 
                   <div class="address-order mb-1" style="display: none;">
@@ -266,36 +299,36 @@
                       <label for="number" class="form-label label pb-2">
                         <span th:text="#{label.streetNumber}"></span>
                       </label>
-                      <input type="text" class="form-control" id="number" required ng-model="number"
+                      <input type="text" class="form-control" id="numberHouse" ng-model="numberHouse"
                         ng-change="printResult()">
                     </div>
                     <div class="mb-3">
                       <label for="result" class="form-label label pb-2"><span th:text="#{label.address}"></span></label>
-                      <input type="text" class="form-control" id="result" required value="{{order.address}}"
-                        ng-model="order.address" readonly>
+                      <input type="text" class="form-control" id="result" value="{{ userAddressWeb }}"
+                        ng-model="userAddressWeb" readonly>
                     </div>
                   </div>
 
                   <div class="mb-3">
                     <label for="note" class="form-label label pb-2"><span th:text="#{label.note}"></span></label>
-                    <textarea type="text" class="form-control" id="note" required ng-model="order.note"></textarea>
+                    <textarea type="text" class="form-control" id="note" ng-model="order.note"></textarea>
                   </div>
                   <div class="mb-3">
                     <label for="paymentMethod" class="form-label label pb-2">
                       <span th:text="#{label.paymentMethod}"></span>:</label><br>
                     <div class="form-check form-check-inline">
                       <input type="radio" class="form-check-input" id="paymentMethod" name="paymentMethod"
-                        ng-model="selectedPaymentMethod" value="cash" checked>
+                        ng-model="payment" ng-value="1" ng-checked="true">
                       <label class="form-check-label" for="paymentMethod"><span th:text="#{label.cash}"></span></label>
                     </div>
                     <div class="form-check form-check-inline">
-                      <input type="radio" class="form-check-input" id="vnpay" name="paymentMethod"
-                        ng-model="selectedPaymentMethod" value="vnpay">
+                      <input type="radio" class="form-check-input" id="vnpay" name="paymentMethod" ng-model="payment"
+                        ng-value="2">
                       <label class="form-check-label pb-2" for="vnpay">VN Pay</label>
                     </div>
                     <div class="form-check form-check-inline">
-                      <input type="radio" class="form-check-input" id="paypal" name="paymentMethod"
-                        ng-model="selectedPaymentMethod" value="paypal">
+                      <input type="radio" class="form-check-input" id="paypal" name="paymentMethod" ng-model="payment"
+                        ng-value="3">
                       <label class="form-check-label pb-2" for="paypal">PayPal</label>
                     </div>
                   </div>
@@ -312,7 +345,7 @@
           </div>
           <!-- Đơn hàng đã xử lý Start -->
           <div class="container-fluid cart-3 mx-auto" style="display: none;">
-            <img class="img-cart" src="/img/gallery/cart-0.png">
+            <img class="img-cart" ng-src="{{'/img/qrcode/' + qrCode}}" alt="qrCode">
             <h5 th:text="#{message.orderProcessed}"></h5>
             <a th:href="@{|/store|}">
               <button class="btn btn-danger mt-3" style="padding: 8px 18px;">
@@ -336,7 +369,7 @@
     <!-- Copyright End -->
 
     <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top">
+    <a href="#" class="btn btn-lg btn-dark btn-lg-square rounded-circle back-to-top">
       <i class="bi bi-arrow-up"></i>
     </a>
   </main>

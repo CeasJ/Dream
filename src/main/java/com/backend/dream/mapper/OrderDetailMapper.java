@@ -19,8 +19,10 @@ public interface OrderDetailMapper {
     @Mapping(source = "orders.account.fullname",target = "account_fullname")
     @Mapping(source = "orders.account.phone",target = "account_phone")
     @Mapping(source = "orders.createDate",target = "order_createDate")
+    @Mapping(source = "orders.distance",target = "distance")
     @Mapping(source = "orders.address",target = "order_address")
     @Mapping(source = "orders.status.id",target = "order_status")
+    @Mapping(source = "orders.voucher.percent",target = "discount")
     @Mapping(source = "sizes.id",target = "id_size")
     OrderDetailDTO orderDetailToOrderDetailDTO(OrderDetails orderDetails);
 
@@ -32,7 +34,7 @@ public interface OrderDetailMapper {
     @Mapping(source = "id_order",target = "order.id")
     @Mapping(source = "id_product",target = "product.id")
     @Mapping(source = "id_size",target = "sizes.id")
-    List<OrderDetails> listOrderDetaiDTOlToListOrderDetail(List<OrderDetailDTO> orderDetailDTO);
+    List<OrderDetails> listOrderDetailDTOlToListOrderDetail(List<OrderDetailDTO> orderDetailDTO);
 
     @Mapping(source = "orders.id",target = "id_order")
     @Mapping(source = "product.id",target = "id_product")
@@ -41,8 +43,10 @@ public interface OrderDetailMapper {
     @Mapping(source = "orders.account.fullname",target = "account_fullname")
     @Mapping(source = "orders.account.phone",target = "account_phone")
     @Mapping(source = "orders.createDate",target = "order_createDate")
+    @Mapping(source = "orders.distance",target = "distance")
     @Mapping(source = "orders.address",target = "order_address")
     @Mapping(source = "orders.status.id",target = "order_status")
+    @Mapping(source = "orders.voucher.percent",target = "discount")
     @Mapping(source = "sizes.id",target = "id_size")
     List<OrderDetailDTO> listOrderDetailToListOrderDetailDTO(List<OrderDetails> orderDetails);
 

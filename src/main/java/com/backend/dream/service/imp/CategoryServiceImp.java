@@ -9,18 +9,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class CategoryServiceImp implements CategoryService {
-    private final CategoryRepository categoryRepository;
-    private final CategoryMapper categoryMapper;
-
     @Autowired
-    public CategoryServiceImp(CategoryRepository categoryRepository, CategoryMapper categoryMapper){
-        this.categoryRepository = categoryRepository;
-        this.categoryMapper = categoryMapper;
-    }
+    private  CategoryRepository categoryRepository;
+    @Autowired
+    private  CategoryMapper categoryMapper;
 
     @Override
     public CategoryDTO findById(Long id) {
@@ -31,6 +28,9 @@ public class CategoryServiceImp implements CategoryService {
     @Override
     public CategoryDTO create(CategoryDTO categoryDTO) {
         Category category = categoryMapper.categoryDTOToCategory(categoryDTO);
+        if(categoryDTO.getId_discount() == null){
+            category.setDiscount(null);
+        }
         Category createdCategory = categoryRepository.save(category);
         return categoryMapper.categoryToCategoryDTO(createdCategory);
     }
@@ -38,6 +38,9 @@ public class CategoryServiceImp implements CategoryService {
     @Override
     public CategoryDTO update(CategoryDTO categoryDTO) {
         Category category = categoryMapper.categoryDTOToCategory(categoryDTO);
+        if(categoryDTO.getId_discount() == null){
+            category.setDiscount(null);
+        }
         Category updatedCategory = categoryRepository.save(category);
         return categoryMapper.categoryToCategoryDTO(updatedCategory);
     }
@@ -47,21 +50,11 @@ public class CategoryServiceImp implements CategoryService {
         categoryRepository.deleteById(id);
     }
 
-
-//    @Override
-//    public Category createCategory(JsonNode cate) {
-//        ObjectMapper mapper = new ObjectMapper();
-//        Category newCategory = mapper.convertValue(cate, Category.class);
-//        String name = cate.get("name").asText();
-//        newCategory.setName(name);
-//        return newCategory;
-//    }
-
-
-//    @Override
-//    public boolean checknameExists(String namecategory) {
-//        return categoryRepository.findByname("name");
-//    }
+    @Override
+    public CategoryDTO getDiscountByCategoryId(Long idCategory) {
+        Optional<Category> optionalCategory = categoryRepository.findByIDCategory(idCategory);
+        return optionalCategory.map(categoryMapper::categoryToCategoryDTO).orElse(null);
+    }
 
 
     @Override

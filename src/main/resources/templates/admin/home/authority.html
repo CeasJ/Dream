@@ -15,11 +15,11 @@
     <!-- Angular -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.js"></script>
-   <!-- jQuery -->
-   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
 </head>
 
@@ -36,18 +36,17 @@
                         <h3 class="mb-0"><i class="fas fa-table me-1"></i> Permission</h3>
                     </div>
                     <div class="card-body">
-                        <div class="row justify-content-between align-items-center mb-3 mt-1">
+                        <div class="row justify-content-between align-items-center mb-1 mt-1">
                             <!-- Combobox Role -->
                             <div class="d-flex col-md-5">
                                 <div class="form-group mb-0 me-3">
-                                    <label for="categoryFilter" class="fw-bold pt-1" style="font-size: 18px;">
-                                        Select Role:
-                                    </label>
+                                    <label class="fw-bold pt-1" style="font-size: 18px;">Select Role:</label>
                                 </div>
                                 <div class="form-group mb-0" style="width: 200px;">
                                     <select class="form-select" ng-model="selectedRole"
-                                        ng-options="role.name for role in roles">
-                                        <option value="" disabled>All Role</option>
+                                        ng-options="role as role.name for role in roles"
+                                        ng-change="filterByRole(selectedRole)">
+                                        <option value="">All Role</option>
                                     </select>
                                 </div>
                             </div>
@@ -55,22 +54,31 @@
                             <div class="col-md-2 ms-auto">
                                 <div class="input-group">
                                     <input type="text" class="form-control" placeholder="Search..." aria-label="Search"
-                                        aria-describedby="basic-addon2">
+                                        aria-describedby="basic-addon2" ng-model="searchText"
+                                        ng-change="searchAccounts()">
                                 </div>
                             </div>
                         </div>
                         <div class="table-responsive">
+                            <div class="button-container">
+                                <a type="button" class="btn btn-danger">
+                                    <i class="bi bi-filetype-pdf"></i> PDF
+                                </a>
+                                <a type="button" class="btn btn-success" th:href="@{|/rest/authorities/download|}">
+                                    <i class="bi bi-arrow-down-circle-fill"></i> Excel
+                                </a>
+                            </div>
                             <table class="table table-hover table-bordered order-datatable text-center">
                                 <thead class="table-dark">
                                     <tr>
                                         <th>Number</th>
                                         <th style="text-align: left;">Name</th>
                                         <th ng-repeat="role in roles">{{role.name}}</th>
-                                        <th></th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat-start="acc in admins">
+                                    <tr ng-repeat-start="acc in paginatedListAuth()">
                                         <td>{{$index + 1}}</td>
                                         <td style="text-align: left;">{{acc.fullname}}</td>
                                         <td ng-repeat="role in roles">
@@ -79,7 +87,7 @@
                                         </td>
                                         <td>
                                             <button class="btn btn-dark" data-bs-toggle="modal"
-                                                data-bs-target="#myModal">
+                                                ng-click="getInformation(acc)" data-bs-target="#myModal">
                                                 <i class="bi bi-eye-fill"></i>
                                             </button>
                                         </td>
@@ -90,20 +98,27 @@
                         </div>
                         <div class="d-flex justify-content-between align-items-center pt-2">
                             <div class="fw-normal pb-3" style="font-size: 18px;">
-                                Showing 1 to 5 of 15 entries
+                                Showing {{ (currentPageAuth - 1) * pageSizeAuth + 1 }} to {{ currentPageAuth *
+                                pageSizeAuth > listStaff.length ? listStaff.length : currentPageAuth * pageSizeAuth }}
+                                of {{ listStaff.length }} entries
                             </div>
                             <nav aria-label="Page navigation">
                                 <ul class="pagination justify-content-end">
-                                    <li class="page-item disabled">
-                                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                                    <li class="page-item" ng-class="{ 'disabled': currentPageAuth === 1 }">
+                                        <a class="page-link" href="#" tabindex="-1" ng-click="firstPageAuth()"
+                                            aria-disabled="true">
                                             <i class="bi bi-caret-left-fill"></i>
                                         </a>
                                     </li>
-                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#">
+                                    <li class="page-item" ng-repeat="page in getPagerAuth()">
+                                        <a class="page-link" href="#" ng-click="setPageAuth(page)"
+                                            ng-class="{ 'active': currentPageAuth === page }">
+                                            {{ page }}
+                                        </a>
+                                    </li>
+                                    <li class="page-item"
+                                        ng-class="{ 'disabled': currentPageAuth === totalPagesAuth() }">
+                                        <a class="page-link" href="#" ng-click="lastPageAuth()">
                                             <i class="bi bi-caret-right-fill"></i>
                                         </a>
                                     </li>
@@ -119,7 +134,7 @@
                             <div class="modal-header">
                                 <h5 class="modal-title" id="exampleModalLabel">
                                     <i class="bi bi-pencil-square pe-2"></i>
-                                    Edit information
+                                    Information
                                 </h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
@@ -197,36 +212,11 @@
                                                     ng-model="form.address" placeholder="Address" readonly>
                                             </div>
                                         </div>
-
-                                        <div class="row mb-3">
-                                            <div class="col-md-6">
-                                                <label for="userType" class="form-label fw-bold mb-3 mt-1 me-3">
-                                                    Role
-                                                </label>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="radio" name="userType"
-                                                        id="adminType" value="admin" ng-model="form.userType" required>
-                                                    <label class="form-check-label" for="adminType">Admin</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="radio" name="userType"
-                                                        id="staffType" value="staff" ng-model="form.userType" required>
-                                                    <label class="form-check-label" for="staffType">Staff</label>
-                                                </div>
-                                                <div class="invalid-feedback"
-                                                    ng-show="myStaff.userType.$dirty && myStaff.userType.$invalid">
-                                                    <span ng-show="myStaff.userType.$error.required">
-                                                        Please select a user type
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
                                 </form>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" ng-click="clearForm()">Clear</button>
-                                <button type="submit" class="btn btn-success" ng-click="saveAccount()">Save</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                             </div>
                         </div>
                     </div>

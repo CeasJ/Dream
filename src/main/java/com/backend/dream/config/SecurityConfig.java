@@ -29,7 +29,7 @@ public class SecurityConfig {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("/abc");
+        return (web) -> web.ignoring().requestMatchers("/static");
     }
 
     @Bean
@@ -68,4 +68,3 @@ public class SecurityConfig {
     }
 
 }
-
