@@ -11,7 +11,7 @@ import java.util.List;
 
 public class CartAutomation {
     public static void main(String[] args) {
-        System.setProperty("webdriver.edge.driver", "D:\\24. Final Project\\msedgedriver.exe");
+        System.setProperty("webdriver.edge.driver", "D:\\Dream\\msedgedriver.exe");
         WebDriver driver = new EdgeDriver();
 
         try {
@@ -30,8 +30,8 @@ public class CartAutomation {
             act.click(loginBtn).perform();
             // Sleep after click the login button
             Thread.sleep(2000);
-            driver.findElement(By.id("username")).sendKeys("kiet");
-            driver.findElement(By.id("password")).sendKeys("Kietlai1!");
+            driver.findElement(By.id("username")).sendKeys("cuong");
+            driver.findElement(By.id("password")).sendKeys("123");
             WebElement BtnLogin = driver.findElement(By.id("btnLogin"));
             act.click(BtnLogin).perform();
             Thread.sleep(3000);

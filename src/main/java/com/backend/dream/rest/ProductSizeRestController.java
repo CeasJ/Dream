@@ -93,7 +93,6 @@ public class ProductSizeRestController {
         Long idRole = accountService.findRoleIdByUsername(username);
 
         if (idRole == 1 || idRole == 2) {
-            ProductSizeDTO previousProductSize = productSizeService.findByID(id);
             ProductSizeDTO updatedProductSize = productSizeService.update(productSizeDTO, id);
 
             String productName = productSizeService.getProductNameByProductSizeID(id);
