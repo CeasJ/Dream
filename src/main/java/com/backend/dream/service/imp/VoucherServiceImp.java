@@ -63,8 +63,9 @@ public class VoucherServiceImp implements VoucherService {
                 .collect(Collectors.toList());
     }
 
-    private void deleteExpiredVouchers(){
-        List<VoucherDTO> expiredVouchers = voucherRepository.findByExpiredDateBefore(new Date()).stream().map(voucherMapper::voucherToVoucherDTO).collect(Collectors.toList());
+    private void deleteExpiredVouchers() {
+        List<VoucherDTO> expiredVouchers = voucherRepository.findByExpiredDateBefore(new Date()).stream()
+                .map(voucherMapper::voucherToVoucherDTO).collect(Collectors.toList());
         voucherRepository.deleteAll(voucherMapper.listVoucherDTOToListVoucher(expiredVouchers));
     }
 
@@ -105,7 +106,7 @@ public class VoucherServiceImp implements VoucherService {
         if (voucherDTO.getType() == 1L) {
             return Collections.singletonList(createSingleVoucher(voucherDTO));
         } else {
-          return createMultipleVouchers(voucherDTO);
+            return createMultipleVouchers(voucherDTO);
         }
     }
 
@@ -137,13 +138,13 @@ public class VoucherServiceImp implements VoucherService {
 
         return savedVouchers;
     }
+
     @Override
     public VoucherDTO updateVoucher(VoucherDTO voucherDTO, Long id) {
         Voucher voucher = voucherRepository.findById(id).get();
 
         VoucherType type = new VoucherType();
         type.setId(voucherDTO.getType());
-
 
         voucher.setName(voucherDTO.getName());
         voucher.setNumber(voucherDTO.getNumber());
@@ -164,7 +165,7 @@ public class VoucherServiceImp implements VoucherService {
         VoucherType type = new VoucherType();
         type.setId(voucherDTO.getType());
 
-        voucherList.forEach(voucher ->{
+        voucherList.forEach(voucher -> {
             voucher.setName(voucherDTO.getName());
             voucher.setNumber(voucherDTO.getNumber());
             voucher.setIcon(voucherDTO.getIcon());
@@ -185,12 +186,12 @@ public class VoucherServiceImp implements VoucherService {
         return data;
     }
 
-    @Override
-    public void deleteByNameAndType(String name, Long idType) {
-        List<VoucherDTO> vouchers = voucherRepository.findListVouchersByNameAndIDType(name,idType).stream().map(voucherMapper::voucherToVoucherDTO).collect(Collectors.toList());
-        voucherRepository.deleteAll(voucherMapper.listVoucherDTOToListVoucher(vouchers));
-    }
-
+    // @Override
+    // public void deleteByNameAndType(String name, Long idType) {
+    // List<VoucherDTO> vouchers =
+    // voucherRepository.findListVouchersByNameAndIDType(name,idType).stream().map(voucherMapper::voucherToVoucherDTO).collect(Collectors.toList());
+    // voucherRepository.deleteAll(voucherMapper.listVoucherDTOToListVoucher(vouchers));
+    // }
 
     @Override
     public VoucherDTO getVoucherByID(Long voucherID) {
