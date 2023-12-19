@@ -81,6 +81,7 @@
         "background-color": "lightgray", // Màu mặc định của number-2
       });
 
+      
   });
 
 
@@ -150,7 +151,7 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
 
     timeout = $timeout(function(){
         $scope.getDistanceAndCalculateShippingCost();
-    },2000);
+    },1500);
 
   };
 
@@ -158,20 +159,9 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
     $http
     .get("https://rsapi.goong.io/DistanceMatrix?origins="+ $scope.originLocation + "&destinations=" + encodeURIComponent($scope.ipLocation) + "&vehicle=" + $scope.vehicle + "&api_key=" + $scope.apiKey)
     .then(function (response) {
-      console.log(response);
       const distance = response.data.rows[0].elements[0].distance;
       $scope.order.distance = parseInt(distance.value);
-      console.log(parseInt($scope.order.distance));
     });
-  };
-
-
-  $scope.getQrCode = function(){
-    // $http.get(`/qrcode`).then((resp) => {
-    //   $scope.qrCode = resp.data;
-    //   console.log($scope.qrCode);
-    //   console.log(resp.data);
-    // });
   };
 
   $scope.selectOrder = function (orderID) {
@@ -181,7 +171,6 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
       .then((response) => {
         if (response.data) {
           $scope.listOrder = response.data;
-          console.log(response.data);
         }
       })
       .catch((error) => {
@@ -288,7 +277,7 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
 
     timeout = $timeout(function(){
         $scope.changeNameLocationToIP();
-    },2000);
+    },1500);
 
   };
 
@@ -339,13 +328,11 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
 
 
       if (item) {
-        console.log(item);
         item.qty++;
         saveCart(this.username, this);
       } else {
         $http.get(`/rest/products/${id}/${sizeID}`).then((resp) => {
           let newItem = resp.data;
-          console.log(newItem);
           newItem.qty = 1;
           this.items.push(newItem);
           saveCart(this.username, this);
@@ -432,13 +419,13 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
           $scope.cart.clear();
           toastr.success('Order Success');
         })
-        .catch((error) => { });
+        .catch((error) => { 
+        });
     }
   };
 
 
   $scope.handlePaymentMethodChange = function () {
-    console.log($scope.payment)
     if ($scope.payment === 1) {
       $scope.order.purchaseOrder();
       $scope.completeButtonClicked();
@@ -451,37 +438,34 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
     }
   };
 
-  let isSuccess = true;
-
-
 
   $scope.completeButtonClicked = function () {
-    if (isSuccess) {
-      $scope.getQrCode();
       $(".cart-3").show();
       $(".cart-0, .cart-1, .form-buy, .infor-cart").hide();
       $("#number-3").addClass("active");
       $("#line-2").addClass("active-line");
       $("#step-3").addClass("active-text");
-    } else {
-      alert("Đặt hàng thất bại. Vui lòng thử lại.");
-    }
   };
   //Order End
 
+  $http.get("/rest/vouchers/all").then(
+    function (response) {
+      $scope.allVouchers = response.data;
+    },
+    function (error) {
+    }
+  );
 
     $http.get('/rest/vouchers/applicable')
     .then(function(response) {
         $scope.vouchers = response.data;
     }, function(error) {
-        console.log('Error fetching data:', error);
     });
 
     $http.get('/rest/order/address')
     .then(function(response) {
         $scope.userAddressDB = response.data.address; 
     }, function(error) {
-        console.log('Error fetching data:', error);
     });
 
     $scope.getRemainingTime = function(expireDate) {
@@ -489,8 +473,8 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
         const today = new Date();
         const expiration = new Date(expireDate);
 
-    const difference = expiration - today;
-    const daysRemaining = Math.floor(difference / oneDay);
+        const difference = expiration - today;
+        const daysRemaining = Math.floor(difference / oneDay);
 
         if (daysRemaining > 0) {
             return "Còn " + daysRemaining + " ngày";
@@ -503,8 +487,33 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
 
    $scope.selectVoucher = function(voucher) {
        $scope.selectedVoucher = voucher;
-       console.log(voucher);
    };
+
+   $scope.applyVoucherNumber = function () {
+    let voucherIndex = $scope.allVouchers.findIndex(
+      (vou) => vou.number === $scope.voucherNumber
+    );
+
+    const voucher = $scope.allVouchers[voucherIndex];
+
+    if (voucherIndex === -1) {
+      toastr.error("Voucher doest not exist");
+      return;
+    }
+
+    if (voucher.status === 2) {
+      toastr.error("Voucher is expired");
+      return;
+    }
+
+    if (voucherIndex !== -1 && voucher.percent !== undefined && voucher.status === 1) {
+      const discountAmount = voucher.percent;
+      $scope.cart.totalDiscount = discountAmount;
+      $scope.order.id_voucher = voucher.id;
+      $scope.order.totalAmount = $scope.order.totalAmount - $scope.cart.totalDiscount;
+    }
+  };
+
 
    $scope.applyVoucher = function() {
       if ($scope.selectedVoucher) {

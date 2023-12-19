@@ -42,11 +42,6 @@ public class ProductRestController {
     private ProductSizeService productSizeService;
 
     @Autowired
-    private AccountService accountService;
-
-    @Autowired
-    private NotificationService notificationService;
-    @Autowired
     private ValidationService validateService;
 
     @GetMapping("/{id}")

@@ -94,7 +94,7 @@ $scope.initialize();
     number:"",
     createDate: new Date(),
     expiredDate:"",
-    percent:"",
+    price:"",
     condition:"",
     icon:"",
     status:"",

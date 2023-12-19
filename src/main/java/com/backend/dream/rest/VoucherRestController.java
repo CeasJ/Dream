@@ -41,8 +41,6 @@ public class VoucherRestController {
     private VoucherTypeService voucherTypeService;
 
     @Autowired
-    private NotificationService notificationService;
-    @Autowired
     private ValidationService validateService;
 
     // Get voucher for user

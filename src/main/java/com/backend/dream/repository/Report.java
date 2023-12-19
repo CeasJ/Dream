@@ -65,13 +65,13 @@ public interface Report extends JpaRepository<OrderDetails,Long> {
     List<Object[]> getTotalRevenueByDateAndStatus(int orderStatus, Date startDate, Date endDate);
 
 
-    @Query(value = "SELECT a.fullname, SUM(o.totalAmount - COALESCE(v.percent,0) + o.distance * 4) , a.phone, a.address "
+    @Query(value = "SELECT a.fullname, SUM(o.totalAmount - COALESCE(v.price,0) + o.distance * 4) , a.phone, a.address "
             + "FROM OrderDetails od "
             + "JOIN od.orders o "
             + "JOIN od.orders.account a "
             + "LEFT JOIN od.orders.voucher v "
             + "WHERE o.status.id =?1 "
             + "GROUP BY a.fullname,a.phone,a.address "
-            + "ORDER BY SUM(o.totalAmount - COALESCE(v.percent,0) + o.distance * 4) DESC")
+            + "ORDER BY SUM(o.totalAmount - COALESCE(v.price,0) + o.distance * 4) DESC")
     List<Object[]> getAmountPaidByAccount(int orderStatus);
 }

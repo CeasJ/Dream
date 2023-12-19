@@ -325,11 +325,6 @@
                         ng-value="2">
                       <label class="form-check-label pb-2" for="vnpay">VN Pay</label>
                     </div>
-                    <div class="form-check form-check-inline">
-                      <input type="radio" class="form-check-input" id="paypal" name="paymentMethod" ng-model="payment"
-                        ng-value="3">
-                      <label class="form-check-label pb-2" for="paypal">PayPal</label>
-                    </div>
                   </div>
 
                   <div class="text-center">
@@ -344,7 +339,7 @@
           </div>
           <!-- Đơn hàng đã xử lý Start -->
           <div class="container-fluid cart-3 mx-auto" style="display: none;">
-            <img class="img-cart" ng-src="{{'/img/qrcode/' + qrCode}}" alt="qrCode">
+            <img class="img-cart" ng-src="/img/gallery/cart-0" alt="cart" >
             <h5 th:text="#{message.orderProcessed}"></h5>
             <a th:href="@{|/store|}">
               <button class="btn btn-danger mt-3" style="padding: 8px 18px;">

@@ -40,13 +40,6 @@ public class ProductSizeRestController {
     private ProductSizeService productSizeService;
     @Autowired
     private ValidationService validateService;
-
-    @Autowired
-    private AccountService accountService;
-
-    @Autowired
-    private NotificationService notificationService;
-
     @Autowired
     private ProductService productService;
 

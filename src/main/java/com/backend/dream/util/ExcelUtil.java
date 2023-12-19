@@ -161,7 +161,7 @@ public class ExcelUtil {
                 row1.createCell(0).setCellValue(p.getId());
                 row1.createCell(1).setCellValue(p.getName());
                 row1.createCell(2).setCellValue(p.getNumber());
-                row1.createCell(3).setCellValue(p.getPercent());
+                row1.createCell(3).setCellValue(p.getPrice());
                 row1.createCell(4).setCellValue(p.getCondition());
                 row1.createCell(5).setCellValue(p.getStatus().getName());
                 row1.createCell(6).setCellValue(p.getCreateDate());
