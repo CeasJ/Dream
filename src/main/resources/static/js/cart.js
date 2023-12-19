@@ -506,8 +506,8 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
       return;
     }
 
-    if (voucherIndex !== -1 && voucher.percent !== undefined && voucher.status === 1) {
-      const discountAmount = voucher.percent;
+    if (voucherIndex !== -1 && voucher.price !== undefined && voucher.status === 1) {
+      const discountAmount = voucher.price;
       $scope.cart.totalDiscount = discountAmount;
       $scope.order.id_voucher = voucher.id;
       $scope.order.totalAmount = $scope.order.totalAmount - $scope.cart.totalDiscount;
@@ -517,7 +517,7 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
 
    $scope.applyVoucher = function() {
       if ($scope.selectedVoucher) {
-        const discountAmount = $scope.selectedVoucher.percent;
+        const discountAmount = $scope.selectedVoucher.price;
         $scope.cart.totalDiscount = discountAmount;
         $scope.order.id_voucher = parseInt($scope.selectedVoucher.id);
         $scope.order.totalAmount = $scope.order.totalAmount - $scope.cart.totalDiscount;
