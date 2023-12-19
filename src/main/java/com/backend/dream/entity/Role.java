@@ -25,7 +25,7 @@ public class Role implements Serializable {
     private String name;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "role")
+    @OneToMany(mappedBy = "role", fetch = FetchType.EAGER, orphanRemoval = true)
     List<Authority> authority;
 
     @JsonIgnore

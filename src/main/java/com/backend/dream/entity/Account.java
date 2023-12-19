@@ -41,7 +41,7 @@ public class Account implements Serializable {
     private boolean active;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "account", fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL ,fetch = FetchType.EAGER, orphanRemoval = true)
     private List<Authority> authority;
 
     @JsonIgnore

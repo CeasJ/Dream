@@ -77,7 +77,7 @@ app.controller("size-ctrl", function ($scope, $http, $location) {
       }
 
       // Kiểm tra giá trị của các size
-      if (!checkSizePrices(id_size, price)) {
+      if (!checkSizePrices(id_size, price,id_product)) {
           toastr.error("Invalid size price. Please ensure S < M < L.");
           return;
       }
@@ -119,7 +119,7 @@ app.controller("size-ctrl", function ($scope, $http, $location) {
          return;
      }
 
-     if (!checkSizePrices(id_size, price)) {
+     if (!checkSizePrices(id_size, price,id_product)) {
          toastr.error("Invalid size price. Please ensure S < M < L.");
          return;
      }
@@ -169,6 +169,28 @@ app.controller("size-ctrl", function ($scope, $http, $location) {
   $scope.updateProductSizePrice = function () {
     return $scope.price;
   };
+
+  function checkSizePrices(id_size, price, id_product) {
+    const priceS = getPriceForSize(1,id_product);
+    const priceM = getPriceForSize(2,id_product);
+    const priceL = getPriceForSize(3,id_product);
+
+    if (id_size === 1) {
+      return price < priceM && priceM < priceL;
+    } else if (id_size === 2) {
+      return priceS < price && price < priceL;
+    } else if (id_size === 3) {
+      return priceS < priceM && priceM < price;
+    }
+    
+    return false;
+  }
+  
+  function getPriceForSize(sizeId,id_product) {
+    const productSize = $scope.productSize.find(ps => ps.id_size === sizeId && ps.id_product === id_product);
+    console.log(productSize);
+    return productSize ? productSize.price : 0;
+}
 
   $scope.selectRadioBasedOnIdSize = function (id_size) {
     switch (id_size) {
