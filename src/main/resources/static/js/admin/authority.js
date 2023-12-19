@@ -1,160 +1,197 @@
 const app = angular.module("authority-app", []);
 app.controller("authority-ctrl", function ($scope, $http, $location,$timeout) {
   $scope.roles = [];
-  $scope.listStaff = [];
-  $scope.authorities = [];
-  $scope.staff = [];
+    $scope.listStaff = [];
+    $scope.authorities = [];
+    $scope.staff = [];
 
-  var timeout;
+    var timeout;
 
-  $scope.initialize = function () {
-    $http.get(`/rest/roles`).then((resp) => {
-      $scope.roles = resp.data;
-    });
-
-    $http.get(`/rest/staff/admin?admin=true`).then((resp) => {
-      $scope.listStaff = resp.data;
-    });
-
-    $http
-      .get(`/rest/authorities?admin=true`)
-      .then((resp) => {
-        $scope.authorities = resp.data;
-      })
-      .catch((error) => {
-        $location.path(`/login/unauthorized`);
+    $scope.initialize = function () {
+      $http.get(`/rest/roles`).then((resp) => {
+        $scope.roles = resp.data;
       });
 
-    $scope.avatar = "default.png";
-  };
-  $scope.initialize();
-
-  $scope.authority_of = function (acc, role) {
-    if ($scope.authorities) {
-      return $scope.authorities.find(
-        (ur) => ur.account.username == acc.username && ur.role.id == role.id
-      );
-    }
-  };
-
-  $scope.authority_changed = function (acc, role) {
-    let authority = $scope.authority_of(acc, role);
-    if (authority) {
-      $scope.revoke_authority(authority);
-    } else {
-      authority = { account: acc, role: role };
-      $scope.grant_authority(authority);
-    }
-  };
-
-  $scope.grant_authority = function (authority) {
-    $http
-      .post(`/rest/authorities`, authority)
-      .then((resp) => {
-        $scope.authorities.push(resp.data);
-        toastr.success("Authorization successful");
-      })
-      .catch((error) => {
-        toastr.error("Authorization Fail");
+      $http.get(`/rest/staff/admin?admin=true`).then((resp) => {
+        $scope.listStaff = resp.data;
       });
-  };
 
-  $scope.revoke_authority = function (authority) {
-    $http
-      .delete(`/rest/authorities/${authority.id}`, authority)
-      .then((resp) => {
-        let index = $scope.authorities.findIndex((a) => a.id == authority.id);
-        $scope.authorities.splice(index, 1);
-        toastr.success("Permissions revoked successfully");
-      })
-      .catch((err) => {
-        toastr.error("Permissions revoked Fail");
-      });
-  };
-
-  $scope.clearForm = function () {
-    $scope.username = "";
-    $scope.firstname = "";
-    $scope.lastname = "";
-    $scope.password = "";
-    $scope.email = "";
-    $scope.phone = "";
-    $scope.avatar = "default.png";
-    $scope.address = "";
-  };
-
-  $scope.saveAccount = function () {
-    let account = {
-      username: $scope.username,
-      fullname: $scope.firstname + " " + $scope.lastname,
-      password: $scope.password,
-      email: $scope.email,
-      phone: $scope.phone,
-      firstname: $scope.firstname,
-      lastname: $scope.lastname,
-      avatar: $scope.avatar,
-      address: $scope.address,
-    };
-    let existUsername = $scope.listStaff.find(function (staff) {
-      return staff.username === account.username;
-    });
-    if (existUsername) {
-      alert("Username is exist");
-    } else {
       $http
-        .post(`/rest/staff/add`, account)
-        .then(function (response) {
-          $scope.listStaff.push(response.data);
-          $scope.clearForm();
-          location.href("/admin/authority")
-          toastr.success("Create Successful");
-          setTimeout(() => {
-            location.reload();
-          }, 1000);
+        .get(`/rest/authorities?admin=true`)
+        .then((resp) => {
+          $scope.authorities = resp.data;
         })
-        .catch(function (err) {
-          toastr.error("Create Fail");
+        .catch((error) => {
+          $location.path(`/login/unauthorized`);
         });
-    }
-  };
 
-  $scope.selectedImage = null;
-  $scope.selectImage = function () {
-    document.getElementById("avatar").click();
-  };
-  $scope.imageChanged = function (files) {
-    let data = new FormData();
-    data.append("file", files[0]);
-    $http
-      .post(`/rest/upload/img/avatar`, data, {
-        transformRequest: angular.identity,
-        headers: { "Content-Type": undefined },
-      })
-      .then((resp) => {
-        $scope.avatar = resp.data.name;
-      })
-      .catch((err) => {
-        toastr.error("Select image Fail");
-      });
-  };
+      $scope.avatar = "default.png";
+    };
+    $scope.initialize();
 
-  $scope.update = function () {
-    let account = angular.copy($scope.form);
-    $http
-      .put(`/rest/profile/update/${account.id}`, account)
-      .then((resp) => {
-        let index = $scope.admins.findIndex(
-          (a) => a.username === account.username
+    $scope.authority_of = function (acc, role) {
+      if ($scope.authorities) {
+        return $scope.authorities.find(
+          (ur) => ur.account.username == acc.username && ur.role.id == role.id
         );
-        $scope.admins[index] = account;
-        toastr.success("Update Successful");
-        $scope.clearForm();
-      })
-      .catch((err) => {
-        toastr.error("Update Successful");
-        console.log(err);
-      });
-  };
+      }
+    };
+
+    $scope.authority_changed = function (acc, role) {
+      let authority = $scope.authority_of(acc, role);
+      if (authority) {
+        $scope.revoke_authority(authority);
+      } else {
+        authority = { account: acc, role: role };
+        $scope.grant_authority(authority);
+      }
+    };
+
+    $scope.grant_authority = function (authority) {
+      $http
+        .post(`/rest/authorities`, authority)
+        .then((resp) => {
+          $scope.authorities.push(resp.data);
+          toastr.success("Authorization successful");
+        })
+        .catch((error) => {
+          toastr.error("Authorization Fail");
+        });
+    };
+
+    $scope.revoke_authority = function (authority) {
+      $http
+        .delete(`/rest/authorities/${authority.id}`, authority)
+        .then((resp) => {
+          let index = $scope.authorities.findIndex((a) => a.id == authority.id);
+          $scope.authorities.splice(index, 1);
+          toastr.success("Permissions revoked successfully");
+        })
+        .catch((err) => {
+          toastr.error("Permissions revoked Fail");
+        });
+    };
+
+    $scope.clearForm = function () {
+      $scope.username = "";
+      $scope.firstname = "";
+      $scope.lastname = "";
+      $scope.password = "";
+      $scope.email = "";
+      $scope.phone = "";
+      $scope.avatar = "default.png";
+      $scope.address = "";
+    };
+
+    // Validations
+    $scope.validateStaff = function () {
+        var isValid = true;
+
+        if (!$scope.username || !$scope.firstname || !$scope.lastname || !$scope.address || !$scope.password || !$scope.email || !$scope.phone || !$scope.avatar) {
+            toastr.warning("Please fill in all fields.");
+            isValid = false;
+        }
+
+        const passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#$%^&*()_+{}\[\]:;<>,.?~]).{8,}$/;
+        if (!passwordRegex.test($scope.password)) {
+            toastr.warning("Password must be at least 8 characters long, include at least 1 uppercase letter, 1 lowercase letter, 1 digit, and 1 special character.");
+            isValid = false;
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test($scope.email)) {
+            toastr.warning("Please enter a valid email address.");
+            isValid = false;
+        }
+
+        const phoneRegex = /^[0-9]{10}$/;
+        if (!phoneRegex.test($scope.phone)) {
+            toastr.warning("Please enter a valid phone number (10 digits).");
+            isValid = false;
+        }
+
+        if ($scope.avatar === "default.png") {
+            toastr.warning("Please select an image.");
+            isValid = false;
+        }
+
+        return isValid;
+    };
+
+
+    $scope.saveAccount = function () {
+        if ($scope.validateStaff()) {
+            let account = {
+                username: $scope.username,
+                fullname: $scope.firstname + " " + $scope.lastname,
+                password: $scope.password,
+                email: $scope.email,
+                phone: $scope.phone,
+                firstname: $scope.firstname,
+                lastname: $scope.lastname,
+                avatar: $scope.avatar,
+                address: $scope.address,
+            };
+            let existUsername = $scope.listStaff.find(function (staff) {
+                return staff.username === account.username;
+            });
+            if (existUsername) {
+                toastr.warning("Username already exists.");
+            } else {
+                $http.post(`/rest/staff/add`, account)
+                    .then(function (response) {
+                        $scope.listStaff.push(response.data);
+                        $scope.clearForm();
+                        toastr.success("Create Successful");
+                        setTimeout(() => {
+                            location.reload();
+                        }, 1000);
+                    })
+                    .catch(function (err) {
+                        toastr.error("Create Fail");
+                    });
+            }
+        } else {
+            toastr.error("Please fill in all required fields with valid data.");
+        }
+    };
+
+    $scope.selectedImage = null;
+    $scope.selectImage = function () {
+      document.getElementById("avatar").click();
+    };
+    $scope.imageChanged = function (files) {
+      let data = new FormData();
+      data.append("file", files[0]);
+      $http
+        .post(`/rest/upload/img/avatar`, data, {
+          transformRequest: angular.identity,
+          headers: { "Content-Type": undefined },
+        })
+        .then((resp) => {
+          $scope.avatar = resp.data.name;
+        })
+        .catch((err) => {
+          toastr.error("Select image Fail");
+          console.log(err);
+        });
+    };
+
+    $scope.getInformation = function(account) {
+      $scope.form = angular.copy(account);
+    };
+
+    $scope.autoCompleteAddress = function () {
+      if(timeout){
+        $timeout.cancel(timeout);
+      }
+  
+      timeout = $timeout(function(){
+          $http.get(`https://rsapi.goong.io/Place/AutoComplete?api_key=GXxEBBNR5xvIezVsTctnwdM9MznM7HB8bzjCXBvh&input=` + encodeURIComponent($scope.address)).then((resp) => {
+            $scope.address = resp.data.predictions[0].description;
+          });
+      },2000);
+    };
 
   // Pagination
 
@@ -313,18 +350,6 @@ app.controller("authority-ctrl", function ($scope, $http, $location,$timeout) {
 
   $scope.getInformation = function(account) {
     $scope.form = angular.copy(account);
-  };
-
-  $scope.autoCompleteAddress = function () {
-    if(timeout){
-      $timeout.cancel(timeout);
-    }
-
-    timeout = $timeout(function(){
-        $http.get(`https://rsapi.goong.io/Place/AutoComplete?api_key=GXxEBBNR5xvIezVsTctnwdM9MznM7HB8bzjCXBvh&input=` + encodeURIComponent($scope.address)).then((resp) => {
-          $scope.address = resp.data.predictions[0].description;
-        });
-    },2000);
   };
 
 

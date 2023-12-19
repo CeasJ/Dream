@@ -212,4 +212,16 @@ public class ProductServiceImp implements ProductService {
         List<Product> products = productRepository.searchByName(name);
         return products.stream().map(productMapper::productToProductDTO).collect(Collectors.toList());
     }
+
+    @Override
+    public Double getMinPrice(Long productId) {
+        List<ProductSize> productSizes = productSizeRepository.findAllByProductId(productId);
+        if (!productSizes.isEmpty()) {
+            return productSizes.stream()
+                    .mapToDouble(ProductSize::getPrice)
+                    .min()
+                    .orElse(0.0);
+        }
+        return 0.0;
+    }
 }

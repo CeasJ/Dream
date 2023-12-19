@@ -136,7 +136,7 @@
                                     <tbody>
                                         <tr ng-repeat="lock in lockDetails">
                                             <td>{{ $index + 1 }}</td>
-                                            <td>{{ lock.banDate }}</td>
+                                            <td>{{ lock.banDate | date:'dd/MM/yyyy HH:mm' }}</td>
                                             <td>{{ lock.reason }}</td>
                                         </tr>
                                     </tbody>

@@ -132,6 +132,15 @@ public class ProductController {
         }
 
 
+        // Set min price for display products list
+        for (ProductDTO product : products) {
+            double minPrice = productService.getMinPrice(product.getId());
+            if (minPrice > 0) {
+                product.setPrice(minPrice);
+            }
+        }
+
+
 
 
         model.addAttribute("products", products);

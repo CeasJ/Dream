@@ -11,28 +11,31 @@ app.controller("product_ctrl", function ($scope, $http) {
 
   // Validation
   $scope.validateProduct = function (form) {
-          var isValid = true;
+      var isValid = true;
 
-          // Validate Name
-          if (!/^[a-zA-Z\s]*$/.test(form.name)) {
-              toastr.warning("The product name cannot be empty and should only contain letters!");
-              isValid = false;
-          }
+      if (form.name && typeof form.name === 'string' && form.name.trim() === '') {
+          toastr.warning("Please enter the product name!");
+          isValid = false;
+      }
 
-          // Validate Price
-          if (form.price <= 0 || isNaN(form.price)) {
-              toastr.warning("The product price must be greater than 0 and can only be a number!");
-              isValid = false;
-          }
+      if (form.describe && typeof form.describe === 'string' && form.describe.trim() === '') {
+          toastr.warning("Please enter the product description!");
+          isValid = false;
+      }
 
-          // Validate Category
-          if (!form.id_category || form.id_category === "") {
-              toastr.warning("Please select a category!");
-              isValid = false;
-          }
+      if (!form.price || form.price <= 0 || isNaN(form.price)) {
+          toastr.warning("The product price must be greater than 0 and can only be a number!");
+          isValid = false;
+      }
 
-          return isValid;
-      };
+      if (form.id_category === "") {
+          toastr.warning("Please select a category!");
+          isValid = false;
+      }
+
+      return isValid;
+  };
+
 
 
   $scope.initialize = function () {
@@ -74,34 +77,39 @@ app.controller("product_ctrl", function ($scope, $http) {
     $scope.form = angular.copy(item);
   };
   $scope.create = function () {
-    let item = angular.copy($scope.form);
-    let checkNameProduct = $scope.items.find(product => product.name === item.name);
-    if(checkNameProduct) {
-       $("#myModal").modal("hide");
-       toastr.error("Name already exists");
-    } else {
-    $http
-      .post(`/rest/products`, item)
-      .then((resp) => {
-        resp.data.createDate = new Date(resp.data.createDate);
-        $scope.items.push(resp.data);
-        $scope.reset();
-        $("#myModal").modal("hide");
-        toastr.success("Create Success");
-        setTimeout(()=>{
-         location.reload();
-        },1000);
-      })
-      .catch((err) => { 
-        if (err.data && err.data.errors) {
-          $("#myModal").modal("hide");
-          err.data.errors.forEach(function(error, index) {
-            toastr.error(`Error ${index + 1}: ${error}`);
-          });
-        } 
-      });
-    }
+      if ($scope.validateProduct($scope.form)) {
+          let item = angular.copy($scope.form);
+          let checkNameProduct = $scope.items.find(product => product.name === item.name);
+          if (checkNameProduct) {
+              $("#myModal").modal("hide");
+              toastr.error("Name already exists");
+          } else {
+              $http
+                  .post(`/rest/products`, item)
+                  .then((resp) => {
+                      resp.data.createDate = new Date(resp.data.createDate);
+                      $scope.items.push(resp.data);
+                      $scope.reset();
+                      $("#myModal").modal("hide");
+                      toastr.success("Create Success");
+                      setTimeout(() => {
+                          location.reload();
+                      }, 1000);
+                  })
+                  .catch((err) => {
+                      if (err.data && err.data.errors) {
+                          $("#myModal").modal("hide");
+                          err.data.errors.forEach(function (error, index) {
+                              toastr.error(`Error ${index + 1}: ${error}`);
+                          });
+                      }
+                  });
+          }
+      } else {
+          toastr.warning("Please fill in all required fields correctly!");
+      }
   };
+
 
   $scope.update = function () {
    if ($scope.validateProduct($scope.form)){
@@ -126,16 +134,30 @@ app.controller("product_ctrl", function ($scope, $http) {
     }
   };
 
+  $scope.deleteItem = null;
+
+  $scope.setDeleteItem = function(item) {
+      $scope.deleteItem = item;
+  };
+
   $scope.delete = function (item) {
+    if (!item || !item.id) {
+      toastr.error("Invalid item or item ID");
+      return;
+    }
+
     $http.delete(`/rest/products/${item.id}`).then(resp => {
       let index = $scope.items.findIndex(p => p.id == item.id);
-      $scope.items.splice(index, 1);
+      if (index !== -1) {
+        $scope.items.splice(index, 1);
+      }
       $scope.reset();
       toastr.success("Delete Success");
     }).catch(err => {
       toastr.error("Delete Fail");
-    })
+    });
   };
+
   $scope.selectedImage = null;
 
   $scope.selectImage = function () {
@@ -173,10 +195,10 @@ $scope.exportToExcel = function () {
 };
 
   // Pagination
-  $scope.pagedItems = []; // Danh sách sản phẩm được phân trang
+  $scope.pagedItems = [];
       $scope.pagination = {
           currentPage: 1,
-          pageSize: 5, // Số sản phẩm trên mỗi trang
+          pageSize: 5,
           totalPages: 0,
           startIndex: 0,
           endIndex: 0,
@@ -239,13 +261,15 @@ $scope.exportToExcel = function () {
            });
        }
 
-       $scope.pagination.currentPage = 1; // Trở về trang đầu tiên sau khi thay đổi bộ lọc
+       $scope.pagination.currentPage = 1;
        paginateItems();
    });
 
-   $scope.$watch('filteredItems.length', function () {
-       $scope.pagination.totalPages = Math.ceil($scope.filteredItems.length / $scope.pagination.pageSize);
-       paginateItems();
+   $scope.$watch('filteredItems.length', function (newValue, oldValue) {
+       if (newValue !== oldValue && $scope.filteredItems) {
+           $scope.pagination.totalPages = Math.ceil($scope.filteredItems.length / $scope.pagination.pageSize);
+           paginateItems();
+       }
    });
 
 
@@ -272,5 +296,24 @@ $scope.exportToExcel = function () {
               paginateItems();
           }
       };
+
+      // Searching features
+      $scope.searchByName = function() {
+          if ($scope.searchTerm && $scope.searchTerm.trim() !== '') {
+              $http.get(`/rest/productsizes/search?name=${$scope.searchTerm}`)
+                  .then(function(response) {
+                      $scope.items = response.data;
+                      $scope.items.forEach((item) => {
+                          item.createDate = new Date(item.createDate);
+                      });
+                  })
+                  .catch(function(error) {
+                      console.error('Error searching products:', error);
+                  });
+          } else {
+              $scope.initialize();
+          }
+      };
+
 
 });

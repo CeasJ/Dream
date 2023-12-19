@@ -32,94 +32,98 @@ app.controller("discount-ctrl", function ($scope, $http) {
      $scope.edit = function (count) {
        $scope.form = angular.copy(count);
      };
-   $scope.create = function () {
-       let discount = angular.copy($scope.form);
-       let checkNameDiscount = $scope.discounts.find(dis => dis.name === discount.name);
-       if(checkNameDiscount) {
-          $("#discountModal").modal("hide");
-          toastr.error("Name already exists");
-       } else {
-       $http
-         .post(`/rest/discount`, discount)
-         .then((resp) => {
-           resp.data.activeDate = new Date(resp.data.activeDate);
-           resp.data.expiredDate = new Date(resp.data.expiredDate);
-           $scope.discounts.push(resp.data);
-           $scope.reset();
-           $("#discountModal").modal("hide");
-           toastr.success("Create Success");
-           setTimeout(()=>{
-            location.reload();
-           },1000);
-         })
-         .catch((err) => { 
-          if (err.data && err.data.errors) {
-            $("#discountModal").modal("hide");
-            err.data.errors.forEach(function(error, index) {
-              toastr.error(`Error ${index + 1}: ${error}`);
-            });
-          } 
-         });
-        }
+
+     // validation
+     $scope.validateDiscount = function(form) {
+         var isValid = true;
+
+         if (!form.name || !form.number) {
+             toastr.warning("Please enter both Discount Name and Discount Number!");
+             isValid = false;
+         }
+
+         if (isNaN(form.percent) || form.percent <= 0 || form.percent >= 1) {
+             toastr.warning("Discount Percent must be a number greater than 0 and less than 1!");
+             isValid = false;
+         }
+
+         if (!form.idcategory) {
+             toastr.warning("Please select a category!");
+             isValid = false;
+         }
+
+         if (form.expiredDate <= form.activeDate) {
+             toastr.warning("Expired Date must be greater than Active Date!");
+             isValid = false;
+         }
+
+         return isValid;
      };
-      $scope.update = function () {
-        let discount = angular.copy($scope.form);
-        let checkNameDiscount = $scope.discounts.find(dis => dis.name === discount.name);
-        if(checkNameDiscount) {
-           $("#discountModal").modal("hide");
-           toastr.error("Name already exists");
-        } else {
-        $http.put(`/rest/discount/${discount.id}`, discount).then(resp => {
-          let index = $scope.discounts.findIndex(p => p.id === discount.id);
-          $scope.discounts[index] = discount;
-          $scope.reset();
-          $("#discountModal").modal("hide");
-          toastr.success("Update Success");
-          setTimeout(()=>{
-           location.reload();
-          },1000);
-        }).catch(err => {
-          $("#discountModal").modal("hide");
-          err.data.errors.forEach(function(error, index) {
-            toastr.error(`Error ${index + 1}: ${error}`);
-          });
-        })
-        }
-      };
-       $scope.delete = function (count) {
-          $http.delete(`/rest/discount/${count.id}`).then(resp => {
-            let index = $scope.discounts.findIndex(p => p.id === count.id);
-            $scope.discounts.splice(index, 1);
-            $scope.reset();
-            $("#discountModal").modal("hide");
-            toastr.success("Delete Success");
-            setTimeout(()=>{
-           location.reload();
-          },1000);
-          }).catch(err => {
-            toastr.error("Create Fail");
-          })
-        };
 
-        $scope.updateApplyDiscount = function(categoryID, discountID,categoryName) {
-          let category = {
-            id: categoryID,
-            id_discount: discountID,
-            name: categoryName,
-          };
-          $http.put(`/rest/category/update/${categoryID}`, category).then(resp => {
-            let index = $scope.cates.findIndex((cate) => cate.id === categoryID);
-            $scope.cates[index] = category;
-            $scope.reset();
-            toastr.success("Update Success");
-            setTimeout(()=>{
-             location.reload();
-            },1000);
-          }).catch(err => {
-            toastr.error("Update Fail");
-          })
-       };
+   $scope.create = function() {
+       if ($scope.validateDiscount($scope.form)) {
+           let checkNameDiscount = $scope.discounts.find(dis => dis.name === $scope.form.name);
+           if (checkNameDiscount) {
+               $("#discountModal").modal("hide");
+               toastr.error("Name already exists");
+           } else {
+               $http.post(`/rest/discount`, $scope.form)
+                   .then((resp) => {
+                       resp.data.activeDate = new Date(resp.data.activeDate);
+                       resp.data.expiredDate = new Date(resp.data.expiredDate);
+                       $scope.discounts.push(resp.data);
+                       $scope.reset();
+                       $("#discountModal").modal("hide");
+                       toastr.success("Create Success");
+                       setTimeout(() => {
+                           location.reload();
+                       }, 1000);
+                   })
+                   .catch((err) => {
+                       if (err.data && err.data.errors) {
+                           $("#discountModal").modal("hide");
+                           err.data.errors.forEach(function(error, index) {
+                               toastr.error(`Error ${index + 1}: ${error}`);
+                           });
+                       }
+                   });
+           }
+       } else {
+           toastr.warning("Please fill in all required fields correctly!");
+       }
+   };
 
+   $scope.update = function() {
+       if ($scope.validateDiscount($scope.form)) {
+           let checkNameDiscount = $scope.discounts.find(dis => dis.name === $scope.form.name && dis.id !== $scope.form.id);
+           if (checkNameDiscount) {
+               $("#discountModal").modal("hide");
+               toastr.error("Name already exists");
+           } else {
+               $http.put(`/rest/discount/${$scope.form.id}`, $scope.form)
+                   .then((resp) => {
+                       let index = $scope.discounts.findIndex(p => p.id === $scope.form.id);
+                       $scope.discounts[index] = resp.data;
+                       $scope.reset();
+                       $("#discountModal").modal("hide");
+                       toastr.success("Update Success");
+                       setTimeout(() => {
+                           location.reload();
+                       }, 1000);
+                   })
+                   .catch((err) => {
+                       if (err.data && err.data.errors) {
+                           $("#discountModal").modal("hide");
+                           err.data.errors.forEach(function(error, index) {
+                               toastr.error(`Error ${index + 1}: ${error}`);
+                           });
+                       }
+                   });
+           }
+       } else {
+           toastr.warning("Please fill in all required fields correctly!");
+       }
+   };
         $scope.updateNotApplyDiscount = function(categoryID, categoryName) {
           let category = {
             id: categoryID,

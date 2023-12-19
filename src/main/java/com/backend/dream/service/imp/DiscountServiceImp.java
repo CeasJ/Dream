@@ -97,12 +97,6 @@ public class DiscountServiceImp implements DiscountService {
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public ByteArrayInputStream getdataDiscount() throws IOException {
-        List<Discount> discounts = discountRepository.findAll();
-        ByteArrayInputStream data = ExcelUtil.dataToExcelDiscount(discounts);
-        return data;
-    }
 
 
 }

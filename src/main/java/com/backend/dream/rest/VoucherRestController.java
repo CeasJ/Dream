@@ -30,20 +30,22 @@ import java.util.List;
 public class VoucherRestController {
     @Autowired
     private NotificationService notificationService;
+
     @Autowired
     private VoucherService voucherService;
+
     @Autowired
     private AccountService accountService;
 
     @Autowired
     private HttpServletRequest request;
+
     @Autowired
     private VoucherTypeService voucherTypeService;
 
     @Autowired
-    private NotificationService notificationService;
-    @Autowired
     private ValidationService validateService;
+
     // Get voucher for user
     @GetMapping("/applicable")
     public List<VoucherDTO> getApplicableVouchers() {

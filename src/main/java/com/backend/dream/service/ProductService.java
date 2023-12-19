@@ -53,4 +53,6 @@ public interface ProductService {
     List<ProductDTO> searchProductByName(String name);
 
     ByteArrayInputStream getdataProduct() throws IOException;
+
+    Double getMinPrice(Long productId);
 }

@@ -42,11 +42,6 @@ public class DiscountRestController {
     @Autowired
     private ValidationService validateService;
 
-    @Autowired
-    private AccountService accountService;
-
-    @Autowired
-    private NotificationService notificationService;
 
     @GetMapping()
     public List<DiscountDTO> getAll() throws Exception {

@@ -83,7 +83,7 @@
                             <p class="notification-title"> New notification received </p>
                             <div th:each="notification : ${notifications}">
                                 <div class="notification-content" style="margin-bottom: 0px;">
-                                    <img src="/img/gallery/image2.jpg" class="notification-image">
+                                    <img th:src="@{'/img/noti-icons/' + ${notification.image}}" class="notification-image">
                                     <div class="notification-text">
                                         <p th:text="${notification.notificationTitle}"
                                             style="font-size: 16px; font-weight: bold; padding-top: 10px; margin-bottom: 3px; text-align: justify;">

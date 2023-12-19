@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 public class QrCodeServiceImp implements QrCodeService {
-    private String path = "D:\\Dream\\dream\\src\\main\\resources\\static\\img\\qrcode";
+    private final String path = "D:\\24. Final Project\\Dream\\dream\\src\\main\\resources\\static\\img\\qrcode";
     private static final String charset = "UTF-8";
     private static final String strDateFormat = "HH-mm-ss";
     private static String qrCodeFileName;

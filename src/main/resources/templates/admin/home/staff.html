@@ -114,8 +114,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal fade" id="staffModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                    aria-hidden="true">
+                <div class="modal fade" id="staffModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered modal-xl">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -123,19 +122,18 @@
                                     <i class="bi bi-pencil-square pe-2"></i>
                                     Edit information
                                 </h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <form name="myStaff" novalidate="novalidate">
+                                <form name="myStaff">
                                     <div class="col-md-12 text-center"
-                                        style="display: flex; justify-content: center; align-items: center;">
+                                         style="display: flex; justify-content: center; align-items: center;">
                                         <label for="avatar" style="cursor: pointer;">
-                                            <img class="img-fluid" id="imagePreview"
-                                                ng-src="{{'/img/avatar/' + avatar}}" ng-click="selectImage()">
+                                            <img class="img-fluid" id="imagePreview" ng-src="{{'/img/avatar/' + avatar}}"
+                                                 ng-click="selectImage()">
                                             <input type="file" id="avatar" ng-model="avatar"
-                                                onchange="angular.element(this).scope().imageChanged(this.files)"
-                                                style="display: none;">
+                                                   onchange="angular.element(this).scope().imageChanged(this.files)"
+                                                   style="display: none;">
                                         </label>
                                     </div>
                                     <div class="col-md-9 offset-sm-2" style="padding: 20px; margin-top: 30px;">
@@ -143,100 +141,49 @@
                                             <div class="col-md-6">
                                                 <label for="username" class="form-label fw-bold mb-3">Username</label>
                                                 <input type="text" class="form-control" id="username" name="username"
-                                                    ng-model="username" placeholder="Username" required>
-                                                <div class="invalid-feedback"
-                                                    ng-show="myStaff.username.$dirty && myStaff.username.$invalid">
-                                                    <span ng-show="myStaff.username.$error.required">Username is
-                                                        required</span>
-                                                </div>
+                                                       ng-model="username" placeholder="Username">
                                             </div>
                                             <div class="col-md-6">
                                                 <label for="firstname" class="form-label fw-bold mb-3">Firstname</label>
                                                 <input type="text" class="form-control" id="firstname" name="firstname"
-                                                    ng-model="firstname" placeholder="Firstname" ng-minlength="3"
-                                                    required pattern="[\p{L}\d\s]*">
-                                                <div class="invalid-feedback"
-                                                    ng-show="myStaff.firstname.$dirty && myStaff.firstname.$invalid">
-                                                    <span ng-show="myStaff.firstname.$error.required">Firstname is
-                                                        required</span>
-                                                </div>
+                                                       ng-model="firstname" placeholder="Firstname">
                                             </div>
                                         </div>
                                         <div class="row mb-3">
                                             <div class="col-md-6">
                                                 <label for="lastname" class="form-label fw-bold mb-3">Lastname</label>
                                                 <input type="text" class="form-control" id="lastname" name="lastname"
-                                                    ng-model="lastname" placeholder="Lastname" ng-minlength="3" required
-                                                    pattern="[\p{L}\d\s]*">
-                                                <div class="invalid-feedback"
-                                                    ng-show="myStaff.lastname.$dirty && myStaff.lastname.$invalid">
-                                                    <span ng-show="myStaff.lastname.$error.required">Lastname is
-                                                        required</span>
-                                                </div>
+                                                       ng-model="lastname" placeholder="Lastname">
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label fw-bold mb-3">Fullname</label>
                                                 <input type="text" class="form-control" id="fullname" name="fullname"
-                                                    ng-model="fullname"
-                                                    placeholder="{{ firstname || '' }} {{ lastname || '' }}" readonly>
+                                                       ng-model="fullname" placeholder="{{ firstname || '' }} {{ lastname || '' }}"
+                                                       readonly>
                                             </div>
                                         </div>
                                         <div class="row mb-3">
                                             <div class="col-md-6">
                                                 <label for="password" class="form-label fw-bold mb-3">Password</label>
-                                                <input type="password" class="form-control" id="password"
-                                                    name="password" ng-model="password" placeholder="Password"
-                                                    ng-minlength="8" required
-                                                    pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#$%^&*()_+{}\[\]:;<>,.?~]).*$">
-                                                <div class="invalid-feedback"
-                                                    ng-show="myStaff.password.$dirty && myStaff.password.$invalid">
-                                                    <span ng-show="myStaff.password.$error.required">Password is
-                                                        required</span>
-                                                    <span ng-show="myStaff.password.$error.minlength">Password must
-                                                        be
-                                                        more than 8 characters</span>
-                                                    <span
-                                                        ng-show="myStaff.password.$error.pattern && !myStaff.password.$error.minlength">Password
-                                                        must contain at least one lowercase letter, one uppercase
-                                                        letter, one digit and one special character</span>
-                                                </div>
+                                                <input type="password" class="form-control" id="password" name="password"
+                                                       ng-model="password" placeholder="Password">
                                             </div>
                                             <div class="col-md-6">
                                                 <label for="email" class="form-label fw-bold mb-3">Email</label>
-                                                <input type="email" class="form-control" id="email" name="email"
-                                                    ng-model="email" placeholder="Email" required>
-                                                <div class="invalid-feedback"
-                                                    ng-show="myStaff.email.$dirty && myStaff.email.$invalid">
-                                                    <span ng-show="myStaff.email.$error.required">Email is
-                                                        required.</span>
-                                                    <span ng-show="myStaff.email.$error.email">Invalid email
-                                                        address.</span>
-                                                </div>
+                                                <input type="email" class="form-control" id="email" name="email" ng-model="email"
+                                                       placeholder="Email">
                                             </div>
                                         </div>
                                         <div class="row mb-3">
                                             <div class="col-md-6">
                                                 <label for="phone" class="form-label fw-bold mb-3">Phone</label>
-                                                <input type="text" class="form-control" id="phone" name="phone"
-                                                    ng-model="phone" placeholder="Phone" ng-minlength="10"
-                                                    ng-maxlength="10" required pattern="^[0-9]*$">
-                                                <div class="invalid-feedback"
-                                                    ng-show="myStaff.phone.$dirty && myStaff.phone.$invalid">
-                                                    <span ng-show="myStaff.phone.$error.required">Phone is
-                                                        required</span>
-                                                    <span ng-show="myStaff.phone.$error.minlength">Phone must at
-                                                        least
-                                                        10 digits</span>
-                                                    <span
-                                                        ng-show="myStaff.phone.$error.pattern && !myStaff.phone.$error.maxlength">Phone
-                                                        must be a valid phone</span>
-                                                </div>
+                                                <input type="text" class="form-control" id="phone" name="phone" ng-model="phone"
+                                                       placeholder="Phone">
                                             </div>
                                             <div class="col-md-6">
                                                 <label for="phone" class="form-label fw-bold mb-3">Address</label>
-                                                <input type="text" class="form-control" id="address" name="address"
-                                                    ng-model="address" placeholder="Address" required
-                                                    ng-change="autoCompleteAddress()">
+                                                <input type="text" class="form-control" id="address" name="address" ng-model="address"
+                                                       placeholder="Address">
                                             </div>
                                         </div>
                                     </div>

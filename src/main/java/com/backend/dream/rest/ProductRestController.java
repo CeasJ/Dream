@@ -35,18 +35,16 @@ import java.util.List;
 public class ProductRestController {
     @Autowired
     private NotificationService notificationService;
+
     @Autowired
     private AccountService accountService;
+
     @Autowired
     private ProductService productService;
+
     @Autowired
     private ProductSizeService productSizeService;
 
-    @Autowired
-    private AccountService accountService;
-
-    @Autowired
-    private NotificationService notificationService;
     @Autowired
     private ValidationService validateService;
     @GetMapping("/{id}")
@@ -82,7 +80,23 @@ public class ProductRestController {
             notificationDTO.setImage("product-change.jpg");
             notificationDTO.setCreatedTime(Timestamp.from(Instant.now()));
             notificationService.createNotification(notificationDTO);
-            return productService.create(productDTO);
+            Product createdProduct =  productService.create(productDTO);
+
+
+            Long productId = createdProduct.getId();
+            Long sizeSId = 1L;
+
+            ProductSizeDTO existingProductSize = productSizeService.getProductSizeByProductIdAndSizeId(productId, sizeSId);
+            if (existingProductSize == null) {
+                ProductSizeDTO sizeSDTO = new ProductSizeDTO();
+                sizeSDTO.setId_product(productId);
+                sizeSDTO.setId_size(sizeSId);
+                sizeSDTO.setPrice(createdProduct.getPrice());
+
+                productSizeService.create(sizeSDTO);
+            }
+
+            return createdProduct;
         }
         return  null;
     }

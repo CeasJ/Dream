@@ -91,6 +91,47 @@ $scope.initialize();
     // $scope.selectedIconClass
   };
 
+  $scope.validateVoucher = function() {
+      let isValid = true;
+
+        if (!$scope.voucher.icon) {
+          toastr.warning("Please select an Icon for the voucher!");
+          isValid = false;
+      }
+
+      if (!$scope.voucher.name || !$scope.voucher.number) {
+          toastr.warning("Please enter both Name and Number for the voucher!");
+          isValid = false;
+      }
+
+      if (isNaN($scope.voucher.percent) || $scope.voucher.percent <= 0) {
+          toastr.warning("Voucher Price must be a number greater than 0!");
+          isValid = false;
+      }
+
+      if (isNaN($scope.voucher.condition) || $scope.voucher.condition <= $scope.voucher.percent) {
+          toastr.warning("Condition must be a number greater than Voucher Price!");
+          isValid = false;
+      }
+
+      if (!$scope.voucher.expiredDate) {
+          toastr.warning("Please select an Expiry Date for the voucher!");
+          isValid = false;
+      }
+
+      if (!$scope.voucher.type) {
+          toastr.warning("Please select a Type for the voucher!");
+          isValid = false;
+      }
+
+      if (!$scope.voucher.status || ($scope.voucher.status !== 1 && $scope.voucher.status !== 2)) {
+          toastr.warning("Please select the Status for the voucher!");
+          isValid = false;
+      }
+
+      return isValid;
+  };
+
 
   $scope.voucher = {
     name:"",
@@ -105,26 +146,28 @@ $scope.initialize();
     type:"",
 
     createVoucher() {
-      let voucher = angular.copy(this);
-      console.log(voucher);
-      $http
-      .post(`/rest/vouchers`, voucher)
-      .then((resp) => {
-        $scope.vouchers.push(resp.data);
-        $scope.reset();
-        toastr.success("Create Success");
-        setTimeout(() => {
-            location.reload();
-          }, 1000);
-        })
-        .catch((err) => {
-          if (err.data && err.data.errors) {
-            $("#discountModal").modal("hide");
-            err.data.errors.forEach(function(error, index) {
-              toastr.error(`Error ${index + 1}: ${error}`);
-            });
-          } 
-        });
+      if ($scope.validateVoucher()) {
+          let voucher = angular.copy($scope.voucher);
+          $http.post(`/rest/vouchers`, voucher)
+          .then((resp) => {
+              $scope.vouchers.push(resp.data);
+              $scope.reset();
+              toastr.success("Create Success");
+              setTimeout(() => {
+                  location.reload();
+                  }, 1000);
+              })
+              .catch((err) => {
+                  if (err.data && err.data.errors) {
+                      $("#discountModal").modal("hide");
+                      err.data.errors.forEach(function(error, index) {
+                          toastr.error(`Error ${index + 1}: ${error}`);
+                      });
+                  }
+              });
+          } else {
+              toastr.warning("Please fill in all required fields correctly!");
+          }
       }
   };
 
@@ -133,45 +176,53 @@ $scope.initialize();
     $scope.voucher.expiredDate  = new Date(voucher.expiredDate);
   };
 
-  $scope.updateVoucher = function () {
-   let voucher = angular.copy($scope.voucher);
-    $http
-      .put(`/rest/vouchers/${voucher.id}`, voucher)
-      .then((resp) => {
-        let index = $scope.vouchers.findIndex((v) => v.id == voucher.id);
-        $scope.vouchers[index] = voucher;
-        $scope.reset();
-        toastr.success("Update Success");
-        setTimeout(()=>{
-            location.reload();
-        },1000);
-      })
-      .catch((err) => {
-        if (err.data && err.data.errors) {
-          $("#discountModal").modal("hide");
-          err.data.errors.forEach(function(error, index) {
-            toastr.error(`Error ${index + 1}: ${error}`);
-          });
-        } 
-      });
+  $scope.updateVoucher = function() {
+      if ($scope.validateVoucher()) {
+          // Thực hiện cập nhật voucher khi thông tin hợp lệ
+          let voucher = angular.copy($scope.voucher);
+          $http.put(`/rest/vouchers/${voucher.id}`, voucher)
+              .then((resp) => {
+                  let index = $scope.vouchers.findIndex((v) => v.id == voucher.id);
+                  $scope.vouchers[index] = voucher;
+                  $scope.reset();
+                  toastr.success("Update Success");
+                  setTimeout(() => {
+                      location.reload();
+                  }, 1000);
+              })
+              .catch((err) => {
+                  if (err.data && err.data.errors) {
+                      $("#discountModal").modal("hide");
+                      err.data.errors.forEach(function(error, index) {
+                          toastr.error(`Error ${index + 1}: ${error}`);
+                      });
+                  }
+              });
+      } else {
+          toastr.warning("Please fill in all required fields correctly!");
+      }
   };
 
-  $scope.updateListVoucher = function () {
-   let voucher= angular.copy($scope.voucher);
-    $http
-      .put(`/rest/vouchers/${voucher.name}/${voucher.type}`, voucher)
-      .then((resp) => {
-        let index = $scope.vouchers.findIndex((v) => v.name === voucher.name && v.type === voucher.type);
-        $scope.vouchers[index] = voucher;
-        $scope.reset();
-        toastr.success("Update Success");
-        setTimeout(()=>{
-            location.reload();
-        },1000);
-      })
-      .catch((err) => {
-        toastr.error("Update Fail");
-      });
+  $scope.updateListVoucher = function() {
+      if ($scope.validateVoucher()) {
+          // Thực hiện cập nhật danh sách voucher khi thông tin hợp lệ
+          let voucher = angular.copy($scope.voucher);
+          $http.put(`/rest/vouchers/${voucher.name}/${voucher.type}`, voucher)
+              .then((resp) => {
+                  let index = $scope.vouchers.findIndex((v) => v.name === voucher.name && v.type === voucher.type);
+                  $scope.vouchers[index] = voucher;
+                  $scope.reset();
+                  toastr.success("Update Success");
+                  setTimeout(() => {
+                      location.reload();
+                  }, 1000);
+              })
+              .catch((err) => {
+                  toastr.error("Update Fail");
+              });
+      } else {
+          toastr.warning("Please fill in all required fields correctly!");
+      }
   };
 
   $scope.confirmDelete = function () {
