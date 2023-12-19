@@ -3,12 +3,14 @@ package com.backend.dream.service.imp;
 import com.backend.dream.dto.OrderDTO;
 import com.backend.dream.dto.OrderDetailDTO;
 import com.backend.dream.entity.Orders;
+import com.backend.dream.entity.Product;
 import com.backend.dream.mapper.OrderDetailMapper;
 import com.backend.dream.mapper.OrderMapper;
 import com.backend.dream.repository.OrderDetailRepository;
 import com.backend.dream.repository.OrderRepository;
 import com.backend.dream.service.OrderService;
 import com.backend.dream.util.QrCodeService;
+import com.backend.dream.util.ExcelUltils;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -19,6 +21,9 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.sql.Time;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,13 +55,13 @@ public class OrderServiceImp implements OrderService {
 
         OrderDTO orderDTO = mapper.convertValue(orderData, OrderDTO.class);
 
-
         Orders orders = orderMapper.orderDTOToOrder(orderDTO);
-        if (orderDTO.getId_voucher() == null){
+        if (orderDTO.getId_voucher() == null) {
             orders.setVoucher(null);
         }
 
-        qrCodeService.generateQrCode("Your order number " + String.valueOf(orders.getId()) + " " + "has been paid successfully");
+        qrCodeService.generateQrCode(
+                "Your order number " + String.valueOf(orders.getId()) + " " + "has been paid successfully");
         orders.setQr(qrCodeService.getQrCode());
 
         orderRepository.save(orders);
@@ -79,7 +84,6 @@ public class OrderServiceImp implements OrderService {
         return new PageImpl<>(listOrders, pageable, ordersPage.getTotalElements());
     }
 
-
     @Override
     public List<OrderDTO> getListOrder() throws ClassNotFoundException {
         List<OrderDTO> listOrder = orderMapper.listOrderToListOrderDTO(orderRepository.getListOrder(statusOrder));
@@ -88,7 +92,8 @@ public class OrderServiceImp implements OrderService {
 
     @Override
     public List<OrderDTO> getListOrderConfirm() throws ClassNotFoundException {
-        List<OrderDTO> listOrder = orderMapper.listOrderToListOrderDTO(orderRepository.getListOrder(statusOrderConfirm));
+        List<OrderDTO> listOrder = orderMapper
+                .listOrderToListOrderDTO(orderRepository.getListOrder(statusOrderConfirm));
         return listOrder;
     }
 
@@ -100,7 +105,8 @@ public class OrderServiceImp implements OrderService {
 
     @Override
     public List<OrderDTO> getListOrderSuccess() throws ClassNotFoundException {
-        List<OrderDTO> listOrder = orderMapper.listOrderToListOrderDTO(orderRepository.getListOrder(statusOrderSuccess));
+        List<OrderDTO> listOrder = orderMapper
+                .listOrderToListOrderDTO(orderRepository.getListOrder(statusOrderSuccess));
         return listOrder;
     }
 
@@ -113,7 +119,7 @@ public class OrderServiceImp implements OrderService {
     @Override
     public OrderDTO updateOrder(OrderDTO orderDTO) throws ClassNotFoundException, NoSuchElementException {
         Orders orders = orderMapper.orderDTOToOrder(orderDTO);
-        if (orderDTO.getId_voucher() == null){
+        if (orderDTO.getId_voucher() == null) {
             orders.setVoucher(null);
         }
         Orders updateOrder = orderRepository.save(orders);
@@ -132,5 +138,12 @@ public class OrderServiceImp implements OrderService {
 
         List<OrderDTO> orderDTOList = orderMapper.listOrderToListOrderDTO(searchedOrders);
         return orderDTOList;
+    }
+
+    @Override
+    public ByteArrayInputStream getdataOrder() throws IOException {
+        List<Orders> orders = orderRepository.findAll();
+        ByteArrayInputStream data = ExcelUltils.dataToExcel(orders, ExcelUltils.SHEET_ORDER, ExcelUltils.HEADER_ORDER);
+        return data;
     }
 }

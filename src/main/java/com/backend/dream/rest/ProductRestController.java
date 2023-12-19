@@ -6,12 +6,15 @@ import com.backend.dream.dto.ProductSizeDTO;
 import com.backend.dream.entity.Product;
 import com.backend.dream.service.AccountService;
 import com.backend.dream.service.NotificationService;
+import com.backend.dream.repository.ProductRepository;
 import com.backend.dream.service.ProductService;
 import com.backend.dream.service.ProductSizeService;
 import com.backend.dream.util.ValidationService;
 import jakarta.validation.Valid;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import com.backend.dream.util.ExcelUltils;
+import com.backend.dream.util.PdfUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.PageRequest;
@@ -41,12 +44,14 @@ public class ProductRestController {
 
     @Autowired
     private ProductService productService;
-
+    @Autowired
+    private ProductRepository productRepository;
     @Autowired
     private ProductSizeService productSizeService;
 
     @Autowired
     private ValidationService validateService;
+
     @GetMapping("/{id}")
     public ProductDTO getOne(@PathVariable("id") Long id) {
         return productService.findById(id);
@@ -69,9 +74,9 @@ public class ProductRestController {
         Long idAccount = accountService.findIDByUsername(username);
 
         Long idRole = accountService.findRoleIdByUsername(username);
-        if(idRole == 1 || idRole == 2){
+        if (idRole == 1 || idRole == 2) {
             String notificationTitle = "Có sự thay đổi trong sản phẩm";
-            String notificationText = "Sản phẩm '" + productDTO.getName() + "' đã được thêm bởi '" + username +"'";
+            String notificationText = "Sản phẩm '" + productDTO.getName() + "' đã được thêm bởi '" + username + "'";
             NotificationDTO notificationDTO = new NotificationDTO();
             notificationDTO.setIdAccount(idAccount);
             notificationDTO.setNotificationTitle(notificationTitle);
@@ -80,13 +85,13 @@ public class ProductRestController {
             notificationDTO.setImage("product-change.jpg");
             notificationDTO.setCreatedTime(Timestamp.from(Instant.now()));
             notificationService.createNotification(notificationDTO);
-            Product createdProduct =  productService.create(productDTO);
-
+            Product createdProduct = productService.create(productDTO);
 
             Long productId = createdProduct.getId();
             Long sizeSId = 1L;
 
-            ProductSizeDTO existingProductSize = productSizeService.getProductSizeByProductIdAndSizeId(productId, sizeSId);
+            ProductSizeDTO existingProductSize = productSizeService.getProductSizeByProductIdAndSizeId(productId,
+                    sizeSId);
             if (existingProductSize == null) {
                 ProductSizeDTO sizeSDTO = new ProductSizeDTO();
                 sizeSDTO.setId_product(productId);
@@ -98,7 +103,7 @@ public class ProductRestController {
 
             return createdProduct;
         }
-        return  null;
+        return null;
     }
 
     @PutMapping("{id}")
@@ -170,15 +175,40 @@ public class ProductRestController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(-1.0);
         }
     }
+
     @GetMapping("/download")
     private ResponseEntity<InputStreamResource> download() throws IOException {
-        String fileName ="Data-products.xlsx";
+        String fileName = "Data-products.xlsx";
         ByteArrayInputStream inputStream = productService.getdataProduct();
         InputStreamResource response = new InputStreamResource(inputStream);
 
         ResponseEntity<InputStreamResource> responseEntity = ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION,"attachment;filename="+fileName)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + fileName)
                 .contentType(MediaType.parseMediaType("application/vnd.ms-excel")).body(response);
         return responseEntity;
+    }
+
+    @GetMapping("/pdf")
+    public ResponseEntity<byte[]> exportToPdf() {
+        try {
+            List<Product> products = productRepository.findAll();
+            String title = "Data Product";
+            ByteArrayInputStream pdfStream = PdfUtils.dataToPdf(products, ExcelUltils.HEADER_PRODUCT, title);
+
+            // Chuyển đổi ByteArrayInputStream sang byte array
+            byte[] pdfContents = new byte[pdfStream.available()];
+            pdfStream.read(pdfContents);
+
+            // Đặt headers để trình duyệt hiểu được định dạng của file PDF
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_PDF);
+            headers.setContentDispositionFormData("attachment", "Data-products.pdf");
+            headers.setCacheControl("must-revalidate, no-store");
+
+            return new ResponseEntity<>(pdfContents, headers, HttpStatus.OK);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

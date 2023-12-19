@@ -13,7 +13,7 @@ import com.backend.dream.repository.VoucherRepository;
 import com.backend.dream.repository.VoucherStatusRepository;
 import com.backend.dream.service.AccountService;
 import com.backend.dream.service.VoucherService;
-import com.backend.dream.util.ExcelUtil;
+import com.backend.dream.util.ExcelUltils;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -181,7 +181,7 @@ public class VoucherServiceImp implements VoucherService {
     @Override
     public ByteArrayInputStream getdataVoucher() throws IOException {
         List<Voucher> vouchers = voucherRepository.findAll();
-        ByteArrayInputStream data = ExcelUtil.dataToExcelVoucher(vouchers);
+        ByteArrayInputStream data = ExcelUltils.dataToExcel(vouchers, ExcelUltils.SHEET_NAMEVOUCHER,ExcelUltils.HEADERVOUCHER);
         return data;
     }
 

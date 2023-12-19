@@ -8,7 +8,8 @@ import com.backend.dream.mapper.ProductMapper;
 import com.backend.dream.repository.ProductRepository;
 import com.backend.dream.repository.ProductSizeRepository;
 import com.backend.dream.service.*;
-import com.backend.dream.util.ExcelUtil;
+import com.backend.dream.util.ExcelUltils;
+import com.backend.dream.util.PdfUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -203,7 +204,8 @@ public class ProductServiceImp implements ProductService {
     @Override
     public ByteArrayInputStream getdataProduct() throws IOException {
         List<Product> products = productRepository.findAll();
-        ByteArrayInputStream data = ExcelUtil.dataToExcelProduct(products);
+        ByteArrayInputStream data = ExcelUltils.dataToExcel(products, ExcelUltils.SHEET_NAMEPRODUCT,
+                ExcelUltils.HEADER_PRODUCT);
         return data;
     }
 
@@ -224,4 +226,5 @@ public class ProductServiceImp implements ProductService {
         }
         return 0.0;
     }
+
 }

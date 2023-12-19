@@ -2,17 +2,15 @@ package com.backend.dream.service.imp;
 
 import com.backend.dream.dto.CategoryDTO;
 import com.backend.dream.dto.DiscountDTO;
-import com.backend.dream.dto.ProductDTO;
 import com.backend.dream.entity.Category;
 import com.backend.dream.entity.Discount;
-import com.backend.dream.entity.Product;
 import com.backend.dream.mapper.CategoryMapper;
 import com.backend.dream.mapper.DiscountMapper;
 import com.backend.dream.repository.CategoryRepository;
 import com.backend.dream.repository.DiscountRepository;
 import com.backend.dream.service.CategoryService;
 import com.backend.dream.service.DiscountService;
-import com.backend.dream.util.ExcelUtil;
+import com.backend.dream.util.ExcelUltils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -70,7 +68,8 @@ public class DiscountServiceImp implements DiscountService {
     @Override
     public ByteArrayInputStream getdataDiscount() throws IOException {
         List<Discount> discounts = discountRepository.findAll();
-        ByteArrayInputStream data = ExcelUtil.dataToExcelDiscount(discounts);
+        ByteArrayInputStream data = ExcelUltils.dataToExcel(discounts, ExcelUltils.SHEET_NAMEDISCOUNT,
+                ExcelUltils.HEADERDISCOUNT);
         return data;
     }
 
@@ -82,7 +81,6 @@ public class DiscountServiceImp implements DiscountService {
         }
         return 0.0;
     }
-
 
     @Override
     public DiscountDTO getDiscountByID(Long id) {
@@ -96,7 +94,5 @@ public class DiscountServiceImp implements DiscountService {
         return discount.stream().map(discountMapper::discountToDiscountDTO)
                 .collect(Collectors.toList());
     }
-
-
 
 }

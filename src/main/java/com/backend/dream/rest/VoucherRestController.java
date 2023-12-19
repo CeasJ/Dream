@@ -2,11 +2,14 @@ package com.backend.dream.rest;
 
 import com.backend.dream.dto.*;
 import com.backend.dream.entity.Voucher;
+import com.backend.dream.repository.VoucherRepository;
 import com.backend.dream.service.AccountService;
 import com.backend.dream.service.NotificationService;
 import com.backend.dream.service.VoucherService;
 import com.backend.dream.service.VoucherTypeService;
 import com.backend.dream.util.ValidationService;
+import com.backend.dream.util.ExcelUltils;
+import com.backend.dream.util.PdfUtils;
 import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -36,6 +39,8 @@ public class VoucherRestController {
 
     @Autowired
     private AccountService accountService;
+    @Autowired
+    private VoucherRepository voucherRepository;
 
     @Autowired
     private HttpServletRequest request;
@@ -180,17 +185,41 @@ public class VoucherRestController {
                     .body("Error deleting vouchers: " + e.getMessage());
         }
     }
+
     @GetMapping("/download")
     private ResponseEntity<InputStreamResource> download() throws IOException {
-        String fileName ="Data-vouchers.xlsx";
+        String fileName = "Data-vouchers.xlsx";
         ByteArrayInputStream inputStream = voucherService.getdataVoucher();
         InputStreamResource response = new InputStreamResource(inputStream);
 
         ResponseEntity<InputStreamResource> responseEntity = ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION,"attachment;filename="+fileName)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + fileName)
                 .contentType(MediaType.parseMediaType("application/vnd.ms-excel")).body(response);
         return responseEntity;
     }
 
+    @GetMapping("/pdf")
+    public ResponseEntity<byte[]> exportToPdf() {
+        try {
+            List<Voucher> vouchers = voucherRepository.findAll();
+            String title = "Data Voucher";
+            ByteArrayInputStream pdfStream = PdfUtils.dataToPdf(vouchers, ExcelUltils.HEADERVOUCHER, title);
+
+            // Chuyển đổi ByteArrayInputStream sang byte array
+            byte[] pdfContents = new byte[pdfStream.available()];
+            pdfStream.read(pdfContents);
+
+            // Đặt headers để trình duyệt hiểu được định dạng của file PDF
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_PDF);
+            headers.setContentDispositionFormData("attachment", "Data-voucher.pdf");
+            headers.setCacheControl("must-revalidate, no-store");
+
+            return new ResponseEntity<>(pdfContents, headers, HttpStatus.OK);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
 }
