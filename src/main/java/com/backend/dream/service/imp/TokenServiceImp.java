@@ -10,10 +10,11 @@ import com.backend.dream.mapper.AccountMapper;
 import com.backend.dream.mapper.TokenMapper;
 import com.backend.dream.repository.TokenRepository;
 import com.backend.dream.service.TokenService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Service;
-
+@Transactional
 @Service
 @EnableScheduling
 public class TokenServiceImp implements TokenService {

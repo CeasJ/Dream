@@ -13,6 +13,7 @@ import com.backend.dream.repository.SizeRepository;
 import com.backend.dream.service.ProductSizeService;
 import com.backend.dream.util.ExcelUltils;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +24,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
+@Transactional
 @Service
 public class ProductSizeServiceImp implements ProductSizeService {
     @Autowired

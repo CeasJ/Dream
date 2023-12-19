@@ -5,13 +5,14 @@ import com.backend.dream.entity.Category;
 import com.backend.dream.mapper.CategoryMapper;
 import com.backend.dream.repository.CategoryRepository;
 import com.backend.dream.service.CategoryService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
+@Transactional
 @Service
 public class CategoryServiceImp implements CategoryService {
     @Autowired

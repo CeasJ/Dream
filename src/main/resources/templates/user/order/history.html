@@ -174,17 +174,7 @@
                                     </div>
                                     <!-- Thêm thông tin khác nếu cần -->
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="info-pair">
-                                        <h6 th:text="#{modal.orderDetail.payment}"></h6>
-                                        <p>Tiền mặt</p>
-                                    </div>
-                                    <div class="info-pair">
-                                        <h6 th:text="#{modal.orderDetail.transport}"></h6>
-                                        <p>Shipper</p>
-                                    </div>
-                                    <!-- Thêm thông tin khác nếu cần -->
-                                </div>
+                                
                             </div>
                         </div>
 
@@ -248,7 +238,7 @@
                                                 <strong
                                                         th:text="#{modal.orderDetail.table.shippingCost}"></strong>
                                             </td>
-                                            <td>{{listOrder[0].distance * 2.5 | number : 0}} đ</td>
+                                            <td>{{listOrder[0].distance * 4 | number : 0}} đ</td>
                                         </tr>
                                         <tr>
                                             <td colspan="6" class="text-end">

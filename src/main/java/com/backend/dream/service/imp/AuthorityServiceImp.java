@@ -9,6 +9,7 @@ import com.backend.dream.repository.AccountRepository;
 import com.backend.dream.repository.AuthorityRepository;
 import com.backend.dream.service.AuthorityService;
 import com.backend.dream.util.ExcelUltils;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Transactional
 @Service
 public class AuthorityServiceImp implements AuthorityService {
 

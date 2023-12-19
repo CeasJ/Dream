@@ -11,7 +11,7 @@ import java.util.List;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Orders,Long> {
-    @Query("SELECT o FROM Orders o WHERE o.account.username = ?1 ORDER BY o.createDate DESC")
+    @Query("SELECT o FROM Orders o WHERE o.account.username = ?1  ORDER BY o.createDate DESC, o.createTime DESC")
     Page<Orders> listOrdersByUsername(String username, Pageable pageable);
 
     @Query("SELECT o FROM Orders o WHERE o.status.id = ?1")

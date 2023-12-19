@@ -5,13 +5,14 @@ import com.backend.dream.entity.OrderDetails;
 import com.backend.dream.mapper.OrderDetailMapper;
 import com.backend.dream.repository.OrderDetailRepository;
 import com.backend.dream.service.OrderDetailService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
-
+@Transactional
 @Service
 public class OrderDetailServiceImp implements OrderDetailService {
     @Autowired

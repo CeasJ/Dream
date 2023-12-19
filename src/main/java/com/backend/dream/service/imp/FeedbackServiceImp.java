@@ -9,6 +9,7 @@ import com.backend.dream.repository.ProductRepository;
 import com.backend.dream.service.AccountService;
 import com.backend.dream.service.FeedbackService;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +18,7 @@ import java.sql.Time;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
+@Transactional
 @Service
 public class FeedbackServiceImp implements FeedbackService {
 

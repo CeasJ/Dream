@@ -392,17 +392,7 @@
                                             </div>
                                             <!-- Thêm thông tin khác nếu cần -->
                                         </div>
-                                        <div class="col-md-6 cnt-hd">
-                                            <div class="info-pair">
-                                                <h6>Thanh toán:</h6>
-                                                <p>Tiền mặt</p>
-                                            </div>
-                                            <div class="info-pair">
-                                                <h6>Vận chuyển:</h6>
-                                                <p>Shipper</p>
-                                            </div>
-                                            <!-- Thêm thông tin khác nếu cần -->
-                                        </div>
+                                      
                                     </div>
                                 </div>
                                 <div class="container hs-hd mx-auto" style="margin-top: 30px;">
@@ -422,20 +412,7 @@
                                                 <p>{{listOrder[0].order_address}}</p>
                                             </div>
                                         </div>
-                                        <div class="col-md-6 cnt-hd">
-                                            <div class="info-pair">
-                                                <h6>Tỉnh/Thành phố:</h6>
-                                                <p>Hồ Chí Minh</p>
-                                            </div>
-                                            <div class="info-pair">
-                                                <h6>Quận/Huyện:</h6>
-                                                <p>Thủ Đức</p>
-                                            </div>
-                                            <div class="info-pair">
-                                                <h6>Phường/Xã:</h6>
-                                                <p>Hiệp Bình Phước</p>
-                                            </div>
-                                        </div>
+                                      
                                     </div>
                                 </div>
                                 <div class="container" style="margin-top: 30px; padding: 0;">
@@ -756,7 +733,7 @@
                                         <td ng-if="order.status === 4"> Đã giao hàng</td>
                                         <td>
                                             <button class="btn btn-dark" data-bs-toggle="modal"
-                                                ng-click="selectOrder(order.id,4)" data-bs-target="#successModal">
+                                                ng-click="selectOrder(order.id)" data-bs-target="#successModal">
                                                 <i class="bi bi-eye-fill"></i>
                                             </button>
                                         </td>
@@ -854,20 +831,7 @@
                                                 </p>
                                             </div>
                                         </div>
-                                        <div class="col-md-6 cnt-hd">
-                                            <div class="info-pair">
-                                                <h6>Tỉnh/Thành phố:</h6>
-                                                <p>Hồ Chí Minh</p>
-                                            </div>
-                                            <div class="info-pair">
-                                                <h6>Quận/Huyện:</h6>
-                                                <p>Thủ Đức</p>
-                                            </div>
-                                            <div class="info-pair">
-                                                <h6>Phường/Xã:</h6>
-                                                <p>Hiệp Bình Phước</p>
-                                            </div>
-                                        </div>
+                                     
                                     </div>
                                 </div>
                                 <div class="container" style="margin-top: 30px; padding: 0;">
@@ -900,20 +864,33 @@
                                                             đ</td>
                                                     </tr>
                                                     <tr>
-                                                        <td colspan="5" class="text-end"><strong>Tạm
-                                                                tính:</strong></td>
+                                                        <td colspan="6" class="text-end">
+                                                            <strong th:text="#{modal.orderDetail.table.subtotal}"></strong>
+                                                        </td>
                                                         <td>{{getSubTotal() | number : 0}} đ</td>
                                                     </tr>
                                                     <tr>
-                                                        <td colspan="5" class="text-end"><strong>Chi phí vận
-                                                                chuyển:</strong>
+                                                        <td colspan="6" class="text-end">
+                                                            <strong
+                                                                    th:text="#{modal.orderDetail.table.shippingCost}"></strong>
                                                         </td>
-                                                        <td>20.000 đ</td>
+                                                        <td>{{listOrder[0].distance * 4 | number : 0}} đ</td>
                                                     </tr>
                                                     <tr>
-                                                        <td colspan="5" class="text-end"><strong>Tổng thanh
-                                                                toán:</strong></td>
-                                                        <th class="text-success">{{getTotal() | number : 0}} đ</th>
+                                                        <td colspan="6" class="text-end">
+                                                            <strong th:text="#{modal.orderDetail.table.discountVoucher}">
+                                                            </strong>
+                                                        </td>
+                                                        <td ng-if="listOrder[0].discount > 0">{{listOrder[0].discount |
+                                                            number : 0}} đ</td>
+                                                        <td ng-if="listOrder[0].discount === null"> 0đ</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="6" class="text-end">
+                                                            <strong th:text="#{modal.orderDetail.table.total}"></strong>
+                                                        </td>
+                                                        <th class="text-success">{{getTotal() - listOrder[0].discount |
+                                                            number : 0}} đ</th>
                                                     </tr>
                                                 </tbody>
                                             </table>

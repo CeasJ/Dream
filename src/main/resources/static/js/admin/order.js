@@ -43,14 +43,15 @@ app.controller("order_ctrl", function ($scope, $http) {
   $scope.getSubTotal = function () {
     let subTotal = 0;
     angular.forEach($scope.listOrder, function (orderDetail) {
+      $scope.shipCost = orderDetail.distance * 4;
       subTotal += orderDetail.quantity * orderDetail.price;
     });
     return subTotal;
   };
 
   $scope.getTotal = function () {
-    let subTotal = $scope.getSubTotal();
-    return subTotal;
+    let subTotal = $scope.getSubTotal() + $scope.shipCost;
+    return subTotal ;
   };
 
   $scope.initialize = function () {

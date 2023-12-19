@@ -10,6 +10,7 @@ import com.backend.dream.repository.ProductSizeRepository;
 import com.backend.dream.service.*;
 import com.backend.dream.util.ExcelUltils;
 import com.backend.dream.util.PdfUtils;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,7 +23,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
+@Transactional
 @Service
 public class ProductServiceImp implements ProductService {
     @Autowired
