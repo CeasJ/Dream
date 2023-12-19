@@ -41,11 +41,11 @@ public class Account implements Serializable {
     private boolean active;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "account")
+    @OneToMany(mappedBy = "account", fetch = FetchType.EAGER)
     private List<Authority> authority;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "account")
+    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
     private List<Voucher> voucher;
 
     @JsonIgnore

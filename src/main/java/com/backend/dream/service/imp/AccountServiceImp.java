@@ -11,6 +11,7 @@ import com.backend.dream.repository.AuthorityRepository;
 import com.backend.dream.repository.RoleRepository;
 import com.backend.dream.service.AccountService;
 import com.backend.dream.util.ExcelUltils;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Transactional
 @Service
 public class AccountServiceImp implements AccountService {
     @Autowired
