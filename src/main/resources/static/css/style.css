@@ -228,6 +228,7 @@ body {
 
 .notification-icon {
     margin-left: 15px;
+    margin-left: 15px;
     position: relative;
     cursor: pointer;
 }
@@ -241,8 +242,21 @@ body {
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     display: none;
     width: 400px;
+    min-height: 400px;
     overflow: auto;
     max-height: 400px;
+}
+
+.notification-dropdown::-webkit-scrollbar {
+    width: 8px;
+}
+
+.notification-dropdown::-webkit-scrollbar-thumb {
+    background-color: #c0c0c0; /* Scrollbar thumb color */
+}
+
+.notification-dropdown::-webkit-scrollbar-track {
+    background-color: #f8f8ff; /* Scrollbar track color */
 }
 
 .notification-dropdown .notification-title {

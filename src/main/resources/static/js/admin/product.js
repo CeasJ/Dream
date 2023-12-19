@@ -39,28 +39,28 @@ app.controller("product_ctrl", function ($scope, $http) {
 
 
   $scope.initialize = function () {
-      $http.get(`/rest/products`).then((resp) => {
-          $scope.items = resp.data;
-          $scope.items.forEach((item) => {
-              item.createDate = new Date(item.createDate);
-          });
+    $http.get(`/rest/products`).then((resp) => {
+      $scope.items = resp.data;
+      $scope.items.forEach((item) => {
+        item.createDate = new Date(item.createDate);
       });
+    });
 
-      $http.get(`/rest/category`).then((resp) => {
-          $scope.cates = resp.data;
+    $http.get(`/rest/category`).then((resp) => {
+      $scope.cates = resp.data;
 
-          if ($scope.cates.length > 0) {
-                $scope.selectedCategory = $scope.cates[0].id;
-              } else {
-                $scope.selectedCategory = '';
-              }
-      });
+      if ($scope.cates.length > 0) {
+        $scope.selectedCategory = $scope.cates[0].id;
+      } else {
+        $scope.selectedCategory = '';
+      }
+    });
 
-      $http.get(`/rest/productsizes`).then((resp) => {
-          $scope.productsizes = resp.data;
-      });
+    $http.get(`/rest/productsizes`).then((resp) => {
+      $scope.productsizes = resp.data;
+    });
 
-      $scope.selectedActive = 'true';
+    $scope.selectedActive = 'true';
   };
 
   $scope.initialize();
@@ -126,7 +126,7 @@ app.controller("product_ctrl", function ($scope, $http) {
         }).catch(err => {
           if (err.data && err.data.errors) {
         $("#myModal").modal("hide");
-        err.data.errors.forEach(function(error, index) {
+        err.data.errors.forEach(function (error, index) {
           toastr.error(`Error ${index + 1}: ${error}`);
         });
       } 
@@ -178,21 +178,21 @@ app.controller("product_ctrl", function ($scope, $http) {
         toastr.error("Select Image Fail");
       });
   };
-// Thêm phương thức để xuất dữ liệu sang Excel
-$scope.exportToExcel = function () {
-  $http.get('/export/excel')
-    .then(function(response) {
-    let blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-          let downloadLink = document.createElement('a');
-          downloadLink.href = window.URL.createObjectURL(blob);
-          downloadLink.download = 'product.xlsx';
-          downloadLink.click();
+  // Thêm phương thức để xuất dữ liệu sang Excel
+  $scope.exportToExcel = function () {
+    $http.get('/export/excel')
+      .then(function (response) {
+        let blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        let downloadLink = document.createElement('a');
+        downloadLink.href = window.URL.createObjectURL(blob);
+        downloadLink.download = 'product.xlsx';
+        downloadLink.click();
         toastr.success("Download Success");
-    })
-    .catch(function(error) {
+      })
+      .catch(function (error) {
         console.error('Error exporting to Excel:', error);
-    });
-};
+      });
+  };
 
   // Pagination
   $scope.pagedItems = [];
@@ -205,61 +205,61 @@ $scope.exportToExcel = function () {
           pages: []
       };
 
-      $scope.firstPage = function () {
-          if ($scope.pagination.currentPage !== 1) {
-              $scope.pagination.currentPage = 1;
-              paginateItems();
-          }
-      };
+  $scope.firstPage = function () {
+    if ($scope.pagination.currentPage !== 1) {
+      $scope.pagination.currentPage = 1;
+      paginateItems();
+    }
+  };
 
-      $scope.lastPage = function () {
-          if ($scope.pagination.currentPage !== $scope.pagination.totalPages) {
-              $scope.pagination.currentPage = $scope.pagination.totalPages;
-              paginateItems();
-          }
-      };
+  $scope.lastPage = function () {
+    if ($scope.pagination.currentPage !== $scope.pagination.totalPages) {
+      $scope.pagination.currentPage = $scope.pagination.totalPages;
+      paginateItems();
+    }
+  };
 
-     $scope.getPagerNumbers = function () {
-         let totalPages = $scope.pagination.totalPages;
-         let currentPage = $scope.pagination.currentPage;
+  $scope.getPagerNumbers = function () {
+    let totalPages = $scope.pagination.totalPages;
+    let currentPage = $scope.pagination.currentPage;
 
-         if (totalPages <= 5) {
-             return Array.from({ length: totalPages }, (_, i) => i + 1);
-         } else {
-             let startPage = Math.max(1, currentPage - 2);
-             let endPage = Math.min(currentPage + 2, totalPages);
+    if (totalPages <= 5) {
+      return Array.from({ length: totalPages }, (_, i) => i + 1);
+    } else {
+      let startPage = Math.max(1, currentPage - 2);
+      let endPage = Math.min(currentPage + 2, totalPages);
 
-             if (endPage - startPage < 4) {
-                 startPage = Math.max(1, endPage - 4);
-             }
-
-             return Array.from({ length: 5 }, (_, i) => startPage + i);
-         }
-     };
-
-      function paginateItems() {
-          var begin = (($scope.pagination.currentPage - 1) * $scope.pagination.pageSize);
-          var end = begin + $scope.pagination.pageSize;
-
-          $scope.pagedItems = $scope.filteredItems.slice(begin, end);
-
-          $scope.pagination.startIndex = begin;
-          $scope.pagination.endIndex = end > $scope.filteredItems.length ? $scope.filteredItems.length : end;
-
-          $scope.pagination.pages = $scope.getPagerNumbers();
+      if (endPage - startPage < 4) {
+        startPage = Math.max(1, endPage - 4);
       }
 
+      return Array.from({ length: 5 }, (_, i) => startPage + i);
+    }
+  };
 
-   $scope.$watchGroup(['items.length', 'selectedCategory', 'selectedActive'], function () {
-       if ($scope.selectedCategory === '' && $scope.selectedActive === '') {
-           $scope.filteredItems = $scope.items;
-       } else {
-           $scope.filteredItems = $scope.items.filter(function (item) {
-               var categoryCondition = $scope.selectedCategory === '' || item.id_category === $scope.selectedCategory;
-               var activeCondition = $scope.selectedActive === '' || item.active === ($scope.selectedActive === 'true');
-               return categoryCondition && activeCondition;
-           });
-       }
+  function paginateItems() {
+    var begin = (($scope.pagination.currentPage - 1) * $scope.pagination.pageSize);
+    var end = begin + $scope.pagination.pageSize;
+
+    $scope.pagedItems = $scope.filteredItems.slice(begin, end);
+
+    $scope.pagination.startIndex = begin;
+    $scope.pagination.endIndex = end > $scope.filteredItems.length ? $scope.filteredItems.length : end;
+
+    $scope.pagination.pages = $scope.getPagerNumbers();
+  }
+
+
+  $scope.$watchGroup(['items.length', 'selectedCategory', 'selectedActive'], function () {
+    if ($scope.selectedCategory === '' && $scope.selectedActive === '') {
+      $scope.filteredItems = $scope.items;
+    } else {
+      $scope.filteredItems = $scope.items.filter(function (item) {
+        var categoryCondition = $scope.selectedCategory === '' || item.id_category === $scope.selectedCategory;
+        var activeCondition = $scope.selectedActive === '' || item.active === ($scope.selectedActive === 'true');
+        return categoryCondition && activeCondition;
+      });
+    }
 
        $scope.pagination.currentPage = 1;
        paginateItems();
@@ -275,50 +275,30 @@ $scope.exportToExcel = function () {
 
 
 
-      $scope.setPage = function (page) {
-          if (page < 1 || page > $scope.pagination.totalPages) {
-              return;
-          }
-          $scope.pagination.currentPage = page;
-          paginateItems();
-      };
+  $scope.setPage = function (page) {
+    if (page < 1 || page > $scope.pagination.totalPages) {
+      return;
+    }
+    $scope.pagination.currentPage = page;
+    paginateItems();
+  };
 
-      $scope.nextPage = function () {
-          if ($scope.pagination.currentPage < $scope.pagination.totalPages) {
-              $scope.pagination.currentPage++;
-              paginateItems();
-          }
-      };
+  $scope.nextPage = function () {
+    if ($scope.pagination.currentPage < $scope.pagination.totalPages) {
+      $scope.pagination.currentPage++;
+      paginateItems();
+    }
+  };
 
-      $scope.prevPage = function () {
-          if ($scope.pagination.currentPage > 1) {
-              $scope.pagination.currentPage--;
-              paginateItems();
-          }
-      };
-
-      // Searching features
-      $scope.searchByName = function() {
-          if ($scope.searchTerm && $scope.searchTerm.trim() !== '') {
-              $http.get(`/rest/productsizes/search?name=${$scope.searchTerm}`)
-                  .then(function(response) {
-                      $scope.items = response.data;
-                      $scope.items.forEach((item) => {
-                          item.createDate = new Date(item.createDate);
-                      });
-                  })
-                  .catch(function(error) {
-                      console.error('Error searching products:', error);
-                  });
-          } else {
-              $scope.initialize();
-          }
-      };
-
+  $scope.prevPage = function () {
+    if ($scope.pagination.currentPage > 1) {
+      $scope.pagination.currentPage--;
+      paginateItems();
+    }
+  };
 
 });
 
-// Nhấn mạnh là thg Thành n làm
 document.addEventListener("DOMContentLoaded", function () {
   var notificationIcon = document.querySelector(".notification-icon");
   var notificationDropdown = document.querySelector(".notification-dropdown");

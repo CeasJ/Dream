@@ -29,7 +29,7 @@ app.controller("category-ctrl", function ($scope, $http) {
           $scope.clearForm();
           alert("Create Successful");
         })
-        .catch(function (error) {});
+        .catch(function (error) { });
     }
   };
   $scope.update = function () {
@@ -42,7 +42,7 @@ app.controller("category-ctrl", function ($scope, $http) {
         $scope.clearForm();
         alert("Update Success");
       })
-      .catch((err) => {});
+      .catch((err) => { });
   };
   $scope.delete = function (cate) {
     $http
@@ -53,7 +53,7 @@ app.controller("category-ctrl", function ($scope, $http) {
         $scope.clearForm();
         alert("Delete Success");
       })
-      .catch((err) => {});
+      .catch((err) => { });
   };
 });
 

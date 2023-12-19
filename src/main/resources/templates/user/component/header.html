@@ -23,7 +23,6 @@
                     <th:block th:if="${isAuthenticated}">
                         <a id="username" class="nav-item nav-link" hidden>[[${username}]]</a>
                         <a id="id_account" class="nav-item nav-link" hidden>[[${id_account}]]</a>
-                        <a th:href="@{|/contact|}" class="nav-item nav-link">CONTACT US</a>
                         <a th:href="@{|/orders|}" class="nav-item nav-link" th:text="#{navbar.order}"></a>
                         <div class="user-icon">
                             <div class="user-icon-circle">

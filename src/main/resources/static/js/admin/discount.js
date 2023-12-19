@@ -7,19 +7,19 @@ app.controller("discount-ctrl", function ($scope, $http) {
   $scope.initialize = function () {
     $http.get(`/rest/discount`).then((resp) => {
       $scope.discounts = resp.data;
-         $scope.discounts.forEach((count) => {
-              count.activeDate = new Date(count.activeDate);
-              count.expiredDate = new Date(count.expiredDate);
-         });
+      $scope.discounts.forEach((count) => {
+        count.activeDate = new Date(count.activeDate);
+        count.expiredDate = new Date(count.expiredDate);
+      });
     });
     $http.get(`/rest/category`).then((resp) => {
       $scope.cates = resp.data;
     });
 
     $scope.form = {
-      active:true,
+      active: true,
       activeDate: new Date()
-     };
+    };
   };
 
   $scope.initialize();
@@ -187,64 +187,64 @@ app.controller("discount-ctrl", function ($scope, $http) {
             }
         };
 
-        $scope.firstPageDiscount = function () {
-            if ($scope.currentPageDiscount !== 1) {
-                $scope.currentPageDiscount = 1;
-            }
-        };
+  $scope.firstPageDiscount = function () {
+    if ($scope.currentPageDiscount !== 1) {
+      $scope.currentPageDiscount = 1;
+    }
+  };
 
-        $scope.lastPageDiscount = function () {
-            if ($scope.currentPageDiscount !== $scope.totalPagesDiscount()) {
-                $scope.currentPageDiscount = $scope.totalPagesDiscount();
-            }
-        };
+  $scope.lastPageDiscount = function () {
+    if ($scope.currentPageDiscount !== $scope.totalPagesDiscount()) {
+      $scope.currentPageDiscount = $scope.totalPagesDiscount();
+    }
+  };
 
-        $scope.getPagerDiscount = function () {
-            const totalPages = $scope.totalPagesDiscount(); // Tổng số trang
-                const maxPagesToShow = 5; // Số trang tối đa cần hiển thị
+  $scope.getPagerDiscount = function () {
+    const totalPages = $scope.totalPagesDiscount(); // Tổng số trang
+    const maxPagesToShow = 5; // Số trang tối đa cần hiển thị
 
-                let startPage = 1;
-                let endPage = totalPages;
+    let startPage = 1;
+    let endPage = totalPages;
 
-                if (totalPages > maxPagesToShow) {
-                    const maxPagesBeforeCurrentPage = Math.floor(maxPagesToShow / 2);
-                    const maxPagesAfterCurrentPage = Math.ceil(maxPagesToShow / 2) - 1;
+    if (totalPages > maxPagesToShow) {
+      const maxPagesBeforeCurrentPage = Math.floor(maxPagesToShow / 2);
+      const maxPagesAfterCurrentPage = Math.ceil(maxPagesToShow / 2) - 1;
 
-                    if ($scope.currentPageDiscount <= maxPagesBeforeCurrentPage) {
-                        startPage = 1;
-                        endPage = maxPagesToShow;
-                    } else if ($scope.currentPageDiscount + maxPagesAfterCurrentPage >= totalPages) {
-                        startPage = totalPages - maxPagesToShow + 1;
-                        endPage = totalPages;
-                    } else {
-                        startPage = $scope.currentPageDiscount - maxPagesBeforeCurrentPage;
-                        endPage = $scope.currentPageDiscount + maxPagesAfterCurrentPage;
-                    }
-                }
+      if ($scope.currentPageDiscount <= maxPagesBeforeCurrentPage) {
+        startPage = 1;
+        endPage = maxPagesToShow;
+      } else if ($scope.currentPageDiscount + maxPagesAfterCurrentPage >= totalPages) {
+        startPage = totalPages - maxPagesToShow + 1;
+        endPage = totalPages;
+      } else {
+        startPage = $scope.currentPageDiscount - maxPagesBeforeCurrentPage;
+        endPage = $scope.currentPageDiscount + maxPagesAfterCurrentPage;
+      }
+    }
 
-                return Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i);
-        };
+    return Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i);
+  };
 
-        $scope.paginatedListDiscount = function () {
-            const begin = ($scope.currentPageDiscount - 1) * $scope.pageSizeDiscount;
-            const end = begin + $scope.pageSizeDiscount;
-            return $scope.discounts.slice(begin, end);
-        };
+  $scope.paginatedListDiscount = function () {
+    const begin = ($scope.currentPageDiscount - 1) * $scope.pageSizeDiscount;
+    const end = begin + $scope.pageSizeDiscount;
+    return $scope.discounts.slice(begin, end);
+  };
 
 
-         $scope.searchDiscount = function () {
-            if ($scope.searchText) {
-              $http.get("/rest/discount/search?name=" + $scope.searchText)
-                .then(function (response) {
-                  $scope.discounts = response.data;
-                })
-                .catch(function (error) {
-                  console.error("Error fetching discounts:", error);
-                });
-            } else {
-              $scope.initialize();
-            }
-          };
+  $scope.searchDiscount = function () {
+    if ($scope.searchText) {
+      $http.get("/rest/discount/search?name=" + $scope.searchText)
+        .then(function (response) {
+          $scope.discounts = response.data;
+        })
+        .catch(function (error) {
+          console.error("Error fetching discounts:", error);
+        });
+    } else {
+      $scope.initialize();
+    }
+  };
 
           $scope.$watch('searchText', function(newVal, oldVal) {
             if (newVal !== oldVal) {

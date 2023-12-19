@@ -37,45 +37,45 @@ app.controller("order_ctrl", function ($scope, $http) {
           $scope.listOrder = response.data;
         }
       })
-      .catch((error) => {});
+      .catch((error) => { });
   };
 
   $scope.getSubTotal = function () {
-	  let subTotal = 0;
-	  angular.forEach($scope.listOrder, function (orderDetail) {
-		  subTotal += orderDetail.quantity * orderDetail.price;
-		});
-		return subTotal;
-	};
-	
-	$scope.getTotal = function () {
-		let subTotal = $scope.getSubTotal();
-		return subTotal;
-	};
-	
-	$scope.initialize = function () {
-	  if (
-		$scope.selectedStatus === null ||
-		$scope.selectedStatus === undefined ||
-		isNaN($scope.selectedStatus) ||
-		$scope.selectedStatus === ""
-	  ) {
-		document.getElementById("order").style.display = "block";
-		document.getElementById("order-confirm").style.display = "none";
-		document.getElementById("order-shipping").style.display = "none";
-		document.getElementById("order-cancel").style.display = "none";
-		document.getElementById("order-success").style.display = "none";
-	}
+    let subTotal = 0;
+    angular.forEach($scope.listOrder, function (orderDetail) {
+      subTotal += orderDetail.quantity * orderDetail.price;
+    });
+    return subTotal;
+  };
+
+  $scope.getTotal = function () {
+    let subTotal = $scope.getSubTotal();
+    return subTotal;
+  };
+
+  $scope.initialize = function () {
+    if (
+      $scope.selectedStatus === null ||
+      $scope.selectedStatus === undefined ||
+      isNaN($scope.selectedStatus) ||
+      $scope.selectedStatus === ""
+    ) {
+      document.getElementById("order").style.display = "block";
+      document.getElementById("order-confirm").style.display = "none";
+      document.getElementById("order-shipping").style.display = "none";
+      document.getElementById("order-cancel").style.display = "none";
+      document.getElementById("order-success").style.display = "none";
+    }
 
     $http.get(`/rest/order`).then((resp) => {
       $scope.listOrders = resp.data;
     });
-	
+
     $http.get(`/rest/order/status`).then((resp) => {
       $scope.status = resp.data;
       if (!$scope.selectedStatus) {
-          $scope.selectedStatus = 1;
-          $scope.selectedStatusChanged();
+        $scope.selectedStatus = 1;
+        $scope.selectedStatusChanged();
       }
     });
 
@@ -114,7 +114,7 @@ app.controller("order_ctrl", function ($scope, $http) {
             $scope.initialize();
             $scope.selectedStatusChanged(2);
           })
-          .catch((err) => {});
+          .catch((err) => { });
       }
     },
 
@@ -147,31 +147,31 @@ app.controller("order_ctrl", function ($scope, $http) {
             $scope.initialize();
             $scope.selectedStatusChanged(5);
           })
-          .catch((err) => {});
-        } else if (orderUpdateWhenOrder) {
-          let orderCancel = angular.copy(orderUpdateWhenOrder);
-          orderCancel.status = 5;
-          $http
+          .catch((err) => { });
+      } else if (orderUpdateWhenOrder) {
+        let orderCancel = angular.copy(orderUpdateWhenOrder);
+        orderCancel.status = 5;
+        $http
           .put(`/rest/order/cancel/${orderUpdateWhenOrder.id}`, orderCancel)
           .then((resp) => {
             $scope.initialize();
             $scope.selectedStatusChanged(5);
           })
-          .catch((err) => {});
-        } else if (orderUpdateWhenOrderIsShipping) {
-          let orderCancel = angular.copy(orderUpdateWhenOrderIsShipping);
-          orderCancel.status = 5;
-          $http
+          .catch((err) => { });
+      } else if (orderUpdateWhenOrderIsShipping) {
+        let orderCancel = angular.copy(orderUpdateWhenOrderIsShipping);
+        orderCancel.status = 5;
+        $http
           .put(
             `/rest/order/cancel/${orderUpdateWhenOrderIsShipping.id}`,
             orderCancel
-            )
-            .then((resp) => {
-              $scope.initialize();
-              $scope.selectedStatusChanged(5);
-            })
-            .catch((err) => {});
-          }
+          )
+          .then((resp) => {
+            $scope.initialize();
+            $scope.selectedStatusChanged(5);
+          })
+          .catch((err) => { });
+      }
     },
     resetOrder(orderID) {
       let orderToUpdate = $scope.listOrdersCancelled.find(function (order) {
@@ -186,11 +186,11 @@ app.controller("order_ctrl", function ($scope, $http) {
             $scope.initialize();
             $scope.selectedStatusChanged(2);
           })
-          .catch((err) => {});
-        }
-      },
-      successOrder(orderID) {
-        let orderToUpdate = $scope.listOrdersConfirmed.find(function (order) {
+          .catch((err) => { });
+      }
+    },
+    successOrder(orderID) {
+      let orderToUpdate = $scope.listOrdersConfirmed.find(function (order) {
         return order.id === orderID;
       });
 
@@ -198,55 +198,55 @@ app.controller("order_ctrl", function ($scope, $http) {
         function (order) {
           return order.id === orderID;
         }
-        );
+      );
 
-        if (orderToUpdate) {
-          let orderSuccess = angular.copy(orderToUpdate);
-          orderSuccess.status = 4;
-          $http
+      if (orderToUpdate) {
+        let orderSuccess = angular.copy(orderToUpdate);
+        orderSuccess.status = 4;
+        $http
           .put(`/rest/order/success/${orderToUpdate.id}`, orderSuccess)
           .then((resp) => {
             $scope.initialize();
             $scope.selectedStatusChanged(4);
           })
-          .catch((err) => {});
-        } else if (orderUpdateWhenOrderIsShipping) {
-          let orderSuccess = angular.copy(orderUpdateWhenOrderIsShipping);
-          orderSuccess.status = 4;
-          $http
+          .catch((err) => { });
+      } else if (orderUpdateWhenOrderIsShipping) {
+        let orderSuccess = angular.copy(orderUpdateWhenOrderIsShipping);
+        orderSuccess.status = 4;
+        $http
           .put(
             `/rest/order/success/${orderUpdateWhenOrderIsShipping.id}`,
             orderSuccess
-            )
-            .then((resp) => {
-              $scope.initialize();
-              $scope.selectedStatusChanged(4);
-            })
-            .catch((err) => {});
-          }
-        },
-        shippingOrder(orderID) {
-          let orderToUpdate = $scope.listOrdersConfirmed.find(function (order) {
-            return order.id === orderID;
-          });
+          )
+          .then((resp) => {
+            $scope.initialize();
+            $scope.selectedStatusChanged(4);
+          })
+          .catch((err) => { });
+      }
+    },
+    shippingOrder(orderID) {
+      let orderToUpdate = $scope.listOrdersConfirmed.find(function (order) {
+        return order.id === orderID;
+      });
 
       if (orderToUpdate) {
         let orderIsShipping = angular.copy(orderToUpdate);
         orderIsShipping.status = 3;
         $http
-        .put(`/rest/order/ship/${orderToUpdate.id}`, orderIsShipping)
-        .then((resp) => {
-          $scope.initialize();
-          $scope.selectedStatusChanged(3);
+          .put(`/rest/order/ship/${orderToUpdate.id}`, orderIsShipping)
+          .then((resp) => {
+            $scope.initialize();
+            $scope.selectedStatusChanged(3);
           })
-          .catch((err) => {});
+          .catch((err) => { });
       }
     },
   };
 
 
- // Pending Pagination
-$scope.pagerOrder = {
+  // Pending Pagination
+  $scope.pagerOrder = {
     currentPage: 1,
     pageSize: 5,
     totalPages: 0,
@@ -254,24 +254,24 @@ $scope.pagerOrder = {
     endIndex: 0,
     totalItems: 0,
     pages: []
-};
+  };
 
-function setPageNumbers() {
+  function setPageNumbers() {
     $scope.pagerOrder.pages = [];
     for (var i = 1; i <= $scope.pagerOrder.totalPages; i++) {
-        $scope.pagerOrder.pages.push(i);
+      $scope.pagerOrder.pages.push(i);
     }
-}
+  }
 
-$scope.setPageOrder = function (page) {
+  $scope.setPageOrder = function (page) {
     if (page < 1 || page > $scope.pagerOrder.totalPages) {
-        return;
+      return;
     }
     $scope.pagerOrder.currentPage = page;
     paginateOrder();
-};
+  };
 
-function paginateOrder() {
+  function paginateOrder() {
     var begin = (($scope.pagerOrder.currentPage - 1) * $scope.pagerOrder.pageSize);
     var end = begin + $scope.pagerOrder.pageSize;
     $scope.pagerOrder.paginatedList = $scope.listOrders.slice(begin, end);
@@ -281,201 +281,201 @@ function paginateOrder() {
     $scope.pagerOrder.totalPages = Math.ceil($scope.pagerOrder.totalItems / $scope.pagerOrder.pageSize);
     setPageNumbers();
     $scope.pagerOrder.endIndex = Math.min($scope.pagerOrder.endIndex, $scope.pagerOrder.totalItems);
-}
+  }
 
-$scope.$watch('listOrders', function () {
+  $scope.$watch('listOrders', function () {
     paginateOrder();
-});
+  });
 
 
   // Processing pagination
   $scope.pagerOrderProcessing = {
-      currentPage: 1,
-      pageSize: 5,
-      totalPages: 0,
-      startIndex: 0,
-      endIndex: 0,
-      totalItems: 0,
-      pages: []
+    currentPage: 1,
+    pageSize: 5,
+    totalPages: 0,
+    startIndex: 0,
+    endIndex: 0,
+    totalItems: 0,
+    pages: []
   };
 
   function setPageNumbersProcessing() {
-      $scope.pagerOrderProcessing.pages = [];
-      for (var i = 1; i <= $scope.pagerOrderProcessing.totalPages; i++) {
-          $scope.pagerOrderProcessing.pages.push(i);
-      }
+    $scope.pagerOrderProcessing.pages = [];
+    for (var i = 1; i <= $scope.pagerOrderProcessing.totalPages; i++) {
+      $scope.pagerOrderProcessing.pages.push(i);
+    }
   }
 
   $scope.setPageOrderProcessing = function (page) {
-      if (page < 1 || page > $scope.pagerOrderProcessing.totalPages) {
-          return;
-      }
-      $scope.pagerOrderProcessing.currentPage = page;
-      paginateOrderProcessing();
+    if (page < 1 || page > $scope.pagerOrderProcessing.totalPages) {
+      return;
+    }
+    $scope.pagerOrderProcessing.currentPage = page;
+    paginateOrderProcessing();
   };
 
   function paginateOrderProcessing() {
-      var begin = (($scope.pagerOrderProcessing.currentPage - 1) * $scope.pagerOrderProcessing.pageSize);
-      var end = begin + $scope.pagerOrderProcessing.pageSize;
+    var begin = (($scope.pagerOrderProcessing.currentPage - 1) * $scope.pagerOrderProcessing.pageSize);
+    var end = begin + $scope.pagerOrderProcessing.pageSize;
 
-      $scope.pagerOrderProcessing.paginatedList = $scope.listOrdersConfirmed.slice(begin, end);
+    $scope.pagerOrderProcessing.paginatedList = $scope.listOrdersConfirmed.slice(begin, end);
 
-      $scope.pagerOrderProcessing.startIndex = begin + 1;
-      $scope.pagerOrderProcessing.endIndex = Math.min(end, $scope.listOrdersConfirmed.length);
-      $scope.pagerOrderProcessing.totalItems = $scope.listOrdersConfirmed.length;
+    $scope.pagerOrderProcessing.startIndex = begin + 1;
+    $scope.pagerOrderProcessing.endIndex = Math.min(end, $scope.listOrdersConfirmed.length);
+    $scope.pagerOrderProcessing.totalItems = $scope.listOrdersConfirmed.length;
 
-      $scope.pagerOrderProcessing.totalPages = Math.ceil($scope.pagerOrderProcessing.totalItems / $scope.pagerOrderProcessing.pageSize);
-      setPageNumbersProcessing();
+    $scope.pagerOrderProcessing.totalPages = Math.ceil($scope.pagerOrderProcessing.totalItems / $scope.pagerOrderProcessing.pageSize);
+    setPageNumbersProcessing();
 
-      $scope.pagerOrderProcessing.endIndex = Math.min($scope.pagerOrderProcessing.endIndex, $scope.pagerOrderProcessing.totalItems);
+    $scope.pagerOrderProcessing.endIndex = Math.min($scope.pagerOrderProcessing.endIndex, $scope.pagerOrderProcessing.totalItems);
   }
 
   $scope.$watch('listOrdersConfirmed', function () {
-      paginateOrderProcessing();
+    paginateOrderProcessing();
   });
 
   // Phân trang cho pagerOrderShipping
   $scope.pagerOrderShipping = {
-      currentPage: 1,
-      pageSize: 5,
-      totalPages: 0,
-      startIndex: 0,
-      endIndex: 0,
-      totalItems: 0,
-      pages: []
+    currentPage: 1,
+    pageSize: 5,
+    totalPages: 0,
+    startIndex: 0,
+    endIndex: 0,
+    totalItems: 0,
+    pages: []
   };
 
   function setPageNumbersShipping() {
-      $scope.pagerOrderShipping.pages = [];
-      for (var i = 1; i <= $scope.pagerOrderShipping.totalPages; i++) {
-          $scope.pagerOrderShipping.pages.push(i);
-      }
+    $scope.pagerOrderShipping.pages = [];
+    for (var i = 1; i <= $scope.pagerOrderShipping.totalPages; i++) {
+      $scope.pagerOrderShipping.pages.push(i);
+    }
   }
 
   $scope.setPageOrderShipping = function (page) {
-      if (page < 1 || page > $scope.pagerOrderShipping.totalPages) {
-          return;
-      }
-      $scope.pagerOrderShipping.currentPage = page;
-      paginateOrderShipping();
+    if (page < 1 || page > $scope.pagerOrderShipping.totalPages) {
+      return;
+    }
+    $scope.pagerOrderShipping.currentPage = page;
+    paginateOrderShipping();
   };
 
   function paginateOrderShipping() {
-      var begin = (($scope.pagerOrderShipping.currentPage - 1) * $scope.pagerOrderShipping.pageSize);
-      var end = begin + $scope.pagerOrderShipping.pageSize;
+    var begin = (($scope.pagerOrderShipping.currentPage - 1) * $scope.pagerOrderShipping.pageSize);
+    var end = begin + $scope.pagerOrderShipping.pageSize;
 
-      $scope.pagerOrderShipping.paginatedList = $scope.listOrderIsShipping.slice(begin, end);
+    $scope.pagerOrderShipping.paginatedList = $scope.listOrderIsShipping.slice(begin, end);
 
-      $scope.pagerOrderShipping.startIndex = begin + 1;
-      $scope.pagerOrderShipping.endIndex = Math.min(end, $scope.listOrderIsShipping.length);
-      $scope.pagerOrderShipping.totalItems = $scope.listOrderIsShipping.length;
+    $scope.pagerOrderShipping.startIndex = begin + 1;
+    $scope.pagerOrderShipping.endIndex = Math.min(end, $scope.listOrderIsShipping.length);
+    $scope.pagerOrderShipping.totalItems = $scope.listOrderIsShipping.length;
 
-      $scope.pagerOrderShipping.totalPages = Math.ceil($scope.pagerOrderShipping.totalItems / $scope.pagerOrderShipping.pageSize);
-      setPageNumbersShipping();
+    $scope.pagerOrderShipping.totalPages = Math.ceil($scope.pagerOrderShipping.totalItems / $scope.pagerOrderShipping.pageSize);
+    setPageNumbersShipping();
 
-      $scope.pagerOrderShipping.endIndex = Math.min($scope.pagerOrderShipping.endIndex, $scope.pagerOrderShipping.totalItems);
+    $scope.pagerOrderShipping.endIndex = Math.min($scope.pagerOrderShipping.endIndex, $scope.pagerOrderShipping.totalItems);
   }
 
   $scope.$watch('listOrderIsShipping', function () {
-      paginateOrderShipping();
+    paginateOrderShipping();
   });
 
 
   // page success
   $scope.pagerOrderSuccess = {
-      currentPage: 1,
-      pageSize: 5,
-      totalPages: 0,
-      startIndex: 0,
-      endIndex: 0,
-      totalItems: 0,
-      pages: []
+    currentPage: 1,
+    pageSize: 5,
+    totalPages: 0,
+    startIndex: 0,
+    endIndex: 0,
+    totalItems: 0,
+    pages: []
   };
 
   function setPageNumbersSuccess() {
-      $scope.pagerOrderSuccess.pages = [];
-      for (var i = 1; i <= $scope.pagerOrderSuccess.totalPages; i++) {
-          $scope.pagerOrderSuccess.pages.push(i);
-      }
+    $scope.pagerOrderSuccess.pages = [];
+    for (var i = 1; i <= $scope.pagerOrderSuccess.totalPages; i++) {
+      $scope.pagerOrderSuccess.pages.push(i);
+    }
   }
 
   $scope.setPageOrderSuccess = function (page) {
-      if (page < 1 || page > $scope.pagerOrderSuccess.totalPages) {
-          return;
-      }
-      $scope.pagerOrderSuccess.currentPage = page;
-      paginateOrderSuccess();
+    if (page < 1 || page > $scope.pagerOrderSuccess.totalPages) {
+      return;
+    }
+    $scope.pagerOrderSuccess.currentPage = page;
+    paginateOrderSuccess();
   };
 
   function paginateOrderSuccess() {
-      var begin = (($scope.pagerOrderSuccess.currentPage - 1) * $scope.pagerOrderSuccess.pageSize);
-      var end = begin + $scope.pagerOrderSuccess.pageSize;
-      $scope.pagerOrderSuccess.paginatedList = $scope.listOrdersSuccessful.slice(begin, end);
-      $scope.pagerOrderSuccess.startIndex = begin + 1;
-      $scope.pagerOrderSuccess.endIndex = Math.min(end, $scope.listOrdersSuccessful.length);
-      $scope.pagerOrderSuccess.totalItems = $scope.listOrdersSuccessful.length;
-      $scope.pagerOrderSuccess.totalPages = Math.ceil($scope.pagerOrderSuccess.totalItems / $scope.pagerOrderSuccess.pageSize);
-      setPageNumbersSuccess();
-      $scope.pagerOrderSuccess.endIndex = Math.min($scope.pagerOrderSuccess.endIndex, $scope.pagerOrderSuccess.totalItems);
+    var begin = (($scope.pagerOrderSuccess.currentPage - 1) * $scope.pagerOrderSuccess.pageSize);
+    var end = begin + $scope.pagerOrderSuccess.pageSize;
+    $scope.pagerOrderSuccess.paginatedList = $scope.listOrdersSuccessful.slice(begin, end);
+    $scope.pagerOrderSuccess.startIndex = begin + 1;
+    $scope.pagerOrderSuccess.endIndex = Math.min(end, $scope.listOrdersSuccessful.length);
+    $scope.pagerOrderSuccess.totalItems = $scope.listOrdersSuccessful.length;
+    $scope.pagerOrderSuccess.totalPages = Math.ceil($scope.pagerOrderSuccess.totalItems / $scope.pagerOrderSuccess.pageSize);
+    setPageNumbersSuccess();
+    $scope.pagerOrderSuccess.endIndex = Math.min($scope.pagerOrderSuccess.endIndex, $scope.pagerOrderSuccess.totalItems);
   }
 
   $scope.$watch('listOrdersSuccessful', function () {
-      paginateOrderSuccess();
+    paginateOrderSuccess();
   });
 
 
   // Pagination cancel
   $scope.pagerOrderCancel = {
-      currentPage: 1,
-      pageSize: 5,
-      totalPages: 0,
-      startIndex: 0,
-      endIndex: 0,
-      totalItems: 0,
-      pages: []
+    currentPage: 1,
+    pageSize: 5,
+    totalPages: 0,
+    startIndex: 0,
+    endIndex: 0,
+    totalItems: 0,
+    pages: []
   };
 
   function setPageNumbersCancel() {
-      $scope.pagerOrderCancel.pages = [];
-      for (var i = 1; i <= $scope.pagerOrderCancel.totalPages; i++) {
-          $scope.pagerOrderCancel.pages.push(i);
-      }
+    $scope.pagerOrderCancel.pages = [];
+    for (var i = 1; i <= $scope.pagerOrderCancel.totalPages; i++) {
+      $scope.pagerOrderCancel.pages.push(i);
+    }
   }
 
   $scope.setPageOrderCancel = function (page) {
-      if (page < 1 || page > $scope.pagerOrderCancel.totalPages) {
-          return;
-      }
-      $scope.pagerOrderCancel.currentPage = page;
-      paginateOrderCancel();
+    if (page < 1 || page > $scope.pagerOrderCancel.totalPages) {
+      return;
+    }
+    $scope.pagerOrderCancel.currentPage = page;
+    paginateOrderCancel();
   };
 
   function paginateOrderCancel() {
-      var begin = (($scope.pagerOrderCancel.currentPage - 1) * $scope.pagerOrderCancel.pageSize);
-      var end = begin + $scope.pagerOrderCancel.pageSize;
-      $scope.pagerOrderCancel.paginatedList = $scope.listOrdersCancelled.slice(begin, end);
-      $scope.pagerOrderCancel.startIndex = begin + 1;
-      $scope.pagerOrderCancel.endIndex = Math.min(end, $scope.listOrdersCancelled.length);
-      $scope.pagerOrderCancel.totalItems = $scope.listOrdersCancelled.length;
-      $scope.pagerOrderCancel.totalPages = Math.ceil($scope.pagerOrderCancel.totalItems / $scope.pagerOrderCancel.pageSize);
-      setPageNumbersCancel();
-      $scope.pagerOrderCancel.endIndex = Math.min($scope.pagerOrderCancel.endIndex, $scope.pagerOrderCancel.totalItems);
+    var begin = (($scope.pagerOrderCancel.currentPage - 1) * $scope.pagerOrderCancel.pageSize);
+    var end = begin + $scope.pagerOrderCancel.pageSize;
+    $scope.pagerOrderCancel.paginatedList = $scope.listOrdersCancelled.slice(begin, end);
+    $scope.pagerOrderCancel.startIndex = begin + 1;
+    $scope.pagerOrderCancel.endIndex = Math.min(end, $scope.listOrdersCancelled.length);
+    $scope.pagerOrderCancel.totalItems = $scope.listOrdersCancelled.length;
+    $scope.pagerOrderCancel.totalPages = Math.ceil($scope.pagerOrderCancel.totalItems / $scope.pagerOrderCancel.pageSize);
+    setPageNumbersCancel();
+    $scope.pagerOrderCancel.endIndex = Math.min($scope.pagerOrderCancel.endIndex, $scope.pagerOrderCancel.totalItems);
   }
 
   $scope.$watch('listOrdersCancelled', function () {
-      paginateOrderCancel();
+    paginateOrderCancel();
   });
 
   // Searching features
-    $scope.searchByStatusAndUsername = function () {
-        $http.get(`/rest/order/searchByStatusAndUsername?statusID=${$scope.selectedStatus}&username=${$scope.searchKeyword}`)
-            .then((resp) => {
-                $scope.listOrders = resp.data;
-            })
-            .catch((error) => {
+  $scope.searchByStatusAndUsername = function () {
+    $http.get(`/rest/order/searchByStatusAndUsername?statusID=${$scope.selectedStatus}&username=${$scope.searchKeyword}`)
+      .then((resp) => {
+        $scope.listOrders = resp.data;
+      })
+      .catch((error) => {
 
-            });
-    };
+      });
+  };
 
 
 

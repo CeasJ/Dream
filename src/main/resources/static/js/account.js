@@ -7,7 +7,7 @@
         if ($("#spinner").length > 0) {
           $("#spinner").removeClass("show");
         }
-      }, 1);
+      }, 500);
     };
     spinner();
 
@@ -52,16 +52,6 @@
         }
       });
     });
-
-    // Lấy giá trị của cartCount và chuyển đổi thành số nguyên
-    var cartCountValue = parseInt($('#cartCount').text());
-
-    // Kiểm tra nếu giá trị cartCount nhỏ hơn hoặc bằng 0, ẩn phần tử span
-    if (cartCountValue <= 0) {
-      $('#cartCount').hide();
-    } else {
-      $('#cartCount').show();
-    }
   } catch (error) {
     window.location.href = "/error-page";
   }
@@ -233,5 +223,16 @@ app.controller('profile_ctrl', function ($scope, $http, $rootScope) {
 
 });
 
+document.addEventListener("DOMContentLoaded", function () {
+  var notificationIcon = document.querySelector(".notification-icon");
+  var notificationDropdown = document.querySelector(".notification-dropdown");
 
-
+  notificationIcon.addEventListener("click", function () {
+    // Toggle the display of the dropdown
+    if (notificationDropdown.style.display === "block") {
+      notificationDropdown.style.display = "none";
+    } else {
+      notificationDropdown.style.display = "block";
+    }
+  });
+});

@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
+    <link rel="icon" href="/img/logo.jpg" type="image/x-icon" />
     <title>Dashboard - Dream Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="css/admin/admin.css" rel="stylesheet" />
@@ -128,13 +129,13 @@
             data: {
                 labels: dataCategory.map(row => row[0]),
                 datasets: [{
-                    data:  dataCategory.map(row => row[1]),
+                    data: dataCategory.map(row => row[1]),
                     backgroundColor: ['#007bff', '#dc3545', '#ffc107', '#28a745'],
                 }],
             },
         });
-    
-    
+
+
         var ctxArechartDate = document.getElementById("myAreaChartDate");
         var dataRevenueByDateAndStatus = /*[[${getRevenueByDateAndStatus}]]*/[];
         var myLineChart = new Chart(ctxArechartDate, {
@@ -175,7 +176,7 @@
                 }
             }
         });
-    
+
     </script>
 </body>
 

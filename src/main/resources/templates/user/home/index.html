@@ -8,7 +8,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
-
+    <link rel="icon" href="/img/logo.jpg" type="image/x-icon" />
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -39,6 +39,11 @@
 </head>
 
 <body ng-app="cart_app" ng-controller="ctrl">
+    <div id="spinner"
+        class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;"></div>
+    </div>
+    
     <div th:if="${activeDiscounts != null and activeDiscounts.size() > 0}">
         <div class="modal fade discountModal" id="discountModal" tabindex="-1" aria-labelledby="discountModalLabel"
             aria-hidden="true">
@@ -53,7 +58,8 @@
                                 id="discountModalLabel" th:text="${activeDiscounts[0].name}"></p>
                             <p style="text-align: center;">
                                 <span class="discount-text">Giảm đến </span>
-                                <span style="font-size: 70px;" th:text="${#numbers.formatDecimal(activeDiscounts[0].percent * 100, 0, 0)}"></span>
+                                <span style="font-size: 70px;"
+                                    th:text="${#numbers.formatDecimal(activeDiscounts[0].percent * 100, 0, 0)}"></span>
                                 <span style="font-size: 70px;">% </span>
                                 <span class="ms-2" style="font-size: 30px;">tất cả sản phẩm</span>
                                 <br style="margin-bottom: 20px;" />

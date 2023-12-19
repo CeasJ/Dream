@@ -1,15 +1,15 @@
 (function ($) {
   "use strict";
-  try{
-  // Spinner
-  var spinner = function () {
-    setTimeout(function () {
-      if ($("#spinner").length > 0) {
-        $("#spinner").removeClass("show");
-      }
-    }, 1);
-  };
-  spinner();
+  try {
+    // Spinner
+    var spinner = function () {
+      setTimeout(function () {
+        if ($("#spinner").length > 0) {
+          $("#spinner").removeClass("show");
+        }
+      }, 500);
+    };
+    spinner();
 
     new WOW().init();
 
@@ -34,13 +34,12 @@
     // Show .cart-0 if cartCount is less than or equal to 0, otherwise show .cart-1
     var cartCount = parseInt($("#cartCount").text());
 
-    if (cartCount <= 0) {
-      $(".cart-0").show();
-      $(".cart-1").hide();
+    if (cartCount > 0) {
+      $(".cart-1").show();
     } else {
       $(".cart-0").hide();
-      $(".cart-1").show();
     }
+
 
     $("#step-1").addClass("active-stext");
     // Show infor-cart and hide cart-0, cart-1 on Buy button click
@@ -81,22 +80,6 @@
         $(".cart-1").show();
       }
     });
-
-    // let isSuccess = true;
-
-    // $("#completeButton").click(function () {
-    //     if(isSuccess) {
-    //       $("#completeButton").click(function () {
-    //         $(".cart-3").show();
-    //         $(".cart-0, .cart-1, .form-buy, .infor-cart").hide();
-    //         $("#number-3").addClass("active");
-    //         $("#line-2").addClass("active-line");
-    //         $("#step-3").addClass("active-stext");
-    //       });
-    //   } else {
-
-    //   }
-    // });
 
     $(document).ready(function () {
       $("#applyDiscountBtn").click(function () {
@@ -585,7 +568,8 @@ app.controller("ctrl", function ($scope, $http, $timeout) {
 
 });
 
-// Thành nó làm
+//Cart Control End
+
 document.addEventListener("DOMContentLoaded", function () {
   var notificationIcon = document.querySelector(".notification-icon");
   var notificationDropdown = document.querySelector(".notification-dropdown");
@@ -599,5 +583,3 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
-
-

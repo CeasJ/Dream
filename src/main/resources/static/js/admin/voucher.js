@@ -10,41 +10,41 @@ voucherApp.controller("voucher_ctrl", function ($scope, $http, $window) {
 
   $scope.voucher = {
     type: 1,
-    status:1,
+    status: 1,
   };
 
-console.log($scope.voucher.type);
-console.log($scope.voucher.status);
+  console.log($scope.voucher.type);
+  console.log($scope.voucher.status);
 
   $scope.initialize = function () {
-  $http.get("/rest/vouchers/all").then(
-    function (response) {
-      $scope.vouchers = response.data;
-    },
-    function (error) {
-      console.error("Error fetching vouchers:", error);
-    }
-  );
+    $http.get("/rest/vouchers/all").then(
+      function (response) {
+        $scope.vouchers = response.data;
+      },
+      function (error) {
+        console.error("Error fetching vouchers:", error);
+      }
+    );
 
-  $http.get("/rest/vouchers/voucherstatus/all").then(
-    function (response) {
-      $scope.status = response.data;
-    },
-    function (error) {
-      console.error("Error fetching voucher status:", error);
-    }
-  );
+    $http.get("/rest/vouchers/voucherstatus/all").then(
+      function (response) {
+        $scope.status = response.data;
+      },
+      function (error) {
+        console.error("Error fetching voucher status:", error);
+      }
+    );
 
-  $http.get("/rest/vouchers/type/all").then(
-    function (response) {
-      $scope.types = response.data;
-    },
-    function (error) {
-      console.error("Error fetching voucher status:", error);
-    }
-  );
-};
-$scope.initialize();  
+    $http.get("/rest/vouchers/type/all").then(
+      function (response) {
+        $scope.types = response.data;
+      },
+      function (error) {
+        console.error("Error fetching voucher status:", error);
+      }
+    );
+  };
+  $scope.initialize();
 
   $scope.filterVouchers = function () {
     if ($scope.selectedStatus === "") {
@@ -85,7 +85,7 @@ $scope.initialize();
 
   $scope.reset = function () {
     $scope.form = {
-      icon:"bi bi-cup-straw"
+      icon: "bi bi-cup-straw"
     };
     $("#myModal").show("hide");
     // $scope.selectedIconClass
@@ -134,16 +134,16 @@ $scope.initialize();
 
 
   $scope.voucher = {
-    name:"",
-    number:"",
+    name: "",
+    number: "",
     createDate: new Date(),
-    expiredDate:"",
-    percent:"",
-    condition:"",
-    icon:"",
-    status:"",
+    expiredDate: "",
+    percent: "",
+    condition: "",
+    icon: "",
+    status: "",
     id_account: "",
-    type:"",
+    type: "",
 
     createVoucher() {
       if ($scope.validateVoucher()) {
@@ -173,7 +173,7 @@ $scope.initialize();
 
   $scope.editVoucher = function (voucher) {
     $scope.voucher = angular.copy(voucher);
-    $scope.voucher.expiredDate  = new Date(voucher.expiredDate);
+    $scope.voucher.expiredDate = new Date(voucher.expiredDate);
   };
 
   $scope.updateVoucher = function() {
@@ -254,85 +254,85 @@ $scope.initialize();
             location.reload();
           }, 1000);
         })
-        .catch((error) => {});
+        .catch((error) => { });
     }
   };
 
   $scope.deleteListVoucherByNameAndIdType = function (number, idType) {
-      $http
-        .delete("/rest/vouchers/" + number + "/" + idType)
-        .then(function (response) {
-          $scope.vouchers = $scope.vouchers.filter(function (voucher) {
-            return voucher.number !== number && voucher.type !== type;
-          });
+    $http
+      .delete("/rest/vouchers/" + number + "/" + idType)
+      .then(function (response) {
+        $scope.vouchers = $scope.vouchers.filter(function (voucher) {
+          return voucher.number !== number && voucher.type !== type;
+        });
 
-          toastr.success("Xóa voucher thành công");
+        toastr.success("Xóa voucher thành công");
 
-          setTimeout(() => {
-            location.reload();
-          }, 1000);
-        })
-        .catch((error) => {});
+        setTimeout(() => {
+          location.reload();
+        }, 1000);
+      })
+      .catch((error) => { });
   };
 
-    // Pagination
+  // Pagination
+  $scope.currentPageVoucher = 1;
+  $scope.pageSizeVoucher = 5;
+  $scope.maxPagesToShow = 5; // Số trang tối đa được hiển thị
+
+  $scope.totalPagesVoucher = function () {
+    return Math.ceil($scope.vouchers.length / $scope.pageSizeVoucher);
+  };
+
+  $scope.setPageVoucher = function (page) {
+    if (page >= 1 && page <= $scope.totalPagesVoucher()) {
+      $scope.currentPageVoucher = page;
+    }
+  };
+
+  $scope.paginatedListVoucher = function () {
+    const begin = ($scope.currentPageVoucher - 1) * $scope.pageSizeVoucher;
+    const end = begin + $scope.pageSizeVoucher;
+
+    return $scope.vouchers.slice(begin, end);
+  };
+
+  $scope.firstPageVoucher = function () {
+    if ($scope.currentPageVoucher !== 1) {
       $scope.currentPageVoucher = 1;
-      $scope.pageSizeVoucher = 5;
-      $scope.maxPagesToShow = 5; // Số trang tối đa được hiển thị
+    }
+  };
 
-      $scope.totalPagesVoucher = function () {
-          return Math.ceil($scope.vouchers.length / $scope.pageSizeVoucher);
-      };
+  $scope.lastPageVoucher = function () {
+    const totalPages = $scope.totalPagesVoucher();
+    if ($scope.currentPageVoucher !== totalPages) {
+      $scope.currentPageVoucher = totalPages;
+    }
+  };
 
-      $scope.setPageVoucher = function (page) {
-          if (page >= 1 && page <= $scope.totalPagesVoucher()) {
-              $scope.currentPageVoucher = page;
-          }
-      };
+  $scope.getPager = function () {
+    const totalPages = $scope.totalPagesVoucher();
+    let startPage = 1;
+    let endPage = totalPages;
 
-      $scope.paginatedListVoucher = function () {
-          const begin = ($scope.currentPageVoucher - 1) * $scope.pageSizeVoucher;
-          const end = begin + $scope.pageSizeVoucher;
+    if (totalPages > $scope.maxPagesToShow) {
+      const maxPagesBeforeCurrentPage = Math.floor($scope.maxPagesToShow / 2);
+      const maxPagesAfterCurrentPage = Math.ceil($scope.maxPagesToShow / 2) - 1;
 
-          return $scope.vouchers.slice(begin, end);
-      };
+      if ($scope.currentPageVoucher <= maxPagesBeforeCurrentPage) {
+        startPage = 1;
+        endPage = $scope.maxPagesToShow;
+      } else if ($scope.currentPageVoucher + maxPagesAfterCurrentPage >= totalPages) {
+        startPage = totalPages - $scope.maxPagesToShow + 1;
+        endPage = totalPages;
+      } else {
+        startPage = $scope.currentPageVoucher - maxPagesBeforeCurrentPage;
+        endPage = $scope.currentPageVoucher + maxPagesAfterCurrentPage;
+      }
+    }
 
-      $scope.firstPageVoucher = function () {
-          if ($scope.currentPageVoucher !== 1) {
-              $scope.currentPageVoucher = 1;
-          }
-      };
-
-      $scope.lastPageVoucher = function () {
-          const totalPages = $scope.totalPagesVoucher();
-          if ($scope.currentPageVoucher !== totalPages) {
-              $scope.currentPageVoucher = totalPages;
-          }
-      };
-
-      $scope.getPager = function () {
-          const totalPages = $scope.totalPagesVoucher();
-          let startPage = 1;
-          let endPage = totalPages;
-
-          if (totalPages > $scope.maxPagesToShow) {
-              const maxPagesBeforeCurrentPage = Math.floor($scope.maxPagesToShow / 2);
-              const maxPagesAfterCurrentPage = Math.ceil($scope.maxPagesToShow / 2) - 1;
-
-              if ($scope.currentPageVoucher <= maxPagesBeforeCurrentPage) {
-                  startPage = 1;
-                  endPage = $scope.maxPagesToShow;
-              } else if ($scope.currentPageVoucher + maxPagesAfterCurrentPage >= totalPages) {
-                  startPage = totalPages - $scope.maxPagesToShow + 1;
-                  endPage = totalPages;
-              } else {
-                  startPage = $scope.currentPageVoucher - maxPagesBeforeCurrentPage;
-                  endPage = $scope.currentPageVoucher + maxPagesAfterCurrentPage;
-              }
-          }
-
-          return Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i);
-      };
+    return Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i);
+  };
 
 });
 
