@@ -645,7 +645,8 @@
                                 <td>{{order.createDate | date: 'dd-MM-yyyy'}}</td>
                                 <td>{{order.fullname}}</td>
                                 <td>{{order.address}}</td>
-                                <td>{{order.totalAmount | number : 0}} đ</td>
+                                <td ng-if="order.distance !== null">{{order.totalAmount + order.distance * 4 | number : 0}} đ</td>
+                                <td ng-if="order.distance === null">{{order.totalAmount | number : 0}} đ</td>
                                 <td ng-if="order.status === 4"> Delivered</td>
                                 <td>
                                     <button class="btn btn-dark" data-bs-toggle="modal"

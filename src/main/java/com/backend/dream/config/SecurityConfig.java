@@ -39,8 +39,10 @@ public class SecurityConfig {
                         .requestMatchers("/profile").authenticated()
                         .requestMatchers("/cart").authenticated()
                         .requestMatchers("/order").authenticated()
-                        .requestMatchers("/admin/index").hasAuthority("ADMIN")
-                        .requestMatchers("/staff/index").hasAuthority("STAFF")
+                        .requestMatchers("/admin/**").hasAnyRole("ADMIN")
+                        .requestMatchers("/admin/**").hasAnyRole("STAFF")
+                        .requestMatchers("/admin/authority").hasRole("ADMIN")
+                        .requestMatchers("/admin/staff").hasRole("ADMIN")
                         .anyRequest().permitAll())
                 .formLogin(login -> login
                         .loginPage("/login")

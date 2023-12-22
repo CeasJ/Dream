@@ -33,7 +33,6 @@ public class AccountDTO {
 
     private String fullname;
 
-    @Pattern(regexp = "^[0-11]*$", message = "Phone number must only contain digits")
     @Size(min = 10, max = 11, message = "Phone number must be between 10 and 11 digits")
     private String phone;
 

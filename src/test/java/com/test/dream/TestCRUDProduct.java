@@ -39,14 +39,14 @@ public class TestCRUDProduct {
     @Test
     public void testCreateProduct() throws Exception {
         ProductDTO productDTO = new ProductDTO();
-        productDTO.setName("Cà phê cứt chồn");
+        productDTO.setName("Cà phê chồn");
         productDTO.setPrice(5000.0);
 
         when(productService.create(any(ProductDTO.class))).thenReturn(new Product());
 
         mockMvc.perform(post("/rest/products")
                         .contentType("application/json")
-                        .content("{\"name\":\"Cà phê cứt chồn\",\"price\":5000.0}"))
+                        .content("{\"name\":\"Cà phê chồn\",\"price\":5000.0}"))
                 .andExpect(status().isOk());
     }
 
@@ -54,14 +54,14 @@ public class TestCRUDProduct {
     public void testUpdateProduct() throws Exception {
         ProductDTO productDTO = new ProductDTO();
         productDTO.setId(1L);
-        productDTO.setName("Cà phê siêu cứt chồn");
+        productDTO.setName("Cà phê siêu chồn");
         productDTO.setPrice(50000.0);
 
         when(productService.update(any(ProductDTO.class))).thenReturn(productDTO);
 
         mockMvc.perform(put("/rest/products/{id}", 1L)
                         .contentType("application/json")
-                        .content("{\"id\":1,\"name\":\"Cà phê siêu cứt chồn\",\"price\":50000.0}"))
+                        .content("{\"id\":1,\"name\":\"Cà phê siêu chồn\",\"price\":50000.0}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.name", is("Updated Product")))

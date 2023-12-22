@@ -43,9 +43,9 @@ public class OrderDTO {
 
     private Double totalAmount;
     public String getFormattedPrice() {
-        if(totalAmount != null){
+        if(totalAmount != null && distance!= null){
         DecimalFormat df = new DecimalFormat("#,###₫");
-        return df.format(totalAmount);
+        return df.format(totalAmount + distance * 4 );
         } else {
             return "";
         }

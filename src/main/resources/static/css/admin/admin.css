@@ -11634,7 +11634,7 @@ body {
 
 .notification-dropdown {
   position: absolute;
-  top: 154%;
+  top: 120%;
   left: -122%;
   transform: translateX(-50%);
   background-color: #ffffff;
@@ -11642,6 +11642,7 @@ body {
   display: none;
   width: 400px;
   overflow: auto;
+  max-width: 400px;
 }
 
 .notification-dropdown::-webkit-scrollbar {

@@ -70,6 +70,10 @@ $scope.getPrice = function(productId, sizeId) {
       let id_size = $scope.id_size;
       let price = $scope.updateProductSizePrice();
 
+    if (isNaN(price) || price <= 0) {
+          toastr.error("Price must be a number greater than 0");
+          return;
+      }
 
       if (!isValidSizePrice(id_product, id_size, price)) {
               toastr.error("Invalid size price. Please ensure S < M < L.");
@@ -107,6 +111,11 @@ $scope.getPrice = function(productId, sizeId) {
      let id_product = $scope.id_product;
      let id_size = $scope.id_size;
      let price = $scope.updateProductSizePrice();
+
+     if (isNaN(price) || price <= 0) {
+               toastr.error("Price must be a number greater than 0");
+               return;
+           }
 
 
      if (!isValidSizePrice(id_product, id_size, price)) {
